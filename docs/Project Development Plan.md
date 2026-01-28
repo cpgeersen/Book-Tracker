@@ -119,6 +119,18 @@ Communication Constraint: Project members can only meet digitally because of the
 {List assets, tools, personnel, and materials required for the successful planning, execution, and 
 completion of a project.}
 
+Physical Tools:
+- Computer for every team member with the project environment
+
+Programming Tools:
+- IDE (i.e. VSCode or PyCharm)
+- Python
+- Database Management Tool
+
+Personnel:
+- Seven team members assigned to project
+- Professor and/or mentor to consult
+
 ### Team Collaboration and Communication 
 {Specify the collaboration and communication tools / platforms that will be used in this project development. 
 Describe how your group will use these tools / platforms during this project development.}
