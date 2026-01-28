@@ -33,6 +33,10 @@ functionality by pulling book data from OpenLibrary's API.
 {List at least 3 specific, measurable, achievable, relevant, and time-bound (SMART) target that a project aims to 
 achieve. It outlines the tangible outcomes or results that the project intends to deliver. 
 For example: “reduce customer wait time to one minute” }
+1. Objective 1: Develop a normalized local book database with CRUD functionality.
+2. Objective 2: Develop a user-friendly Graphical User Interface, following ADA color and contrast standards.
+3. Objective 3: Ensure Windows, macOS, and Linux compatibility.
+4. Objective 4: Ensure proper usage of the OpenLibrary API following OpenLibrary's documentation. 
 
 ### Project Scope
 {Specify the boundaries and extent of the project, outlining what is included and what is excluded. Provides a clear 
