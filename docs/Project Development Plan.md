@@ -109,6 +109,12 @@ Tech Stack Assumptions:
 {List any limitations or restrictions that can impact the planning, execution, and completion of a project. 
 Specify the known dependencies that could constrain the ability of the project team to achieve the project objectives.}
 
+Time Constraint: Project must be completed by the deadline of 4/17/26 to fulfill the team's Programming Capstone Project.
+
+Team Constraint: Project is limited to the assigned members and cannot be increased if needed.
+
+Communication Constraint: Project members can only meet digitally because of the distributed nature of the team.
+
 ### Project Resources Required
 {List assets, tools, personnel, and materials required for the successful planning, execution, and 
 completion of a project.}
