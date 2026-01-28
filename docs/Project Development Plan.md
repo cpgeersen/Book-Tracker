@@ -21,9 +21,12 @@
 
 ***
 
-### Project Goal
+### Project Goal: Improve a User's Ability to Track and Maintain a List of Books
 { Provide a broad, high-level statement that articulates the desired outcome of the project. 
 For example: “provide excellent customer service”}
+
+The project goal is to provide a user maintainable book database that allows one to track owned books and have enhanced
+functionality by pulling book data from OpenLibrary's API.
 
 
 ### Project Objectives
