@@ -44,5 +44,8 @@ reading habits.
 - US402: As a user, I want a graph depicting books read per month over a year, so I can track how many books I read.
 - US403: As a user, I want to know what genre is my most commonly read, so I see what my favorite genre is.
 
-
+Story Epic 5: As a user, I want to configure the program settings so that I can configure the app to my liking.
+- US501: As a user, I want to change the theme to white or dark mode so that I can match the theme to my liking.
+- US502: As a user, I want an export/import to CSV function, so that I can back up the database.
+- US503: As a user, I want a purge function, so that I can reset all data for the app.
 
