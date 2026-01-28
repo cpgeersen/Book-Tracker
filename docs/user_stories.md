@@ -38,3 +38,11 @@ information will autopopulate the book record.
 habits.
 - US308: As a user, I want a graphical interface for the user settings so that I can edit the app to my liking.
 
+Story Epic 4: As a user, I want to generate analytics off of the local book database so that I gain insight into my
+reading habits.
+- US401: As a user, I want a list of current books, so I can see at a glance what my currently read books are.
+- US402: As a user, I want a graph depicting books read per month over a year, so I can track how many books I read.
+- US403: As a user, I want to know what genre is my most commonly read, so I see what my favorite genre is.
+
+
+
