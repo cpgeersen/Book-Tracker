@@ -154,6 +154,12 @@ text channels for quick communication.
 {Specify the documentation tools / platforms that will be used in this project development. 
 Describe how your group will use these tools / platforms during this project development.
 
+The two documentation tools that will be used are GitHub and Microsoft Teams. The main one being GitHub. Documentation
+for the project and code will be housed in the /docs folder in the repository. This allows for documentation to be
+version tracked and also be in the same place as the source code. This is possible since the main file used for
+documentation is markdown. Existing files like the SRS or ones given in non-markdown will be housed in the files section
+of the MS Teams channel. These documents will be organized into folders by sprint.
+
 ### Project Management Plan and Methodologies
 {Specify what project management methods and tools will be used in this project development. 
 Describe how your group will use these project management methods and tools during this project development.}
