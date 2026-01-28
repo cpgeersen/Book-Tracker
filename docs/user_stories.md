@@ -2,7 +2,9 @@
 ### Key
 US1XX
 US -> User Story
+
 1 -> Story Epic Number
+
 XX -> User Story Number for Story Epic
 ***
 
