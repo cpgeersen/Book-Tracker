@@ -163,3 +163,10 @@ of the MS Teams channel. These documents will be organized into folders by sprin
 ### Project Management Plan and Methodologies
 {Specify what project management methods and tools will be used in this project development. 
 Describe how your group will use these project management methods and tools during this project development.}
+
+The project methodology that will be utilized is Scrum, with Kanban features. The project manager will also act as
+Scrum Master. Scrum, being an Agile methodology, is perfect for the given project. Scrum allows our team to iterate 
+through sprints that will add new in-scope features and ship them at the end of each sprint. Even though at the end
+of each sprint all features may not be added, a usable version will be available. Since we are using Scrum, Trello
+is a perfect facilitator. Trello allows for the creation of Story Epics and User Stories. Using these two, tasks can
+be generated and assigned to team members with a Kanban board.
