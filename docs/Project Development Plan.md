@@ -135,6 +135,21 @@ Personnel:
 {Specify the collaboration and communication tools / platforms that will be used in this project development. 
 Describe how your group will use these tools / platforms during this project development.}
 
+Collaboration Tools: The two main collaboration tools utilized in this project will be GitHub and Trello.
+
+GitHub will be used for version control of the source code of the project. GitHub allows the team to coordinate
+and work asynchronously on different parts of the project. Team members will follow basic GitHub workflows utilizing
+branches, pull requests, and issues. Additionally, GitHub will allow for CI/CD with GitHub actions to maintain project
+quality and assurance.
+
+Trello will be used to track and assign tasks that correlate will story epics and user stories. Trello is mainly
+used for the facilitation of Agile methodology.
+
+Communication Tools:
+The main collaboration tool used for communication over the course of the project is Microsoft Teams. MS Teams will
+be the platform that we will have our virtual meetings. Additionally, MS Teams allows for team members to chat in
+text channels for quick communication.
+
 ### Project Documentation 
 {Specify the documentation tools / platforms that will be used in this project development. 
 Describe how your group will use these tools / platforms during this project development.
