@@ -20,3 +20,20 @@ added without having the user have to enter it by hand.
 the local user book database.
 - US202: As a user, when looking to add a book from OpenLibrary to the local database, it should prevent already added
 books.
+
+Story Epic 3: As a user, I want a user-friendly GUI so that I can interact with the book database.
+- US301: As a user, I want a homepage that links to all other functionality of the app so that I can see all features
+in a single and easy location.
+- US302: As a user, I want a book database form to manually add so that in the event that OpenLibrary is down or does
+not have the book I can still add books.
+- US303: As a user, I want a graphical interface to locally search the database so that I can see what books match
+the search.
+- US304: As a user, want to be able to click on a local search result so that I can view the page for that book.
+- US305: As a user, I want to have a note interface for a given book so that I can maintain a set of notes for
+a book.
+- US306: As a user, I want a graphical interface to search and pull information from OpenLibrary so that the
+information will autopopulate the book record.
+- US307: As a user, I want a graphical interface for the analytics dashboard so that I can see insights into my reading
+habits.
+- US308: As a user, I want a graphical interface for the user settings so that I can edit the app to my liking.
+
