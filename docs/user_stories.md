@@ -21,7 +21,7 @@ the local user book database.
 - US202: As a user, when looking to add a book from OpenLibrary to the local database, it should prevent already added
 books.
 
-Story Epic 3: As a user, I want a user-friendly GUI so that I can interact with the book database.
+Story Epic 3: As a user, I want a user-friendly GUI so that I can interact with all functions in the program.
 - US301: As a user, I want a homepage that links to all other functionality of the app so that I can see all features
 in a single and easy location.
 - US302: As a user, I want a book database form to manually add so that in the event that OpenLibrary is down or does
