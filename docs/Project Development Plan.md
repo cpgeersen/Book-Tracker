@@ -42,6 +42,42 @@ For example: “reduce customer wait time to one minute” }
 {Specify the boundaries and extent of the project, outlining what is included and what is excluded. Provides a clear 
 understanding of the project's focus.}
 
+In-Scope:
+- User Book Database:
+  - Create-Read-Update-Delete (CRUD) Book Data
+  - Premade Labels: owned, favorite, read, currently reading, and whether personal or academic reading
+  - Track chapters completed per book (two options user provided chapters or pages) (???)
+  - Allow the addition of notes per book
+  - Store cover images for added books (does not use much storage) (???)
+- Querying Book Database:
+  - Return all books in database
+  - Return all books from an author, year, genre, and off of labels
+- Querying OpenLibrary API:
+  - Prevent request for books already in database
+  - Return data for an ISBN or title search
+  - Return only 10 results at a time for title search
+- User Metrics:
+  - Display stats like: completed books, number of books in database, and favorite genre
+  - Display current books
+  - How many books completed over a period of time
+  - Recommendations from uncompleted books in database(???)
+- User Settings:
+  - Theme for UI
+  - Username (only for when referring to the user)
+  - Export/import database as CSV for backups
+  - Average page reading time (to calculate estimated completion time)
+- GUI:
+  - Include all functions available in-scope to be done through the GUI
+
+Out-of-Scope:
+- No passwords or authentication
+- No full database pulling from OpenLibrary
+- No online features other than pulling data from API (i.e. cloud support or retailer integration)
+- No additional information about authors or publishers will be included
+- No timeing functionality
+- No user reviews
+- No cli
+
 ### Project Assumptions
 {List any factors or conditions that are considered to be true, real, or certain for planning purposes but have not 
 been confirmed. The assumptions made that could impact the ability of the project team to achieve the project 
