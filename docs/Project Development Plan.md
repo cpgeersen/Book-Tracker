@@ -83,6 +83,28 @@ Out-of-Scope:
 been confirmed. The assumptions made that could impact the ability of the project team to achieve the project 
 objectives.}
 
+Team Assumptions:
+- Assumes that all teams members throughout the project will be available for communication and completion of tasks.
+- Assumes all project deliverables will be submitted by Project Manager.
+- Assumes all team members have an account with the tools being used for the project.
+- Assumes all team members will use GitHub following an agreed on workflow.
+
+OpenLibrary Assumptions:
+- Assumes OpenLibrary's API is available at all times to pull information from.
+- Assumes OpenLibrary does not change API endpoints.
+- Assumes a book is in the OpenLibrary database.
+
+User Assumptions:
+- Assumes the user read books.
+- Assumes the user has a supported platform.
+- Assumes the user knows how to use a GUI.
+- Assumes the user knows how to install Python.
+- Assumes the user knows how to read a basic end-user readme.
+
+Tech Stack Assumptions:
+- Assumes all Python and Python libraries work together with the database.
+
+
 ### Project Constraints
 {List any limitations or restrictions that can impact the planning, execution, and completion of a project. 
 Specify the known dependencies that could constrain the ability of the project team to achieve the project objectives.}
