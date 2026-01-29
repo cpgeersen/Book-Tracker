@@ -1,0 +1,5 @@
+# Python
+.venv/
+
+# IDE (add to your IDE folder of choice)
+.idea/
