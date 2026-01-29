@@ -18,11 +18,10 @@ Oracle, PostgresSQL, or SQLite
 Model-View Presenter
 
 ### Development Framework
-Web (like Flask) or Desktop (like Kivy)
+Flask
 
 ### Targeted Platforms:
 - Windows
-- macOS
 - Linux
 
 ### Book Database API
