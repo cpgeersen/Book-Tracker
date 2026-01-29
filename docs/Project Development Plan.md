@@ -22,51 +22,41 @@
 ***
 
 ### Project Goal: Improve a User's Ability to Track and Maintain a List of Books
-{ Provide a broad, high-level statement that articulates the desired outcome of the project. 
-For example: “provide excellent customer service”}
-
 The project goal is to provide a user maintainable book database that allows one to track owned books and have enhanced
 functionality by pulling book data from OpenLibrary's API.
 
 
 ### Project Objectives
-{List at least 3 specific, measurable, achievable, relevant, and time-bound (SMART) target that a project aims to 
-achieve. It outlines the tangible outcomes or results that the project intends to deliver. 
-For example: “reduce customer wait time to one minute” }
 1. Objective 1: Develop a local book database in 3NF with CRUD functionality within the project deadline.
 2. Objective 2: Develop a user-friendly Graphical User Interface, following ADA color and contrast standards 
 within project deadline.
-3. Objective 3: Ensure Windows, macOS, and Linux compatibility within project deadline.
-4. Objective 4: Ensure proper usage of the OpenLibrary API following OpenLibrary's documentation. 
+3. Objective 3: Ensure Windows and Linux compatibility within project deadline.
+4. Objective 4: Ensure proper usage of the OpenLibrary API following OpenLibrary's documentation 
+within project deadline. 
 
 ### Project Scope
-{Specify the boundaries and extent of the project, outlining what is included and what is excluded. Provides a clear 
-understanding of the project's focus.}
-
 In-Scope:
 - User Book Database:
   - Create-Read-Update-Delete (CRUD) Book Data
   - Premade Labels: owned, favorite, read, currently reading, and whether personal or academic reading
-  - Track chapters completed per book (two options user provided chapters or pages) (???)
+  - Track chapters completed per book
   - Allow the addition of notes per book
-  - Store cover images for added books (does not use much storage) (???)
+  - Store cover images for added books
 - Querying Book Database:
   - Return all books in database
   - Return all books from an author, year, genre, and off of labels
 - Querying OpenLibrary API:
   - Prevent request for books already in database
-  - Return data for an ISBN or title search
+  - Return data for an ISBN, title, or author search
   - Return only 10 results at a time for title search
 - User Metrics:
   - Display stats like: completed books, number of books in database, and favorite genre
   - Display current books
   - How many books completed over a period of time
-  - Recommendations from uncompleted books in database(???)
 - User Settings:
   - Theme for UI
   - Username (only for when referring to the user)
   - Export/import database as CSV for backups
-  - Average page reading time (to calculate estimated completion time)
 - GUI:
   - Include all functions available in-scope to be done through the GUI
 
@@ -78,12 +68,10 @@ Out-of-Scope:
 - No timeing functionality
 - No user reviews
 - No cli
+- Recommendations from uncompleted books in database
+- Average page reading time (to calculate estimated completion time)
 
 ### Project Assumptions
-{List any factors or conditions that are considered to be true, real, or certain for planning purposes but have not 
-been confirmed. The assumptions made that could impact the ability of the project team to achieve the project 
-objectives.}
-
 Team Assumptions:
 - Assumes that all teams members throughout the project will be available for communication and completion of tasks.
 - Assumes all project deliverables will be submitted by Project Manager.
@@ -107,9 +95,6 @@ Tech Stack Assumptions:
 
 
 ### Project Constraints
-{List any limitations or restrictions that can impact the planning, execution, and completion of a project. 
-Specify the known dependencies that could constrain the ability of the project team to achieve the project objectives.}
-
 Time Constraint: Project must be completed by the deadline of 4/17/26 to fulfill the team's Programming Capstone Project.
 
 Team Constraint: Project is limited to the assigned members and cannot be increased if needed.
@@ -117,9 +102,6 @@ Team Constraint: Project is limited to the assigned members and cannot be increa
 Communication Constraint: Project members can only meet digitally because of the distributed nature of the team.
 
 ### Project Resources Required
-{List assets, tools, personnel, and materials required for the successful planning, execution, and 
-completion of a project.}
-
 Physical Tools:
 - Computer for every team member with the project environment
 
@@ -132,10 +114,7 @@ Personnel:
 - Seven team members assigned to project
 - Professor and/or mentor to consult
 
-### Team Collaboration and Communication 
-{Specify the collaboration and communication tools / platforms that will be used in this project development. 
-Describe how your group will use these tools / platforms during this project development.}
-
+### Team Collaboration and Communication
 Collaboration Tools: The two main collaboration tools utilized in this project will be GitHub and Trello.
 
 GitHub will be used for version control of the source code of the project. GitHub allows the team to coordinate
@@ -151,10 +130,7 @@ The main collaboration tool used for communication over the course of the projec
 be the platform that we will have our virtual meetings. Additionally, MS Teams allows for team members to chat in
 text channels for quick communication.
 
-### Project Documentation 
-{Specify the documentation tools / platforms that will be used in this project development. 
-Describe how your group will use these tools / platforms during this project development.
-
+### Project Documentation
 The two documentation tools that will be used are GitHub and Microsoft Teams. The main one being GitHub. Documentation
 for the project and code will be housed in the /docs folder in the repository. This allows for documentation to be
 version tracked and also be in the same place as the source code. This is possible since the main file used for
@@ -162,9 +138,6 @@ documentation is markdown. Existing files like the SRS or ones given in non-mark
 of the MS Teams channel. These documents will be organized into folders by sprint.
 
 ### Project Management Plan and Methodologies
-{Specify what project management methods and tools will be used in this project development. 
-Describe how your group will use these project management methods and tools during this project development.}
-
 The project methodology that will be utilized is Scrum, with Kanban features. The project manager will also act as
 Scrum Master. Scrum, being an Agile methodology, is perfect for the given project. Scrum allows our team to iterate 
 through sprints that will add new in-scope features and ship them at the end of each sprint. Even though at the end
