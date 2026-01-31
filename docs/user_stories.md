@@ -15,11 +15,11 @@ Story Epic 1: As a user, I want to have local database of books to maintain a bo
 author, and ISBN. 
 - US103: As a user, I want to update existing records in the database so that I correct information or add user
 information to a book. 
-- US104: As a user, I want to delete a book from the database so that it is no longer apart my backlog.
+- US104: As a user, I want to delete a book from the database so that it is no longer a part my database.
 - US105: As a user, I want to be able to add notes to a book record so that I can keep notes on a book.
 
 Story Epic 2: As a user, I want to retrieve book information from an existing book database so that information can be
-added without having the user have to enter it by hand.
+added without having enter it by hand.
 - US201: As a user, I want to be able to pull information from the OpenLibrary database to add that information to
 the local user book database.
 - US202: As a user, when looking to add a book from OpenLibrary to the local database, it should prevent already added
@@ -34,7 +34,7 @@ reading habits.
 Story Epic 4: As a user, I want to configure the program settings so that I can configure the app to my liking.
 - US401: As a user, I want to change the theme to white or dark mode so that I can match the theme to my liking.
 - US402: As a user, I want an export/import to CSV function, so that I can back up the database.
-- US403: As a user, I want a purge function, so that I can reset all data for the app.
+- US403: As a user, I want a purge function, so that I can reset all data for tx`he app.
 
 ## Theme: UI
 Story Epic 5: As a user, I want a user-friendly GUI so that I can interact with all functions in the program.
