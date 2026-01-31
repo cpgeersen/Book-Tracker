@@ -27,12 +27,12 @@ The primary goals of the software are to develop an application that allows a us
   <p>(4) Read
   <p>(5) Favorite
   <p>(6) Mark of book progress per chapter with an included overall completion status.
-<h4>(IV) Analytics: \n
+<h4>(IV) Analytics: </h4>
   <p>(1) Give recommendations for books based on the books in the database on author, series, or genre. 
   <p>(2) Estimate the time required to complete a book based on the number of pages and user provided average reading time per page. 
  <p>(3) A dashboard that shows: 
  <p>(4) Current books are being read. 
   <p>(5) Average chapters read over time. 
   <p>(6) Currently, most read genres. 
-<h4>(V) Customization: 
+<h4>(V) Customization: </h4>
   <p>(1) Allow the user choice of a set of premade themes that can change the user interface color. 
