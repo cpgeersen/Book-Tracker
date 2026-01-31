@@ -5,16 +5,16 @@ CSC-289 Capstone Project - Book Tracker Source Code
 The primary goals of the software are to develop an application that allows a user to maintain a database for books. This database will track completed books compared to a backlog. This application will allow users to track progress and generate insights into their reading habits. 
 
 ## Data Assumptions: 
-(1) Assumes data will be available from the Open Library Book data API. \n
-(2) Assumes most books can be retrieved from the Open Library Book data API. \n
-(3) Assumes if the Open Library Book API is down or unavailable, it can search the cache for potential results. \n 
+<p> (1) Assumes data will be available from the Open Library Book data API. <\p>
+<p>(2) Assumes most books can be retrieved from the Open Library Book data API. <\p>
+<p>(3) Assumes if the Open Library Book API is down or unavailable, it can search the cache for potential results. <\p>
 
 ## Project Features / Functions 
-(I) Book Management: \n
-  (1) Add/delete books to/from their database. \n
-  (2) Book data will come from the open-source book API from the Open Library. \n
-  (3) Add/edit/delete notes per book. \n
-  (4) Search for a specific book in the database. \n
+<p> (I) Book Management: </p>
+<p> (1) Add/delete books to/from their database. \n <\p>
+<p> Book data will come from the open-source book API from the Open Library. <\p>
+<p> Add/edit/delete notes per book. </p>
+<p> Search for a specific book in the database. <\p>
 (II) Categorize By: \n
   (1) Author \n
   (2) Genre \n
