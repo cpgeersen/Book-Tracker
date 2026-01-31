@@ -12,12 +12,12 @@
 | Name      | Email                                       | Role                     |
 | --------- | ------------------------------------------- |--------------------------|
 | Collin Geersen         | cpgeersen@my.waketech.edu      | Project Manager          | 
-| Brandon Prevatte       | bcprevatte@my.waketech.edu     |                          |
-| Christopher O'Brien    | cmobrien3@my.waketech.edu      |                          |
-| Holly Green            | hmgreen@my.waketech.edu        |                          |
-| Joseph Candleana       | jrcandleana@my.waketech.edu    |                          |
-| Mireliz Gimenez        | mgimenez@my.waketech.edu       |                          |
-| Nicholas Grudier       | njgrudier@my.waketech.edu      |                          |
+| Brandon Prevatte       | bcprevatte@my.waketech.edu     | Group Member             |
+| Christopher O'Brien    | cmobrien3@my.waketech.edu      | Group Member             |
+| Holly Green            | hmgreen@my.waketech.edu        | Group Member             |
+| Joseph Candleana       | jrcandleana@my.waketech.edu    | Group Member             |
+| Mireliz Gimenez        | mgimenez@my.waketech.edu       | Group Member             |
+| Nicholas Grudier       | njgrudier@my.waketech.edu      | Group Member             |
 
 ***
 
