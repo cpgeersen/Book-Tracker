@@ -52,3 +52,15 @@ information will autopopulate the book record.
 - US507: As a user, I want a graphical interface for the analytics dashboard so that I can see insights into my reading
 habits.
 - US508: As a user, I want a graphical interface for the user settings so that I can edit the app to my liking.
+
+## Theme: QA/QC
+Story Epic 6: As a dev, I want to make sure that 1.0 release of the application has is reasonably performant and user-friendly.
+- US601: As a dev, I want the initial application release only require Python and a supported platform, so a user can download and use the application. 
+- US602: As a dev, I will make sure that the OpenLibrary API documentation is properly followed, so unnecessary resources are not  consumed on their servers.
+- US603: As a dev, I will make sure that all UI elements follow ADA standards on color and contrast, so that application is more accessible to users.
+
+
+
+
+
+
