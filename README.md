@@ -10,29 +10,29 @@ The primary goals of the software are to develop an application that allows a us
 <p>(3) Assumes if the Open Library Book API is down or unavailable, it can search the cache for potential results. 
 
 ## Project Features / Functions 
-<p> (I) Book Management:
+#### (I) Book Management:
 <p> (1) Add/delete books to/from their database.
 <p> Book data will come from the open-source book API from the Open Library.
 <p> Add/edit/delete notes per book.
 <p> Search for a specific book in the database.
-<p>(II) Categorize By:
+#### (II) Categorize By:
 <p>(1) Author 
 <p>(2) Genre
 <p>(3) Publish Date
 <p>(4) Publisher
-<p>(III) Progress Tracking:
+#### (III) Progress Tracking:
   <p>(1) Mark a book as owned.
   <p>(2) Apply premade tags to books.
   <p>(3) Currently Reading
   <p>(4) Read
   <p>(5) Favorite
   <p>(6) Mark of book progress per chapter with an included overall completion status.
-<p>(IV) Analytics: \n
+#### (IV) Analytics: \n
   <p>(1) Give recommendations for books based on the books in the database on author, series, or genre. 
   <p>(2) Estimate the time required to complete a book based on the number of pages and user provided average reading time per page. 
  <p>(3) A dashboard that shows: 
  <p>(4) Current books are being read. 
   <p>(5) Average chapters read over time. 
   <p>(6) Currently, most read genres. 
-<p>(V) Customization: 
+#### (V) Customization: 
   <p>(1) Allow the user choice of a set of premade themes that can change the user interface color. 
