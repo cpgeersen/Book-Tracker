@@ -34,7 +34,7 @@ reading habits.
 Story Epic 4: As a user, I want to configure the program settings so that I can configure the app to my liking.
 - US401: As a user, I want to change the theme to white or dark mode so that I can match the theme to my liking.
 - US402: As a user, I want an export/import to CSV function, so that I can back up the database.
-- US403: As a user, I want a purge function, so that I can reset all data for tx`he app.
+- US403: As a user, I want a purge function, so that I can reset all data for the app.
 
 ## Theme: UI
 Story Epic 5: As a user, I want a user-friendly GUI so that I can interact with all functions in the program.
