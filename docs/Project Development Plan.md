@@ -9,15 +9,15 @@
 ***
 
 ### Team Member Details
-| Name      | Email                                       | Role                     |
-| --------- | ------------------------------------------- |--------------------------|
-| Collin Geersen         | cpgeersen@my.waketech.edu      | Project Manager          | 
-| Brandon Prevatte       | bcprevatte@my.waketech.edu     | Group Member             |
-| Christopher O'Brien    | cmobrien3@my.waketech.edu      | Group Member             |
-| Holly Green            | hmgreen@my.waketech.edu        | Group Member             |
-| Joseph Candleana       | jrcandleana@my.waketech.edu    | Group Member             |
-| Mireliz Gimenez        | mgimenez@my.waketech.edu       | Group Member             |
-| Nicholas Grudier       | njgrudier@my.waketech.edu      | Group Member             |
+| Name      | Email                                       | Role                                                |
+| --------- | ------------------------------------------- |-----------------------------------------------------|
+| Collin Geersen         | cpgeersen@my.waketech.edu      | Project Manager (Frontend/Backend - View/Presenter) | 
+| Brandon Prevatte       | bcprevatte@my.waketech.edu     | Group Member (Frontend - View)                      |
+| Christopher O'Brien    | cmobrien3@my.waketech.edu      | Group Member (Backend - Model)                      |
+| Holly Green            | hmgreen@my.waketech.edu        | Group Member (Frontend/Backend - View/Model)        |
+| Joseph Candleana       | jrcandleana@my.waketech.edu    | Group Member (Backend - Model)                      |
+| Mireliz Gimenez        | mgimenez@my.waketech.edu       | Group Member (Frontend - View)                      |
+| Nicholas Grudier       | njgrudier@my.waketech.edu      | Group Member (Backend - Presenter)                  |
 
 ***
 
