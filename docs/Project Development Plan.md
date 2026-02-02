@@ -100,7 +100,7 @@ Time Constraint: Project must be completed by the deadline of 4/17/26 to fulfill
 Team Constraint: Project is limited to the assigned members and cannot be increased if needed.
 
 Communication Constraint: Project members can only meet digitally because of the distributed nature of the team.
-                          Webpage and application extends database.
+
 ### Project Resources Required
 Physical Tools:
 - Computer for every team member with the project environment
