@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Basic page metadata -->
   <meta charset="UTF-8">
   <title>Add Book</title>
 
   <style>
+    /* Global page styling */
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background-color: #0f172a;
@@ -13,6 +15,7 @@
       padding: 0;
     }
 
+    /* Centered card container */
     .container {
       max-width: 520px;
       margin: 3rem auto;
@@ -22,58 +25,52 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
 
+    /* Page title */
     h1 {
       text-align: center;
       margin-bottom: 1.5rem;
       color: #f9fafb;
     }
 
+    /* Labels above inputs */
     label {
       display: block;
       margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #9ca3af;
+      margin-bottom: 0.25rem;
+      font-weight: 600;
     }
 
+    /* Input and dropdown styling */
     input,
-    select,
-    textarea {
+    select {
       width: 100%;
       padding: 0.6rem;
-      margin-top: 0.3rem;
-      font-size: 1rem;
-      color: #e5e7eb;
-      background-color: #1f2933;
-      border: 1px solid #374151;
-      border-radius: 6px;
-    }
-
-    input:focus,
-    select:focus,
-    textarea:focus {
-      outline: none;
-      border-color: #6366f1;
-      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
-    }
-
-    textarea {
-      resize: vertical;
-    }
-
-    button {
-      margin-top: 1.8rem;
-      width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
-      font-weight: 600;
-      background-color: #6366f1;
-      color: #ffffff;
-      border: none;
       border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
+      border: none;
+      background-color: #1f2933;
+      color: #e5e7eb;
     }
 
+    /* Highlight active input */
+    input:focus,
+    select:focus {
+      outline: 2px solid #6366f1;
+    }
+
+    /* Submit button styling */
+    button {
+      width: 100%;
+      margin-top: 1.8rem;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #6366f1;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Button hover effect */
     button:hover {
       background-color: #4f46e5;
     }
@@ -81,35 +78,47 @@
 </head>
 
 <body>
+  <!-- Main form container -->
   <main class="container">
-    <h1>Add a Book</h1>
 
-    <form method="post">
+    <!-- UI-only template for Task 1.5 -->
+    <h1>Add Book</h1>
+
+    <!-- Book input form (no backend logic yet) -->
+    <form>
+
+      <!-- Book title input -->
       <label for="title">Title</label>
       <input type="text" id="title" name="title" required>
 
+      <!-- Book author input -->
       <label for="author">Author</label>
       <input type="text" id="author" name="author" required>
 
+      <!-- ISBN input (numbers only, required) -->
       <label for="isbn">ISBN</label>
-      <input type="text" id="isbn" name="isbn">
+      <input
+        type="text"
+        id="isbn"
+        name="isbn"
+        pattern="[0-9]+"
+        inputmode="numeric"
+        required
+      >
 
-      <label for="genre">Genre</label>
-      <input type="text" id="genre" name="genre">
-
+      <!-- Book status selection -->
       <label for="status">Status</label>
-      <select id="status" name="status">
+      <select id="status" name="status" required>
+        <option value="">Select status</option>
         <option value="owned">Owned</option>
         <option value="favorite">Favorite</option>
-        <option value="reading">Currently Reading</option>
         <option value="read">Read</option>
-        <option value="academic">Academic</option>
+        <option value="currently_reading">Currently Reading</option>
       </select>
 
-      <label for="notes">Notes</label>
-      <textarea id="notes" name="notes" rows="4"></textarea>
-
+      <!-- Submit button -->
       <button type="submit">Add Book</button>
+
     </form>
   </main>
 </body>
