@@ -22,3 +22,5 @@ venv.bak/
 
 # IDE (add to your IDE folder of choice)
 .idea/
+
+# SQLite
