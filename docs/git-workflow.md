@@ -2,6 +2,9 @@
 
 > [!IMPORTANT]  
 > All commits must be done in a separate working branch that will be merged via a pull request.
+
+> [!IMPORTANT]  
+> If a resolving an issue, make sure to tag the issue in the pull request.
 ***
 ### Steps of pushing a feature branch:
 1. Set up local environment if not already done:
