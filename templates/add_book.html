@@ -94,6 +94,8 @@
       <!-- Book author input -->
       <label for="author">Author</label>
       <input type="text" id="author" name="author" required>
+      <label for="author2">Optional Second Author</label>
+      <input type="text" id="author2" name="author2">
 
       <!-- ISBN input (numbers only, required) -->
       <label for="isbn">ISBN</label>
@@ -106,15 +108,53 @@
         required
       >
 
-      <!-- Book status selection -->
-      <label for="status">Status</label>
-      <select id="status" name="status" required>
-        <option value="">Select status</option>
-        <option value="owned">Owned</option>
-        <option value="favorite">Favorite</option>
-        <option value="read">Read</option>
-        <option value="currently_reading">Currently Reading</option>
-      </select>
+      <!-- Book Publisher input -->
+      <label for="publisher">Publisher</label>
+      <input type="text" id="publisher" name="publisher">
+
+      <!-- Book Publisher Year input -->
+      <label for="year-published">Year Published</label>
+      <input type="date" id="year-published" name="year-published" required>
+
+      <!-- Number of Chapters -->
+      <label for="chapters">Number of Chapters</label>
+      <input
+        type="text"
+        id="chapters"
+        name="chapters"
+        pattern="[0-9]+"
+        inputmode="numeric"
+        required
+      >
+
+      <!-- Genres WIP -->
+      <!-- Will work out a solution create a modal that displays all possible selections
+           These hidden data points are temporary to not hinder development of JS functions. -->
+      <input type="hidden" id="genre-1" value="fiction">
+      <input type="hidden" id="genre-2" value="fantasy">
+      <input type="hidden" id="genre-3" value="literature">
+      <input type="hidden" id="genre-4" value="magic">
+
+      <!-- Book Tags -->
+      <fieldset id="tag-set">
+          <legend>Choose Applicable Tags</legend>
+          <input type="checkbox" id="owned" name="owned" value="checked">
+          <label for="owned">Owned</label>
+          <input type="checkbox" id="favorite" name="favorite" value="checked">
+          <label for="favorite">Favorite</label>
+          <input type="checkbox" id="read" name="read" value="checked">
+          <label for="read">Read</label>
+          <input type="checkbox" id="currently-reading" name="currently-reading" value="checked">
+          <label for="currently-reading">Currently Reading</label>
+
+          <fieldset>
+              <legend>Personal or Academic Reading</legend>
+              <input type="radio" id="personal" name="personal-or-academic" value="personal">
+              <label for="personal">Personal</label>
+              <input type="radio" id="academic" name="personal-or-academic" value="academic">
+              <label for="academic">Academic</label>
+          </fieldset>
+      </fieldset>
 
       <!-- Submit button -->
       <button type="submit">Add Book</button>
