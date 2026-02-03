@@ -114,15 +114,26 @@
       <label for="year-published">Year Published</label>
       <input type="date" id="year-published" name="year-published" required>
 
-      <!-- Book status selection -->
-      <label for="status">Status</label>
-      <select id="status" name="status" required>
-        <option value="">Select status</option>
-        <option value="owned">Owned</option>
-        <option value="favorite">Favorite</option>
-        <option value="read">Read</option>
-        <option value="currently_reading">Currently Reading</option>
-      </select>
+      <!-- Book Tags -->
+      <fieldset id="tag-set">
+          <legend>Choose Applicable Tags</legend>
+          <input type="checkbox" id="owned" name="owned" value="checked">
+          <label for="owned">Owned</label>
+          <input type="checkbox" id="favorite" name="favorite" value="checked">
+          <label for="favorite">Favorite</label>
+          <input type="checkbox" id="read" name="read" value="checked">
+          <label for="read">Read</label>
+          <input type="checkbox" id="currently-reading" name="currently-reading" value="checked">
+          <label for="currently-reading">Currently Reading</label>
+
+          <fieldset>
+              <legend>Personal or Academic Reading</legend>
+              <input type="radio" id="personal" name="personal-or-academic" value="personal">
+              <label for="personal">Personal</label>
+              <input type="radio" id="academic" name="personal-or-academic" value="academic">
+              <label for="academic">Academic</label>
+          </fieldset>
+      </fieldset>
 
       <!-- Submit button -->
       <button type="submit">Add Book</button>
