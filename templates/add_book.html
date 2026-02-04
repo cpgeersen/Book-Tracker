@@ -127,13 +127,14 @@
         required
       >
 
-      <!-- Genres WIP -->
-      <!-- Will work out a solution create a modal that displays all possible selections
-           These hidden data points are temporary to not hinder development of JS functions. -->
-      <input type="hidden" id="genre-1" value="fiction">
-      <input type="hidden" id="genre-2" value="fantasy">
-      <input type="hidden" id="genre-3" value="literature">
-      <input type="hidden" id="genre-4" value="magic">
+      <!-- Fiction or Non-Fiction -->
+          <fieldset>
+              <legend>Fiction or Non-Fiction</legend>
+              <input type="radio" id="fiction" name="fiction-or-nonfiction" value="fiction">
+              <label for="fiction">Fiction</label>
+              <input type="radio" id="nonfiction" name="fiction-or-nonfiction" value="nonfiction">
+              <label for="nonfiction">Non-Fiction</label>
+          </fieldset>
 
       <!-- Book Tags -->
       <fieldset id="tag-set">
