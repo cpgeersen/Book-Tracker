@@ -111,7 +111,7 @@ if not db_exists:
 else:
     print("Database already exists.")    # Commit changes and close the connection
 con.close()
-
+#TEST for tables
 """/*
 # RUN ON PYTHON SHELL
 import sqlite3
