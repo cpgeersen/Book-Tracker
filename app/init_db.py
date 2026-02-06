@@ -9,13 +9,39 @@ con = sqlite3.connect(DB_PATH)
 cursor = con.cursor()
 
 if not db_exists:
-    print("Database not found. Creating new database...")
-    # Create the database
-# 1.1.4 Publishers Table
+    print("Database not found. Creating new database...") # Create the database
+
+    # 1.1.3 Authors Table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS Authors (
+            AuthorID INTEGER PRIMARY KEY AUTOINCREMENT,
+            FirstName TEXT NOT NULL,
+            LastName TEXT NOT NULL
+        );
+    """)
+
+    # 1.1.4 Publishers Table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Publishers (
             PublisherID INTEGER PRIMARY KEY AUTOINCREMENT,
             PublisherName TEXT NOT NULL
+        );
+    """)
+
+    # 1.1.5 Tags Table
+    '''
+        Design Note:
+            PersonalOrAcademic should be an INT since SQLite does not support Boolean values.
+            Only input should be 0 for Personal and 1 for Academic.
+    '''
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS Tags (
+            TagID INTEGER PRIMARY KEY AUTOINCREMENT,
+            Owned INTEGER DEFAULT 0,
+            Favorite INTEGER DEFAULT 0,
+            Read INTEGER DEFAULT 0,
+            CurrentlyReading INTEGER DEFAULT 0,
+            PersonalOrAcademic INTEGER DEFAULT 0
         );
     """)
 
@@ -24,28 +50,6 @@ if not db_exists:
         CREATE TABLE IF NOT EXISTS Genres (
             GenreID INTEGER PRIMARY KEY AUTOINCREMENT,
             Genre TEXT NOT NULL
-        );
-    """)
-
-
-    # 1.1.5 Tags Table
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS Tags (
-            TagID INTEGER PRIMARY KEY AUTOINCREMENT,
-            Owned INTEGER DEFAULT 0,
-            Favorite INTEGER DEFAULT 0,
-            Read INTEGER DEFAULT 0,
-            CurrentlyReading INTEGER DEFAULT 0,
-            PersonalOrAcademic TEXT
-        );
-    """)
-
-    # 1.1.3 Authors Table
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS Authors (
-            AuthorID INTEGER PRIMARY KEY AUTOINCREMENT,
-            FirstName TEXT NOT NULL,
-            LastName TEXT NOT NULL
         );
     """)
 
