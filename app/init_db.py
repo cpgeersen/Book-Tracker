@@ -13,7 +13,7 @@ if not db_exists:
     # Create the database
 # 1.1.4 Publishers Table
     cursor.execute("""
-        CREATE TABLE Publishers (
+        CREATE TABLE IF NOT EXISTS Publishers (
             PublisherID INTEGER PRIMARY KEY AUTOINCREMENT,
             PublisherName TEXT NOT NULL
         );
