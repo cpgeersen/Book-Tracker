@@ -21,15 +21,16 @@ if not db_exists:
 
     # 1.1.7 Genres Table
     cursor.execute("""
-        CREATE TABLE Genres (
+        CREATE TABLE IF NOT EXISTS Genres (
             GenreID INTEGER PRIMARY KEY AUTOINCREMENT,
             Genre TEXT NOT NULL
         );
     """)
 
+
     # 1.1.5 Tags Table
     cursor.execute("""
-        CREATE TABLE Tags (
+        CREATE TABLE IF NOT EXISTS Tags (
             TagID INTEGER PRIMARY KEY AUTOINCREMENT,
             Owned INTEGER DEFAULT 0,
             Favorite INTEGER DEFAULT 0,
@@ -41,7 +42,7 @@ if not db_exists:
 
     # 1.1.3 Authors Table
     cursor.execute("""
-        CREATE TABLE Authors (
+        CREATE TABLE IF NOT EXISTS Authors (
             AuthorID INTEGER PRIMARY KEY AUTOINCREMENT,
             FirstName TEXT NOT NULL,
             LastName TEXT NOT NULL
@@ -58,7 +59,7 @@ if not db_exists:
 
     # 1.1.1 Books Table
     cursor.execute("""
-        CREATE TABLE Books (
+        CREATE TABLE IF NOT EXISTS Books (
             ISBN TEXT PRIMARY KEY,
             Title TEXT NOT NULL,
             PublishDate TEXT,
@@ -75,7 +76,7 @@ if not db_exists:
 
     # 1.1.2 BookAuthor (Bridging Table)
     cursor.execute("""
-        CREATE TABLE BookAuthor (
+        CREATE TABLE IF NOT EXISTS BookAuthor (
             ISBN TEXT,
             AuthorID INTEGER,
             PRIMARY KEY (ISBN, AuthorID),
@@ -86,7 +87,7 @@ if not db_exists:
 
     # 1.1.6 BookGenre (Bridging Table)
     cursor.execute("""
-        CREATE TABLE BookGenre (
+        CREATE TABLE IF NOT EXISTS BookGenre (
             ISBN TEXT,
             GenreID INTEGER,
             PRIMARY KEY (ISBN, GenreID),
@@ -97,7 +98,7 @@ if not db_exists:
 
     # 1.1.8 BookNote (Bridging Table)
     cursor.execute("""
-        CREATE TABLE BookNote (
+        CREATE TABLE IF NOT EXISTS BookNote (
             ISBN TEXT,
             NoteID INTEGER,
             PRIMARY KEY (ISBN, NoteID),
