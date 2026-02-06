@@ -9,42 +9,47 @@ con = sqlite3.connect(DB_PATH)
 cursor = con.cursor()
 
 if not db_exists:
-    print("Database not found. Creating new database...")
-    # Create the database
-# 1.1.4 Publishers Table
+    print("Database not found. Creating new database...") # Create the database
+
+    # 1.1.3 Authors Table
     cursor.execute("""
-        CREATE TABLE Publishers (
+        CREATE TABLE IF NOT EXISTS Authors (
+            AuthorID INTEGER PRIMARY KEY AUTOINCREMENT,
+            FirstName TEXT NOT NULL,
+            LastName TEXT NOT NULL
+        );
+    """)
+
+    # 1.1.4 Publishers Table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS Publishers (
             PublisherID INTEGER PRIMARY KEY AUTOINCREMENT,
             PublisherName TEXT NOT NULL
         );
     """)
 
-    # 1.1.7 Genres Table
-    cursor.execute("""
-        CREATE TABLE Genres (
-            GenreID INTEGER PRIMARY KEY AUTOINCREMENT,
-            Genre TEXT NOT NULL
-        );
-    """)
-
     # 1.1.5 Tags Table
+    '''
+        Design Note:
+            PersonalOrAcademic should be an INT since SQLite does not support Boolean values.
+            Only input should be 0 for Personal and 1 for Academic.
+    '''
     cursor.execute("""
-        CREATE TABLE Tags (
+        CREATE TABLE IF NOT EXISTS Tags (
             TagID INTEGER PRIMARY KEY AUTOINCREMENT,
             Owned INTEGER DEFAULT 0,
             Favorite INTEGER DEFAULT 0,
             Read INTEGER DEFAULT 0,
             CurrentlyReading INTEGER DEFAULT 0,
-            PersonalOrAcademic TEXT
+            PersonalOrAcademic INTEGER DEFAULT 0
         );
     """)
 
-    # 1.1.3 Authors Table
+    # 1.1.7 Genres Table
     cursor.execute("""
-        CREATE TABLE Authors (
-            AuthorID INTEGER PRIMARY KEY AUTOINCREMENT,
-            FirstName TEXT NOT NULL,
-            LastName TEXT NOT NULL
+        CREATE TABLE IF NOT EXISTS Genres (
+            GenreID INTEGER PRIMARY KEY AUTOINCREMENT,
+            Genre TEXT NOT NULL
         );
     """)
 
@@ -58,7 +63,7 @@ if not db_exists:
 
     # 1.1.1 Books Table
     cursor.execute("""
-        CREATE TABLE Books (
+        CREATE TABLE IF NOT EXISTS Books (
             ISBN TEXT PRIMARY KEY,
             Title TEXT NOT NULL,
             PublishDate TEXT,
@@ -75,7 +80,7 @@ if not db_exists:
 
     # 1.1.2 BookAuthor (Bridging Table)
     cursor.execute("""
-        CREATE TABLE BookAuthor (
+        CREATE TABLE IF NOT EXISTS BookAuthor (
             ISBN TEXT,
             AuthorID INTEGER,
             PRIMARY KEY (ISBN, AuthorID),
@@ -86,7 +91,7 @@ if not db_exists:
 
     # 1.1.6 BookGenre (Bridging Table)
     cursor.execute("""
-        CREATE TABLE BookGenre (
+        CREATE TABLE IF NOT EXISTS BookGenre (
             ISBN TEXT,
             GenreID INTEGER,
             PRIMARY KEY (ISBN, GenreID),
@@ -97,7 +102,7 @@ if not db_exists:
 
     # 1.1.8 BookNote (Bridging Table)
     cursor.execute("""
-        CREATE TABLE BookNote (
+        CREATE TABLE IF NOT EXISTS BookNote (
             ISBN TEXT,
             NoteID INTEGER,
             PRIMARY KEY (ISBN, NoteID),
