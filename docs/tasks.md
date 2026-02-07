@@ -7,7 +7,7 @@
 - 1.3: Create backend logic for a user function to add notes to a book record. (US105)
 
 ### Theme: UI Tasks
-- 1.4: Create the homepage frontend. (US501)
+- 2.2: Create frontend for local search of the database. (US503)
 - 1.5: Create frontend for book database form to add books manuelly to local database. (US502)
 
 ## Sprint 2
@@ -15,8 +15,8 @@
 - 2.1: Create function to pull information from the OpenLibrary API to add to book database (US201 and US202)
 
 ### Theme: UI Tasks
-- 2.2: Create frontend for local search of the database. (US503)
 - 2.3: Create frontend for individual book view when clicking on a result. (US504)
+- 1.4: Create the homepage frontend. (US501)
 
 ## Sprint 3
 ### Theme: Business Logic Tasks
@@ -47,3 +47,4 @@
 - 5.1: User can download 1.0 release and use application on supported hardware. (US601)
 - 5.2: Make sure implementation of API follows documentation. (US602)
 - 5.3: Make sure color and contrast ADA standards for the UI are followed. (US603)
+
