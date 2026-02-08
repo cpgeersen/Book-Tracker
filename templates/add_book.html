@@ -57,6 +57,60 @@
       outline: 2px solid #6366f1;
     }
 
+    /* Fieldset base styling */
+    fieldset {
+      margin-top: 1.5rem;
+      padding: 1rem 1.25rem;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+    }
+
+    /* Fieldset title */
+    legend {
+      padding: 0 0.5rem;
+      font-weight: 600;
+      color: #9fbaff;
+    }
+
+    /* Radio button group */
+    .radio-group {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    /* Tags grid layout */
+    .tags-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem 1.5rem;
+      margin-top: 0.75rem;
+    }
+    
+    /* Each tag item */
+    .tags-grid label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      margin: 0;
+      white-space: nowrap;
+    }
+    
+    /* Checkbox sizing consistency */
+    .tags-grid input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+    }
+
     /* Submit button styling */
     button {
       width: 100%;
@@ -87,17 +141,18 @@
     <!-- Book input form (no backend logic yet) -->
     <form>
 
-      <!-- Book title input -->
+      <!-- Book title -->
       <label for="title">Title</label>
       <input type="text" id="title" name="title" required>
 
-      <!-- Book author input -->
+      <!-- Book authors -->
       <label for="author">Author</label>
       <input type="text" id="author" name="author" required>
+
       <label for="author2">Optional Second Author</label>
       <input type="text" id="author2" name="author2">
 
-      <!-- ISBN input (numbers only, required) -->
+      <!-- ISBN (numbers only) -->
       <label for="isbn">ISBN</label>
       <input
         type="text"
@@ -108,15 +163,15 @@
         required
       >
 
-      <!-- Book Publisher input -->
+      <!-- Publisher -->
       <label for="publisher">Publisher</label>
       <input type="text" id="publisher" name="publisher">
 
-      <!-- Book Publisher Year input -->
+      <!-- Year published -->
       <label for="year-published">Year Published</label>
       <input type="date" id="year-published" name="year-published" required>
 
-      <!-- Number of Chapters -->
+      <!-- Chapter count -->
       <label for="chapters">Number of Chapters</label>
       <input
         type="text"
@@ -127,37 +182,69 @@
         required
       >
 
-      <!-- Fiction or Non-Fiction -->
-          <fieldset>
-              <legend>Fiction or Non-Fiction</legend>
-              <input type="radio" id="fiction" name="fiction-or-nonfiction" value="fiction">
-              <label for="fiction">Fiction</label>
-              <input type="radio" id="nonfiction" name="fiction-or-nonfiction" value="nonfiction">
-              <label for="nonfiction">Non-Fiction</label>
-          </fieldset>
+      <!-- Fiction / Non-Fiction -->
+      <fieldset>
+        <legend>Fiction or Non-Fiction</legend>
 
-      <!-- Book Tags -->
-      <fieldset id="tag-set">
-          <legend>Choose Applicable Tags</legend>
-          <input type="checkbox" id="owned" name="owned" value="checked">
-          <label for="owned">Owned</label>
-          <input type="checkbox" id="favorite" name="favorite" value="checked">
-          <label for="favorite">Favorite</label>
-          <input type="checkbox" id="read" name="read" value="checked">
-          <label for="read">Read</label>
-          <input type="checkbox" id="currently-reading" name="currently-reading" value="checked">
-          <label for="currently-reading">Currently Reading</label>
+        <div class="radio-group">
+          <label>
+            <input type="radio" name="fiction-or-nonfiction" value="fiction">
+            Fiction
+          </label>
 
-          <fieldset>
-              <legend>Personal or Academic Reading</legend>
-              <input type="radio" id="personal" name="personal-or-academic" value="personal">
-              <label for="personal">Personal</label>
-              <input type="radio" id="academic" name="personal-or-academic" value="academic">
-              <label for="academic">Academic</label>
-          </fieldset>
+          <label>
+            <input type="radio" name="fiction-or-nonfiction" value="nonfiction">
+            Non-Fiction
+          </label>
+        </div>
       </fieldset>
 
-      <!-- Submit button -->
+      <!-- Tags section -->
+      <fieldset>
+        <legend>Tags</legend>
+
+        <!-- Tag checkboxes -->
+        <div class="tags-grid">
+          <label>
+            <input type="checkbox" name="owned">
+            Owned
+          </label>
+
+          <label>
+            <input type="checkbox" name="favorite">
+            Favorite
+          </label>
+
+          <label>
+            <input type="checkbox" name="read">
+            Read
+          </label>
+
+          <label>
+            <input type="checkbox" name="currently-reading">
+            Currently Reading
+          </label>
+        </div>
+
+        <!-- Personal vs Academic -->
+        <fieldset>
+          <legend>Reading Type</legend>
+
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="personal-or-academic" value="personal">
+              Personal
+            </label>
+
+            <label>
+              <input type="radio" name="personal-or-academic" value="academic">
+              Academic
+            </label>
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <!-- Submit -->
       <button type="submit">Add Book</button>
 
     </form>
