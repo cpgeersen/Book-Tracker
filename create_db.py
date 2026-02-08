@@ -1,8 +1,21 @@
 import sqlite3
+import os
 
-with sqlite3.connect("bt.db") as conn:
+#!!Add actual path to the database!!
+DB_PATH = "bt.db"
 
-    cursor = conn.cursor()
+# Check if database already exists
+db_exists = os.path.exists(DB_PATH)
+
+# Connect to the database (it will create the file if it doesn't exist)
+con = sqlite3.connect(DB_PATH)
+cursor = con.cursor()
+if not db_exists:
+    print("Database not found. Creating new database...")
+
+    # ---------------------------
+    # BEGIN ORIGINAL create_db.py
+    # ---------------------------
 
     cursor.execute("PRAGMA foreign_keys = ON;")
 
@@ -21,7 +34,7 @@ with sqlite3.connect("bt.db") as conn:
                    FOREIGN KEY (TagID) REFERENCES Tags(TagID)
                    )
                     ''')
-    
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS BookAuthor (
                    ISBN TEXT NOT NULL,
@@ -30,7 +43,7 @@ with sqlite3.connect("bt.db") as conn:
                    FOREIGN KEY (ISBN) REFERENCES Books(ISBN), -- Constraint enforces realtional integrity, by ensuring items exist.
                    FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID)
                    )''')
-    
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Authors (
                    AuthorID INTEGER PRIMARY KEY,
@@ -53,7 +66,7 @@ with sqlite3.connect("bt.db") as conn:
                    FOREIGN KEY (ISBN) REFERENCES Books(ISBN)
                    )''')
 
-    curson.execute('''
+    cursor.execute('''
         CREATE TABLE IF NOT EXISTS Genre (
                    GenreID INTEGER PRIMARY KEY,
                    GENRE VARCHAR(15)
@@ -66,19 +79,31 @@ with sqlite3.connect("bt.db") as conn:
                    PRIMARY KEY (ISBN, NoteID)
                    )''')
 
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Notes (
                    NoteID INTEGER PRIMARY KEY,
                    Note BLOB NOT NULL
-                   )''') 
+                   )''')
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Tags (
-                    TagID INTEGER PRIMARY KEY, 
+                    TagID INTEGER PRIMARY KEY,
                     Owned BOOLEAN NOT NULL, -- Does the user own the book.
                     Favorite BOOLEAN NOT NULL, -- 1 = "Favorite"
-                    Completed BOOLEAN NOT NULL, 
+                    Completed BOOLEAN NOT NULL,
                     Currently_Reading BOOLEAN NOT NULL, -- = 0= "Not Reading" & 1="Reading"
                     PersonalOrAcademic BOOLEAN NOT NULL -- 0="Personal" & 1="Academic"
                     )''')
+
+    # ---------------------------
+    # END ORIGINAL create_db.py
+    # ---------------------------
+
+    con.commit()
+    print("Database and tables created successfully.")
+
+else:
+    print("Database already exists.")
+
+# Close connection
+con.close()
