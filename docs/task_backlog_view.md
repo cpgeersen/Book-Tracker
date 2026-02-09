@@ -3,10 +3,11 @@
 | Sprint | Task ID | Task Name                                        | Assigned To                    | Start   | Finish  | Priority | Status      | Assigned to Sprint |
 |--------|---------|--------------------------------------------------|--------------------------------|---------|---------|----------|-------------|--------------------|
 | 1      | 1.1     | Create database                                  | Chris, Holly, Joseph, Nicholas | 1/30/26 | 2/6/26  | High     | Completed   | Yes                |
-|        | 1.2     | CRUD functionality                               | Chris, Holly, Joseph, Nicholas | 2/8/26  | 2/13/26 | High     | Not Started | Yes                |
-|        | 1.3     | Add Note database function                       | Chris, Holly, Joseph, Nicholas | 2/8/26  | 2/13/26 | Medium   | Not Started | Yes                |
+|        | 1.2     | CRUD functionality                               | Chris, Holly, Joseph           | 2/8/26  | 2/13/26 | High     | In-Progress | Yes                |
+|        | 1.3     | Add Note database function                       | Chris, Holly, Joseph           | 2/8/26  | 2/13/26 | Medium   | In-Progress | Yes                |
+|        | 2.2     | Book Module                                      | Collin, Nicholas               | 2/8/26  | 2/13/26 | High     | In-Progress | Yes                |
 |        | 1.5     | Add book form frontend                           | Brandon, Mireliz, Collin       | 1/30/26 | 2/6/26  | High     | Completed   | Yes                |
-|        | 2.2     | Local search frontend                            | Brandon, Mireliz               | 2/8/26  | 2/13/26 | High     | Not Started | Yes                |
+|        | 2.2     | Local search frontend                            | Brandon, Mireliz               | 2/8/26  | 2/13/26 | High     | In-Progress | Yes                |
 | 2      | 2.1     | Pull book data from API                          | Chris, Holly, Joseph, Nicholas | 2/14/26 | 2/27/26 | High     | Not Started | Yes                |
 |        | 2.3     | Individual book frontend                         | Brandon, Mireliz               | 2/14/26 | 2/20/26 | High     | Not Started | Yes                |
 |        | 1.4     | Homepage Frontend                                | Brandon, Mireliz               | 2/20/26 | 2/27/26 | High     | Not Started | No                 |
