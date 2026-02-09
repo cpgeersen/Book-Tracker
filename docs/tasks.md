@@ -5,6 +5,7 @@
 - 1.1: Create database.
 - 1.2: Create user CRUD functionality. (US101 to US104)
 - 1.3: Create backend logic for a user function to add notes to a book record. (US105)
+- 1.6: Create initial Book Module for helper functions.
 
 ### Theme: UI Tasks
 - 2.2: Create frontend for local search of the database. (US503)
@@ -47,4 +48,5 @@
 - 5.1: User can download 1.0 release and use application on supported hardware. (US601)
 - 5.2: Make sure implementation of API follows documentation. (US602)
 - 5.3: Make sure color and contrast ADA standards for the UI are followed. (US603)
+
 
