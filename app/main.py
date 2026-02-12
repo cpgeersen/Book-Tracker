@@ -1,7 +1,18 @@
+from typing import Dict
+
 from flask import request, jsonify, render_template
 from app.mediator import create, read, update, delete
 
-json = {'test': 'value'}
+json = {'author': 'John Doe',
+        'author2': '',
+        'chapters': 30,
+        'fiction-or-nonfiction': 'fiction',
+        'isbn': 1234567890123,
+        'owned': 'on',
+        'personal-or-academic': 'personal',
+        'publisher': 'SomePublisher',
+        'title': 'BookTitle',
+        'year-published': '2026',}
 
 
 def create_routes(app): # Placeholder returns for unfinished pages
@@ -13,7 +24,9 @@ def create_routes(app): # Placeholder returns for unfinished pages
     @app.route('/add-book', methods=['POST', 'GET'])
     def add_book_page():
         if request.method == 'POST':
-            return create(jsonify(request.form)) # Will add new template denoting success and will link to new book
+            #create_book_json = dict(request.form) # Pulls from the actual frontend
+            create_book_json = dict(json) # Testing values
+            return create(create_book_json) # Will add new template denoting success and will link to new book
         return render_template('test_add_book.html')
 
     @app.route('/local-search')
