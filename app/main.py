@@ -26,7 +26,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
         if request.method == 'POST':
             #create_book_json = dict(request.form) # Pulls from the actual frontend
             create_book_json = dict(json) # Testing values
-            return create(create_book_json) # Will add new template denoting success and will link to new book
+            return create(create_book_json,"book") # Will add new template denoting success and will link to new book
         return render_template('test_add_book.html')
 
     @app.route('/local-search')
