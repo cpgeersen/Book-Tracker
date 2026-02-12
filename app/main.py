@@ -10,9 +10,11 @@ def create_routes(app): # Placeholder returns for unfinished pages
     def homepage():
         return 'Homepage', 200
 
-    @app.route('/add-book')
+    @app.route('/add-book', methods=['POST', 'GET'])
     def add_book_page():
-        return render_template('add_book.html')
+        if request.method == 'POST':
+            return create(jsonify(request.form)) # Will add new template denoting success and will link to new book
+        return render_template('test_add_book.html')
 
     @app.route('/local-search')
     def local_search_page():
