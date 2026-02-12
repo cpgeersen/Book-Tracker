@@ -1,10 +1,10 @@
 from flask import request, jsonify, render_template
 from app.mediator import create, read, update, delete
 
-
 json = {'test': 'value'}
 
-def create_routes(app):
+
+def create_routes(app): # Placeholder returns for unfinished pages
     # Pages
     @app.route('/')
     def homepage():
@@ -27,8 +27,8 @@ def create_routes(app):
         return 'Individual Book Pages will be here', 200
 
     # WIP
-    #@app.route('/book/<int:isbn>/note')
-    #def note_page(isbn):
+    # @app.route('/book/<int:isbn>/note')
+    # def note_page(isbn):
     #    return f'Note for book with ISBN {isbn}'
 
     # Routes for POST, GET, UPDATE, DELETE
@@ -43,4 +43,4 @@ def create_routes(app):
             return update(json)
         elif request.method == 'DELETE':
             return delete(json)
-        return None # TEMP
+        return None  # TEMP

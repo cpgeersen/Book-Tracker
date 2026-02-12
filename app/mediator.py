@@ -1,17 +1,21 @@
 # Module to mediate calls from the frontend and backend
+# Will take JSON from frontend and call relevant query functions and return the result as JSON to frontend
 
 # POST - Takes JSON as input
 def create(json):
     return str(json)
 
-# POST - Takes JSON as input
+
+# GET - Takes JSON as input
 def read(json):
     return str(json)
 
-# POST - Takes JSON as input
+
+# PATCH - Takes JSON as input
 def update(json):
     return str(json)
 
-# POST - Takes JSON as input
+
+# DELETE - Takes JSON as input
 def delete(json):
     return str(json)
