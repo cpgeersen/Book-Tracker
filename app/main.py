@@ -1,4 +1,8 @@
-from flask import request
+from flask import request, jsonify, render_template
+from app.mediator import create, read, update, delete
+
+
+json = {'test': 'value'}
 
 def create_routes(app):
     # Pages
@@ -8,7 +12,7 @@ def create_routes(app):
 
     @app.route('/add-book')
     def add_book_page():
-        return 'Add Books Here', 200
+        return render_template('add_book.html')
 
     @app.route('/local-search')
     def local_search_page():
@@ -29,14 +33,14 @@ def create_routes(app):
 
     # Routes for POST, GET, UPDATE, DELETE
     # Book API Route
-    @app.route('/book-api', methods=['POST', 'GET', 'UPDATE', 'DELETE'])
+    @app.route('/book-api', methods=['POST', 'GET', 'PATCH', 'DELETE'])
     def book_api():
         if request.method == 'POST':
-            return 'POST'
+            return create(json)
         elif request.method == 'GET':
-            return 'GET'
-        elif request.method == 'UPDATE':
-            return 'UPDATE'
+            return read(json)
+        elif request.method == 'PATCH':
+            return update(json)
         elif request.method == 'DELETE':
-            return 'DELETE'
+            return delete(json)
         return None # TEMP
