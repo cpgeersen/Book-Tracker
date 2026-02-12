@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- Book input form (no backend logic yet) -->
+    <form action="{{ url_for("add_book_page")}}" method="post">
+
+      <!-- Book title -->
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" required>
+
+      <!-- Book authors -->
+      <label for="author">Author</label>
+      <input type="text" id="author" name="author" required>
+
+      <label for="author2">Optional Second Author</label>
+      <input type="text" id="author2" name="author2">
+
+      <!-- ISBN (numbers only) -->
+      <label for="isbn">ISBN</label>
+      <input
+        type="text"
+        id="isbn"
+        name="isbn"
+        pattern="[0-9]+"
+        inputmode="numeric"
+        required
+      >
+
+      <!-- Publisher -->
+      <label for="publisher">Publisher</label>
+      <input type="text" id="publisher" name="publisher">
+
+      <!-- Year published -->
+      <label for="year-published">Year Published</label>
+      <input type="date" id="year-published" name="year-published" required>
+
+      <!-- Chapter count -->
+      <label for="chapters">Number of Chapters</label>
+      <input
+        type="text"
+        id="chapters"
+        name="chapters"
+        pattern="[0-9]+"
+        inputmode="numeric"
+        required
+      >
+
+      <!-- Fiction / Non-Fiction -->
+      <fieldset>
+        <legend>Fiction or Non-Fiction</legend>
+
+        <div class="radio-group">
+          <label>
+            <input type="radio" name="fiction-or-nonfiction" value="fiction">
+            Fiction
+          </label>
+
+          <label>
+            <input type="radio" name="fiction-or-nonfiction" value="nonfiction">
+            Non-Fiction
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Tags section -->
+      <fieldset>
+        <legend>Tags</legend>
+
+        <!-- Tag checkboxes -->
+        <div class="tags-grid">
+          <label>
+            <input type="checkbox" name="owned">
+            Owned
+          </label>
+
+          <label>
+            <input type="checkbox" name="favorite">
+            Favorite
+          </label>
+
+          <label>
+            <input type="checkbox" name="read">
+            Read
+          </label>
+
+          <label>
+            <input type="checkbox" name="currently-reading">
+            Currently Reading
+          </label>
+        </div>
+
+        <!-- Personal vs Academic -->
+        <fieldset>
+          <legend>Reading Type</legend>
+
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="personal-or-academic" value="personal">
+              Personal
+            </label>
+
+            <label>
+              <input type="radio" name="personal-or-academic" value="academic">
+              Academic
+            </label>
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <!-- Submit -->
+      <button type="submit">Add Book</button>
+
+    </form>
+</body>
+</html>
