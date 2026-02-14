@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic page metadata -->
+  <meta charset="UTF-8">
+  <title>Search Books</title>
+
+  <style>
+    /* Global page styling */
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #0f172a; /* Dark background */
+      color: #e5e7eb; /* Light text color */
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Main centered container */
+    .container {
+      max-width: 520px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background-color: #111827;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Page title */
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #f9fafb;
+    }
+
+    /* Labels above input fields */
+    label {
+      display: block;
+      margin-top: 1rem;
+      margin-bottom: 0.25rem;
+      font-weight: 600;
+    }
+
+    /* Input styling */
+    input {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: none;
+      background-color: #1f2933;
+      color: #e5e7eb;
+    }
+
+    /* Highlight input when focused */
+    input:focus {
+      outline: 2px solid #6366f1;
+    }
+
+    /* Submit button styling */
+    button {
+      width: 100%;
+      margin-top: 1.8rem;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #6366f1;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Button hover effect */
+    button:hover {
+      background-color: #4f46e5;
+    }
+
+    /* Section where search results appear */
+    .results {
+      margin-top: 2rem;
+    }
+
+    /* Individual book result card */
+    .book-card {
+      background-color: #1f2933;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      border: 1px solid #2a2a2a;
+    }
+
+    .book-card h3 {
+      margin: 0 0 0.5rem 0;
+      color: #f9fafb;
+    }
+
+    .book-card p {
+      margin: 0.25rem 0;
+      font-size: 0.9rem;
+    }
+
+    /* Message shown when no results are found */
+    .no-results {
+      margin-top: 1rem;
+      color: #9fbaff;
+      font-weight: 600;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Main content container -->
+  <main class="container">
+
+    <!-- Page heading -->
+    <h1>Search Books</h1>
+
+    <!-- 
+      Search form:
+      - Uses GET method
+      - Submits to /local-search
+      - Flask will handle the query
+    -->
+    <form method="GET" action="/local-search">
+
+      <!-- Search input field -->
+      <label for="search">Search by Title</label>
+      <input 
+        type="text" 
+        id="search" 
+        name="search"
+        value="{{ request.args.get('search', '') }}"
+      >
+
+      <!-- Submit button -->
+      <button type="submit">Search</button>
+
+    </form>
+
+    <!-- 
+      Results Section:
+      If backend passes a list called "books",
+      we loop through and display each one.
+    -->
+    {% if books %}
+      <div class="results">
+        {% for book in books %}
+          <div class="book-card">
+            <h3>{{ book[1] }}</h3>
+            <p><strong>ISBN:</strong> {{ book[0] }}</p>
+            <p><strong>Published:</strong> {{ book[2] }}</p>
+            <p><strong>Chapters:</strong> {{ book[3] }}</p>
+          </div>
+        {% endfor %}
+      </div>
+
+    <!-- If search was made but no results found -->
+    {% elif request.args.get('search') %}
+      <p class="no-results">No books found.</p>
+    {% endif %}
+
+  </main>
+
+</body>
+</html>
