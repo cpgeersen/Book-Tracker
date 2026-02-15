@@ -8,7 +8,7 @@ import sqlite3
 def create_note(ISBN_value, blob_file):
     try:
         # Connect to SQLite database. 
-        conn = sqlite3.connect("blobtest.db")
+        conn = sqlite3.connect("bt.db")
         cursor = conn.cursor()
 
         # Read provided file as binary
@@ -40,7 +40,7 @@ def create_note(ISBN_value, blob_file):
 def read_note(ISBN_value):
     try:
         # Connect to SQLite database. 
-        conn = sqlite3.connect("blobtest.db")
+        conn = sqlite3.connect("bt.db")
         cursor = conn.cursor()
 
         # Query Note column, filtering by ISBN column in BookNotes. 
@@ -75,7 +75,7 @@ def read_note(ISBN_value):
 def update_note(ISBN_value, note_num, new_blob):
     try:
         # Connect to SQLite database. 
-        conn = sqlite3.connect("blobtest.db")
+        conn = sqlite3.connect("bt.db")
         cursor = conn.cursor()
 
         # Convert new_blob file to a binary file. 
@@ -113,7 +113,7 @@ def update_note(ISBN_value, note_num, new_blob):
 def delete_note(ISBN_value, note_num):
     try:
         # Connect to SQLite database. 
-        conn = sqlite3.connect("blobtest.db")
+        conn = sqlite3.connect("bt.db")
         cursor = conn.cursor()
 
         # Begin executing code block/transactions.
