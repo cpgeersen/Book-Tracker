@@ -2,7 +2,7 @@ import sqlite3
 # This file contains Read functionality for book, author, publisher, and genre records. 
 # Uses ISBN as parameter. 
 
-# Read functionaligy for book records.  
+# Read functionality for book records.
 def read_book(x):
     try:
         # Connect to SQLite database. 
@@ -18,16 +18,16 @@ def read_book(x):
 
         # Check to confirm value found in table
         if result:
-            return print(result)
+            return result
         else:
-            return print("ISBN not found")
+            return "ISBN not found"
         
     except sqlite3.Error as error:
         print(f"Database error: {error}")
         conn.close()
 
 
-# Read functionaligy for author records (returns author's first and last name).  
+# Read functionality for author records (returns author's first and last name).
 def read_author(x):
     try:
         # Connect to SQLite database. 
@@ -43,16 +43,16 @@ def read_author(x):
 
         # Check to confirm value found in table
         if result:
-            return print(result)
+            return result
         else:
-            return print("ISBN not found")
+            return "ISBN not found"
         
     except sqlite3.Error as error:
         print(f"Database error: {error}")
         conn.close()
 
 
-# Read functionaligy for publisher records (returns publisher's name).
+# Read functionality for publisher records (returns publisher's name).
 def read_publisher(x):
     try:
         # Connect to SQLite database. 
@@ -68,16 +68,16 @@ def read_publisher(x):
 
         # Check to confirm value found in table
         if result:
-            return print(result)
+            return result
         else:
-            return print("ISBN not found")
+            return "ISBN not found"
         
     except sqlite3.Error as error:
         print(f"Database error: {error}")
         conn.close()
 
 
-# Read functionaligy for genre records (returns genre).
+# Read functionality for genre records (returns genre).
 def read_genre(x):
     try:
         # Connect to SQLite database. 
@@ -93,9 +93,9 @@ def read_genre(x):
 
         # Check to confirm value found in table
         if result:
-            return print(result)
+            return result
         else:
-            return print("ISBN not found")
+            return "ISBN not found"
         
     except sqlite3.Error as error:
         print(f"Database error: {error}")

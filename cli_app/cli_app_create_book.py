@@ -2,6 +2,7 @@ import sqlite3
 from CRUD_Read import read_book
 from os import remove
 
+example_book_isbn = 1234567890123
 
 def main():
     while True:
@@ -15,7 +16,8 @@ def main():
             if user_choice == 1:
                 print('Creating Example Book')
                 cli_create_book()
-                read_sample_book()
+                result = read_book(example_book_isbn)
+                print(result)
             elif user_choice == 2:
                 print('User Defined Book')
                 read_book(cli_create_book_from_data())
@@ -66,24 +68,6 @@ def cli_create_book():
         except sqlite3.IntegrityError as error:
             print(f"Database error: {error}")
 
-
-def read_sample_book():
-    test_isbn = 1234567890123
-    insert_statement = ''' INSERT INTO Books(ISBN, Title, PublishDate, PublisherID, Summary,
-                                            TagID, Chapters, Chapters_Completed, Cover_Image)
-                           VALUES(1234567890123, 'SomeBook Title', 2026, 1, 'Long Summary sadfgasgsagsags',
-                                  1, 20, 3, 'TEST BLOB')'''
-
-    with sqlite3.connect('bt.db') as conn:
-        cursor = conn.cursor()
-        try:
-            cursor.execute(insert_statement)
-        except sqlite3.IntegrityError as error:
-            pass
-
-    read_book(test_isbn)
-    conn.commit()
-    # remove('bt.db')
 
 
 if __name__ == '__main__':
