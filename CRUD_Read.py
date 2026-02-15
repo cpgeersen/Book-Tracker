@@ -20,7 +20,7 @@ def read_book(x):
         if result:
             return print(result)
         else:
-            return print("ISBN not found")
+            return "ISBN not found"
         
     except sqlite3.Error as error:
         print(f"Database error: {error}")
