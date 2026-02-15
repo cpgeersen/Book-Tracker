@@ -25,6 +25,12 @@
 ## Sprint 2
 ### Theme: Business Logic Tasks
 - [ ] 2.5: Create functions that incorporates CRUD functions
+- [ ] 2.6: Mediator Module Refinement
+  - [ ] 2.6.1: Mediator Functions for Read
+  - [ ] 2.6.2: Mediator Functions for Update
+  - [ ] 2.6.3: Mediator Functions for Delete
+  - [ ] 2.6.4: Mediator Functions tie-in to CRUD functions
+- [ ] 2.7: Further develop CLI app to test new features
 - [ ] 1.2: Create user CRUD functionality. (US101 to US104)
   - [ ] 1.2.3 - Update Book Record
   - [ ] 1.2.4 - Delete Book Record
@@ -70,6 +76,7 @@
 - 5.1: User can download 1.0 release and use application on supported hardware. (US601)
 - 5.2: Make sure implementation of API follows documentation. (US602)
 - 5.3: Make sure color and contrast ADA standards for the UI are followed. (US603)
+
 
 
 
