@@ -13,9 +13,9 @@
 
 ### TRELLO BOARD
 
-![Sprint 1 Trello Board]()
-![Sprint 1 - Local CRUD]()
-![Sprint 1 - Local Search Frontend]()
+![Sprint 1 Trello Board](https://github.com/cpgeersen/Book-Tracker/blob/main/images/sprint-status-update-images/s1/trello-board-sprint-1-backlog2_15_26.png)
+![Sprint 1 - Local CRUD](https://github.com/cpgeersen/Book-Tracker/blob/main/images/sprint-status-update-images/s1/trello-board-sprint-1-backlog-local-CRUD_2_15_26.png)
+![Sprint 1 - Local Search Frontend](https://github.com/cpgeersen/Book-Tracker/blob/main/images/sprint-status-update-images/s1/trello-board-sprint-1-backlog-local-search-frontend_2_15_26.png)
  
 ### STATUS UPDATE DETAILS
 Tasks Scheduled for this week:
