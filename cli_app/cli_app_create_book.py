@@ -39,11 +39,6 @@ def cli_create_book_from_data():
     book_finished_chapters = int(input('Finished Chapters: '))
     book_cover_image = input('PLACEHOLDER (enter any string): ')
 
-    insert_statement = (''' INSERT INTO Books(ISBN, Title, PublishDate, PublisherID, Summary,
-                                            TagID, Chapters, Chapters_Completed, Cover_Image)
-                           VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-                        (book_isbn, book_title, book_pub_year, book_pub_id, book_summary, book_tag_id,
-                         book_total_chapters, book_finished_chapters, book_cover_image))
     with sqlite3.connect('bt.db') as conn:
         cursor = conn.cursor()
         try:
