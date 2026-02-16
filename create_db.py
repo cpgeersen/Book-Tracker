@@ -26,7 +26,7 @@ if not db_exists:
                    PublishDate TEXT,
                    PublisherID INTEGER,
                    Summary TEXT,
-                   TagID INTEGER,
+                   TagID INTEGER UNIQUE,
                    Chapters INTEGER,
                    Chapters_Completed INTEGER,
                    Cover_Image BLOB,
@@ -40,8 +40,8 @@ if not db_exists:
                    ISBN TEXT NOT NULL,
                    AuthorID INTEGER NOT NULL,
                    PRIMARY KEY (ISBN, AuthorID), -- The composite key removes redundency.
-                   FOREIGN KEY (ISBN) REFERENCES Books(ISBN), -- Constraint enforces realtional integrity, by ensuring items exist.
-                   FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID)
+                   FOREIGN KEY (ISBN) REFERENCES Books(ISBN) ON DELETE CASCADE,
+                   FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID) ON DELETE CASCADE
                    )''')
 
     cursor.execute('''
@@ -62,8 +62,8 @@ if not db_exists:
                    ISBN TEXT,
                    GenreID INTEGER,
                    PRIMARY KEY (ISBN, GenreID),
-                   FOREIGN KEY (GenreID) REFERENCES Genre(GenreID),
-                   FOREIGN KEY (ISBN) REFERENCES Books(ISBN)
+                   FOREIGN KEY (GenreID) REFERENCES Genre(GenreID) ON DELETE CASCADE,
+                   FOREIGN KEY (ISBN) REFERENCES Books(ISBN) ON DELETE CASCADE
                    )''')
 
     cursor.execute('''
@@ -76,7 +76,9 @@ if not db_exists:
         CREATE TABLE IF NOT EXISTS BookNotes (
                    ISBN TEXT,
                    NoteID INTEGER,
-                   PRIMARY KEY (ISBN, NoteID)
+                   PRIMARY KEY (ISBN, NoteID),
+                   FOREIGN KEY (ISBN) REFERENCES Books(ISBN) ON DELETE CASCADE,
+                   FOREIGN KEY (NoteID) REFERENCES Notes(NoteID) ON DELETE CASCADE
                    )''')
 
     cursor.execute('''
