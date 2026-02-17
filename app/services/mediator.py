@@ -1,4 +1,4 @@
-from validate_book_json import validate_book
+from app.services.validate_book_json import validate_book
 
 
 # POST - Takes JSON as input
