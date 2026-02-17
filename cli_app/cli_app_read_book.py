@@ -1,5 +1,5 @@
 import sqlite3
-from CRUD_Read import read_book
+from CRUD_Read import read_from_database
 
 # Not meant to be user directly, only use through a driver
 
@@ -20,7 +20,7 @@ def main():
             elif user_choice == 2:
                 print('User Defined Book')
                 user_isbn = int(input('Enter an ISBN to Read for: '))
-                print(read_book(user_isbn))
+                print(read_from_database(user_isbn, 'read_book'))
             elif user_choice == 3:
                 print('Exiting')
                 break
@@ -31,7 +31,7 @@ def main():
 
 
 def read_db_isbn(isbn):
-    read_book(isbn)
+    read_from_database(isbn, 'read_book')
 
 def read_db_all():
     try:
