@@ -1,7 +1,5 @@
-from typing import Dict
-
-from flask import request, jsonify, render_template
-from app.mediator import create, read, update, delete
+from flask import request, render_template
+from app.services.mediator import create, read, update, delete
 
 json = {'author': 'John Doe',
         'author2': '',
