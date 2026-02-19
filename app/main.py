@@ -1,5 +1,6 @@
-from flask import request, render_template
+from flask import request, render_template, jsonify
 from app.services.mediator import create, read, update, delete
+from app.services.openlibrary_api import search_books
 
 json = {'author': 'John Doe',
         'author2': '',
@@ -32,8 +33,36 @@ def create_routes(app): # Placeholder returns for unfinished pages
         return 'Search Local Database Here', 200
 
     @app.route('/openlibrary-search')
+    #def openlibrary_search_page():
+        #return 'OpenLibrary Search will be here', 200
+
+    # this is all for testing purposes and will be changed to fit the frontend
     def openlibrary_search_page():
-        return 'OpenLibrary Search will be here', 200
+        # Read ?search=... from the URL
+        query = request.args.get('search', '').strip()
+        if not query:
+            return jsonify(error='Missing query. Use /openlibrary-search?search=harry+potter'), 400
+
+        # Call OpenLibrary service
+        search_result = search_books(query)
+
+        # If API/service fails, return upstream-style error
+        if 'error' in search_result:
+            return jsonify(search_result), 502
+
+        # Keep only a few useful fields for the client
+        docs = search_result.get('docs', [])
+        trimmed_results = []
+        for doc in docs[:5]:
+            trimmed_results.append({
+                'title': doc.get('title'),
+                'author_name': doc.get('author_name', []),
+                'first_publish_year': doc.get('first_publish_year'),
+                'edition_count': doc.get('edition_count'),
+            })
+
+        # Return compact JSON payload
+        return jsonify(query=query, num_found=search_result.get('numFound', 0), results=trimmed_results), 200
 
     @app.route('/book/')
     def individual_book_pages():
