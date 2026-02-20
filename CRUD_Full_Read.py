@@ -1,6 +1,6 @@
 import sqlite3
 
-# Code contains fuctions 2.5.2 - Read Full Book Record (i.e. return all entries)
+# Code contains functions 2.5.2 - Read Full Book Record (i.e. return all entries)
 
 #2.5.2.1 - read_book_table(ISBN) -> JSON
 # Read Functionality for Book Table: return all records in table based on ISBN. Returns dictionary for JSON formatting.
@@ -23,7 +23,7 @@ def read_book_table(ISBN_value):
                 "ISBN": result[0][0],
                 "title": result[0][1],
                 "publish_date": result[0][2],
-                "publsiher_id": result[0][3],
+                "publisher_id": result[0][3],
                 "summary": result[0][4],
                 "tag_id": result[0][5],
                 "chapters": result[0][6],
