@@ -1,4 +1,5 @@
 import sqlite3
+import json
 
 # Code contains fuctions 2.5.2 - Read Full Book Record (i.e. return all entries)
 
@@ -30,7 +31,9 @@ def read_book_table(ISBN_value):
                 "chapters_completed": result[0][7],
                 "cover_image_bytes": result[0][8]
             }
-            return convert_to_dict
+
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "ISBN not found"
         
@@ -61,10 +64,15 @@ def read_author_id(ISBN_value):
 
             convert_to_dict = {"AuthorIDs": []}
 
+            count = 1
             for id in converted_list_result:
                 convert_to_dict["AuthorIDs"].append(id)
-              
-            return convert_to_dict
+                count += 1
+                if count > 2:
+                    break
+
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "ISBN not found"
         
@@ -83,10 +91,11 @@ def read_auth_name(auth_IDs):
         cursor = conn.cursor()
 
         # Generate the correct amount of search variables for query.
-        criteria = auth_IDs["AuthorIDs"]
+        convert_input_from_json = json.loads(auth_IDs)
+        criteria = convert_input_from_json["AuthorIDs"]
         search_values =','.join(['?'] * len(criteria))
     
-        read_query = f"SELECT * FROM Author WHERE AuthorID IN ({search_values})"
+        read_query = f"SELECT AuthorID, Author_First_Name, Author_Last_Name FROM Author WHERE AuthorID IN ({search_values})"
         cursor.execute(read_query, criteria)
         result = cursor.fetchall()
         conn.close()
@@ -95,14 +104,18 @@ def read_auth_name(auth_IDs):
         if result:
            # Convert results into dictionary.
             convert_to_dict = {}
-
+     
+            count = 1
             for item in result:
                 key = item[0]
                 values = list(item[1:])
                 convert_to_dict[key] = values
-                
-            return convert_to_dict
-        
+                count += 1
+                if count > 2:
+                    break
+            
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "AuthorID not found"
         
@@ -136,12 +149,16 @@ def read_author_name_by_ISBN (ISBN_value):
             # Create dictionary for JSON formatting.
             convert_to_dict = {}
 
+            count = 1
             for item in result:
                 key, value1, value2 = item
                 convert_to_dict[key] = [value1, value2]
-              
-            return convert_to_dict
-            
+                count += 1
+                if count > 2:
+                    break
+
+            json_format = json.dumps(convert_to_dict)
+            return json_format   
         else:
             return "ISBN not found"
         
@@ -171,7 +188,9 @@ def read_publisher_name (publisher_ID):
             convert_to_dict = {
                 publisher_ID: result[0][0]
             }
-            return convert_to_dict
+            
+            json_format = json.dumps(convert_to_dict)
+            return json_format            
         else:
             return "PublisherID not found"
         
@@ -233,8 +252,8 @@ def read_tag_table(tag_ID):
             else:
                 convert_to_dict["PersonalOrAcademic"] = "Academic"
             
-            return convert_to_dict
-        
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "TagID not found"
         
@@ -279,7 +298,8 @@ def read_genres_IDs(ISBN_value):
                 if count > 4:
                     break
 
-            return convert_to_dict
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "ISBN not found"
         
@@ -298,7 +318,8 @@ def read_genres (genre_IDs):
         cursor = conn.cursor()
 
         # Generate the correct amount of search variables for query.
-        criteria = genre_IDs["GenreIDs"]
+        convert_input_from_json = json.loads(genre_IDs)
+        criteria = convert_input_from_json["GenreIDs"]
         search_values =','.join(['?'] * len(criteria))
     
         read_query = f"SELECT * FROM Genre WHERE GenreID IN ({search_values})"
@@ -311,12 +332,16 @@ def read_genres (genre_IDs):
            # Convert results into dictionary.
             convert_to_dict = {}
 
+            count = 1
             for item in result:
                 key, value = item
                 convert_to_dict[key] = value
+                count += 1
+                if count > 4:
+                    break
 
-            return convert_to_dict
-        
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "GenreID not found"
         
