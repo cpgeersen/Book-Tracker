@@ -35,6 +35,18 @@ if not db_exists:
                    )
                     ''')
 
+#---------------------------------------------------------------
+# Here I have went ahead and added the DD_Sys table.
+#---------------------------------------------------------------
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS DD_Sys(
+                Class_Num INT,
+                Class_Desc TEXT
+                )
+                ''')
+
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS BookAuthor (
                    ISBN TEXT NOT NULL,
@@ -47,6 +59,7 @@ if not db_exists:
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Authors (
                    AuthorID INTEGER PRIMARY KEY,
+                   Author_Full_Name TEXT NOT NULL,
                    Author_First_Name TEXT NOT NULL,
                    Author_Last_Name TEXT NOT NULL
                    )''')
