@@ -10,4 +10,4 @@
 
 ## Trello Sprint Retrospectives Board:
 
-![]()
+![Trello Sprint Retrospective Board](https://github.com/cpgeersen/Book-Tracker/blob/main/images/sprint-retrospective-images/s1/s1-trello-retrospective-board.png)
