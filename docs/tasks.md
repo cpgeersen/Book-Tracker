@@ -19,43 +19,60 @@
   - [x] 1.5.4: Must add publish year
   - [x] 1.5.5: Add publisher
   - [x] 1.5.6: Add chapter total
-  - [x] 1.5.7:Can check any of the tags
+  - [x] 1.5.7: Can check any of the tags
 
 
 ## Sprint 2
 ### Theme: Business Logic Tasks
 - [ ] 2.5: Create functions that incorporates CRUD functions
+  - [x] 2.5.1: Create Full Book Record
+  - [x] 2.5.2: Read Full Book Record
+  - [ ] 2.5.3: Update Full Book Record
+  - [ ] 2.5.4: Delete Full Book Record
 - [ ] 2.6: Mediator Module Refinement
   - [ ] 2.6.1: Mediator Functions for Read
   - [ ] 2.6.2: Mediator Functions for Update
   - [ ] 2.6.3: Mediator Functions for Delete
   - [ ] 2.6.4: Mediator Functions tie-in to CRUD functions
 - [ ] 2.7: Further develop CLI app to test new features
-- [ ] 1.2: Create user CRUD functionality. (US101 to US104)
-  - [ ] 1.2.3 - Update Book Record
-  - [ ] 1.2.4 - Delete Book Record
+- [x] 1.2: Create user CRUD functionality. (US101 to US104)
+  - [x] 1.2.3: Update Book Record
+  - [x] 1.2.4: Delete Book Record
+- [x] 2.8: Initial Interaction with OpenLibrary API
+- [ ] 2.9: OpenLibrary API
+  - [ ] 2.9.1: Pull all required book data for an ISBN search
+  - [ ] 2.9.2: Pull n-amount of book results based on book title
+  - [ ] 2.9.3: Pull n-amount of book results based on author name
+- [ ] 2.11: Additional Read Functions for:
+  - [ ] 2.11.1: Read Book Record by Title
+  - [ ] 2.11.2: Read Book Record by Author
+  - [ ] 2.11.3: Read Book Record by Genre
+- [ ] 2.12: Refactor Routes
+- [ ] 2.13: Start Creating Testing Suite
 
 ### Theme: UI Tasks
-- [ ] 2.4: Expand local search functionality to match requirements. (US503)
-  - [ ] 2.4.1: Have a back and home buttons.
-  - [ ] 2.4.2: Have radio buttons to either search for ISBN, Book Title, or Author.
-  - [ ] 2.4.3: Have placeholder book cover image for when is not present.
-  - [ ] 2.4.4: Each book result must have (if available information): author (and possible second author), publisher, publish date, Tags (owned, favorite, read, currently reading), and ISBN.
-  - [ ] 2.4.5: Show all books in database.
-  - [ ] 2.4.6: Filter on Tag element
-  - [ ] 2.4.7: Button to go to the individual book page.
+- [x] 2.4: Expand local search functionality to match requirements. (US503)
+  - [x] 2.4.1: Have a back and home buttons.
+  - [x] 2.4.2: Have radio buttons to either search for ISBN, Book Title, or Author.
+  - [x] 2.4.3: Have placeholder book cover image for when is not present.
+  - [x] 2.4.4: Each book result must have (if available information): author (and possible second author), publisher, publish date, Tags (owned, favorite, read, currently reading), and ISBN.
+  - [x] 2.4.5: Show all books in database.
+  - [x] 2.4.6: Filter on Tag element
+  - [x] 2.4.7: Button to go to the individual book page.
 - [ ] 2.3: Create frontend for individual book view when clicking on a result. (US504)
 - [ ] 1.7: Add book manually genre functionality. (US502) 
+- [ ] 2.10: Frontend Scripting for Local Search
 
 ## Sprint 3
 ### Theme: Business Logic Tasks
-- [ ] 2.1: Create function to pull information from the OpenLibrary API to add to book database (US201 and US202)
+- [ ] 2.1: Create function to use pulled information from the OpenLibrary API to add to book database (US201 and US202)
+- [ ] 3.1: Begin Frontend and Backend Integration
+- [ ] 3.2: Data Disparity Resolution Between Local and OpenLibrary Data
 
 
 ### Theme: UI Tasks
-- [ ] 1.4: Create the homepage frontend. (US501)
-- 3.4: Create note frontend for book notes. (US505)
-- 3.5: Create OpenLibrary API search frontend. (US506)
+- [ ] 3.4: Create note frontend for book notes. (US505)
+- [ ] 3.5: Create OpenLibrary API search frontend. (US506)
 
 ## Sprint 4
 ### Theme: Business Logic Tasks
@@ -65,6 +82,7 @@
 - 4.4: Create database purge function. (US403)
 
 ### Theme: UI Tasks
+- [ ] 1.4: Create the homepage frontend. (US501)
 - 4.5: Create the analytics frontend. (US507)
 - 4.6: Create the user settings frontend. (US508)
 
