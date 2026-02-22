@@ -1,4 +1,5 @@
 import sqlite3
+import json
 
 # Code contains functions 2.5.2 - Read Full Book Record (i.e. return all entries)
 
@@ -30,7 +31,9 @@ def read_book_table(ISBN_value):
                 "chapters_completed": result[0][7],
                 "cover_image_bytes": result[0][8]
             }
-            return convert_to_dict
+
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "ISBN not found"
         
@@ -61,10 +64,15 @@ def read_author_id(ISBN_value):
 
             convert_to_dict = {"AuthorIDs": []}
 
+            count = 1
             for id in converted_list_result:
                 convert_to_dict["AuthorIDs"].append(id)
-              
-            return convert_to_dict
+                count += 1
+                if count > 2:
+                    break
+
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "ISBN not found"
         
@@ -83,10 +91,11 @@ def read_auth_name(auth_IDs):
         cursor = conn.cursor()
 
         # Generate the correct amount of search variables for query.
-        criteria = auth_IDs["AuthorIDs"]
+        convert_input_from_json = json.loads(auth_IDs)
+        criteria = convert_input_from_json["AuthorIDs"]
         search_values =','.join(['?'] * len(criteria))
     
-        read_query = f"SELECT * FROM Author WHERE AuthorID IN ({search_values})"
+        read_query = f"SELECT AuthorID, Author_First_Name, Author_Last_Name FROM Author WHERE AuthorID IN ({search_values})"
         cursor.execute(read_query, criteria)
         result = cursor.fetchall()
         conn.close()
@@ -95,14 +104,18 @@ def read_auth_name(auth_IDs):
         if result:
            # Convert results into dictionary.
             convert_to_dict = {}
-
+     
+            count = 1
             for item in result:
                 key = item[0]
                 values = list(item[1:])
                 convert_to_dict[key] = values
-                
-            return convert_to_dict
-        
+                count += 1
+                if count > 2:
+                    break
+            
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "AuthorID not found"
         
@@ -136,12 +149,16 @@ def read_author_name_by_ISBN (ISBN_value):
             # Create dictionary for JSON formatting.
             convert_to_dict = {}
 
+            count = 1
             for item in result:
                 key, value1, value2 = item
                 convert_to_dict[key] = [value1, value2]
-              
-            return convert_to_dict
-            
+                count += 1
+                if count > 2:
+                    break
+
+            json_format = json.dumps(convert_to_dict)
+            return json_format   
         else:
             return "ISBN not found"
         
@@ -171,7 +188,9 @@ def read_publisher_name (publisher_ID):
             convert_to_dict = {
                 publisher_ID: result[0][0]
             }
-            return convert_to_dict
+            
+            json_format = json.dumps(convert_to_dict)
+            return json_format            
         else:
             return "PublisherID not found"
         
@@ -233,8 +252,8 @@ def read_tag_table(tag_ID):
             else:
                 convert_to_dict["PersonalOrAcademic"] = "Academic"
             
-            return convert_to_dict
-        
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "TagID not found"
         
@@ -279,7 +298,8 @@ def read_genres_IDs(ISBN_value):
                 if count > 4:
                     break
 
-            return convert_to_dict
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "ISBN not found"
         
@@ -298,7 +318,8 @@ def read_genres (genre_IDs):
         cursor = conn.cursor()
 
         # Generate the correct amount of search variables for query.
-        criteria = genre_IDs["GenreIDs"]
+        convert_input_from_json = json.loads(genre_IDs)
+        criteria = convert_input_from_json["GenreIDs"]
         search_values =','.join(['?'] * len(criteria))
     
         read_query = f"SELECT * FROM Genre WHERE GenreID IN ({search_values})"
@@ -311,15 +332,178 @@ def read_genres (genre_IDs):
            # Convert results into dictionary.
             convert_to_dict = {}
 
+            count = 1
             for item in result:
                 key, value = item
                 convert_to_dict[key] = value
+                count += 1
+                if count > 4:
+                    break
 
-            return convert_to_dict
-        
+            json_format = json.dumps(convert_to_dict)
+            return json_format
         else:
             return "GenreID not found"
         
     except sqlite3.Error as error:
         print(f"Database error: {error}")
         conn.close()
+
+
+# Read functions to assist with creating full book record. 
+
+# Revised function for publisher name in order to have output match what is needed for reading full book record. 
+def read_publisher_name_for_full_book_record (publisher_ID):
+    try:
+        # Connect to SQLite database. 
+        conn = sqlite3.connect("bt.db")
+        cursor = conn.cursor()
+
+        # Query Publishers Table for PublisherID provided. 
+        read_query = "SELECT Publisher_Name FROM Publishers WHERE PublisherID = ?"
+        criteria = (publisher_ID,)
+        cursor.execute(read_query, criteria)
+        result = cursor.fetchall()
+        conn.close()
+
+        # Check to confirm value found in table.
+        if result:
+            convert_to_dict = {
+                "Publisher_Name": result[0][0]
+            }
+
+            json_format = json.dumps(convert_to_dict)
+            return json_format
+        else:
+            return "PublisherID not found"
+        
+    except sqlite3.Error as error:
+        print(f"Database error: {error}")
+        conn.close()
+
+
+# Revised function for author name in order to have output match what is needed for reading full book record. 
+def read_author_name_by_ISBN_full_record (ISBN_value):
+    try:
+        # Connect to SQLite database. 
+        conn = sqlite3.connect("bt.db")
+        cursor = conn.cursor()
+
+        # Query BookAuthor Table for ISBN provided. Joined with Author table to return AuthorID and author's first and last name. 
+        read_query = """
+        SELECT A.AuthorID, A.Author_First_Name, A.Author_Last_Name
+        FROM Author AS A
+        JOIN BookAuthor AS B ON A.AuthorID = B.AuthorID
+        WHERE B.ISBN = ?
+        """
+        criteria = (ISBN_value,)
+        cursor.execute(read_query, criteria)
+        result = cursor.fetchall()
+        conn.close()
+
+        # Check to confirm value found in table.
+        if result:
+            # Create dictionary for JSON formatting.
+            convert_to_dict = {}
+
+            count = 1
+
+            for index, tup in enumerate(result):
+                convert_to_dict[f"AuthorID_{index+1}"] = tup[0]
+                convert_to_dict[f"Author_First_Name_{index+1}"] = tup[1]
+                convert_to_dict[f"Author_Last_Name{index+1}"] = tup[2]
+                count += 1
+                if count > 2:
+                    break
+            
+            json_format = json.dumps(convert_to_dict)
+            return json_format
+            
+        else:
+            return "ISBN not found"
+        
+    except sqlite3.Error as error:
+        print(f"Database error: {error}")
+        conn.close()
+
+
+# Revised function for genre name in order to have output match what is needed for reading full book record. 
+def read_genres_for_full_book_record (genre_IDs):
+    try:
+        # Connect to SQLite database. 
+        conn = sqlite3.connect("bt.db")
+        cursor = conn.cursor()
+
+        # Generate the correct amount of search variables for query.
+        convert_input_from_json = json.loads(genre_IDs)
+        criteria = convert_input_from_json["GenreIDs"]
+    
+        search_values =','.join(['?'] * len(criteria))
+    
+        read_query = f"SELECT * FROM Genre WHERE GenreID IN ({search_values})"
+        cursor.execute(read_query, criteria)
+        result = cursor.fetchall()
+        conn.close()
+
+        # Check to confirm value found in table.
+        if result:
+           # Convert results into dictionary.
+            convert_to_dict = {}
+            
+            count = 1
+
+            for index, tup in enumerate(result):
+                convert_to_dict[f"GenreID_{index+1}"] = tup[0]
+                convert_to_dict[f"Genre_{index+1}"] = tup[1]
+           
+                count += 1
+                if count > 4:
+                    break
+            
+            json_format = json.dumps(convert_to_dict)
+            return json_format
+   
+        else:
+            return "GenreID not found"
+        
+    except sqlite3.Error as error:
+        print(f"Database error: {error}")
+        conn.close()
+
+
+
+# Returns full book record based on ISBN. 
+def read_full_book_record (ISBN_value): 
+
+    #Return Book table records for ISBN. 
+    read_book_table_record = read_book_table(ISBN_value)
+    converted_books = json.loads(read_book_table_record)
+
+    # Return Author Names associated with ISBN. 
+    author_names = read_author_name_by_ISBN_full_record(ISBN_value)
+    converted_auth_names = json.loads(author_names)
+
+    # Return Publisher name from an associated publisher ID in the Books record. 
+    pub_ID = converted_books["publisher_id"]
+    book_publisher = read_publisher_name_for_full_book_record(pub_ID)
+    converted_publisher = json.loads(book_publisher)
+
+    # Return all tags associated with a book record.
+    tag = converted_books["tag_id"]
+    book_tags = read_tag_table(tag)
+    converted_tags = json.loads(book_tags)
+
+    # Return Genre IDs by ISBN.  Return values passed to Read_Genre_Names.
+    read_genIDs = read_genres_IDs(ISBN_value)
+
+    # Return Genre Names by Genre IDs obtained through read_genre_IDs function for an ISBN. 
+    genre_names = read_genres_for_full_book_record(read_genIDs)
+    converted_genres = json.loads(genre_names)
+
+   # Cobmine results for all functions to create full book record. 
+    read_full_book = converted_books | converted_auth_names | converted_publisher | converted_tags | converted_genres
+
+   # Convert to JSON, printing the result "pretty".
+    read_full_book_pretty = json.dumps(read_full_book, indent=4)
+
+    return read_full_book_pretty
