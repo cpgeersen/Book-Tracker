@@ -34,7 +34,7 @@ json_data = {"isbn": "user_provided_isbn",
              "GenreID_4": "4",
              "Genre_4": "drama"}
 
-def read_book_record_by_isbn(isbn):
+def read_full_book_by_isbn(isbn):
     # Empty dict that will be built upon
     json_result = {}
 
@@ -111,5 +111,5 @@ def read_book_record_by_isbn(isbn):
 
 
 if __name__ == '__main__':
-    sample_json = read_book_record_by_isbn(1234567890123)
+    sample_json = read_full_book_by_isbn(1234567890123)
     print(sample_json)

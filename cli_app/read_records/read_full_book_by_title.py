@@ -1,4 +1,4 @@
-from read_book_record_by_isbn import read_book_record_by_isbn
+from read_full_book_by_isbn import read_full_book_by_isbn
 
 # Uses mock data endpoints until create functions are finished, then it will use the read implementations
 
@@ -32,10 +32,11 @@ json_data = {"isbn": "user_provided_isbn",
              "GenreID_4": "4",
              "Genre_4": "drama"}
 
-def read_book_record_by_genre_id(genre_id):
+def read_full_book_by_title(title):
+    #BLOCK_LIST = []
     # json_result = {}
     # Gives a list of ISBNs that match title search
-    # isbn_results = read_isbn_by_genre_id(genre_id) -> JSON
+    # isbn_results = read_isbn_by_title(title) -> JSON
     # for result in isbn_results.values():
     #   json_result.update(read_book_record_by_isbn(result))
     # return json_result
