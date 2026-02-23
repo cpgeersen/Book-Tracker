@@ -53,8 +53,9 @@ def read_tag(tagID_value):
     except sqlite3.Error as error:
         print(f"Database error: {error}")
         conn.close()
-
-
+#----------------------------------------------
+# I have moved this function to CRUD_Update.py with some modifications.
+#----------------------------------------------
 # Updates Tags record in Tags table based on TagID.
 def update_tag(tagID_value, owned, favorite, completed, currently_reading, personal_or_academic):
     try:
