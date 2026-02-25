@@ -102,7 +102,7 @@ def create_db():
 
     # Next create hte Tags Table
     """
-        Toggle for the PersonalOrAcademic variable
+        Toggle for the Personal_Or_Academic variable
         Personal = 0
         Academic = 1
     """
@@ -113,7 +113,7 @@ def create_db():
                     Favorite BOOLEAN NOT NULL,
                     Completed BOOLEAN NOT NULL,
                     Currently_Reading BOOLEAN NOT NULL,
-                    PersonalOrAcademic BOOLEAN NOT NULL
+                    Personal_Or_Academic BOOLEAN NOT NULL
                     )''')
 
     # Save the creation by committing

@@ -1,6 +1,5 @@
 import sqlite3
 from CRUD_Read import read_book
-from os import remove
 
 example_book_isbn = 1234567890123
 
@@ -33,10 +32,10 @@ def main():
 def cli_create_book_from_data():
     book_isbn = int(input('ISBN: '))
     book_title = input('Title: ')
-    book_pub_year = int(input('Pub Year: '))
-    book_pub_id = int(input('PubID: '))
+    book_pub_year = int(input('Publish_Year: '))
+    book_pub_id = int(input('Pub_ID: '))
     book_summary = input('Summary: ')
-    book_tag_id = int(input('TagID: '))
+    book_tag_id = int(input('Tag_ID: '))
     book_total_chapters = int(input('Total Chapters: '))
     book_finished_chapters = int(input('Finished Chapters: '))
     book_cover_image = input('PLACEHOLDER (enter any string): ')
@@ -44,8 +43,8 @@ def cli_create_book_from_data():
     with sqlite3.connect('bt.db') as conn:
         cursor = conn.cursor()
         try:
-            cursor.execute(''' INSERT INTO Books(ISBN, Title, PublishDate, PublisherID, Summary,
-                                            TagID, Chapters, Chapters_Completed, Cover_Image)
+            cursor.execute(''' INSERT INTO Books(ISBN, Title, Publish_Year, Publisher_ID, Summary,
+                                            Tag_ID, Chapters, Chapters_Completed, Cover_Image)
                            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)''',
                            (book_isbn, book_title, book_pub_year, book_pub_id, book_summary, book_tag_id,
                             book_total_chapters, book_finished_chapters, book_cover_image))
@@ -56,8 +55,8 @@ def cli_create_book_from_data():
 
 
 def cli_create_book():
-    default_insert = ''' INSERT INTO Books(ISBN, Title, PublishDate, PublisherID, Summary,
-                                            TagID, Chapters, Chapters_Completed, Cover_Image)
+    default_insert = ''' INSERT INTO Books(ISBN, Title, Publish_Year, Publisher_ID, Summary,
+                                            Tag_ID, Chapters, Chapters_Completed, Cover_Image)
                             VALUES(1234567890123, 'SomeBook Title', 2026, 1, 'Long Summary sadfgasgsagsags',
                                     1, 20, 3, 'TEST BLOB')'''
     with sqlite3.connect('bt.db') as conn:

@@ -1,4 +1,4 @@
-import create_db  # Must be first import to auto-execute database creation
+from cli_create_db import create_db
 from cli_app_create_book import main as cli_create_book
 from cli_app_read_book import main as cli_read_book
 from cli_app_update_book import main as cli_update_book
@@ -9,6 +9,7 @@ def main_test():
     pass
 
 def main():
+    create_db()
     while True:
         try:
             print('---------------------')
@@ -17,6 +18,7 @@ def main():
             print('3 - Update Book Record')
             print('4 - Delete Book Record')
             print('5 - Exit')
+            print('6 - Test Area')
             print('---------------------')
             user_choice = int(input('Choose an Option: '))
             if user_choice == 1:
@@ -34,10 +36,13 @@ def main():
             elif user_choice == 5:
                 print('Exiting')
                 break
+            elif user_choice == 6:
+                print('Test Area')
+
             else: # Any other value
                 continue
         except ValueError as error:
-            print(f'Input must be an integer 1-5: {error}')
+            print(f'Input must be an integer 1-6: {error}')
 
 if __name__ == '__main__':
     main()
