@@ -1,5 +1,14 @@
 import sqlite3
 import os
+import sys
+from pathlib import Path
+
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from genre_defaults import seed_default_genres
 
 
 #!!Add actual path to the database!!
@@ -77,6 +86,8 @@ if not db_exists:
                    GenreID INTEGER PRIMARY KEY,
                    GENRE VARCHAR(15)
                    )''')
+
+    seed_default_genres(cursor)
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS BookNotes (

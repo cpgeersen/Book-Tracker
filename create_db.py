@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from genre_defaults import seed_default_genres
 
 #!!Add actual path to the database!!
 DB_PATH = "bt.db"
@@ -84,6 +85,8 @@ if not db_exists:
                    GenreID INTEGER PRIMARY KEY,
                    GENRE VARCHAR(15)
                    )''')
+
+    seed_default_genres(cursor)
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS BookNotes (

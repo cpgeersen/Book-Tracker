@@ -5,6 +5,7 @@
 # A. Splitting a List of Genres.
 #----------------------------------------------------------------
 import argparse
+import json
 import re
 import sqlite3
 
@@ -16,6 +17,7 @@ def _connect():
     conn.execute("PRAGMA foreign_keys = ON;")
     return conn
 
+
 def split_multiple_genres(genre_string: str):
     cleaned = re.sub(r'\s+(and|&|\+)\s+', ';', genre_string, flags=re.IGNORECASE)
     cleaned = cleaned.replace(",", ";")
@@ -26,40 +28,37 @@ def split_multiple_genres(genre_string: str):
 #-------------------------------------------------------------------------
 # B. Matching the recognized Genres
 #-------------------------------------------------------------------------
-def lookup_genre_in_ddsys(conn, genre_name: str):
-    cur = conn.cursor()
+def _prompt_fiction_or_nonfiction() -> str:
+    while True:
+        user_choice = input("Is this genre Fiction or Non-Fiction? [f/n]: ").strip().lower()
+        if user_choice in ("f", "fiction"):
+            return "fiction"
+        if user_choice in ("n", "non-fiction", "nonfiction"):
+            return "non-fiction"
+        print("Invalid choice. Please enter 'f' for Fiction or 'n' for Non-Fiction.")
 
-    cur.execute(
-        "SELECT Class_Desc FROM DD_Sys WHERE LOWER(Class_Desc) = LOWER(?)",
-        (genre_name,)
-    )
-    row = cur.fetchone()
-
-    if row:
-        return row[0]  # Return the matched description
-
-    return None
-
-#--------------------------------------------------------------
+#------------------------------------------------------
 # C. Adding The Recognized Genre to the Genre Table
 #--------------------------------------------------------------
 def _get_or_create_genre(conn, genre_desc: str) -> int:
     cur = conn.cursor()
 
+    normalized_genre = genre_desc.strip()
     # Check if genre already exists
     cur.execute(
-        "SELECT GenreID FROM Genre WHERE GENRE = ?",
-        (genre_desc,)
+        "SELECT GenreID FROM Genre WHERE LOWER(TRIM(GENRE)) = LOWER(TRIM(?))",
+        (normalized_genre,)
     )
     row = cur.fetchone()
-
     if row:
         return row[0]
-
+    # Insert new genre
+    genre_type = _prompt_fiction_or_nonfiction()
+    cur.execute("PRAGMA table_info(Genre)")
     # Insert new genre
     cur.execute(
-        "INSERT INTO Genre (GENRE) VALUES (?)",
-        (genre_desc,)
+        "INSERT INTO Genre (GENRE, Genre_Type) VALUES (?, ?)",
+        (normalized_genre, genre_type)
     )
     return cur.lastrowid
 
@@ -80,6 +79,7 @@ def link_genre_to_book(conn, isbn: str, genre_id: int):
 #--------------------------------------------------------------
 # E. Combined Function Call
 #--------------------------------------------------------------
+
 def process_book_genres(conn, isbn: str, genre_string: str):
     cur = conn.cursor()
 
@@ -87,17 +87,8 @@ def process_book_genres(conn, isbn: str, genre_string: str):
     genres = split_multiple_genres(genre_string)
 
     for genre_name in genres:
-
-        # 2. Match against DD_Sys
-        matched_desc = lookup_genre_in_ddsys(conn, genre_name)
-
-        if not matched_desc:
-            # Skip or handle unmatched genres
-            # You can also choose to insert unmatched genres directly
-            continue
-
         # 3. Create or reuse genre in Genre table
-        genre_id = _get_or_create_genre(conn, matched_desc)
+        genre_id = _get_or_create_genre(conn, genre_name)
 
         # 4. Link to BookGenre
         link_genre_to_book(conn, isbn, genre_id)
@@ -372,13 +363,88 @@ def create_full_book_entry(
         return False, f"Database error: {e}"
 
 
+def _normalize_seed_payload(payload: dict) -> dict:
+    return {
+        "isbn": payload.get("isbn"),
+        "title": payload.get("title"),
+        "publish_date": payload.get("publish_date") or payload.get("publish-date"),
+        "publisher_name": payload.get("publisher_name") or payload.get("publisher"),
+        "authors_string": payload.get("authors_string") or payload.get("authors"),
+        "genre_string": payload.get("genre_string") or payload.get("genres"),
+        "summary": payload.get("summary"),
+        "tag_id": payload.get("tag_id") or payload.get("tag-id"),
+        "chapters": payload.get("chapters"),
+        "chapters_completed": payload.get("chapters_completed") or payload.get("chapters-completed"),
+        "cover_image_bytes": payload.get("cover_image_bytes"),
+    }
+
+
+def seed_book_from_json_payload(payload: dict):
+    normalized = _normalize_seed_payload(payload)
+
+    required_fields = [
+        "isbn",
+        "title",
+        "publisher_name",
+        "authors_string",
+        "genre_string",
+    ]
+    missing = [field for field in required_fields if not normalized.get(field)]
+    if missing:
+        return False, f"Missing required fields: {', '.join(missing)}"
+
+    return create_full_book_entry(
+        isbn=normalized["isbn"],
+        title=normalized["title"],
+        publish_date=normalized["publish_date"],
+        publisher_name=normalized["publisher_name"],
+        authors_string=normalized["authors_string"],
+        genre_string=normalized["genre_string"],
+        summary=normalized["summary"],
+        tag_id=normalized["tag_id"],
+        chapters=normalized["chapters"],
+        chapters_completed=normalized["chapters_completed"],
+        cover_image_bytes=normalized["cover_image_bytes"],
+    )
+
+
+def prompt_seed_payload_json() -> dict:
+    payload = {
+        "isbn": input("ISBN: ").strip(),
+        "title": input("Title: ").strip(),
+        "publish_date": input("Publish date (YYYY-MM-DD, optional): ").strip() or None,
+        "publisher_name": input("Publisher: ").strip(),
+        "authors_string": input("Authors (separate with ';', ',', 'and', '&', or '+'): ").strip(),
+        "genre_string": input("Genres (separate with ';', ',', 'and', '&', or '+'): ").strip(),
+        "summary": input("Summary (optional): ").strip() or None,
+    }
+
+    tag_raw = input("Tag ID (optional integer): ").strip()
+    chapters_raw = input("Total chapters (optional integer): ").strip()
+    chapters_completed_raw = input("Chapters completed (optional integer): ").strip()
+
+    payload["tag_id"] = int(tag_raw) if tag_raw else None
+    payload["chapters"] = int(chapters_raw) if chapters_raw else None
+    payload["chapters_completed"] = int(chapters_completed_raw) if chapters_completed_raw else None
+
+    print("\nSeed payload JSON:")
+    print(json.dumps(payload, indent=2))
+    return payload
+
+
+def prompt_and_seed_book_from_json():
+    payload = prompt_seed_payload_json()
+    return seed_book_from_json_payload(payload)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Create a complete book record using ISBN metadata.")
-    parser.add_argument("isbn", help="Book ISBN")
-    parser.add_argument("title", help="Book title")
-    parser.add_argument("publisher", help="Publisher name")
-    parser.add_argument("authors", help="Author(s), separated by ';', ',', 'and', '&', or '+'")
-    parser.add_argument("genres", help="Genre(s), separated by ';', ',', 'and', '&', or '+'")
+    parser.add_argument("--prompt-json", action="store_true", help="Prompt for values and seed via JSON wrapper flow")
+    parser.add_argument("isbn", nargs="?", help="Book ISBN")
+    parser.add_argument("title", nargs="?", help="Book title")
+    parser.add_argument("publisher", nargs="?", help="Publisher name")
+    parser.add_argument("authors", nargs="?", help="Author(s), separated by ';', ',', 'and', '&', or '+'")
+    parser.add_argument("genres", nargs="?", help="Genre(s), separated by ';', ',', 'and', '&', or '+'")
     parser.add_argument("--publish-date", dest="publish_date", default=None, help="Publish date (YYYY-MM-DD)")
     parser.add_argument("--summary", default=None, help="Book summary")
     parser.add_argument("--tag-id", dest="tag_id", type=int, default=None, help="Optional tag id")
@@ -387,19 +453,27 @@ def main():
 
     args = parser.parse_args()
 
-    success, result = create_full_book_entry(
-        isbn=args.isbn,
-        title=args.title,
-        publish_date=args.publish_date,
-        publisher_name=args.publisher,
-        authors_string=args.authors,
-        genre_string=args.genres,
-        summary=args.summary,
-        tag_id=args.tag_id,
-        chapters=args.chapters,
-        chapters_completed=args.chapters_completed,
-        cover_image_bytes=None,
-    )
+    if args.prompt_json:
+        success, result = prompt_and_seed_book_from_json()
+    else:
+        required_cli = ["isbn", "title", "publisher", "authors", "genres"]
+        missing_cli = [name for name in required_cli if not getattr(args, name)]
+        if missing_cli:
+            parser.error(f"Missing required arguments for CLI mode: {', '.join(missing_cli)}")
+
+        success, result = create_full_book_entry(
+            isbn=args.isbn,
+            title=args.title,
+            publish_date=args.publish_date,
+            publisher_name=args.publisher,
+            authors_string=args.authors,
+            genre_string=args.genres,
+            summary=args.summary,
+            tag_id=args.tag_id,
+            chapters=args.chapters,
+            chapters_completed=args.chapters_completed,
+            cover_image_bytes=None,
+        )
 
     if success:
         print("Book created successfully.")
