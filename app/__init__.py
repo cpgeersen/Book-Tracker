@@ -6,11 +6,7 @@ from flask import Flask, jsonify
 
 
 def create_app():
-    """
-    US015 - `tests/error/test_error_handling.py`
-    """
     app = Flask(__name__)
-
 
     create_routes(app)
 
