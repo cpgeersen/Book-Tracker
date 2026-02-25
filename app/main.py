@@ -1,6 +1,10 @@
 from flask import request, render_template, jsonify
 from app.services.mediator import create, read, update, delete
 from app.services.openlibrary_api import search_books
+from app.routes.book import book_bp
+from app.routes.test import test_bp
+from app.routes.pages import pages_bp
+
 
 json = {'author': 'John Doe',
         'author2': '',
@@ -14,11 +18,17 @@ json = {'author': 'John Doe',
         'year-published': '2026',}
 
 
+
 def create_routes(app): # Placeholder returns for unfinished pages
+
+    # Register Blueprints
+    app.register_blueprint(book_bp)
+    app.register_blueprint(test_bp)
+    app.register_blueprint(pages_bp)
+
+
+
     # Pages
-    @app.route('/')
-    def homepage():
-        return 'Homepage', 200
 
     @app.route('/add-book', methods=['POST', 'GET'])
     def add_book_page():
@@ -26,7 +36,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
             #create_book_json = dict(request.form) # Pulls from the actual frontend
             create_book_json = dict(json) # Testing values
             return create(create_book_json,"book") # Will add new template denoting success and will link to new book
-        return render_template('test_add_book.html')
+        return render_template('add_book.html')
 
     @app.route('/local-search')
     def local_search_page():
