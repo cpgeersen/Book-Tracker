@@ -68,6 +68,37 @@ def create_db():
                    Publisher_Name TEXT NOT NULL
                    )''')
 
+    # Next create the BookNotes Bridging Table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS BookNotes (
+                   ISBN TEXT,
+                   Note_ID INTEGER,
+                   PRIMARY KEY (ISBN, Note_ID)
+                   )''')
+
+    # Next create the Notes Table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Notes (
+                   Note_ID INTEGER PRIMARY KEY,
+                   Note BLOB NOT NULL
+                   )''')
+
+    # Next create the Tags Table
+    """
+        Toggle for the Personal_Or_Academic variable
+        Personal = 0
+        Academic = 1
+    """
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Tags (
+                    Tag_ID INTEGER PRIMARY KEY,
+                    Owned BOOLEAN NOT NULL,
+                    Favorite BOOLEAN NOT NULL,
+                    Completed BOOLEAN NOT NULL,
+                    Currently_Reading BOOLEAN NOT NULL,
+                    Personal_Or_Academic BOOLEAN NOT NULL
+                    )''')
+
     # Next create the BookGenre Bridging Table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS BookGenre (
@@ -84,37 +115,6 @@ def create_db():
                    Genre_ID INTEGER PRIMARY KEY,
                    Genre VARCHAR(15)
                    )''')
-
-    # Next create the BookNotes Bridging Table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS BookNotes (
-                   ISBN TEXT,
-                   Note_ID INTEGER,
-                   PRIMARY KEY (ISBN, Note_ID)
-                   )''')
-
-    # Next create the Notes Table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Notes (
-                   Note_ID INTEGER PRIMARY KEY,
-                   Note BLOB NOT NULL
-                   )''')
-
-    # Next create hte Tags Table
-    """
-        Toggle for the Personal_Or_Academic variable
-        Personal = 0
-        Academic = 1
-    """
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Tags (
-                    Tag_ID INTEGER PRIMARY KEY,
-                    Owned BOOLEAN NOT NULL,
-                    Favorite BOOLEAN NOT NULL,
-                    Completed BOOLEAN NOT NULL,
-                    Currently_Reading BOOLEAN NOT NULL,
-                    Personal_Or_Academic BOOLEAN NOT NULL
-                    )''')
 
     # Save the creation by committing
     conn.commit()
