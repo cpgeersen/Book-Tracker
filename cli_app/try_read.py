@@ -35,10 +35,10 @@ def cli_create_book():
     
                    '''
     book_genre_insert = ''' INSERT INTO BookGenre(ISBN, Genre_ID)
-                          VALUES(9781529370515, 1)
+                          VALUES(9781529370515, 100)
                        '''
     genre_insert = ''' INSERT INTO Genre(Genre_ID, Genre)
-                              VALUES(1, 'fiction')
+                              VALUES(100, 'fiction')
                            '''
 
 
@@ -51,7 +51,7 @@ def cli_create_book():
             cursor.execute(publisher_insert)
             cursor.execute(tags_insert)
             cursor.execute(book_genre_insert)
-            cursor.execute(genre_insert)
+            #cursor.execute(genre_insert)
             conn.commit()
         except sqlite3.IntegrityError as error:
             print(f"Database error: {error}")
@@ -79,9 +79,9 @@ def read_db_all():
         cursor.execute("SELECT * FROM Tags")
         tag_result = cursor.fetchall()
 
+
         conn.close()
         return book_result, book_author_result, author_result, publisher_result, tag_result
-
     except sqlite3.Error as error:
         print(f"Database error: {error}")
         conn.close()

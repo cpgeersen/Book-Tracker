@@ -1,15 +1,17 @@
 import sqlite3
 import os
+from app.services.genres import genres_for_table
 
-
-#!!Add actual path to the database!!
+# !!Add actual path to the database!!
 DB_PATH = "bt.db"
 
 # Check if database already exists
 db_exists = os.path.exists(DB_PATH)
 
+
 def main():
     create_db()
+
 
 def create_db():
     # Connect to the database (it will create the file if it doesn't exist)
@@ -25,7 +27,7 @@ def create_db():
     cursor.execute("PRAGMA foreign_keys = ON;")
 
     # First create the Books Table
-    cursor.execute ('''
+    cursor.execute('''
         CREATE TABLE IF NOT EXISTS Books (
                    ISBN TEXT PRIMARY KEY,
                    Title TEXT NOT NULL,
@@ -116,6 +118,17 @@ def create_db():
                    Genre VARCHAR(15)
                    )''')
 
+    # Insert the Genres into the Genre Table
+    genre_insert = ''' INSERT INTO Genre (Genre_ID, Genre)
+                       VALUES (?, ?)          
+                   '''
+    try:
+        genres = genres_for_table()
+        for key, value in genres.items():
+            cursor.execute(genre_insert, (key, value))
+    except sqlite3.IntegrityError as error:
+        print(f"Database error: {error}")
+
     # Save the creation by committing
     conn.commit()
     print("Database and tables created successfully.")
@@ -123,6 +136,7 @@ def create_db():
     # Close connection
     conn.close()
     return True
+
 
 if __name__ == '__main__':
     pass

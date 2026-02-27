@@ -1,15 +1,17 @@
 import sqlite3
 import os
+from app.services.genres import genres_for_table
 
-
-#!!Add actual path to the database!!
+# !!Add actual path to the database!!
 DB_PATH = "bt.db"
 
 # Check if database already exists
 db_exists = os.path.exists(DB_PATH)
 
+
 def main():
     create_db()
+
 
 def create_db():
     # Connect to the database (it will create the file if it doesn't exist)
@@ -25,7 +27,7 @@ def create_db():
     cursor.execute("PRAGMA foreign_keys = ON;")
 
     # First create the Books Table
-    cursor.execute ('''
+    cursor.execute('''
         CREATE TABLE IF NOT EXISTS Books (
                    ISBN TEXT PRIMARY KEY,
                    Title TEXT NOT NULL,
@@ -68,6 +70,37 @@ def create_db():
                    Publisher_Name TEXT NOT NULL
                    )''')
 
+    # Next create the BookNotes Bridging Table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS BookNotes (
+                   ISBN TEXT,
+                   Note_ID INTEGER,
+                   PRIMARY KEY (ISBN, Note_ID)
+                   )''')
+
+    # Next create the Notes Table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Notes (
+                   Note_ID INTEGER PRIMARY KEY,
+                   Note BLOB NOT NULL
+                   )''')
+
+    # Next create the Tags Table
+    """
+        Toggle for the Personal_Or_Academic variable
+        Personal = 0
+        Academic = 1
+    """
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Tags (
+                    Tag_ID INTEGER PRIMARY KEY,
+                    Owned BOOLEAN NOT NULL,
+                    Favorite BOOLEAN NOT NULL,
+                    Completed BOOLEAN NOT NULL,
+                    Currently_Reading BOOLEAN NOT NULL,
+                    Personal_Or_Academic BOOLEAN NOT NULL
+                    )''')
+
     # Next create the BookGenre Bridging Table
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS BookGenre (
@@ -85,36 +118,16 @@ def create_db():
                    Genre VARCHAR(15)
                    )''')
 
-    # Next create the BookNotes Bridging Table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS BookNotes (
-                   ISBN TEXT,
-                   Note_ID INTEGER,
-                   PRIMARY KEY (ISBN, Note_ID)
-                   )''')
-
-    # Next create the Notes Table
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Notes (
-                   Note_ID INTEGER PRIMARY KEY,
-                   Note BLOB NOT NULL
-                   )''')
-
-    # Next create hte Tags Table
-    """
-        Toggle for the Personal_Or_Academic variable
-        Personal = 0
-        Academic = 1
-    """
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Tags (
-                    Tag_ID INTEGER PRIMARY KEY,
-                    Owned BOOLEAN NOT NULL,
-                    Favorite BOOLEAN NOT NULL,
-                    Completed BOOLEAN NOT NULL,
-                    Currently_Reading BOOLEAN NOT NULL,
-                    Personal_Or_Academic BOOLEAN NOT NULL
-                    )''')
+    # Insert the Genres into the Genre Table
+    genre_insert = ''' INSERT INTO Genre (Genre_ID, Genre)
+                       VALUES (?, ?)          
+                   '''
+    try:
+        genres = genres_for_table()
+        for key, value in genres.items():
+            cursor.execute(genre_insert, (key, value))
+    except sqlite3.IntegrityError as error:
+        print(f"Database error: {error}")
 
     # Save the creation by committing
     conn.commit()
@@ -123,6 +136,7 @@ def create_db():
     # Close connection
     conn.close()
     return True
+
 
 if __name__ == '__main__':
     pass
