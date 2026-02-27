@@ -1,89 +1,105 @@
 def validate_book(json, create_type):
     try:
-        if 'isbn' in json and len(str(json['isbn'])) == 13:
-            json['isbn'] = int(json['isbn'])
+        if 'ISBN' in json and len(str(json['ISBN'])) == 13 or len(str(json['ISBN'])) == 10:
+            json['ISBN'] = int(json['ISBN'])
         else:
-            return 'ISBN is required for creating a book(must be 13 numbers)', 400
+            return 'ISBN is required for creating a book(must be 10 or 13 numbers)', 400
     except TypeError and ValueError:
-        return 'Error: ISBN must be valid 13 integers.', 400
+        return 'Error: ISBN must be 10 or 13 integers.', 400
 
     try:
-        if 'title' in json and len(json['title']) != 0:
-            json['title'] = json['title'].strip()
+        if 'Title' in json and len(json['Title']) != 0:
+            json['Title'] = json['Title'].strip()
         else:
             return 'Title is required for creating a book', 400
     except TypeError and ValueError:
         return 'Title must be valid characters', 400
 
     try:
-        if 'author' in json and len(json['author']) != 0:
-            json['author'] = json['author'].strip()
+        if 'Author_First_Name_1' in json and len(json['Author_First_Name_1']) != 0:
+            json['Author_First_Name_1'] = json['Author_First_Name_1'].strip()
         else:
-            return 'Author is required for creating a book', 400
+            return 'Primary Author First Name is required for creating a book', 400
     except TypeError and ValueError:
         return 'Author must be valid characters', 400
 
     try:
-        if 'author2' in json and len(json['author2']) != 0:
-            json['author2'] = json['author2'].strip()
+        if 'Author_Last_Name_1' in json and len(json['Author_Last_Name_1']) != 0:
+            json['Author_Last_Name_1'] = json['Author_Last_Name_1'].strip()
         else:
-            json['author2'] = ''
+            return 'Primary Author Last Name is required for creating a book', 400
     except TypeError and ValueError:
         return 'Author must be valid characters', 400
 
     try:
-        if 'year-published' in json and len(json['year-published']) != 0:
-            json['year-published'] = int(json['year-published'])
+        if 'Author_First_Name_2' in json and len(json['Author_First_Name_2']) != 0:
+            json['Author_First_Name_2'] = json['Author_First_Name_2'].strip()
         else:
-            return 'Year published is required for creating a book(YYYY)', 400
+            json['Author_First_Name_2'] = ''
+    except TypeError and ValueError:
+        return 'Author must be valid characters', 400
+
+    try:
+        if 'Author_Last_Name_2' in json and len(json['Author_Last_Name_2']) != 0:
+            json['Author_Last_Name_2'] = json['Author_Last_Name_2'].strip()
+        else:
+            json['Author_Last_Name_2'] = ''
+    except TypeError and ValueError:
+        return 'Author must be valid characters', 400
+
+    try:
+        if 'Publish_Year' in json and len(json['Publish_Year']) != 0:
+            json['Publish_Year'] = int(json['Publish_Year'])
+        else:
+            return 'Year published is required for creating a book (YYYY)', 400
     except TypeError and ValueError:
         return 'Year must be valid integers', 400
 
     try:
-        if 'publisher' in json and len(json['publisher']) != 0:
-            json['publisher'] = json['publisher'].strip()
+        if 'Publisher_Name' in json and len(json['Publisher_Name']) != 0:
+            json['Publisher_Name'] = json['Publisher_Name'].strip()
         else:
             return 'Publisher is required for creating a book', 400
     except TypeError and ValueError:
         return 'Publisher must be valid characters', 400
 
     try:
-        if 'chapters' in json and int(json['chapters']) > 0:
-            json['chapters'] = int(json['chapters'])
+        if 'Chapters' in json and int(json['Chapters']) >= 0:
+            json['Chapters'] = int(json['Chapters'])
         else:
-            return 'Number of chapters is required for creating a book', 400
+            return 'Invalid Number of Chapters, must be 0 or more', 400
     except TypeError and ValueError:
         return 'Chapters must be valid integers', 400
 
     try:
-        if 'fiction-or-nonfiction' in json and json['fiction-or-nonfiction'].lower() in ['fiction', 'nonfiction']:
-            json['fiction-or-nonfiction'] = json['fiction-or-nonfiction'].lower()
+        if 'Genre_1' in json and json['Genre_1'].lower() in ['fiction', 'nonfiction']:
+            json['Genre_1'] = json['Genre_1'].lower()
         else:
             return 'Fiction or nonfiction is required for creating a book', 400
     except TypeError and ValueError:
         return 'Must be valid characters', 400
 
     try:
-        if 'owned' in json and json['owned'].lower() in ['on', 'off']:
-            json['owned'] = json['owned'].lower()
-            json['owned'] = True if json['owned'] == 'on' else False
+        if 'Owned' in json and json['Owned'].lower() in ['yes', 'no']:
+            json['Owned'] = json['Owned'].lower()
+            json['Owned'] = True if json['Owned'] == 'yes' else False
         else:
-            return 'Owned is required for creating a book (on/off)', 400
+            return 'Owned is required for creating a book (yes/no)', 400
     except TypeError and ValueError:
         return 'Must be valid characters', 400
 
     try:
-        if 'favorite' in json:
-            json['favorite'] = json['favorite'].lower() == 'on'
+        if 'Favorite' in json:
+            json['Favorite'] = json['Favorite'].lower() == 'yes'
         else:
-            json['favorite'] = False
+            json['Favorite'] = False
     except TypeError and ValueError:
         return 'Must be valid characters', 400
 
     try:
-        if 'personal-or-academic' in json and json['personal-or-academic'].lower() in ['personal', 'academic']:
-            json['personal-or-academic'] = json['personal-or-academic'].lower()
-            json['personal-or-academic'] = True if json['personal-or-academic'] == 'academic' else False
+        if 'Personal_Or_Academic' in json and json['Personal_Or_Academic'].lower() in ['personal', 'academic']:
+            json['Personal_Or_Academic'] = json['Personal_Or_Academic'].lower()
+            json['Personal_Or_Academic'] = True if json['Personal_Or_Academic'] == 'academic' else False
         else:
             return 'Personal or academic is required for creating a book (personal/academic)', 400
     except TypeError and ValueError:
