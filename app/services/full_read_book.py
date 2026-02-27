@@ -22,14 +22,14 @@ def read_book_table(ISBN_value):
         if result:
             convert_to_dict = {
                 "ISBN": result[0][0],
-                "title": result[0][1],
-                "publish_year": result[0][2],
-                "publisher_id": result[0][3],
-                "summary": result[0][4],
-                "tag_id": result[0][5],
-                "chapters": result[0][6],
-                "chapters_completed": result[0][7],
-                "cover_image_bytes": result[0][8]
+                "Title": result[0][1],
+                "Publish_Year": result[0][2],
+                "Publisher_ID": result[0][3],
+                "Summary": result[0][4],
+                "Tag_ID": result[0][5],
+                "Chapters": result[0][6],
+                "Chapters_completed": result[0][7],
+                "Cover_Image_Bytes": result[0][8]
             }
 
             json_format = json.dumps(convert_to_dict)
@@ -486,23 +486,23 @@ def read_full_book_record (ISBN_value):
     converted_auth_names = json.loads(author_names)
 
     # Return Publisher name from an associated publisher ID in the Books record. 
-    pub_ID = converted_books["publisher_id"]
-    book_publisher = read_publisher_name_for_full_book_record(pub_ID)
+    publisher_id = converted_books["Publisher_ID"]
+    book_publisher = read_publisher_name_for_full_book_record(publisher_id)
     converted_publisher = json.loads(book_publisher)
 
     # Return all tags associated with a book record.
-    tag = converted_books["tag_id"]
+    tag = converted_books["Tag_ID"]
     book_tags = read_tag_table(tag)
     converted_tags = json.loads(book_tags)
 
     # Return Genre IDs by ISBN.  Return values passed to Read_Genre_Names.
-    read_genIDs = read_genres_IDs(ISBN_value)
+    read_genre_ids = read_genres_IDs(ISBN_value)
 
     # Return Genre Names by Genre IDs obtained through read_genre_IDs function for an ISBN. 
-    genre_names = read_genres_for_full_book_record(read_genIDs)
+    genre_names = read_genres_for_full_book_record(read_genre_ids)
     converted_genres = json.loads(genre_names)
 
-   # Cobmine results for all functions to create full book record. 
+   # Combine results for all functions to create full book record.
     read_full_book = converted_books | converted_auth_names | converted_publisher | converted_tags | converted_genres
 
    # Convert to JSON, printing the result "pretty".
