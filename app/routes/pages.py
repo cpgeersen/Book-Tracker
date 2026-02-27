@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
+from app.services.mediator import create
 
 
 # This route registers all the pages for the app
@@ -14,6 +15,8 @@ def add_book_page():
     if request.method == 'POST':
 
         book_form_json = jsonify(request.form)
+        create(book_form_json, 'book')
+        print(book_form_json)
 
         return render_template('add_book.html')
     return render_template('add_book.html')
