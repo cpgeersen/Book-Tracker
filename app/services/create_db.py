@@ -9,10 +9,6 @@ DB_PATH = "bt.db"
 db_exists = os.path.exists(DB_PATH)
 
 
-def main():
-    create_db()
-
-
 def create_db():
     # Connect to the database (it will create the file if it doesn't exist)
     conn = sqlite3.connect(DB_PATH)

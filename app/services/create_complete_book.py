@@ -1,14 +1,11 @@
 import sqlite3
-import json
-from app.services.create_db import create_db
-from app.services.full_read_book import read_full_book_record
-
-create_db()
 
 SUCCESS = 200
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 
+def main():
+    pass
 
 def connect_to_database():
     try:
@@ -172,7 +169,10 @@ def read_genre_id_from_genre_table(genre):
     genre_id_result = cursor.fetchone()
     conn.close()
 
-    genre_id_json = {"Genre_ID": genre_id_result[0]}
+    if not genre_id_result:
+        genre_id_json = {"Genre_ID": ''}
+    else:
+        genre_id_json = {"Genre_ID": genre_id_result[0]}
 
     return genre_id_json
 
@@ -353,51 +353,5 @@ def create_book_record(json):
     else:
         return 'Successfully Created New Book Record', SUCCESS
 
-
-
-json1 = {"ISBN": "0312278497",
- "Title": "The Glass Bead Game",
- "Publish_Year": "1970",
- "Summary": "The state of Castalia is the home of an austere order of intellectuals.",
- "Chapters": "",
- "Chapters_Completed": "",
- "Cover_Image": "",
- "Author_First_Name_1": "Herman",
- "Author_Last_Name_1": "Hesse",
- "Author_First_Name_2": "",
- "Author_Last_Name_2": "",
- "Publisher_Name": "Picador",
- "Owned": "yes",
- "Favorite": "no",
- "Completed": "no",
- "Currently_Reading": "no",
- "Personal_Or_Academic": "personal",
- "Genre_1": "fiction",
- "Genre_2": "fantasy"}
-
-json2 = {"ISBN": "0061002828",
- "Title": "The Hellbound Heart",
- "Publish_Year": "1991",
- "Summary": "",
- "Chapters": "",
- "Chapters_Completed": "",
- "Cover_Image": "",
- "Author_First_Name_1": "Clive",
- "Author_Last_Name_1": "Barker",
- "Author_First_Name_2": "",
- "Author_Last_Name_2": "",
- "Publisher_Name": "HarperTorch",
- "Owned": "yes",
- "Favorite": "yes",
- "Completed": "yes",
- "Currently_Reading": "no",
- "Personal_Or_Academic": "personal",
- "Genre_1": "fiction",
- "Genre_2": "horror"}
-
-test_create_all1 = create_book_record(json1)
-test_create_all2 = create_book_record(json2)
-print(test_create_all1)
-
-test_read = read_full_book_record('0061002828')
-print(test_read)
+if __name__ == 'main':
+    pass
