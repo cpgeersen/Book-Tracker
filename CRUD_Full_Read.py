@@ -507,3 +507,212 @@ def read_full_book_record (ISBN_value):
     read_full_book_pretty = json.dumps(read_full_book, indent=4)
 
     return read_full_book_pretty
+
+
+
+# Function needed for 2.11.1. Returns all ISBNs when searching by title. Return results in JSON formatting. 
+def read_isbn_by_title(title):
+    try:
+        # Connect to SQLite database. 
+        conn = sqlite3.connect("bt.db")
+        cursor = conn.cursor()
+
+        # Query Genre Table for genreID provided. 
+        read_query = "SELECT ISBN FROM Book WHERE Title = ?"
+        criteria = (title,)
+        cursor.execute(read_query, criteria)
+        result = cursor.fetchall()
+        conn.close()
+
+        # Check to confirm value found in table.
+        if result:
+
+           # Removes tuples inside the returned list. Convert to dictionary format for json. 
+            convert_tuples_result = [item for tup in result for item in tup]
+
+            convert_to_dict = {"ISBN": []}
+            index_to_append = 0
+            count = 1
+            
+            # Loop through converted result list and append values to dictionary list. 
+            for i in convert_tuples_result:
+                convert_to_dict["ISBN"].append(convert_tuples_result[index_to_append])
+                index_to_append += 1
+                count += 1
+                if count > 2:
+                    break
+
+            json_format = json.dumps(convert_to_dict)
+            return json_format
+         
+        else:
+            return "Title not found"
+        
+    except sqlite3.Error as error:
+        print(f"Database error: {error}")
+        conn.close()
+
+
+# 2.11.1 - Read Book Record by Title function. Returns all book records based on title searching. Return results in JSON formatting. 
+def read_full_book_by_title(title):
+
+    # Block searches for specific single words with potential for too many results. 
+    # Inserting a temporary block list.  Can be modified later as block list confirmed/refined.
+    BLOCK_LIST = ['the', 'a', 'be', 'that', 'of', 'this', 'and']
+    if title.lower().strip() in BLOCK_LIST:
+        return "Unable to search by that title."
+    
+    # Query Book table for title matches. 
+    isbn_results = read_isbn_by_title(title)
+
+    # Convert isbn_results to python dictionary object for parsing. 
+    converted_isbn_results = json.loads(isbn_results)
+    isbn_list = []
+    for value in converted_isbn_results['ISBN']:
+        isbn_list.append(value)
+    
+    # Create list of returned results and convert back to JSON formatting. 
+    all_results_list = []
+    for result in isbn_list:
+        get_book_json = (read_full_book_record(result))
+        convert_book_json_to_dict = json.loads(get_book_json)
+        all_results_list.append(convert_book_json_to_dict)
+
+    json_format = json.dumps(all_results_list, indent=4)
+
+    return json_format
+
+
+# Function needed for 2.11.2. Returns all ISBNs when searching by author's name. Return results in JSON formatting. 
+def read_isbn_by_author(author_last_name, author_first_name=None):
+    try:
+        # Connect to SQLite database. 
+        conn = sqlite3.connect("bt.db")
+        cursor = conn.cursor()
+
+        # Convert arguments into a list to determine search criteria. 
+        criteria = [value for value in (author_last_name, author_first_name) if value is not None ]
+        
+        # Returns results when both author's last name and first name provided as search criteria.
+        if len(criteria) == 2:
+            last_name = criteria[0]
+            first_name = criteria[1]
+            read_query = f"SELECT B.ISBN FROM BookAuthor AS B JOIN Author as A ON A.AuthorID = B.AuthorID WHERE A.Author_Last_Name = ? AND A.Author_First_Name = ?"
+            cursor.execute(read_query, (last_name, first_name))
+            result = cursor.fetchall()
+            conn.close()
+
+        # Returns results when author's last name provided as search criteria.
+        else:
+            last_name = criteria[0]
+            read_query = f"SELECT B.ISBN FROM BookAuthor AS B JOIN Author as A ON A.AuthorID = B.AuthorID WHERE A.Author_Last_Name = ?"
+            cursor.execute(read_query, (last_name,))
+            result = cursor.fetchall()
+            conn.close()
+
+        # Check to confirm value(s) found in table.
+        if result:
+            # Removes tuples inside the returned list. 
+            convert_tuples_result = [item for tup in result for item in tup]
+
+            # Loop through converted result list and append values to dictionary list. Convert to JSON formatting. 
+            convert_to_dict = {"ISBN": []}
+            index_to_append = 0
+
+            for i in convert_tuples_result:
+                convert_to_dict["ISBN"].append(convert_tuples_result[index_to_append])
+                index_to_append += 1
+           
+            json_format = json.dumps(convert_to_dict)
+            return json_format
+        
+        else:
+            return "Author not found"
+        
+    except sqlite3.Error as error:
+        print(f"Database error: {error}")
+        conn.close()
+
+
+# 2.11.2 - Read Book Record(s) Based on Author. Returns all book records based on author's name. Return results in JSON formatting. 
+def read_full_book_by_author(author_last_name, author_first_name=None):
+    # Obtain list of ISBNs associated with author.Author's last name is required as a parameter, first name is optional. 
+    isbn_results = read_isbn_by_author(author_last_name, author_first_name)
+
+# Convert isbn_results to python dictionary object for parsing. 
+    converted_isbn_results = json.loads(isbn_results)
+    isbn_list = []
+    for value in converted_isbn_results['ISBN']:
+        isbn_list.append(value)
+    
+    # Create list of returned results and convert back to JSON formatting. 
+    all_results_list = []
+    for result in isbn_list:
+        get_book_json = (read_full_book_record(result))
+        convert_book_json_to_dict = json.loads(get_book_json)
+        all_results_list.append(convert_book_json_to_dict)
+
+    json_format = json.dumps(all_results_list, indent=4)
+
+    return json_format
+
+
+# Function needed for 2.11.3. Returns all ISBNs when searching by genre ID. Return results in JSON formatting. 
+def read_isbn_by_genre_id(genre_id):
+    try:
+        # Connect to SQLite database. 
+        conn = sqlite3.connect("bt.db")
+        cursor = conn.cursor()
+        
+        # Query BookGenre and Genre Tables for genreID provided to return ISBN. 
+        read_query = f"SELECT B.ISBN FROM BookGenre AS B JOIN Genre as G ON B.GenreID = G.GenreID WHERE G.GenreID = ?"
+        criteria = (genre_id,)
+        cursor.execute(read_query, criteria)
+        result = cursor.fetchall()
+        conn.close()
+
+        # Check to confirm value(s) found in table.
+        if result:
+            # Removes tuples inside the returned list. 
+            convert_tuples_result = [item for tup in result for item in tup]
+
+            # Loop through converted result list and append values to dictionary list. Convert to JSON formatting. 
+            convert_to_dict = {"ISBN": []}
+            index_to_append = 0
+
+            for i in convert_tuples_result:
+                convert_to_dict["ISBN"].append(convert_tuples_result[index_to_append])
+                index_to_append += 1
+           
+            json_format = json.dumps(convert_to_dict)
+            return json_format
+        
+        else:
+            return "Genre not found"
+        
+    except sqlite3.Error as error:
+        print(f"Database error: {error}")
+        conn.close()
+
+
+# 2.11.3 - Read Book Record(s) Based on Genre. Returns all book records based on genre ID. Return results in JSON formatting. 
+def read_full_book_by_genre_id(genreID):
+    # Obtain list of ISBNs associated with GenreID
+    isbn_results = read_isbn_by_genre_id(genreID)
+
+# Convert isbn_results to python dictionary object for parsing. 
+    converted_isbn_results = json.loads(isbn_results)
+    isbn_list = []
+    for value in converted_isbn_results['ISBN']:
+        isbn_list.append(value)
+    
+    # Create list of returned results and convert back to JSON formatting. 
+    all_results_list = []
+    for result in isbn_list:
+        get_book_json = (read_full_book_record(result))
+        convert_book_json_to_dict = json.loads(get_book_json)
+        all_results_list.append(convert_book_json_to_dict)
+
+    json_format = json.dumps(all_results_list, indent=4)
+
+    return json_format
