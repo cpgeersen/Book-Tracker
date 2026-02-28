@@ -1,0 +1,129 @@
+import sqlite3
+# Covers 2.5.1.3, 2.5.1.7, 2.5.1.8, and 2.5.1.9
+
+# 2.5.1.3 - create_tag(owned, favorite, completed, currently_reading, personal_or_academic)
+def create_tag(owned, favorite, completed, currently_reading, personal_or_academic):
+    try:
+        conn = sqlite3.connect("bt.db")
+        cursor = conn.cursor()
+
+        owned01 = owned
+        favorite01 = favorite
+        completed01 = completed
+        currently_reading01 = currently_reading
+        personal_or_academic01 = personal_or_academic
+
+        # Insert new tag record.
+        create_query = """
+            INSERT INTO Tags (Owned, Favorite, Completed, Currently_Reading, PersonalOrAcademic)
+            VALUES (?,?,?,?,?)
+        """
+        cursor.execute(
+            create_query,
+            (owned01, favorite01, completed01, currently_reading01, personal_or_academic01)
+        )
+        conn.commit()
+
+        # Get generated TagID.
+        tagID = cursor.lastrowid
+        return {"tag_id": str(tagID)}
+
+    # Handle exceptions and close database connection.
+    except sqlite3.Error as error:
+        print(f"Database error: {error}")
+        return {"tag_id": ""}
+
+    finally:
+        conn.close()
+
+# 2.5.1.7 - read_author_id(author_first_name, author_last_name)
+def read_author_id(author_first_name, author_last_name):
+    try:
+        conn = sqlite3.connect("bt.db")
+        cursor = conn.cursor()
+
+        # Query Authors table for matching name (case-insensitive).
+        read_query = """
+            SELECT AuthorID
+            FROM Authors
+            WHERE LOWER(Author_First_Name) = LOWER(?)
+              AND LOWER(Author_Last_Name)  = LOWER(?)
+            LIMIT 1
+        """
+        criteria = (author_first_name.strip(), author_last_name.strip())
+        cursor.execute(read_query, criteria)
+        row = cursor.fetchone()
+        conn.close()
+
+        if row:
+            return {"AuthorID": str(row[0])}
+        else:
+            return {"AuthorID": ""}
+
+    except sqlite3.Error as error:
+        print(f"Database error: {error}")
+        try:
+            conn.close()
+        except:
+            pass
+        return {"AuthorID": ""}
+
+# 2.5.1.8 - read_publisher_id(publisher_name)
+def read_publisher_id(publisher_name):
+    try:
+        conn = sqlite3.connect("bt.db")
+        cursor = conn.cursor()
+
+        # Query Publishers table for matching name (case-insensitive).
+        read_query = """
+            SELECT PublisherID
+            FROM Publishers
+            WHERE LOWER(Publisher_Name) = LOWER(?)
+            LIMIT 1
+        """
+        criteria = (publisher_name.strip(),)
+        cursor.execute(read_query, criteria)
+        row = cursor.fetchone()
+        conn.close()
+
+        if row:
+            return {"PublisherID": str(row[0])}
+        else:
+            return {"PublisherID": ""}
+
+    except sqlite3.Error as error:
+        print(f"Database error: {error}")
+        try:
+            conn.close()
+        except:
+            pass
+        return {"PublisherID": ""}
+
+# 2.5.1.9 - read_genre_id_from_genre_table(genre_name)
+def read_genre_id_from_genre_table(genre_name):
+    try:
+        # Mock genre mapping for now.
+        mock_genre_map = {
+            "fiction": "1",
+            "fantasy": "2",
+            "humor": "3",
+            "drama": "4",
+            "mystery": "5",
+            "thriller": "6",
+            "romance": "7",
+            "science fiction": "8",
+            "sci-fi": "8",
+            "nonfiction": "9",
+            "non-fiction": "9",
+            "history": "10"
+        }
+
+        if genre_name is None:
+            return {"GenreID": ""}
+
+        key = str(genre_name).strip().lower()
+        return {"GenreID": mock_genre_map.get(key, "")}
+
+    except Exception as error:
+        print(f"Unexpected error: {error}")
+        return {"GenreID": ""}
