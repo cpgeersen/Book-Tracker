@@ -1,21 +1,232 @@
-<!-- Individual Book Frontend (Placeholder) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic page metadata -->
+  <meta charset="UTF-8">
+  <title>Book Entry</title>
 
-<!-- Display book details -->
-Display book.title
-Display book.author
-Display book.publisher
-Display book.publish_year
-Display book.isbn
+  <style>
 
-<!-- Display book tags -->
-If book.owned → show "Owned"
-If book.favorite → show "Favorite"
-If book.read → show "Read"
-If book.currently_reading → show "Currently Reading"
+    /* Global page styling */
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #0f172a;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 0;
+    }
 
-<!-- Navigation -->
-Button: Back to Search
-Button: Home
-Button: Edit Book
+    /* Main layout wrapper */
+    .page-wrapper {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
 
-<!-- Waiting for finalized requirements and detailed UI instructions before full implementation -->
+    /* Navigation links (Back + Home) */
+    .nav-buttons {
+      margin-bottom: 1rem;
+    }
+
+    .nav-buttons a {
+      text-decoration: none;
+      color: #6366f1;
+      font-weight: 600;
+      margin-right: 1rem;
+    }
+
+    /* Book container card */
+    .book-container {
+      background-color: #111827;
+      padding: 2rem;
+      border-radius: 12px;
+    }
+
+    /* Layout for cover + book info */
+    .book-header {
+      display: flex;
+      gap: 2rem;
+    }
+
+    /* Placeholder book cover */
+    .book-cover {
+      width: 160px;
+      height: 220px;
+      background-color: #374151;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+
+    /* Book information text */
+    .book-info h2 {
+      margin-top: 0;
+    }
+
+    .book-info p {
+      margin: 0.4rem 0;
+      font-size: 0.95rem;
+    }
+
+    /* Generic section spacing */
+    .section {
+      margin-top: 2rem;
+    }
+
+    /* Chapter control buttons */
+    .chapter-controls button {
+      padding: 0.4rem 0.8rem;
+      margin-right: 0.5rem;
+      border-radius: 6px;
+      border: none;
+      background-color: #374151;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Action buttons */
+    .button-group button {
+      padding: 0.5rem 0.9rem;
+      border-radius: 8px;
+      border: none;
+      background-color: #6366f1;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+
+    .button-group button:hover {
+      background-color: #4f46e5;
+    }
+
+    /* Special styling for Remove button */
+    .remove-btn {
+      background-color: #dc2626;
+    }
+
+    .remove-btn:hover {
+      background-color: #b91c1c;
+    }
+
+    /* Genre and tag styling */
+    .tag {
+      background-color: #374151;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      margin-right: 0.4rem;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Active state when tag is toggled */
+    .tag.active {
+      background-color: #6366f1;
+    }
+
+    /* Input field styling */
+    input[type="number"] {
+      padding: 0.4rem;
+      border-radius: 6px;
+      border: none;
+      background-color: #1f2933;
+      color: #e5e7eb;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="page-wrapper">
+
+    <!-- Navigation buttons -->
+    <div class="nav-buttons">
+      <a href="/local-search">← Back</a>
+      <a href="/">Home</a>
+    </div>
+
+    <!-- Main book container -->
+    <div class="book-container">
+
+      <!-- Book header section (cover + main info) -->
+      <div class="book-header">
+        <div class="book-cover">
+          No Cover
+        </div>
+
+        <div class="book-info">
+          <h2>Placeholder Title</h2>
+          <p><strong>Author:</strong> Placeholder Author</p>
+          <p><strong>Publisher:</strong> Placeholder Publisher</p>
+          <p><strong>Year:</strong> 2026</p>
+          <p><strong>ISBN:</strong> 1234567890</p>
+          <p><strong>Summary:</strong> No summary available.</p>
+        </div>
+      </div>
+
+      <!-- Chapter tracking section -->
+      <div class="section">
+        <h3>Chapters</h3>
+        <p>Chapters Read: 0 / 10</p>
+
+        <div class="chapter-controls">
+          <button>-</button>
+          <button>+</button>
+        </div>
+
+        <br>
+
+        <label>Total Chapters:</label>
+        <input type="number" placeholder="Enter total chapters">
+      </div>
+
+      <!-- Genres section -->
+      <div class="section">
+        <h3>Genres</h3>
+        <span class="tag">Genre 1</span>
+        <span class="tag">Genre 2</span>
+        <span class="tag">Genre 3</span>
+        <span class="tag">Genre 4</span>
+      </div>
+
+      <!-- Toggleable tags section -->
+      <div class="section">
+        <h3>Tags</h3>
+        <button class="tag toggle">Owned</button>
+        <button class="tag toggle">Favorite</button>
+        <button class="tag toggle">Read</button>
+        <button class="tag toggle">Currently Reading</button>
+      </div>
+
+      <!-- Action buttons section -->
+      <div class="section">
+        <h3>Actions</h3>
+        <div class="button-group">
+          <button class="remove-btn">Remove</button>
+          <button>Notes</button>
+          <button>Update</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JavaScript for toggling tag active state -->
+  <script>
+    const toggleTags = document.querySelectorAll('.toggle');
+
+    toggleTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        tag.classList.toggle('active');
+      });
+    });
+  </script>
+
+</body>
+</html>
