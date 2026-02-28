@@ -477,12 +477,12 @@ def read_full_book_record (ISBN_value):
 
     #Return Book table records for ISBN. 
     read_book_table_record = read_book_table(ISBN_value)
-    print(read_book_table_record)
+    #print(read_book_table_record)
     converted_books = json.loads(read_book_table_record)
 
     # Return Author Names associated with ISBN. 
     author_names = read_author_name_by_ISBN_full_record(ISBN_value)
-    print(author_names)
+    #print(author_names)
     converted_auth_names = json.loads(author_names)
 
     # Return Publisher name from an associated publisher ID in the Books record. 

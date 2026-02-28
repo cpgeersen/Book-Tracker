@@ -76,6 +76,8 @@ def create_db():
                    ISBN TEXT,
                    Note_ID INTEGER,
                    PRIMARY KEY (ISBN, Note_ID)
+                   FOREIGN KEY (ISBN) REFERENCES Books(ISBN)
+                   FOREIGN KEY (Note_ID) REFERENCES Books(Note_ID)
                    )''')
 
     # Next create the Notes Table
@@ -86,19 +88,16 @@ def create_db():
                    )''')
 
     # Next create the Tags Table
-    """
-        Toggle for the Personal_Or_Academic variable
-        Personal = 0
-        Academic = 1
-    """
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Tags (
                     Tag_ID INTEGER PRIMARY KEY,
-                    Owned BOOLEAN NOT NULL,
-                    Favorite BOOLEAN NOT NULL,
-                    Completed BOOLEAN NOT NULL,
-                    Currently_Reading BOOLEAN NOT NULL,
-                    Personal_Or_Academic BOOLEAN NOT NULL
+                    Owned TEXT NOT NULL,
+                    Favorite TEXT NOT NULL,
+                    Completed TEXT NOT NULL,
+                    Currently_Reading TEXT NOT NULL,
+                    Personal_Or_Academic TEXT NOT NULL,
+                    ISBN TEXT,
+                    FOREIGN KEY (ISBN) REFERENCES Books(ISBN)
                     )''')
 
     # Next create the BookGenre Bridging Table
