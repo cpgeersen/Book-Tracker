@@ -1,5 +1,5 @@
 import sqlite3
-from CRUD_Read import read_from_database
+from app.services.full_read_book import read_full_book_record
 
 # Not meant to be user directly, only use through a driver
 
@@ -14,13 +14,13 @@ def main():
             user_choice = int(input('Choose an Option: '))
             if user_choice == 1:
                 print('Reading all books from DB')
-                all_books = read_db_all()
-                for book in all_books:
-                    print(book)
+                all_books_isbn = read_db_all()
+                for books in all_books_isbn:
+                    print(read_full_book_record(books[0]))
             elif user_choice == 2:
                 print('User Defined Book')
                 user_isbn = int(input('Enter an ISBN to Read for: '))
-                print(read_from_database(user_isbn, 'read_book'))
+                print(read_full_book_record(user_isbn))
             elif user_choice == 3:
                 print('Exiting')
                 break
@@ -31,7 +31,8 @@ def main():
 
 
 def read_db_isbn(isbn):
-    read_from_database(isbn, 'read_book')
+    #read_from_database(isbn, 'read_book')
+    pass
 
 def read_db_all():
     try:
@@ -40,7 +41,7 @@ def read_db_all():
         cursor = conn.cursor()
 
         # Query database for ISBN provided.
-        cursor.execute("SELECT * FROM Books")
+        cursor.execute("SELECT ISBN FROM Books")
         result = cursor.fetchall()
         conn.close()
         return result

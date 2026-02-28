@@ -139,47 +139,68 @@
     <h1>Add Book</h1>
 
     <!-- Book input form (no backend logic yet) -->
-    <form>
+    <form method="POST">
 
       <!-- Book title -->
       <label for="title">Title</label>
       <input type="text" id="title" name="title" required>
 
       <!-- Book authors -->
-      <label for="author">Author</label>
-      <input type="text" id="author" name="author" required>
+      <div>
+        <fieldset>
+          <legend>Primary Author</legend>
+          <label for="Author_First_Name_1">Author First Name</label>
+          <input type="text" id="Author_First_Name_1" name="Author_First_Name_1" required>
 
-      <label for="author2">Optional Second Author</label>
-      <input type="text" id="author2" name="author2">
+          <label for="Author_Last_Name_1">Author Last Name</label>
+          <input type="text" id="Author_Last_Name_1" name="Author_Last_Name_1" required>
+        </fieldset>
+
+        <fieldset>
+          <legend>Secondary Author (Optional)</legend>
+          <label for="Author_First_Name_2">Author First Name</label>
+          <input type="text" id="Author_First_Name_2" name="Author_First_Name_2" required>
+
+          <label for="Author_Last_Name_2">Author Last Name</label>
+          <input type="text" id="Author_Last_Name_2" name="Author_Last_Name_2" required>
+        </fieldset>
+      </div>
+
 
       <!-- ISBN (numbers only) -->
-      <label for="isbn">ISBN</label>
+      <label for="ISBN">ISBN (10 or 13)</label>
       <input
         type="text"
-        id="isbn"
-        name="isbn"
+        id="ISBN"
+        name="ISBN"
         pattern="[0-9]+"
         inputmode="numeric"
         required
       >
 
       <!-- Publisher -->
-      <label for="publisher">Publisher</label>
-      <input type="text" id="publisher" name="publisher">
+      <label for="Publisher_Name">Publisher</label>
+      <input type="text" id="Publisher_Name" name="Publisher_Name">
 
       <!-- Year published -->
-      <label for="year-published">Year Published</label>
-      <input type="date" id="year-published" name="year-published" required>
+      <label for="Publish_Year">Year Published (Integer)</label>
+      <input type="text"
+             id="Publish_Year"
+             name="Publish_Year"
+             pattern="[0-9]+"
+             inputmode="numeric"
+             required
+      >
 
       <!-- Chapter count -->
-      <label for="chapters">Number of Chapters</label>
+      <label for="Chapters">Number of Chapters (Optional Integer)</label>
       <input
         type="text"
-        id="chapters"
-        name="chapters"
+        id="Chapters"
+        name="Chapters"
         pattern="[0-9]+"
         inputmode="numeric"
-        required
+        value=""
       >
 
       <!-- Fiction / Non-Fiction -->
@@ -188,12 +209,12 @@
 
         <div class="radio-group">
           <label>
-            <input type="radio" name="fiction-or-nonfiction" value="fiction">
+            <input type="radio" name="Genre_1" value="fiction">
             Fiction
           </label>
 
           <label>
-            <input type="radio" name="fiction-or-nonfiction" value="nonfiction">
+            <input type="radio" name="Genre_1" value="nonfiction">
             Non-Fiction
           </label>
         </div>
@@ -206,22 +227,22 @@
         <!-- Tag checkboxes -->
         <div class="tags-grid">
           <label>
-            <input type="checkbox" name="owned">
+            <input type="checkbox" name="Owned">
             Owned
           </label>
 
           <label>
-            <input type="checkbox" name="favorite">
+            <input type="checkbox" name="Favorite">
             Favorite
           </label>
 
           <label>
-            <input type="checkbox" name="read">
-            Read
+            <input type="checkbox" name="Completed">
+            Completed
           </label>
 
           <label>
-            <input type="checkbox" name="currently-reading">
+            <input type="checkbox" name="Currently_Reading">
             Currently Reading
           </label>
         </div>
@@ -232,12 +253,12 @@
 
           <div class="radio-group">
             <label>
-              <input type="radio" name="personal-or-academic" value="personal">
+              <input type="radio" name="Personal_Or_Academic" value="personal">
               Personal
             </label>
 
             <label>
-              <input type="radio" name="personal-or-academic" value="academic">
+              <input type="radio" name="Personal_Or_Academic" value="academic">
               Academic
             </label>
           </div>
