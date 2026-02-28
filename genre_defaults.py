@@ -1,4 +1,7 @@
-DEFAULT_GENRES = ("Literature", "Nonfiction", "Fiction")
+# This file is simply an external function that is referenced when the create book entry function runs.
+# This file should insert 3 standard genres into the book Genre table. 
+
+DEFAULT_GENRES = ("literature", "nonfiction", "fiction")
 
 
 def seed_default_genres(cursor):
