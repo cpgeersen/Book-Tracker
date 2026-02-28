@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify
 from app.services.mediator import create
+from app.services.create_complete_book import create_book_record
+from app.services.full_read_book import read_full_book_record
 
 
 # This route registers all the pages for the app
@@ -13,10 +15,15 @@ def homepage():
 @pages_bp.route('/add-local', methods=['GET', 'POST'])
 def add_book_page():
     if request.method == 'POST':
+        print('test')
+        book_form_json = dict(request.form)
+        #print(book_form_json)
+        book_response = create_book_record(book_form_json)
+        print(book_response)
+        print(read_full_book_record(book_form_json['ISBN']))
 
-        book_form_json = jsonify(request.form)
-        create(book_form_json, 'book')
-        print(book_form_json)
+        #create(book_form_json, 'book')
+        #print(book_form_json)
 
         return render_template('add_book.html')
     return render_template('add_book.html')
@@ -41,6 +48,6 @@ def dashboard_page():
     return 'WIP', 200
 
 # WIP (really only accessed through search page)
-@pages_bp.route('/book/<isbn>', methods=['GET'])
+@pages_bp.route('/book/view', methods=['GET'])
 def individual_book_page():
-    return 'WIP', 200
+    return render_template('view_book.html'), 200

@@ -132,6 +132,3 @@ def create_db():
     conn.close()
     return True
 
-
-if __name__ == '__main__':
-    pass
