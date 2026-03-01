@@ -2,6 +2,20 @@ import requests
 import json
 
 BASE_URL = "https://openlibrary.org"
+
+#search books by author OLID (author ID in OpenLibrary)
+def search_books_by_authorid(author_id, limit=5):
+    params = {
+        "author": author_id,
+        "limit": limit,
+    }
+    try:
+        response = requests.get(f"{BASE_URL}/search.json", params=params, timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as err:
+        return {"error": f"Failed to retrieve data: {err}"}
+#search books by author name (first name and last name)
 def search_books_by_author(first_name, last_name, limit=5):
     params = {
         "author": f"{first_name} {last_name}",
@@ -13,6 +27,7 @@ def search_books_by_author(first_name, last_name, limit=5):
         return response.json()
     except requests.RequestException as err:
         return {"error": f"Failed to retrieve data: {err}"}
+#search books by ISBN
 def search_books_by_isbn(isbn):
     try:
         response = requests.get(f"{BASE_URL}/isbn/{isbn}.json", timeout=10)
@@ -22,7 +37,7 @@ def search_books_by_isbn(isbn):
         return {
             "error": f"Failed to retrieve data: {err}"
         }
-
+#search books by title
 def search_books_by_title(query, limit=5):
     params = {
         "title": query,
@@ -44,11 +59,26 @@ def get_work_data(work_key):
         return response.json()
     except Exception as err:
         return {"error": f"Failed to retrieve work data: {err}"}
+# helper function to get author info using the author OLID (author ID in OpenLibrary)
+def get_author_info_from_authorid(author_olid):
+    try:
+        response = requests.get(f"{BASE_URL}{author_olid}.json", timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as err:
+        return {"error": f"Failed to retrieve author info: {err}"}
+# helper function to check if author OLID is already in database, if so return it
 def get_books_from_author_ol(first_name, last_name):
-    try:#stopped here for tonight built search function above
+    author_OLID = author_OLID_in_database(first_name, last_name)
+    if author_OLID and author_OLID != "None":
+        return search_books_by_authorid(author_OLID)
+    else:
+        return search_books_by_author(first_name, last_name)
+        
 
 
 # OL = OpenLibrary
+#get book data from isbn
 def get_book_data_from_isbn_OL(isbn):
     try:
         # First call if the ISBN is already in database
