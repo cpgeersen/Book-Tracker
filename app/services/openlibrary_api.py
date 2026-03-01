@@ -2,7 +2,17 @@ import requests
 import json
 
 BASE_URL = "https://openlibrary.org"
-
+def search_books_by_author(first_name, last_name, limit=5):
+    params = {
+        "author": f"{first_name} {last_name}",
+        "limit": limit,
+    }
+    try:
+        response = requests.get(f"{BASE_URL}/search.json", params=params, timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as err:
+        return {"error": f"Failed to retrieve data: {err}"}
 def search_books_by_isbn(isbn):
     try:
         response = requests.get(f"{BASE_URL}/isbn/{isbn}.json", timeout=10)
@@ -34,6 +44,9 @@ def get_work_data(work_key):
         return response.json()
     except Exception as err:
         return {"error": f"Failed to retrieve work data: {err}"}
+def get_books_from_author_ol(first_name, last_name):
+    try:#stopped here for tonight built search function above
+
 
 # OL = OpenLibrary
 def get_book_data_from_isbn_OL(isbn):
