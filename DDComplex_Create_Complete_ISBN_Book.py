@@ -2,6 +2,46 @@
 # I. Process Genre Function.
 #================================================================
 #----------------------------------------------------------------
+# Creating a JSON wrapper function to allow data entry:
+#----------------------------------------------------------------
+import json
+
+# Defining the Json wrapper. 
+def json_wrapper(func): 
+    def wrapped(json_input):
+        try:
+            data = json.loads(json_input) # Take a single JSON object, unpack its keys, and pass them as keyword arguments.  
+
+            if not isinstance(data, dict):
+                raise ValueError("JSON input must be an object mapping to function arguments")
+    # Wrapper calls the function **data.
+            return func(**data)   # <-- unpack JSON keys into function parameters
+        except json.JSONDecodeError:
+            raise ValueError("Invalid JSON input")
+    return wrapped
+
+
+    # your DB logic here
+    cur.execute(
+        """
+        INSERT INTO Books
+        (ISBN, Title, PublishDate, PublisherID, Summary,
+         TagID, Chapters, Chapters_Completed, Cover_Image)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            isbn,
+            title,
+            publish_date,
+            publisher_id,
+            summary,
+            tag_id,
+            chapters,
+            chapters_completed,
+            cover_image_bytes
+        )
+    )
+#----------------------------------------------------------------
 # A. Splitting a List of Genres.
 #
 # I have Created another file that doesn't use the DD_Sys 
@@ -366,6 +406,22 @@ def get_author_book_counts(conn, authors_string: str):
 #--------------------------------------------------------------
 # C. Try Book Addition.
 #--------------------------------------------------------------
+# That's the Wrap.
+@json_wrapper
+def create_full_book_entry(
+    isbn: str,
+    title: str,
+    publish_date: str,
+    publisher_name: str,
+    authors_string: str,
+    genre_string: str,
+    summary: str = None,
+    tag_id: int = None,
+    chapters: int = None,
+    chapters_completed: int = None,
+    cover_image_bytes: bytes = None
+):
+
 def create_full_book_entry(
     isbn: str,
     title: str,
@@ -464,6 +520,26 @@ def create_full_book_entry(
     except sqlite3.Error as e:
         return False, f"Database error: {e}"
 
+# This is the code that convert the results into json:
+def format_to_jason(data):
+   return json.dump(data)
+{"isbn",
+ "title",
+ "publisher",
+ "authors",
+ "genres",
+ "--publish-date",
+ "--summary",
+ "--tag-id",
+ "--chapters",
+ "--chapters-completed"
+}
+
+import argparse
+import json
+
+def format_to_json(data):
+    return json.dumps(data, indent=4)
 
 def main():
     parser = argparse.ArgumentParser(description="Create a complete book record using ISBN metadata.")
@@ -494,13 +570,41 @@ def main():
         cover_image_bytes=None,
     )
 
-    if success:
-        print("Book created successfully.")
-        print(result)
-    else:
-        print("Book creation failed.")
-        print(result)
+    output = {
+        "success": success,
+        "result": result,
+        "isbn": args.isbn,
+        "title": args.title,
+        "publisher": args.publisher,
+        "authors": args.authors,
+        "genres": args.genres,
+        "publish_date": args.publish_date,
+        "summary": args.summary,
+        "tag_id": args.tag_id,
+        "chapters": args.chapters,
+        "chapters_completed": args.chapters_completed,
+    }
+
+    print(format_to_json(output))
 
 
 if __name__ == "__main__":
     main()
+
+#Alternate Main That Accepts JSON file instead of positional args.
+# def main():
+#    parser = argparse.ArgumentParser(description="Create a complete book record using JSON input.")
+#    parser.add_argument("--json", dest="json_file", required=True, help="Path to JSON file containing book data")
+#    args = parser.parse_args()
+#
+#    with open(args.json_file, "r") as f:
+#        json_input = f.read()
+#
+#    success, result = create_full_book_entry(json_input)
+#
+#    output = {
+#        "success": success,
+#        "result": result
+#    }
+#
+#    print(format_to_json(output))
