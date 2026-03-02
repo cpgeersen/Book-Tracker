@@ -536,56 +536,36 @@ def format_to_json(data):
 
 def main():
     parser = argparse.ArgumentParser(description="Create a complete book record using ISBN metadata.")
-    parser.add_argument("isbn", help="Book ISBN")
-    parser.add_argument("title", help="Book title")
-    parser.add_argument("publisher", help="Publisher name")
-    parser.add_argument("authors", help="Author(s), separated by ';', ',', 'and', '&', or '+'")
-    parser.add_argument("genres", help="Genre(s), separated by ';', ',', 'and', '&', or '+'")
-    parser.add_argument("--publish-date", dest="publish_date", default=None, help="Publish date (YYYY-MM-DD)")
-    parser.add_argument("--summary", default=None, help="Book summary")
-    parser.add_argument("--tag-id", dest="tag_id", type=int, default=None, help="Optional tag id")
-    parser.add_argument("--chapters", type=int, default=None, help="Total chapter count")
-    parser.add_argument("--chapters-completed", dest="chapters_completed", type=int, default=None, help="Completed chapters")
-
+    # JSON input
+    parser.add_argument("--json", dest="json_file", help="Path to JSON file")
+    parser.add_argument("--json-string", dest="json_string", help="Raw JSON string")
+   
+    # JSON file structure
     args = parser.parse_args()
+    if args.json
+        with open(args.json_file, "r") as f:
+            json_input = f.read()
+    else:
+        json_input = args.json_string
+    data=json.loads(json_input)
+    success, result = create_full_book_entry(json_input)
 
-    success, result = create_full_book_entry(
-        isbn=args.isbn,
-        title=args.title,
-        publish_date=args.publish_date,
-        publisher_name=args.publisher,
-        authors_string=args.authors,
-        genre_string=args.genres,
-        summary=args.summary,
-        tag_id=args.tag_id,
-        chapters=args.chapters,
-        chapters_completed=args.chapters_completed,
-        cover_image_bytes=None,
-    )
-
-    json_input json.dumps(payload)
-
-    # Call the wrapper function
-
-    success, payload = create_full_book_entry(json_input)
-    
     output = {
         "success": success,
-        "result": result,
-        "isbn": args.isbn,
-        "title": args.title,
-        "publisher": args.publisher,
-        "authors": args.authors,
-        "genres": args.genres,
-        "publish_date": args.publish_date,
-        "summary": args.summary,
-        "tag_id": args.tag_id,
-        "chapters": args.chapters,
-        "chapters_completed": args.chapters_completed,
+        "isbn": data.get("isbn"),
+        "title": data.get("title"),
+        "publish_date": data.get("publish_date"),
+        "publisher_name": data.get("publisher_name"),
+        "authors_string": data.get("authors_string"),
+        "genre_string": data.get("genre_string"),
+        "summary": data.get("summary"),
+        "tag_id": data.get("tag_id"),
+        "chapters": data.get("chapters"),
+        "chapters_completed": data.get("chapters_completed"),
+        "cover_image_bytes": data.get("cover_image_bytes")
     }
 
     print(format_to_json(output))
-
 
 if __name__ == "__main__":
     main()
