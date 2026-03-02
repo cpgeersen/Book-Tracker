@@ -2,16 +2,64 @@ import sqlite3
 # This file contains the CRUD code for a delete function.
 # The Assumption no: ON DELETE CASCADE in FOREIGN KEY REFERENCES DEFINITION
 DB_PATH = "bt.db"
+#---------------------------------------------------------------------
+# Modifications to the delete code.
+# Here I decided to try to implement a function to prompt the user for an ISBN.
+# I was also requested to add a flag to indicate if the function successfully Accomplished the goal. 
+#---------------------------------------------------------------------
+#---------------------------------------------------------------------
+# Have a JSON Statement to input the ISBN.
+#---------------------------------------------------------------------
+def main():
+    while True:
+        isbn = input("Enter the ISBN for a book you want to remove from your library (or press Enter to quit): ")
 
+        # Exit condition
+        if not isbn.strip():
+            print("Exiting.")
+            break
+
+        try:
+            success, title = delete_book_cascading(isbn)
+
+            if success:
+                print(f"Book '{title}' with ISBN {isbn} was successfully removed.")
+            else:
+                print(f"No book with ISBN {isbn} was found in your library.")
+
+        except sqlite3.Error as e:
+            print(f"Database error: {e}")
+    
+#---------------------------------------------------------------------
+# This is the code to delete the book function 
+# Considering Removing a current return flags.
+#---------------------------------------------------------------------
 def _connect():
     conn = sqlite3.connect(DB_PATH)
     conn.execute("PRAGMA foreign_keys = ON;")
     return conn
+# I need to either prompt the user to enter an ISBN for a book to delete:
 
+# JSON integration point.
 def delete_book_cascading(isbn: str):
     try:
         with _connect() as conn:
             cur = conn.cursor()
+            #-----------------------------------------
+            # Retrieve Book Title for Verification
+            #-----------------------------------------
+            cur.execute("""SELECT Title 
+                           FROM Books 
+                           WHERE ISBN = ?
+                        """, (isbn,))
+            row = cur.fetchone()
+            if not row:
+                # Put in a statement to break the main function. 
+                return False, f"No book found with ISBN {ISBN}"
+            else:
+                TITLE = row[0]
+                return TITLE
+            
             #------------------------------------------
             # I. Delete References in Reference Tables.
             #------------------------------------------
@@ -74,8 +122,9 @@ def delete_book_cascading(isbn: str):
             # A. Look up the TagID for this book 
             cur.execute("SELECT TagID FROM Books WHERE ISBN = ?", (isbn,)) 
             row = cur.fetchone() 
-            if not row: 
-                return False, f"No book found with ISBN {isbn}" 
+            # Delete This Block
+            # if not row: 
+            #    return False, f"No book found with ISBN {isbn}" 
             tag_id = row[0] 
             # B. Delete the tag row first (child) 
             cur.execute("DELETE FROM Tags WHERE TagID = ?", (tag_id,))
@@ -87,11 +136,16 @@ def delete_book_cascading(isbn: str):
                 DELETE FROM Books
                 WHERE ISBN = ?
             """, (isbn,))
-
-            return True, f"Book {isbn} and all related notes deleted."
-
+            # Delete This Block
+            # return True, f"Book {isbn} and all related notes deleted."
+            #
     except sqlite3.Error as e:
         return False, f"Database error: {e}"
 
     finally:
         conn.close()
+#--------------------------------------------------------------------------------
+# Here I am adding a main function call.
+#--------------------------------------------------------------------------------
+if __name__ == "__main__":
+    main()
