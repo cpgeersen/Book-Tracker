@@ -1,27 +1,3 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# pytest
-htmlcov/
-.pytest_cache/
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# IDE (add to your IDE folder of choice)
-.idea/
-
-# SQLite
-*.sqlite
+bt.db
+*.db
+*.db-journal
