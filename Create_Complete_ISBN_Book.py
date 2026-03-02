@@ -1,17 +1,56 @@
 #================================================================
 # I. Process Genre Function.
 #================================================================
+import argparse, json, os, random, re, sqlite3, string
+from difflib import SequenceMatcher
+from datetime import date, timedelta
+#---------------------------------------------------------------
+# Prepping data from JSON file.  The difference Between this file
+# And the file with the DD_table is this file is prompting the user for input.
+# I think that the create function may not be supposed import a JSON file of prepared Data
+# To work moving forward, this file need to add JSON wrapper functions to each function to allow for integration
+# !!! Please Read the Notes Before Editing !!!
+#---------------------------------------------------------------
+# Defining the Json wrapper. 
+def json_wrapper(func): 
+    def wrapped(json_input):
+        try:
+            data = json.loads(json_input) # Take a single JSON object, unpack its keys, and pass them as keyword arguments.  
+
+            if not isinstance(data, dict):
+                raise ValueError("JSON input must be an object mapping to function arguments")
+    # Wrapper calls the function **data.
+            return func(**data)   # <-- unpack JSON keys into function parameters
+        except json.JSONDecodeError:
+            raise ValueError("Invalid JSON input")
+    return wrapped
+
+# your DB logic here
+cur.execute(
+    """
+    INSERT INTO Books
+    (ISBN, Title, PublishDate, PublisherID, Summary,
+    TagID, Chapters, Chapters_Completed, Cover_Image)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """,
+    (
+        isbn,
+        title,
+        publish_date,
+        publisher_id,
+        summary,
+        tag_id,
+        chapters,
+        chapters_completed,
+        cover_image_bytes
+    )
+)
+
+
+DB_PATH = "bt.db"
 #----------------------------------------------------------------
 # A. Splitting a List of Genres.
 #----------------------------------------------------------------
-import argparse
-import json
-import re
-import sqlite3
-
-DB_PATH = "bt.db"
-
-
 def _connect():
     conn = sqlite3.connect(DB_PATH)
     conn.execute("PRAGMA foreign_keys = ON;")
@@ -439,6 +478,7 @@ def prompt_and_seed_book_from_json():
 
 def main():
     parser = argparse.ArgumentParser(description="Create a complete book record using ISBN metadata.")
+    # Here I am prompting the user for input. The values are stored as JSON Strings.
     parser.add_argument("--prompt-json", action="store_true", help="Prompt for values and seed via JSON wrapper flow")
     parser.add_argument("isbn", nargs="?", help="Book ISBN")
     parser.add_argument("title", nargs="?", help="Book title")
