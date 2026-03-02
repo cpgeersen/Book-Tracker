@@ -4,7 +4,15 @@
 #----------------------------------------------------------------
 # Creating a JSON wrapper function to allow data entry:
 #----------------------------------------------------------------
+import argparse
 import json
+import os
+import random
+import re
+import sqlite3
+import string
+from difflib import SequenceMatcher
+from datetime import date, timedelta
 
 # Defining the Json wrapper. 
 def json_wrapper(func): 
@@ -20,27 +28,26 @@ def json_wrapper(func):
             raise ValueError("Invalid JSON input")
     return wrapped
 
-
-    # your DB logic here
-    cur.execute(
-        """
-        INSERT INTO Books
-        (ISBN, Title, PublishDate, PublisherID, Summary,
-         TagID, Chapters, Chapters_Completed, Cover_Image)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        (
-            isbn,
-            title,
-            publish_date,
-            publisher_id,
-            summary,
-            tag_id,
-            chapters,
-            chapters_completed,
-            cover_image_bytes
-        )
+# your DB logic here
+cur.execute(
+    """
+    INSERT INTO Books
+    (ISBN, Title, PublishDate, PublisherID, Summary,
+    TagID, Chapters, Chapters_Completed, Cover_Image)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """,
+    (
+        isbn,
+        title,
+        publish_date,
+        publisher_id,
+        summary,
+        tag_id,
+        chapters,
+        chapters_completed,
+        cover_image_bytes
     )
+)
 #----------------------------------------------------------------
 # A. Splitting a List of Genres.
 #
@@ -421,20 +428,6 @@ def create_full_book_entry(
     chapters_completed: int = None,
     cover_image_bytes: bytes = None
 ):
-
-def create_full_book_entry(
-    isbn: str,
-    title: str,
-    publish_date: str,
-    publisher_name: str,
-    authors_string: str,
-    genre_string: str,
-    summary: str = None,
-    tag_id: int = None,
-    chapters: int = None,
-    chapters_completed: int = None,
-    cover_image_bytes: bytes = None
-):
     try:
         with _connect() as conn:
             cur = conn.cursor()
@@ -521,8 +514,8 @@ def create_full_book_entry(
         return False, f"Database error: {e}"
 
 # This is the code that convert the results into json:
-def format_to_jason(data):
-   return json.dump(data)
+def format_to_json(data):
+   return json.dumps(data)
 {"isbn",
  "title",
  "publisher",
