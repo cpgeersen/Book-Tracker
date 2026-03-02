@@ -563,6 +563,12 @@ def main():
         cover_image_bytes=None,
     )
 
+    json_input json.dumps(payload)
+
+    # Call the wrapper function
+
+    success, payload = create_full_book_entry(json_input)
+    
     output = {
         "success": success,
         "result": result,
