@@ -3,13 +3,25 @@ import sqlite3
 # The Assumption no: ON DELETE CASCADE in FOREIGN KEY REFERENCES DEFINITION
 DB_PATH = "bt.db"
 #---------------------------------------------------------------------
-# Modifications to the delete code.
-# Here I decided to try to implement a function to prompt the user for an ISBN.
-# I was also requested to add a flag to indicate if the function successfully Accomplished the goal. 
+# Defining A JSON Wrapper Function:
+#--------------------------------------------------------------------- 
+def json_wrapper(func): 
+    def wrapped(json_input):
+        try:
+            data = json.loads(json_input) # Take a single JSON object, unpack its keys, and pass them as keyword arguments.  
+
+            if not isinstance(data, dict):
+                raise ValueError("JSON input must be an object mapping to function arguments")
+    # Wrapper calls the function **data.
+            return func(**data)   # <-- unpack JSON keys into function parameters
+        except json.JSONDecodeError:
+            raise ValueError("Invalid JSON input")
+    return wrapped
+
 #---------------------------------------------------------------------
+# Main Function Call
 #---------------------------------------------------------------------
-# Have a JSON Statement to input the ISBN.
-#---------------------------------------------------------------------
+
 def main():
     while True:
         isbn = input("Enter the ISBN for a book you want to remove from your library (or press Enter to quit): ")
@@ -41,6 +53,7 @@ def _connect():
 # I need to either prompt the user to enter an ISBN for a book to delete:
 
 # JSON integration point.
+@json_wrapper()
 def delete_book_cascading(isbn: str):
     try:
         with _connect() as conn:
