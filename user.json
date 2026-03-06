@@ -1,0 +1,18 @@
+DEFAULT_USER_PROFILE = {
+    "f_name": "",
+    "l_name": "",
+    "username": "",
+    "email": "",
+    "mission_statement": "",
+    "cur_reading": "",
+    "fav_genres": "",
+    "avg_chapter_speed": "",
+    "avg_page_speed": "",
+    "theme": "",
+    "calculated_fields": {
+        "avg_chapter_read_speed": "",
+        "avg_page_read_speed": "",
+        "fav_genres": "",
+        "cur_reading": ""
+    }
+}

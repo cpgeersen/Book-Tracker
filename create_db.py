@@ -13,12 +13,35 @@ cursor = con.cursor()
 if not db_exists:
     print("Database not found. Creating new database...")
 
+
     # ---------------------------
     # BEGIN ORIGINAL create_db.py
     # ---------------------------
 
     cursor.execute("PRAGMA foreign_keys = ON;")
 
+    #----------------------------
+    # CREATE USER TABLE
+    #----------------------------
+    # added user_id = 1 to enforce only one user record, since this is a single user application.
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Users (
+            user_id INTEGER PRIMARY KEY CHECK (user_id = 1),  
+            f_name TEXT NOT NULL,
+            l_name TEXT NOT NULL,
+            username TEXT NOT NULL,
+            email TEXT NOT NULL,
+            mission_statement TEXT DEFAULT NULL,
+            cur_reading TEXT DEFAULT NULL,
+            fav_genres TEXT DEFAULT NULL,
+            avg_chapter_speed REAL DEFAULT NULL,
+            avg_page_speed REAL DEFAULT NULL,
+            theme BOOLEAN DEFAULT 0
+            );
+            ''')
+    #----------------------------
+    # Beginning of the book DB
+    #----------------------------
     cursor.execute ('''
         CREATE TABLE IF NOT EXISTS Books (
                    ISBN TEXT PRIMARY KEY,
@@ -34,6 +57,21 @@ if not db_exists:
                    FOREIGN KEY (TagID) REFERENCES Tags(TagID)
                    )
                     ''')
+
+    # Should trigger a note creation with info for analysis functions. 
+    cursor.execute('''
+        CREATE TRIGGER IF NOT EXISTS create_blank_note_for_book
+            AFTER INSERT ON Books
+            BEGIN
+                -- Step 1: Create a blank note (timestamp auto-filled)
+                INSERT INTO Notes (Note)
+                VALUES ('Book Added to Library');
+
+                -- Step 2: Link the new note to the new book
+                INSERT INTO BookNotes (ISBN, NoteID)
+                VALUES (NEW.ISBN, last_insert_rowid());
+            END;
+
 
 #---------------------------------------------------------------
 # Here I have went ahead and added the DD_Sys table.
@@ -95,8 +133,22 @@ if not db_exists:
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Notes (
                    NoteID INTEGER PRIMARY KEY,
-                   Note BLOB NOT NULL
+                   Note BLOB NOT NULL,
+                   created_On TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                   updated_At TEXT DEFAULT NULL
                    )''')
+
+        # TRIGGER FUNCTION.
+    cursor.execute("""
+        CREATE TRIGGER IF NOT EXISTS update_notes_timestamp
+        AFTER UPDATE ON Notes
+        FOR EACH ROW
+        BEGIN
+            UPDATE Notes
+            SET updated_At = CURRENT_TIMESTAMP
+            WHERE NoteID = NEW.NoteID;
+        END;
+    """)
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Tags (
