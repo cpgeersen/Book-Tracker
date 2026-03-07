@@ -1,8 +1,3 @@
-import sqlite3
-
-from CRUD_Create import create_book, create_author, create_publisher
-from CRUD_Read import read_publisher
-
 def main():
     while True:
         try:

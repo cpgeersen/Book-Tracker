@@ -1,6 +1,7 @@
 import requests
 import json
-from app.services.create_complete_book import is_isbn_in_book_table
+#from app.services.create_complete_book import is_isbn_in_book_table
+from app.services.Book.Book import read_book, is_isbn_present
 
 BASE_URL = "https://openlibrary.org"
 
@@ -83,7 +84,7 @@ def get_books_from_author_ol(first_name, last_name):
 def get_book_data_from_isbn_OL(isbn):
     try:
         # First call if the ISBN is already in database
-        isbn_present_json = is_isbn_in_book_table(isbn)
+        isbn_present_json = is_isbn_present(isbn)
 
         if not isinstance(isbn_present_json, dict):
             raise ValueError("Database returned invalid format")
@@ -96,7 +97,7 @@ def get_book_data_from_isbn_OL(isbn):
 
     if isbn_present:
         # If ISBN present in DB, return full DB record
-        return read_full_book_record(isbn)
+        return read_book(isbn)
 
     else:
         # Send GET request with ISBN to OL API

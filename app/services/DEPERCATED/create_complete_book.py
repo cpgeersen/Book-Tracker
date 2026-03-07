@@ -14,8 +14,9 @@ def connect_to_database():
         return cursor, conn
     except sqlite3.Error as error:
             print(f"Database error: {error}")
+            conn.close()
 
-
+# MOVED to BookPredicate
 def is_isbn_in_book_table(isbn):
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
@@ -34,7 +35,7 @@ def is_isbn_in_book_table(isbn):
     else:
         return True
 
-
+# MOVED to BookCreate
 def create_tag(isbn, owned, favorite, completed, currently_reading, personal_or_academic):
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
@@ -57,8 +58,8 @@ def create_tag(isbn, owned, favorite, completed, currently_reading, personal_or_
     tag_json = {"Tag_ID": tag_result[0]}
     return tag_json
 
-
-def read_author_id(author_first_name, author_last_name):
+# MOVED to BookRead
+def read_author_id_from_name(author_first_name, author_last_name):
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
 
@@ -77,6 +78,7 @@ def read_author_id(author_first_name, author_last_name):
 
     return author_id_json
 
+# MOVED to BookCreate
 def create_book_author_table_record(isbn, author_id):
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
@@ -100,6 +102,7 @@ def create_book_author_table_record(isbn, author_id):
         conn.close()
         return True
 
+# MOVED to BookCreate
 def create_author(author_first_name, author_last_name):
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
@@ -123,6 +126,7 @@ def create_author(author_first_name, author_last_name):
 
     return author_result_json
 
+# MOVED to BookRead
 def read_publisher_id(publisher_name):
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
@@ -142,6 +146,7 @@ def read_publisher_id(publisher_name):
 
     return publisher_json
 
+# MOVED to BookCreate
 def create_publisher(publisher_name):
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
@@ -157,6 +162,7 @@ def create_publisher(publisher_name):
     publisher_id = read_publisher_id(publisher_name)
     return publisher_id
 
+# MOVED to BookRead
 def read_genre_id_from_genre_table(genre):
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
@@ -176,6 +182,7 @@ def read_genre_id_from_genre_table(genre):
 
     return genre_id_json
 
+# MOVED to BookCreate
 def create_book_genre_table_record(isbn, genre_id):
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
@@ -201,6 +208,7 @@ def create_book_genre_table_record(isbn, genre_id):
         conn.close()
         return True
 
+# MOVED to BookCreate
 def create_book(isbn, title, publish_year, publisher_id, summary, tag_id,
                 chapters, chapters_completed, cover_image):
     # Get a cursor and connection to database
@@ -217,7 +225,7 @@ def create_book(isbn, title, publish_year, publisher_id, summary, tag_id,
     conn.close()
     return True
 
-
+# MOVED to BookCreate
 def create_book_record(json):
     # All required values have been validated by mediator at this point
     # All variables that use get() method have a default value of '', since they are optional for creation
@@ -279,7 +287,7 @@ def create_book_record(json):
 
     # Next check if Author_ID is present based on Author Name in Author Table
     try:
-        author_1_response = read_author_id(author_first_name_1, author_last_name_1)
+        author_1_response = read_author_id_from_name(author_first_name_1, author_last_name_1)
 
         if not author_1_response:
             return 'Error: No Author', BAD_REQUEST
@@ -298,7 +306,7 @@ def create_book_record(json):
 
     # Then we do author_2 if present
     if author_first_name_2 != '':
-        author_2_response = read_author_id(author_first_name_2, author_last_name_2)
+        author_2_response = read_author_id_from_name(author_first_name_2, author_last_name_2)
 
         if author_2_response['Author_ID']:
             author_id_2 = author_2_response['Author_ID']

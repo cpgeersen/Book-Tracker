@@ -1,5 +1,4 @@
 from app.services.validate_book_json import validate_book
-from app.services.full_read_book import read_full_book_record
 
 
 def main(): # Test main

@@ -2,7 +2,7 @@ import sqlite3
 
 # This file contains Create functionality for book, author, publisher, and genre records
 
-DB_PATH = "bt.db"
+DB_PATH = "../bt.db"
 
 
 def _connect():

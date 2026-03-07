@@ -41,7 +41,7 @@ def cli_create_book():
                               VALUES(100, 'fiction')
                            '''
 
-    with sqlite3.connect('bt.db') as conn:
+    with sqlite3.connect('../bt.db') as conn:
         cursor = conn.cursor()
         try:
             cursor.execute(book_insert)
@@ -59,7 +59,7 @@ def cli_create_book():
 def read_db_all():
     try:
         # Connect to SQLite database.
-        conn = sqlite3.connect("bt.db")
+        conn = sqlite3.connect("../bt.db")
         cursor = conn.cursor()
 
         # Query database for ISBN provided.
@@ -97,7 +97,7 @@ print(bt)
 
 def connect_to_database():
     try:
-        conn = sqlite3.connect('bt.db')
+        conn = sqlite3.connect('../bt.db')
         cursor = conn.cursor()
         return cursor, conn
     except sqlite3.Error as error:

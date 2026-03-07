@@ -1,0 +1,33 @@
+import sqlite3
+
+def connect_to_database():
+    try:
+        conn = sqlite3.connect('bt.db')
+        cursor = conn.cursor()
+        return cursor, conn
+    except sqlite3.Error as error:
+            print(f"Database error: {error}")
+            conn.close()
+
+def is_isbn_in_book_table(isbn):
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+
+    # Query if the ISBN is in Book Table
+    read_query = "SELECT * FROM Books WHERE ISBN = ?"
+    criteria = (isbn,)
+    cursor.execute(read_query, criteria)
+    result = cursor.fetchall()
+
+    conn.close()
+
+    # Return False when there is no ISBN that matches
+    if len(result) == 0:
+        return False
+    else:
+        return True
+
+
+
+if __name__ == '__main__':
+    pass

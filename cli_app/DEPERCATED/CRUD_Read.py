@@ -22,7 +22,7 @@ def read_from_database(user_search, read_type):
 def read_book(x):
     try:
         # Connect to SQLite database. 
-        conn = sqlite3.connect("bt.db")
+        conn = sqlite3.connect("../bt.db")
         cursor = conn.cursor()
 
         # Query database for ISBN provided. 
@@ -47,7 +47,7 @@ def read_book(x):
 def read_author(x):
     try:
         # Connect to SQLite database. 
-        conn = sqlite3.connect("bt.db")
+        conn = sqlite3.connect("../bt.db")
         cursor = conn.cursor()
 
         # Query database for ISBN provided. 
@@ -72,7 +72,7 @@ def read_author(x):
 def read_publisher(x):
     try:
         # Connect to SQLite database. 
-        conn = sqlite3.connect("bt.db")
+        conn = sqlite3.connect("../bt.db")
         cursor = conn.cursor()
 
         # Query database for ISBN provided. 
@@ -97,7 +97,7 @@ def read_publisher(x):
 def read_genre(x):
     try:
         # Connect to SQLite database. 
-        conn = sqlite3.connect("bt.db")
+        conn = sqlite3.connect("../bt.db")
         cursor = conn.cursor()
 
         # Query database for ISBN provided. 
