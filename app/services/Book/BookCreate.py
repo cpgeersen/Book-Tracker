@@ -141,8 +141,15 @@ def create_book(isbn, title, publish_year, publisher_id, summary, tag_id,
                                         Tag_ID, Chapters, Chapters_Completed, Cover_Image)
                       VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
                   '''
-    publisher_id = publisher_id['Publisher_ID'][0]
-    criteria = (isbn, title, publish_year, publisher_id, summary, tag_id, chapters, chapters_completed, cover_image,)
+    print(f'create_book initial pub id: {publisher_id}')
+
+    # Note from Collin: Bad fix, will refactor later
+    if type(publisher_id) == dict:
+        publisher_id_unpack = publisher_id['Publisher_ID'][0]
+    else:
+        publisher_id_unpack = publisher_id[0]
+
+    criteria = (isbn, title, publish_year, publisher_id_unpack, summary, tag_id, chapters, chapters_completed, cover_image,)
     cursor.execute(insert_book, criteria)
     conn.commit()
     conn.close()
@@ -240,6 +247,7 @@ def create_book_record(json):
     # Next we read or create publisher_id from publisher_name
     try:
         publisher_response = read_publisher_id(publisher_name)
+        print(f'read_publisher_id: {publisher_response}')
 
         if not publisher_response:
             return 'Error: No Publisher', BAD_REQUEST
