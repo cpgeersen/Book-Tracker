@@ -1,10 +1,22 @@
+import datetime
+from modulefinder import test
+from datetime import datetime, timedelta
 import requests
 import json
 #from app.services.create_complete_book import is_isbn_in_book_table
-from app.services.Book.Book import read_book, is_isbn_present
+#from app.services.Book.Book import read_book, is_isbn_present
 
 BASE_URL = "https://openlibrary.org"
-
+last_serach_time = None
+Title_search_cooldown = timedelta(seconds=1.5)
+def is_search_allowed():
+    global last_serach_time
+    now = datetime.now()
+    if last_serach_time is None or (now - last_serach_time) >= Title_search_cooldown:
+        last_serach_time = now
+        return True
+    else:
+        return False
 #search books by author OLID (author ID in OpenLibrary)
 def search_books_by_authorid(author_id, limit=5):
     params = {
@@ -41,6 +53,13 @@ def search_books_by_isbn(isbn):
         }
 #search books by title
 def search_books_by_title(query, limit=5):
+    #function to make sure search input is valid (not empty, not too short, not too long, and doesn't contain obvious garbage patterns)
+    if is_invalid_title_input(query):
+        return {"error": "Invalid search input. Please enter a real book title."}
+    #function to make sure user is not searching too quickly, to prevent hitting API rate limits
+    if not is_search_allowed():
+        return {"error": "You are searching too quickly. Please wait a moment."}
+
     params = {
         "title": query,
         "limit": limit,
@@ -142,9 +161,41 @@ def get_book_data_from_isbn_OL(isbn):
             "isbn_list": isbn_list,
             "work_key": work_key
         }
+    
+def is_invalid_title_input(query):
+    """Return True if the title is empty, too short, too long, or obvious garbage."""
+    has_letter_or_number = False
 
+    if not query:
+        return True
+    #stripping leading/trailing whitespace for more accurate checks
+    cleaned_title = query.strip()
+    
+    if len(cleaned_title) < 1:
+        return True
+    #IF title is all numbers and only 1 digit, it's likely not a valid title (e.g. "1", "2", etc.) Did this to allow it to still search for  1984 etc.
+    if cleaned_title.isdigit() and len(cleaned_title) == 1:
+        return True
+
+
+    if len(cleaned_title) > 80:
+        return True
+    # Loop through each character in the title.
+    for char in cleaned_title:
+        if char.isalnum():
+            has_bad_data = True
+            break
+    if not has_bad_data:
+        return True
+
+
+
+    return False
 
 if __name__ == "__main__":
-    isbn = input("Enter an ISBN to search for: ").strip()
-    results = get_book_data_from_isbn_OL(isbn)
-    print(json.dumps(results, indent=2))
+    user_title = input("Enter a book title to search: ").strip()
+
+    search_results = search_books_by_title(user_title)
+
+    print("\n Search Results ")
+    print(json.dumps(search_results, indent=2))
