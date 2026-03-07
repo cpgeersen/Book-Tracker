@@ -1,6 +1,5 @@
-from app.services.full_read_book import read_full_book_record
-from app.services.create_complete_book import create_book_record
 from sample_book_entries import get_sample_books
+from app.services.Book.Book import create_book, read_book
 
 
 def main():
@@ -16,15 +15,15 @@ def main():
                 print('Creating Example Book')
                 sample_books = get_sample_books()
                 for book in sample_books:
-                    create_book_record(book)
-                    print(read_full_book_record(book['ISBN']))
+                    create_book(book)
+                    print(read_book(book['ISBN']))
 
             elif user_choice == 2:
                 print('User Defined Book')
                 user_book = get_user_book_input()
 
-                create_book_record(user_book)
-                print(read_full_book_record(user_book['ISBN']))
+                create_book(user_book)
+                print(read_book(user_book['ISBN']))
 
             elif user_choice == 3:
                 print('Exiting')

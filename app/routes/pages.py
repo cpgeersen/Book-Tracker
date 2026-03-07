@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify
 from app.services.mediator import create
-from app.services.create_complete_book import create_book_record
-from app.services.full_read_book import read_full_book_record
+from app.services.Book.Book import create_book
+from app.services.Book.Book import read_book
 
 
 # This route registers all the pages for the app
@@ -18,9 +18,9 @@ def add_book_page():
         print('test')
         book_form_json = dict(request.form)
         #print(book_form_json)
-        book_response = create_book_record(book_form_json)
+        book_response = create_book(book_form_json)
         print(book_response)
-        print(read_full_book_record(book_form_json['ISBN']))
+        print(read_book(book_form_json['ISBN']))
 
         #create(book_form_json, 'book')
         #print(book_form_json)
