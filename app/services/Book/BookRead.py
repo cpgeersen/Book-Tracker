@@ -9,7 +9,6 @@ INTERNAL_SERVER_ERROR = 500
 def connect_to_database():
     try:
         conn = sqlite3.connect('bt.db')
-        conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         return cursor, conn
     except sqlite3.Error as error:
@@ -27,15 +26,25 @@ def read_book_table(isbn):
     read_query = "SELECT * FROM Books WHERE ISBN = ?"
     criteria = (isbn,)
     cursor.execute(read_query, criteria)
-
-    # Weird work around to get a direct result in a python dict
-    result = [dict(row) for row in cursor.fetchall()][0]
-
+    result = cursor.fetchall()
     conn.close()
 
     # Check to confirm value found in table.
     if result:
-        return result
+        convert_to_dict = {
+            "ISBN": result[0][0],
+            "Title": result[0][1],
+            "Publish_Year": result[0][2],
+            "Publisher_ID": result[0][3],
+            "Summary": result[0][4],
+            "Tag_ID": result[0][5],
+            "Chapters": result[0][6],
+            "Chapters_completed": result[0][7],
+            "Cover_Image_Bytes": result[0][8]
+        }
+
+        json_format = json.dumps(convert_to_dict)
+        return json_format
     else:
         return "ISBN not found"
 
@@ -441,9 +450,9 @@ def read_genres_for_full_book_record(genre_ids):
 # Returns full book record based on ISBN.
 def read_full_book_record(isbn):
     # Return Book table records for ISBN.
-    converted_books = read_book_table(isbn)
+    read_book_table_record = read_book_table(isbn)
     # print(read_book_table_record)
-    #converted_books = json.loads(read_book_table_record)
+    converted_books = json.loads(read_book_table_record)
 
     # Return Author Names associated with ISBN.
     author_names = read_author_name_by_isbn_full_record(isbn)
