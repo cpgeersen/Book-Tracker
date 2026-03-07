@@ -76,7 +76,28 @@ books = ({"ISBN": "0312278497",
           "Currently_Reading": "no",
           "Personal_Or_Academic": "personal",
           "Genre_1": "fiction",
-          "Genre_2": "kid"})
+          "Genre_2": "kid"},
+
+         {"ISBN": "1234567890123",
+          "Title": "TEST BOOK",
+          "Publish_Year": "1997",
+          "Summary": "",
+          "Chapters": "",
+          "Chapters_Completed": "",
+          "Cover_Image": "",
+          "Author_First_Name_1": "Dr.",
+          "Author_Last_Name_1": "Seuss",
+          "Author_First_Name_2": "",
+          "Author_Last_Name_2": "",
+          "Publisher_Name": "Scholastic",
+          "Owned": "no",
+          "Favorite": "no",
+          "Completed": "no",
+          "Currently_Reading": "no",
+          "Personal_Or_Academic": "personal",
+          "Genre_1": "fiction",
+          "Genre_2": "kid"}
+         )
 
 def get_sample_books():
     return books

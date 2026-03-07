@@ -212,10 +212,11 @@ def read_publisher_id(publisher_name):
     publisher_result = cursor.fetchone()
     conn.close()
 
-    if not publisher_result:
+    if publisher_result is None:
         publisher_result = ''
-
-    publisher_json = {"Publisher_ID": publisher_result}
+        publisher_json = {"Publisher_ID": publisher_result}
+    else:
+        publisher_json = {"Publisher_ID": publisher_result}
 
     return publisher_json
 

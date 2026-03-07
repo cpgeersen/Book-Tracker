@@ -1,5 +1,6 @@
 from app.services.Book.BookCreate import create_book_record
 from app.services.Book.BookRead import read_full_book_record
+from app.services.Book.BookDelete import delete_book_record
 from app.services.Book.BookPredicate import is_isbn_in_book_table
 
 
@@ -12,6 +13,8 @@ def read_book(isbn):
 def is_isbn_present(isbn):
     return is_isbn_in_book_table(isbn)
 
+def delete_book(isbn):
+    return delete_book_record(isbn)
 
 if __name__ == '__main__':
     pass
