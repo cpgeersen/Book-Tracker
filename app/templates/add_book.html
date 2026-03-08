@@ -284,5 +284,143 @@ function toggleAuthor() {
 }
 </script>
 
+  <!-- Main form container -->
+  <main class="container">
+
+    <!-- UI-only template for Task 1.5 -->
+    <h1>Add Book</h1>
+
+    <!-- Book input form (no backend logic yet) -->
+    <form method="POST">
+
+      <!-- Book title -->
+      <label for="Title">Title</label>
+      <input type="text" id="Title" name="Title" required>
+
+      <!-- Book authors -->
+      <div>
+        <fieldset>
+          <legend>Primary Author</legend>
+          <label for="Author_First_Name_1">Author First Name</label>
+          <input type="text" id="Author_First_Name_1" name="Author_First_Name_1" required>
+
+          <label for="Author_Last_Name_1">Author Last Name</label>
+          <input type="text" id="Author_Last_Name_1" name="Author_Last_Name_1" required>
+        </fieldset>
+
+        <fieldset>
+          <legend>Secondary Author (Optional)</legend>
+          <label for="Author_First_Name_2">Author First Name</label>
+          <input type="text" id="Author_First_Name_2" name="Author_First_Name_2">
+
+          <label for="Author_Last_Name_2">Author Last Name</label>
+          <input type="text" id="Author_Last_Name_2" name="Author_Last_Name_2">
+        </fieldset>
+      </div>
+
+
+      <!-- ISBN (numbers only) -->
+      <label for="ISBN">ISBN (10 or 13)</label>
+      <input
+        type="text"
+        id="ISBN"
+        name="ISBN"
+        pattern="[0-9]+"
+        inputmode="numeric"
+        required
+      >
+
+      <!-- Publisher -->
+      <label for="Publisher_Name">Publisher</label>
+      <input type="text" id="Publisher_Name" name="Publisher_Name">
+
+      <!-- Year published -->
+      <label for="Publish_Year">Year Published (Integer)</label>
+      <input type="text"
+             id="Publish_Year"
+             name="Publish_Year"
+             pattern="[0-9]+"
+             inputmode="numeric"
+             required
+      >
+
+      <!-- Chapter count -->
+      <label for="Chapters">Number of Chapters (Optional Integer)</label>
+      <input
+        type="text"
+        id="Chapters"
+        name="Chapters"
+        pattern="[0-9]+"
+        inputmode="numeric"
+        value=""
+      >
+
+      <!-- Fiction / Non-Fiction -->
+      <fieldset>
+        <legend>Fiction or Non-Fiction</legend>
+
+        <div class="radio-group">
+          <label>
+            <input type="radio" name="Genre_1" value="fiction">
+            Fiction
+          </label>
+
+          <label>
+            <input type="radio" name="Genre_1" value="nonfiction">
+            Non-Fiction
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Tags section -->
+      <fieldset>
+        <legend>Tags</legend>
+
+        <!-- Tag checkboxes -->
+        <div class="tags-grid">
+          <label>
+            <input type="checkbox" name="Owned" value="yes">
+            Owned
+          </label>
+
+          <label>
+            <input type="checkbox" name="Favorite" value="yes">
+            Favorite
+          </label>
+
+          <label>
+            <input type="checkbox" name="Completed" value="yes">
+            Completed
+          </label>
+
+          <label>
+            <input type="checkbox" name="Currently_Reading" value="yes">
+            Currently Reading
+          </label>
+        </div>
+
+        <!-- Personal vs Academic -->
+        <fieldset>
+          <legend>Reading Type</legend>
+
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="Personal_Or_Academic" value="personal">
+              Personal
+            </label>
+
+            <label>
+              <input type="radio" name="Personal_Or_Academic" value="academic">
+              Academic
+            </label>
+          </div>
+        </fieldset>
+      </fieldset>
+
+      <!-- Submit -->
+      <button type="submit">Add Book</button>
+
+    </form>
+  </main>
 </body>
 </html>
