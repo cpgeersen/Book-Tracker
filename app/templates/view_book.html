@@ -161,12 +161,20 @@
         </div>
 
         <div class="book-info">
-          <h2>Placeholder Title</h2>
-          <p><strong>Author:</strong> Placeholder Author</p>
-          <p><strong>Publisher:</strong> Placeholder Publisher</p>
-          <p><strong>Year:</strong> 2026</p>
-          <p><strong>ISBN:</strong> 1234567890</p>
-          <p><strong>Summary:</strong> No summary available.</p>
+
+          <h2>{{ book["Title"] }}</h2>
+          <p><strong>Author:</strong> {{ book["Author_First_Name_1"] }} {{ book["Author_Last_Name_1"] }}</p>
+          {% if book["Author_First_Name_2"] %}
+            <p><strong>Second Author:</strong> {{ book["Author_First_Name_2"] }} {{ book["Author_Last_Name_2"] }}</p>
+          {% endif %}
+          <p><strong>Publisher:</strong> {{ book["Publisher_Name"] }}</p>
+          <p><strong>Year:</strong> {{ book["Publish_Year"] }}</p>
+          <p><strong>ISBN:</strong> {{ book["ISBN"] }}</p>
+          {% if book["Summary"] %}
+            <p><strong>Summary:</strong> {{ book["Summary"] }}</p>
+          {% else %}
+            <p><strong>Summary:</strong> No summary available.</p>
+          {% endif %}
         </div>
       </div>
 

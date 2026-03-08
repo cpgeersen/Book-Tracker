@@ -162,7 +162,7 @@ class UserManager:
 #---------------------------------------------
 # 4.1.3 Read JSON user file
 #---------------------------------------------
-        def read_user_json(self):
+    def read_user_json(self):
         if not os.path.exists(self.json_path):
             raise FileNotFoundError("User JSON file does not exist.")
         with open(self.json_path, "r") as f:
