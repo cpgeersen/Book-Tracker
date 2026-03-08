@@ -20,32 +20,96 @@ def update_tags(tag_id, owned, favorite, completed, currently_reading, personal_
     cursor, conn = connect_to_database()
 
     # Update Tags record by TagID.
-    update_query = """
-                UPDATE Tags
-                SET Owned = ?,
-                    Favorite = ?,
-                    Completed = ?,
-                    Currently_Reading = ?,
-                    Personal_Or_Academic = ?
-                WHERE Tag_ID = ?
-            """
+    update_query = ''' UPDATE Tags
+                       SET Owned = ?,
+                       Favorite = ?,
+                       Completed = ?,
+                       Currently_Reading = ?,
+                       Personal_Or_Academic = ?
+                       WHERE Tag_ID = ?
+                   '''
     criteria = (owned, favorite, completed, currently_reading, personal_or_academic, tag_id)
     cursor.execute(update_query, criteria)
     conn.commit()
     conn.close()
-    return print(f"Tag {tag_id} updated successfully.")
+    return f"Tag {tag_id} updated successfully.", 200
 
-def update_summary():
+def update_summary(isbn, summary):
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+
+    update_query = ''' UPDATE Books
+                       SET Summary = ?
+                       WHERE ISBN = ?
+                   '''
+    criteria = (summary, isbn,)
+    cursor.execute(update_query, criteria)
+    conn.commit()
+    conn.close()
+    return f"Book with {isbn} updated summary successfully.", 200
+
+def update_chapters(isbn, chapters):
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+
+    update_query = ''' UPDATE Books
+                       SET Chapters = ?
+                       WHERE ISBN = ?
+                   '''
+    criteria = (chapters, isbn,)
+    cursor.execute(update_query, criteria)
+    conn.commit()
+    conn.close()
+    return f"Book with {isbn} updated number of chapters successfully.", 200
+
+def update_read_chapters(isbn, chapters_competed):
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+
+    update_query = ''' UPDATE Books
+                       SET Chapters_Completed = ?
+                       WHERE ISBN = ?
+                   '''
+    criteria = (chapters_competed, isbn,)
+    cursor.execute(update_query, criteria)
+    conn.commit()
+    conn.close()
+    return f"Book with {isbn} updated number of completed chapters successfully.", 200
+
+# WIP - Will Implement Later
+def update_genre(isbn, genre):
     pass
 
-def update_chapters():
+# WIP - Will Implement Later
+def update_cover_image(isbn, cover_image):
     pass
 
-def update_genre():
-    pass
 
-def update_cover_image():
-    pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
