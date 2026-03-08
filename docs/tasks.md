@@ -73,7 +73,7 @@
   - [x] Task 3.2.3 - Case: Same book different ISBN
   - [x] Task 3.2.4 - Case: Adding a new book from OL where author/publisher was added to database by user
   - [ ] Task 3.2.5 - Case: Updating a Locally added book with OL data
-- [ ] 3.3: Most commonly read genre function   
+- [x] 3.3: Most commonly read genre function   
 - [ ] 3.9: Deprecate CRUD files outside of services
 - [x] 3.11 Database Analytics Functions
 - [ ] 3.12: Create Note Backend Functionality
