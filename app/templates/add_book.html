@@ -1,426 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Basic page metadata -->
-  <meta charset="UTF-8">
-  <title>Add Book</title>
+    <!-- Basic page metadata -->
+    <meta charset="UTF-8">
+    <title>Add Book</title>
 
-  <style>
-    /* Global page styling */
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background-color: #0f172a;
-      color: #e5e7eb;
-      margin: 0;
-      padding: 0;
-    }
+    <style>
+        /* Global page styling */
+        body {
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          background-color: #0f172a;
+          color: #e5e7eb;
+          margin: 0;
+          padding: 0;
+        }
 
-    /* Centered card container */
-    .container {
-      max-width: 700px;
-      margin: 3rem auto;
-      padding: 2rem;
-      background-color: #111827;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    }
+        /* Centered card container */
+        .container {
+          max-width: 700px;
+          margin: 3rem auto;
+          padding: 2rem;
+          background-color: #111827;
+          border-radius: 12px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      color: #f9fafb;
-    }
+        h1 {
+          text-align: center;
+          margin-bottom: 1.5rem;
+          color: #f9fafb;
+        }
 
-    label {
-      display: block;
-      margin-top: 1rem;
-      margin-bottom: 0.25rem;
-      font-weight: 600;
-    }
+        label {
+          display: block;
+          margin-top: 1rem;
+          margin-bottom: 0.25rem;
+          font-weight: 600;
+        }
 
-    input,
-    select {
-      width: 100%;
-      padding: 0.6rem;
-      border-radius: 8px;
-      border: none;
-      background-color: #1f2933;
-      color: #e5e7eb;
-    }
+        input,
+        select {
+          width: 100%;
+          padding: 0.6rem;
+          border-radius: 8px;
+          border: none;
+          background-color: #1f2933;
+          color: #e5e7eb;
+        }
 
-    input:focus,
-    select:focus {
-      outline: 2px solid #6366f1;
-    }
+        input:focus,
+        select:focus {
+          outline: 2px solid #6366f1;
+        }
 
-    fieldset {
-      margin-top: 1.5rem;
-      padding: 1rem 1.25rem;
-      border: 1px solid #2a2a2a;
-      border-radius: 8px;
-    }
+        fieldset {
+          margin-top: 1.5rem;
+          padding: 1rem 1.25rem;
+          border: 1px solid #2a2a2a;
+          border-radius: 8px;
+        }
 
-    legend {
-      padding: 0 0.5rem;
-      font-weight: 600;
-      color: #9fbaff;
-    }
+        legend {
+          padding: 0 0.5rem;
+          font-weight: 600;
+          color: #9fbaff;
+        }
 
-    /* horizontal row layout */
-    .row {
-      display: flex;
-      gap: 1rem;
-    }
+        /* horizontal row layout */
+        .row {
+          display: flex;
+          gap: 1rem;
+        }
 
-    .row div {
-      flex: 1;
-    }
+        .row div {
+          flex: 1;
+        }
 
-    .radio-group {
-      display: flex;
-      gap: 1.5rem;
-      margin-top: 0.75rem;
-    }
+        .radio-group {
+          display: flex;
+          gap: 1.5rem;
+          margin-top: 0.75rem;
+        }
 
-    .radio-group label {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-weight: 500;
-      margin: 0;
-    }
+        .radio-group label {
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-weight: 500;
+          margin: 0;
+        }
 
-    .tags-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.75rem 1.5rem;
-      margin-top: 0.75rem;
-    }
+        .tags-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 0.75rem 1.5rem;
+          margin-top: 0.75rem;
+        }
 
-    .tags-grid label {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 500;
-      margin: 0;
-      white-space: nowrap;
-    }
+        .tags-grid label {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-weight: 500;
+          margin: 0;
+          white-space: nowrap;
+        }
 
-    .tags-grid input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-    }
+        .tags-grid input[type="checkbox"] {
+          width: 16px;
+          height: 16px;
+        }
 
-    button {
-      width: 100%;
-      margin-top: 1.8rem;
-      padding: 0.75rem;
-      border: none;
-      border-radius: 10px;
-      background-color: #6366f1;
-      color: white;
-      font-weight: 700;
-      cursor: pointer;
-    }
+        button {
+          width: 100%;
+          margin-top: 1.8rem;
+          padding: 0.75rem;
+          border: none;
+          border-radius: 10px;
+          background-color: #6366f1;
+          color: white;
+          font-weight: 700;
+          cursor: pointer;
+        }
 
-    button:hover {
-      background-color: #4f46e5;
-    }
+        button:hover {
+          background-color: #4f46e5;
+        }
 
-    /* secondary author hidden initially */
-    .hidden {
-      display: none;
-    }
+        /* secondary author hidden initially */
+        .hidden {
+          display: none;
+        }
 
-    .toggle-btn {
-      margin-top: 0.5rem;
-      background: transparent;
-      border: none;
-      color: #9fbaff;
-      cursor: pointer;
-      font-weight: 600;
-    }
-  </style>
+        .toggle-btn {
+          margin-top: 0.5rem;
+          background: transparent;
+          border: none;
+          color: #9fbaff;
+          cursor: pointer;
+          font-weight: 600;
+        }
+    </style>
 </head>
 
 <body>
 <main class="container">
 
-<h1>Add Book</h1>
-
-<form method="POST">
-
-<!-- Title -->
-<label for="Title">Title</label>
-<input type="text" id="Title" name="Title" required>
-
-<!-- Primary Author -->
-<fieldset>
-  <legend>Primary Author</legend>
-
-  <div class="row">
-    <div>
-      <label for="Author_First_Name_1">First Name</label>
-      <input type="text" id="Author_First_Name_1" name="Author_First_Name_1" required>
-    </div>
-
-    <div>
-      <label for="Author_Last_Name_1">Last Name</label>
-      <input type="text" id="Author_Last_Name_1" name="Author_Last_Name_1" required>
-    </div>
-  </div>
-</fieldset>
-
-<!-- Toggle Secondary Author -->
-<button type="button" class="toggle-btn" onclick="toggleAuthor()">
-+ Add Secondary Author
-</button>
-
-<!-- Secondary Author -->
-<fieldset id="secondaryAuthor" class="hidden">
-  <legend>Secondary Author (Optional)</legend>
-
-  <div class="row">
-    <div>
-      <label for="Author_First_Name_2">First Name</label>
-      <input type="text" id="Author_First_Name_2" name="Author_First_Name_2">
-    </div>
-
-    <div>
-      <label for="Author_Last_Name_2">Last Name</label>
-      <input type="text" id="Author_Last_Name_2" name="Author_Last_Name_2">
-    </div>
-  </div>
-</fieldset>
-
-<!-- ISBN + Publisher row -->
-<div class="row">
-  <div>
-    <label for="ISBN">ISBN</label>
-    <input type="text"
-           id="ISBN"
-           name="ISBN"
-           pattern="[0-9]+"
-           inputmode="numeric"
-           required>
-  </div>
-
-  <div>
-    <label for="Publisher_Name">Publisher</label>
-    <input type="text" id="Publisher_Name" name="Publisher_Name">
-  </div>
-</div>
-
-<!-- Year + Chapters row -->
-<div class="row">
-  <div>
-    <label for="Publish_Year">Year Published</label>
-    <input type="text"
-           id="Publish_Year"
-           name="Publish_Year"
-           pattern="[0-9]+"
-           inputmode="numeric"
-           required>
-  </div>
-
-  <div>
-    <label for="Chapters">Chapters</label>
-    <input type="text"
-           id="Chapters"
-           name="Chapters"
-           pattern="[0-9]+"
-           inputmode="numeric">
-  </div>
-</div>
-
-<!-- Fiction / Non-Fiction -->
-<fieldset>
-<legend>Fiction or Non-Fiction</legend>
-
-<div class="radio-group">
-<label>
-<input type="radio" name="Genre_1" value="fiction">
-Fiction
-</label>
-
-<label>
-<input type="radio" name="Genre_1" value="nonfiction">
-Non-Fiction
-</label>
-</div>
-</fieldset>
-
-<!-- Tags -->
-<fieldset>
-<legend>Tags</legend>
-
-<div class="tags-grid">
-<label><input type="checkbox" name="Owned">Owned</label>
-<label><input type="checkbox" name="Favorite">Favorite</label>
-<label><input type="checkbox" name="Completed">Completed</label>
-<label><input type="checkbox" name="Currently_Reading">Currently Reading</label>
-</div>
-
-<fieldset>
-<legend>Reading Type</legend>
-
-<div class="radio-group">
-<label><input type="radio" name="Personal_Or_Academic" value="personal">Personal</label>
-<label><input type="radio" name="Personal_Or_Academic" value="academic">Academic</label>
-</div>
-
-</fieldset>
-</fieldset>
-
-<button type="submit">Add Book</button>
-
-</form>
-</main>
-
-<script>
-function toggleAuthor() {
-  const section = document.getElementById("secondaryAuthor")
-  section.classList.toggle("hidden")
-}
-</script>
-
-  <!-- Main form container -->
-  <main class="container">
-
-    <!-- UI-only template for Task 1.5 -->
     <h1>Add Book</h1>
 
-    <!-- Book input form (no backend logic yet) -->
     <form method="POST">
 
-      <!-- Book title -->
-      <label for="Title">Title</label>
-      <input type="text" id="Title" name="Title" required>
+        <!-- Title -->
+        <label for="Title">Title</label>
+        <input type="text" id="Title" name="Title" required>
 
-      <!-- Book authors -->
-      <div>
+        <!-- Primary Author -->
         <fieldset>
-          <legend>Primary Author</legend>
-          <label for="Author_First_Name_1">Author First Name</label>
-          <input type="text" id="Author_First_Name_1" name="Author_First_Name_1" required>
+            <legend>Primary Author</legend>
 
-          <label for="Author_Last_Name_1">Author Last Name</label>
-          <input type="text" id="Author_Last_Name_1" name="Author_Last_Name_1" required>
+            <div class="row">
+                <div>
+                    <label for="Author_First_Name_1">First Name</label>
+                    <input type="text" id="Author_First_Name_1" name="Author_First_Name_1" required>
+                </div>
+
+                <div>
+                    <label for="Author_Last_Name_1">Last Name</label>
+                    <input type="text" id="Author_Last_Name_1" name="Author_Last_Name_1" required>
+                </div>
+            </div>
         </fieldset>
 
-        <fieldset>
-          <legend>Secondary Author (Optional)</legend>
-          <label for="Author_First_Name_2">Author First Name</label>
-          <input type="text" id="Author_First_Name_2" name="Author_First_Name_2">
+        <!-- Toggle Secondary Author -->
+        <button type="button" class="toggle-btn" onclick="toggleAuthor()">
+            + Add Secondary Author
+        </button>
 
-          <label for="Author_Last_Name_2">Author Last Name</label>
-          <input type="text" id="Author_Last_Name_2" name="Author_Last_Name_2">
+        <!-- Secondary Author -->
+        <fieldset id="secondaryAuthor" class="hidden">
+            <legend>Secondary Author (Optional)</legend>
+
+            <div class="row">
+                <div>
+                    <label for="Author_First_Name_2">First Name</label>
+                    <input type="text" id="Author_First_Name_2" name="Author_First_Name_2">
+                </div>
+
+                <div>
+                    <label for="Author_Last_Name_2">Last Name</label>
+                    <input type="text" id="Author_Last_Name_2" name="Author_Last_Name_2">
+                </div>
+            </div>
         </fieldset>
-      </div>
 
+        <!-- ISBN + Publisher row -->
+        <div class="row">
+            <div>
+                <label for="ISBN">ISBN</label>
+                <input type="text"
+                       id="ISBN"
+                       name="ISBN"
+                       pattern="[0-9]+"
+                       inputmode="numeric"
+                       required>
+            </div>
 
-      <!-- ISBN (numbers only) -->
-      <label for="ISBN">ISBN (10 or 13)</label>
-      <input
-        type="text"
-        id="ISBN"
-        name="ISBN"
-        pattern="[0-9]+"
-        inputmode="numeric"
-        required
-      >
-
-      <!-- Publisher -->
-      <label for="Publisher_Name">Publisher</label>
-      <input type="text" id="Publisher_Name" name="Publisher_Name">
-
-      <!-- Year published -->
-      <label for="Publish_Year">Year Published (Integer)</label>
-      <input type="text"
-             id="Publish_Year"
-             name="Publish_Year"
-             pattern="[0-9]+"
-             inputmode="numeric"
-             required
-      >
-
-      <!-- Chapter count -->
-      <label for="Chapters">Number of Chapters (Optional Integer)</label>
-      <input
-        type="text"
-        id="Chapters"
-        name="Chapters"
-        pattern="[0-9]+"
-        inputmode="numeric"
-        value=""
-      >
-
-      <!-- Fiction / Non-Fiction -->
-      <fieldset>
-        <legend>Fiction or Non-Fiction</legend>
-
-        <div class="radio-group">
-          <label>
-            <input type="radio" name="Genre_1" value="fiction">
-            Fiction
-          </label>
-
-          <label>
-            <input type="radio" name="Genre_1" value="nonfiction">
-            Non-Fiction
-          </label>
-        </div>
-      </fieldset>
-
-      <!-- Tags section -->
-      <fieldset>
-        <legend>Tags</legend>
-
-        <!-- Tag checkboxes -->
-        <div class="tags-grid">
-          <label>
-            <input type="checkbox" name="Owned" value="yes">
-            Owned
-          </label>
-
-          <label>
-            <input type="checkbox" name="Favorite" value="yes">
-            Favorite
-          </label>
-
-          <label>
-            <input type="checkbox" name="Completed" value="yes">
-            Completed
-          </label>
-
-          <label>
-            <input type="checkbox" name="Currently_Reading" value="yes">
-            Currently Reading
-          </label>
+            <div>
+                <label for="Publisher_Name">Publisher</label>
+                <input type="text" id="Publisher_Name" name="Publisher_Name">
+            </div>
         </div>
 
-        <!-- Personal vs Academic -->
+        <!-- Year + Chapters row -->
+        <div class="row">
+            <div>
+                <label for="Publish_Year">Year Published</label>
+                <input type="text"
+                       id="Publish_Year"
+                       name="Publish_Year"
+                       pattern="[0-9]+"
+                       inputmode="numeric"
+                       required>
+            </div>
+
+            <div>
+                <label for="Chapters">Chapters</label>
+                <input type="text"
+                       id="Chapters"
+                       name="Chapters"
+                       pattern="[0-9]+"
+                       inputmode="numeric">
+            </div>
+        </div>
+
+        <!-- Fiction / Non-Fiction -->
         <fieldset>
-          <legend>Reading Type</legend>
+            <legend>Fiction or Non-Fiction</legend>
 
-          <div class="radio-group">
-            <label>
-              <input type="radio" name="Personal_Or_Academic" value="personal">
-              Personal
-            </label>
+            <div class="radio-group">
+                <label>
+                    <input type="radio" name="Genre_1" value="fiction">
+                    Fiction
+                </label>
 
-            <label>
-              <input type="radio" name="Personal_Or_Academic" value="academic">
-              Academic
-            </label>
-          </div>
+                <label>
+                    <input type="radio" name="Genre_1" value="nonfiction">
+                    Non-Fiction
+                </label>
+            </div>
         </fieldset>
-      </fieldset>
 
-      <!-- Submit -->
-      <button type="submit">Add Book</button>
+        <!-- Tags -->
+        <fieldset>
+            <legend>Tags</legend>
+
+            <div class="tags-grid">
+                <label><input type="checkbox" name="Owned" value="yes">Owned</label>
+                <label><input type="checkbox" name="Favorite" value="yes">Favorite</label>
+                <label><input type="checkbox" name="Completed" value="yes">Completed</label>
+                <label><input type="checkbox" name="Currently_Reading" value="yes">Currently Reading</label>
+            </div>
+
+            <fieldset>
+                <legend>Reading Type</legend>
+
+                <div class="radio-group">
+                    <label><input type="radio" name="Personal_Or_Academic" value="personal">Personal</label>
+                    <label><input type="radio" name="Personal_Or_Academic" value="academic">Academic</label>
+                </div>
+
+            </fieldset>
+        </fieldset>
+
+        <button type="submit">Add Book</button>
 
     </form>
-  </main>
+</main>
+
+
+<script>
+    function toggleAuthor() {
+      const section = document.getElementById("secondaryAuthor")
+      section.classList.toggle("hidden")
+    }
+</script>
 </body>
 </html>

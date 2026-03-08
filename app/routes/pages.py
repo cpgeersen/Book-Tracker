@@ -60,4 +60,5 @@ def dashboard_page():
 # WIP (really only accessed through search page)
 @pages_bp.route('/book/view', methods=['GET'])
 def individual_book_page():
-    return render_template('view_book.html'), 200
+    book = []
+    return render_template('view_book.html', book=book), 200
