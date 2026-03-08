@@ -138,6 +138,26 @@
       color: #e5e7eb;
     }
 
+    /* Notes textarea styling */
+    textarea {
+      width: 100%;
+      border-radius: 8px;
+      border: none;
+      background-color: #1f2933;
+      color: #e5e7eb;
+      padding: 0.6rem;
+      resize: vertical;
+    }
+
+    /* Individual note card styling */
+    .note-card {
+      background-color: #1f2933;
+      padding: 0.6rem;
+      border-radius: 6px;
+      margin-top: 0.6rem;
+      font-size: 0.9rem;
+    }
+
   </style>
 </head>
 
@@ -156,10 +176,13 @@
 
       <!-- Book header section (cover + main info) -->
       <div class="book-header">
+
+        <!-- Placeholder book cover -->
         <div class="book-cover">
           No Cover
         </div>
 
+        <!-- Book information display -->
         <div class="book-info">
 
           <h2>{{ book["Title"] }}</h2>
@@ -176,13 +199,19 @@
             <p><strong>Summary:</strong> No summary available.</p>
           {% endif %}
         </div>
+
       </div>
 
       <!-- Chapter tracking section -->
       <div class="section">
+
+        <!-- Chapter tracking title -->
         <h3>Chapters</h3>
+
+        <!-- Chapter progress display -->
         <p>Chapters Read: 0 / 10</p>
 
+        <!-- Chapter increment / decrement buttons -->
         <div class="chapter-controls">
           <button>-</button>
           <button>+</button>
@@ -190,36 +219,84 @@
 
         <br>
 
+        <!-- Input for total chapter count -->
         <label>Total Chapters:</label>
         <input type="number" placeholder="Enter total chapters">
+
       </div>
 
       <!-- Genres section -->
       <div class="section">
+
+        <!-- Genre title -->
         <h3>Genres</h3>
+
+        <!-- Example genre tags -->
         <span class="tag">Genre 1</span>
         <span class="tag">Genre 2</span>
         <span class="tag">Genre 3</span>
         <span class="tag">Genre 4</span>
+
       </div>
 
       <!-- Toggleable tags section -->
       <div class="section">
+
+        <!-- Tags title -->
         <h3>Tags</h3>
+
+        <!-- Toggleable reading tags -->
         <button class="tag toggle">Owned</button>
         <button class="tag toggle">Favorite</button>
         <button class="tag toggle">Read</button>
         <button class="tag toggle">Currently Reading</button>
+
+      </div>
+
+      <!-- Notes section -->
+      <div class="section">
+
+        <!-- Notes section title -->
+        <h3>Notes</h3>
+
+        <!-- Textarea for writing a note -->
+        <textarea rows="4" placeholder="Write a note about this book..."></textarea>
+
+        <br><br>
+
+        <!-- Save note button (frontend only for now) -->
+        <button>Save Note</button>
+
+        <!-- Existing notes list -->
+        <div class="section">
+
+          <!-- Example note -->
+          <div class="note-card">
+            Example note: Remember key themes in chapter 2.
+          </div>
+
+          <!-- Another example note -->
+          <div class="note-card">
+            Example note: Important quote on page 45.
+          </div>
+
+        </div>
+
       </div>
 
       <!-- Action buttons section -->
       <div class="section">
+
+        <!-- Actions title -->
         <h3>Actions</h3>
+
+        <!-- Book action buttons -->
         <div class="button-group">
           <button class="remove-btn">Remove</button>
           <button>Notes</button>
           <button>Update</button>
         </div>
+
       </div>
 
     </div>
@@ -227,6 +304,7 @@
 
   <!-- JavaScript for toggling tag active state -->
   <script>
+
     const toggleTags = document.querySelectorAll('.toggle');
 
     toggleTags.forEach(tag => {
@@ -234,6 +312,7 @@
         tag.classList.toggle('active');
       });
     });
+
   </script>
 
 </body>
