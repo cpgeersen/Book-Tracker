@@ -1,5 +1,6 @@
 from cli_app_create_book import main as cli_create_book
 from cli_app_read_book import main as cli_read_book
+from cli_app_update_book import main as cli_update_book
 from cli_app_delete_book import main as cli_delete_book
 
 def main():
@@ -22,7 +23,7 @@ def main():
                 cli_read_book()
             elif user_choice == 3:
                 print('Updating Book Record')
-                #cli_update_book()
+                cli_update_book()
             elif user_choice == 4:
                 print('Deleting Book Record')
                 cli_delete_book()

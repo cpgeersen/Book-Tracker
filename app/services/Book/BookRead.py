@@ -39,7 +39,7 @@ def read_book_table(isbn):
             "Summary": result[0][4],
             "Tag_ID": result[0][5],
             "Chapters": result[0][6],
-            "Chapters_completed": result[0][7],
+            "Chapters_Completed": result[0][7],
             "Cover_Image_Bytes": result[0][8]
         }
 
