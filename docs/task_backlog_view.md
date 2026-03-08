@@ -25,21 +25,29 @@
 |        | 2.10    | Frontend scripting for local search                          | Brandon                        | 2/21/26 | 2/27/26 | High     | Completed   | Yes                |
 |        | 2.11    | Read by Title, Author or Genre                               | Holly                          | 2/21/26 | 2/27/26 | High     | Completed   | Yes                |
 |        | 2.12    | Refactor Routes                                              | Collin                         | 2/21/26 | 2/27/26 | High     | Completed   | Yes                |
-| 3      | 2.1     | Use Pulled data from API                                     | Chris, Holly, Joseph, Nicholas | 3/2/26  | 3/13/26 | High     | Not Started | Yes                |
-|        | 2.5.3   | Update Full Book Record                                      | Chris, Joseph                  | 3/2/26  | 3/6/26  | High     | Not Started | Yes                |
-|        | 2.6     | Mediator Module Refinement                                   | Collin, Nicholas               | 3/2/26  | 3/13/26 | Medium   | In-Progress | Yes                |
-|        | 2.9     | Pull Data from OpenLibrary API                               | Nicholas, Holly                | 3/2/26  | 3/13/26 | High     | In-Progress | Yes                |
-|        | 2.13    | Start Creating Testing Suite                                 | Collin                         | 3/2/26  | 3/6/26  | High     | Not Started | Yes                |
-|        | 3.1     | Begin Frontend and Backend Integration                       | Collin                         | 3/2/26  | 3/13/26 | High     | Not Started | Yes                |
-|        | 3.2     | Data Disparity Resolution Between Local and OpenLibrary Data | Nicholas, Holly                | 3/2/26  | 3/13/26 | High     | Not Started | Yes                |
-|        | 3.3     | Most commonly read genre function                            | Chris                          | 3/2/26  | 3/13/26 | Low      | Not Started | Yes                |
-|        | 3.4     | Create note frontend                                         | Mireliz                        | 3/7/26  | 3/13/26 | Medium   | Not Started | Yes                |
-|        | 3.5     | Create OpenLibrary API search frontend                       | Brandon                        | 3/2/26  | 3/6/26  | High     | Not Started | Yes                |
-|        | 3.6     | add_book.html Cleanup and Fixes                              | Mireliz, Brandon               | 3/2/26  | 3/13/26 | Low      | Not Started | Yes                |
-|        | 3.8     | view_book.html Fixes and Additions                           | Mireliz, Brandon               | 3/2/26  | 3/6/26  | High     | Not Started | Yes                |
-|        | 3.9     | Deprecate CRUD files outside of services                     | Collin                         | 3/2/26  | 3/13/26 | Low      | Not Started | Yes                |
-| 4      | 4.1     | Create user settings                                         |                                | 3/20/26 | 3/27/26 | Low      | Not Started | Yes                |
-|        | 1.4     | Homepage Frontend                                            | Brandon, Mireliz               | 3/7/26  | 3/13/26 | High     | Not Started | Yes                |
+| 3      | 2.1     | Use Pulled data from API                                     | Nicholas                       | 3/2/26  | 3/14/26 | High     | In-Progress | Yes                |
+|        | 2.5.3   | Update Full Book Record                                      | Chris, Joseph                  | 3/2/26  | 3/7/26  | High     | Completed   | Yes                |
+|        | 2.6     | Mediator Module Refinement                                   | Collin                         | 3/2/26  | 3/14/26 | Medium   | In-Progress | Yes                |
+|        | 2.9     | Pull Data from OpenLibrary API                               | Nicholas, Holly, Joseph        | 3/2/26  | 3/14/26 | High     | In-Progress | Yes                |
+|        | 2.13    | Start Creating Testing Suite                                 | Collin                         | 3/2/26  | 3/14/26 | High     | In-Progress | Yes                |
+|        | 3.1     | Begin Frontend and Backend Integration                       | Collin                         | 3/2/26  | 3/7/26  | High     | Completed   | Yes                |
+|        | 3.2     | Data Disparity Resolution Between Local and OpenLibrary Data | Nicholas, Holly, Joseph        | 3/2/26  | 3/14/26 | High     | In-Progress | Yes                |
+|        | 3.3     | Most commonly read genre function                            | Chris                          | 3/2/26  | 3/7/26  | Low      | Completed   | Yes                |
+|        | 3.4     | Create note frontend                                         | Mireliz                        | 3/2/26  | 3/14/26 | Medium   | Completed   | Yes                |
+|        | 3.5     | Create OpenLibrary API search frontend                       | Mireliz                        | 3/7/26  | 3/14/26 | High     | Not Started | Yes                |
+|        | 3.6     | add_book.html Cleanup and Fixes                              | Mireliz                        | 3/7/26  | 3/14/26 | Low      | Completed   | Yes                |
+|        | 3.7     | view_book.html Fixes and Additions                           | Brandon                        | 3/7/26  | 3/14/26 | High     | Not Started | Yes                |
+|        | 3.8     | Deprecate CRUD files outside of services                     | Collin                         | 3/2/26  | 3/14/26 | Low      | In-Progress | Yes                |
+|        | 3.10    | Local Search Updates                                         | Brandon                        | 3/7/26  | 3/14/26 | High     | Not Started | Yes                |
+|        | 3.11    | Database Analytics Functions                                 | Chris                          | 3/2/26  | 3/7/26  | Low      | Completed   | Yes                |
+|        | 3.12    | Create Note Backend Functionality                            | Holly                          | 3/7/26  | 3/14/26 | High     | Not Started | Yes                |
+|        | 3.13    | Create Cover Image Backend Functionality                     | Joseph                         | 3/7/26  | 3/14/26 | High     | Not Started | Yes                |
+|        | 3.14    | Add Cover Image upload functionality                         | Joseph                         | 3/7/26  | 3/14/26 | High     | Not Started | Yes                |
+|        | 3.15    | Proper usage of /book/{isbn} for individual book pages       | Holly                          | 3/7/26  | 3/14/26 | High     | Not Started | Yes                |
+|        | 4.1     | Create user settings                                         | Chris                          | 3/2/26  | 3/7/26  | Low      | Completed   | Yes                |
+|        | 4.7     | Correct User Settings                                        | Chris                          | 3/7/26  | 3/14/26 | Low      | Not Started | Yes                |
+|        | 4.8     | Refactor Analytics Functions                                 | Chris                          | 3/7/26  | 3/14/26 | Low      | Not Started | Yes                |
+| 4      | 1.4     | Homepage Frontend                                            | Brandon, Mireliz               | 3/7/26  | 3/13/26 | High     | Not Started | Yes                |
 |        | 4.2     | Create theme change function                                 |                                | 3/20/26 | 3/27/26 | Low      | Not Started | Yes                |
 |        | 4.3     | Create export/import CSV function                            |                                | 3/28/26 | 4/3/26  | Low      | Not Started | Yes                |
 |        | 4.4     | Create database purge function                               |                                | 3/28/26 | 4/3/26  | Low      | Not Started | Yes                |

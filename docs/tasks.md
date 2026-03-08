@@ -57,25 +57,40 @@
 
 ## Sprint 3
 ### Theme: Business Logic Tasks
-- [ ] 2.9: OpenLibrary API
-  - [ ] 2.9.2: Pull n-amount of book results based on book title
-  - [ ] 2.9.3: Pull n-amount of book results based on author name
 - [ ] 2.1: Create function to use pulled information from the OpenLibrary API to add to book database (US201 and US202)
-- [ ] 3.1: Begin Frontend and Backend Integration
-- [ ] 3.2: Data Disparity Resolution Between Local and OpenLibrary Data
-- [ ] 2.6: Mediator Module Refinement
+- - [ ] 2.6: Mediator Module Refinement
   - [ ] 2.6.2: Mediator Functions for Update
   - [ ] 2.6.3: Mediator Functions for Delete
   - [x] 2.6.4: Mediator Functions tie-in to CRUD functions
-[ ] 2.13: Start Creating Testing Suite
-[ ] 3.9: Deprecate CRUD files outside of services
+- [ ] 2.9: OpenLibrary API
+  - [ ] 2.9.2: Pull n-amount of book results based on book title
+  - [x] 2.9.3: Pull n-amount of book results based on author name
+- [ ] 2.13: Start Creating Testing Suite
+- [X] 3.1: Begin Frontend and Backend Integration
+- [ ] 3.2: Data Disparity Resolution Between Local and OpenLibrary Data
+  - [x] Task 3.2.1 - Case: ISBN already present in database
+  - [ ] Task 3.2.2 - Case: Book not in OL database
+  - [x] Task 3.2.3 - Case: Same book different ISBN
+  - [x] Task 3.2.4 - Case: Adding a new book from OL where author/publisher was added to database by user
+  - [ ] Task 3.2.5 - Case: Updating a Locally added book with OL data
+- [ ] 3.3: Most commonly read genre function   
+- [ ] 3.9: Deprecate CRUD files outside of services
+- [x] 3.11 Database Analytics Functions
+- [ ] 3.12: Create Note Backend Functionality
+- [ ] 3.13: Create Cover Image Backend Functionality
+- [ ] 3.14: Add Cover Image upload functionality
+- [ ] 3.15: Proper usage of /book/{isbn} for individual book pages
+- [x] 4.1: Create user settings.
+- [ ] 4.7: Correct User Settings to match pseudocode and more current project requirements
+- [ ] 4.8: Refactor Analytics Functions to remove out-of-scope functionality (refer to Project Development Plan)
+
 
 ### Theme: UI Tasks
-- [ ] 3.4: Create note frontend for book notes. (US505)
+- [x] 3.4: Create note frontend for book notes. (US505)
 - [ ] 3.5: Create OpenLibrary API search frontend. (US506)
-- [ ] 3.6: add_book.html Cleanup and Fixes
-  - [ ] 3.6.1: Make the form less vertical, utilize more horizontal space.
-  - [ ] 3.6.2: Make second author input a collapsible  that defaults to being collapsed?
+- [x] 3.6: add_book.html Cleanup and Fixes
+  - [x] 3.6.1: Make the form less vertical, utilize more horizontal space.
+  - [x] 3.6.2: Make second author input a collapsible  that defaults to being collapsed?
 - [ ] 3.7: view_book.html Fixes and Additions
   - [ ] 3.7.1: Change Total Chapters Input to only show when user clicks edit (add two buttons and a number input)
   - [ ] 3.7.2: Edit functionality for summary (adds two buttons and a text form)
@@ -84,10 +99,11 @@
   - [ ] 3.7.4: Delineate the note button better
     - Note: Maybe switch update and note buttons
     - Note: Maybe add a left-hand offset to note button to make it more prominent
+- [ ] 3.10: Local Search Updates
 
 ## Sprint 4
 ### Theme: Business Logic Tasks
-- 4.1: Create user settings.
+
 - 4.2: Create settings functionality for changing themes. (US401)
 - 4.3: Create export/import CSV function. (US402)
 - 4.4: Create database purge function. (US403)
