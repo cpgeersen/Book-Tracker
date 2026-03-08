@@ -70,6 +70,13 @@ def read_note(ISBN_value):
     finally:
         conn.close()
 
+#------------------------------------------------------------
+#============================================================
+# Modified the Update function.
+# Update functionality now includes a trigger.
+# For SRS requirement, "created_On" and "updated_At".
+#============================================================
+#------------------------------------------------------------
 
 # Updates Note in Notes table based on NoteID and ISBN from BookNotes table. 
 def update_note(ISBN_value, note_num, new_blob):
@@ -82,7 +89,7 @@ def update_note(ISBN_value, note_num, new_blob):
         with open(new_blob, "rb") as file:
             updated_blob_data = file.read()
      
-        # Updates Note to new blob based on ISBN and NoteID in BookNote & Notes tables. 
+        # Updates FUNCTION. 
         update_query = """
             UPDATE Notes AS N
             SET Note = ?
@@ -94,7 +101,7 @@ def update_note(ISBN_value, note_num, new_blob):
                         AND B.NoteID = N.NoteID
             )
         """
-
+    
         cursor.execute(update_query, (updated_blob_data, note_num, ISBN_value))
         conn.commit()
         return print(f"Note {note_num} updated to {new_blob}")
