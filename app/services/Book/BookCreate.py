@@ -181,7 +181,7 @@ def create_book_record(json):
 
     # Secondary Author
     author_first_name_2 = json.get('Author_First_Name_2', '')
-    author_last_name_2 = json.get('Author_First_Name_2', '')
+    author_last_name_2 = json.get('Author_Last_Name_2', '')
 
     # Publisher Information
     publisher_name = json['Publisher_Name']
