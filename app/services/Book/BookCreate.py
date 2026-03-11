@@ -1,5 +1,7 @@
 import sqlite3
 import json
+from json.decoder import JSONObject
+
 from app.services.Book.BookRead import read_publisher_id, read_author_id_from_name, read_genre_id_from_genre_table
 from app.services.Book.BookPredicate import is_isbn_in_book_table
 
@@ -158,7 +160,10 @@ def create_book(isbn, title, publish_year, publisher_id, summary, tag_id,
 def create_book_record(json_input):
     # All required values have been validated by mediator at this point
     # All variables that use get() method have a default value of '', since they are optional for creation
-    json_input = json.loads(json_input)
+
+    # If the input is not a dictionary, load it as JSON
+    if not isinstance(json_input, dict):
+        json_input = json.loads(json_input)
 
     isbn = json_input['ISBN']
 
