@@ -1,6 +1,5 @@
 import sqlite3
 import json
-from json.decoder import JSONObject
 
 from app.services.Book.BookRead import read_publisher_id, read_author_id_from_name, read_genre_id_from_genre_table
 from app.services.Book.BookPredicate import is_isbn_in_book_table
