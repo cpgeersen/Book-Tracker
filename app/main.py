@@ -1,24 +1,22 @@
-from flask import request, render_template, jsonify
+from flask import request, render_template, jsonify, redirect, url_for
 from app.services.mediator import create, read, update, delete
 #from app.services.openlibrary_api import search_books # temporary markout until added
 from app.routes.test import test_bp
 from app.routes.pages import pages_bp
 from app.services.create_db import create_db
+import json
+from app.services.create_example_records import create_sample_books
 
 
-json = {'author': 'John Doe',
-        'author2': '',
-        'chapters': 30,
-        'fiction-or-nonfiction': 'fiction',
-        'isbn': 1234567890123,
-        'owned': 'on',
-        'personal-or-academic': 'personal',
-        'publisher': 'SomePublisher',
-        'title': 'BookTitle',
-        'year-published': '2026',}
+SUCCESS = 200
+BAD_REQUEST = 400
+INTERNAL_SERVER_ERROR = 500
+
+
 
 # Create the Database
 #create_db()
+#create_sample_books()
 
 
 def create_routes(app): # Placeholder returns for unfinished pages
@@ -29,38 +27,80 @@ def create_routes(app): # Placeholder returns for unfinished pages
     app.register_blueprint(test_bp)
     app.register_blueprint(pages_bp)
 
-
-
-    #@app.route('/', methods=['GET'])
-    #def homepage():
-    #    return render_template('homepage.html')
-
-    #@app.route('/add-local', methods=['GET', 'POST'])
-    #def add_book_page():
-    #    if request.method == 'POST':
-
-    #        book_form_json = jsonify(request.form)
-
-    #        return render_template('add_book.html')
-    #    return render_template('add_book.html')
-
-
-
-
-
     # Pages
+    @app.route('/book/add-local', methods=['POST', 'GET'])
+    def add_book_page():
+        if request.method == 'POST':
+            # First get the form information
+            book_form_json = dict(request.form)
 
-    #@app.route('/add-book', methods=['POST', 'GET'])
-    #def add_book_page():
-    #    if request.method == 'POST':
-    #        #create_book_json = dict(request.form) # Pulls from the actual frontend
-    #        create_book_json = dict(json) # Testing values
-    #        return create(create_book_json,"book") # Will add new template denoting success and will link to new book
-    #    return render_template('add_book.html')
+            # Next send to mediator for validation and creation
+            book_response = create(book_form_json, 'book-local')
 
-    @app.route('/local-search')
+            # Read the result back to populate the individual page
+            book_result = json.loads(read(book_form_json, 'book-isbn'))
+
+            if book_response[1] == SUCCESS:
+                return redirect(url_for('individual_book_page', isbn=book_form_json['ISBN']))
+
+            elif book_response[1] == BAD_REQUEST:
+                return render_template('add_book.html')  # !WIP! add error page telling user book is already present
+
+            else:
+                return 'Server Error', 500
+
+        return render_template('add_book.html')
+
+    @app.route('/book/isbn/<isbn>')
+    def individual_book_page(isbn):
+        try:
+            # Create a dict with the isbn, makes it possible to reuse mediator functions
+            isbn_dict = {"ISBN": isbn}
+
+            # Get the result in JSON format
+            book_result = json.loads(read(isbn_dict, 'book-isbn'))
+
+            # Display the result
+            return render_template('view_book.html', book=book_result), 200
+
+        # This error occurs when the ISBN does not exist in database
+        except json.decoder.JSONDecodeError:
+            return f'ISBN not in database'  # !WIP! add full error page
+
+    @app.route('/book/local-search', methods=['GET'])
     def local_search_page():
-        return 'Search Local Database Here', 200
+        search_type = request.args.get('search_type')
+
+        if search_type == 'isbn':
+            isbn = request.args.get('search', 'isbn')
+
+            # Create a dict with the isbn, makes it possible to reuse mediator functions
+            isbn_dict = {"ISBN": isbn}
+            try:
+                book_result = json.loads(read(isbn_dict, 'book-isbn'))
+
+                book_result = json.dumps({"Book_Result_1" : book_result})
+                book_result = json.loads(book_result)
+
+                if book_result == '':
+                    return render_template('search.html', books={}), 200
+
+                return render_template('search.html', books=book_result), 200
+            except TypeError:   # When there is no book with ISBN match
+                return render_template('search.html', books={}), 200
+
+        elif search_type == 'title':
+            pass
+        elif search_type == 'author':
+            pass
+        else:
+            try:
+                book_result = read()
+                return render_template('search.html', books=book_result), 200
+            except TypeError: # When there are not books
+                return render_template('search.html', books={}), 200
+
+
 
     @app.route('/openlibrary-search')
     #def openlibrary_search_page():
@@ -94,28 +134,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
         # Return compact JSON payload
         return jsonify(query=query, num_found=search_result.get('numFound', 0), results=trimmed_results), 200
 
-    @app.route('/book/')
-    def individual_book_pages():
-        return 'Individual Book Pages will be here', 200
 
-    # WIP
-    # @app.route('/book/<int:isbn>/note')
-    # def note_page(isbn):
-    #    return f'Note for book with ISBN {isbn}'
-
-    # Routes for POST, GET, UPDATE, DELETE
-    # Book API Route
-    #@app.route('/book-api', methods=['POST', 'GET', 'PATCH', 'DELETE'])
-    #def book_api():
-    #    if request.method == 'POST':
-    #        return create(json)
-    #    elif request.method == 'GET':
-    #        return read(json)
-    #    elif request.method == 'PATCH':
-    #        return update(json)
-    #    elif request.method == 'DELETE':
-    #        return delete(json)
-    #    return None  # TEMP
 
 if __name__ == '__main__':
     pass

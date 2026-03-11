@@ -167,7 +167,7 @@
 
     <!-- Navigation buttons -->
     <div class="nav-buttons">
-      <a href="/local-search">← Back</a>
+      <a href="/book/add-local">← Back</a>
       <a href="/">Home</a>
     </div>
 
@@ -209,7 +209,7 @@
         <h3>Chapters</h3>
 
         <!-- Chapter progress display -->
-        <p>Chapters Read: 0 / 10</p>
+        <p>Chapters Read: {{ book["Chapters_Completed"] }} / {{ book["Chapters"] }}</p>
 
         <!-- Chapter increment / decrement buttons -->
         <div class="chapter-controls">
@@ -232,10 +232,19 @@
         <h3>Genres</h3>
 
         <!-- Example genre tags -->
-        <span class="tag">Genre 1</span>
-        <span class="tag">Genre 2</span>
-        <span class="tag">Genre 3</span>
-        <span class="tag">Genre 4</span>
+        <span class="tag">{{ book["Genre_1"].title() }}</span>
+
+        {% if book["Genre_2"] %}
+          <span class="tag">{{ book["Genre_2"].title() }}</span>
+        {% endif %}
+
+        {% if book["Genre_3"] %}
+          <span class="tag">{{ book["Genre_3"].title() }}</span>
+        {% endif %}
+
+        {% if book["Genre_4"] %}
+          <span class="tag">{{ book["Genre_4"].title() }}</span>
+        {% endif %}
 
       </div>
 
@@ -246,10 +255,29 @@
         <h3>Tags</h3>
 
         <!-- Toggleable reading tags -->
-        <button class="tag toggle">Owned</button>
-        <button class="tag toggle">Favorite</button>
-        <button class="tag toggle">Read</button>
-        <button class="tag toggle">Currently Reading</button>
+        {% if book["Owned"] == "on" %}
+          <button class="tag toggle active">Owned</button>
+        {% else %}
+          <button class="tag toggle">Owned</button>
+        {% endif %}
+
+        {% if book["Favorite"] == "on" %}
+          <button class="tag toggle active">Favorite</button>
+        {% else %}
+          <button class="tag toggle">Favorite</button>
+        {% endif %}
+
+        {% if book["Completed"] == "on" %}
+          <button class="tag toggle active">Read</button>
+        {% else %}
+          <button class="tag toggle">Read</button>
+        {% endif %}
+
+        {% if book["Currently_Reading"] == "on" %}
+          <button class="tag toggle active">Currently Reading</button>
+        {% else %}
+          <button class="tag toggle">Currently Reading</button>
+        {% endif %}
 
       </div>
 

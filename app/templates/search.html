@@ -204,7 +204,7 @@
 
       <button>Apply Filters</button>
 
-      <button onclick="window.location.href='/local-search'">
+      <button onclick=window.location.href='/book/local-search'>
         View All Books
       </button>
     </aside>
@@ -221,7 +221,7 @@
       <h1>Local Search</h1>
 
       <!-- Search form -->
-      <form method="GET" action="/local-search" class="search-form">
+      <form method="GET" action="/book/local-search" class="search-form">
 
         <label for="search">Search</label>
         <input type="text" id="search" name="search"
@@ -236,7 +236,7 @@
 
       <!-- Results loop -->
       {% if books %}
-        {% for book in books %}
+        {% for book, book_info in books.items() %}
           <div class="book-card">
 
             <div class="book-cover">
@@ -244,11 +244,11 @@
             </div>
 
             <div class="book-info">
-              <h3>{{ book[1] }}</h3>
-              <p><strong>Author:</strong> {{ book[4] }}</p>
-              <p><strong>Publisher:</strong> {{ book[5] }}</p>
-              <p><strong>Publish Year:</strong> {{ book[2] }}</p>
-              <p><strong>ISBN:</strong> {{ book[0] }}</p>
+              <h3>{{ book_info['Title'] }}</h3>
+              <p><strong>Author:</strong> {{ book_info['Author_First_Name_1'] }} {{ book_info['Author_Last_Name_1'] }}</p>
+              <p><strong>Publisher:</strong> {{ book_info['Publisher_Name'] }}</p>
+              <p><strong>Publish Year:</strong> {{ book_info['Publish_Year'] }}</p>
+              <p><strong>ISBN:</strong> {{ book_info['ISBN'] }}</p>
 
               <div class="tags">
                 <span>Owned</span>
@@ -256,7 +256,7 @@
                 <span>Read</span>
               </div>
 
-              <a href="/book/{{ book[0] }}" class="view-button">
+              <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button">
                 Go to Book Page →
               </a>
             </div>

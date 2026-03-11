@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for
 from app.services.mediator import create
-from app.services.Book.Book import create_book
-from app.services.Book.Book import read_book
+from app.services.mediator import create, read
 import json
 
 SUCCESS = 200
@@ -16,27 +15,28 @@ pages_bp = Blueprint('pages', __name__, url_prefix='/')
 def homepage():
     return render_template('homepage.html')
 
-@pages_bp.route('/add-local', methods=['GET', 'POST'])
-def add_book_page():
-    if request.method == 'POST':
-        book_form_json = dict(request.form)
-        #print(book_form_json)
-        book_response = create_book(book_form_json)
-        print(book_response)
-        book = json.loads(read_book(book_form_json['ISBN']))
-        print(book)
-        if book_response[1] == SUCCESS:
-            return render_template('view_book.html', book=book)
-        elif book_response[1] == BAD_REQUEST:
-            return render_template('add_book.html') # add error page telling user book is already present
-        else:
-            return 'Server Error', 500
-
-        #create(book_form_json, 'book')
-        #print(book_form_json)
-
-
-    return render_template('add_book.html')
+#@pages_bp.route('/add-local', methods=['GET', 'POST'])
+#def add_book_page():
+#    if request.method == 'POST':
+#        # First get the form information
+#        book_form_json = dict(request.form)
+#
+#        # Next send to mediator for validation and creation
+#        book_response = create(book_form_json, 'book-local')
+#
+#        # Read the result back to populate the individual page
+#        book_result = json.loads(read(book_form_json, 'book-isbn'))
+#
+#        if book_response[1] == SUCCESS:
+#            return redirect(url_for('individual_book_page', isbn=book_form_json['ISBN']))
+#
+#        elif book_response[1] == BAD_REQUEST:
+#            return render_template('add_book.html') # add error page telling user book is already present
+#
+#        else:
+#            return 'Server Error', 500
+#
+#    return render_template('add_book.html')
 
 @pages_bp.route('/search', methods=['GET'])
 def search_page():
@@ -58,7 +58,38 @@ def dashboard_page():
     return 'WIP', 200
 
 # WIP (really only accessed through search page)
-@pages_bp.route('/book/view', methods=['GET'])
-def individual_book_page():
-    book = []
-    return render_template('view_book.html', book=book), 200
+#@pages_bp.route('/book/isbn/<isbn>', methods=['GET'])
+#def individual_book_page(isbn):
+#    try:
+#        # Create a dict with the isbn, makes it possible to reuse mediator functions
+#        isbn_dict = {"ISBN": isbn}
+#
+#        # Get the result in JSON format
+#        book_result = json.loads(read(isbn_dict, 'book-isbn'))
+#
+#        # Display the result
+#        return render_template('view_book.html', book=book_result), 200
+#
+#    # This error occurs when the ISBN does not exist in database
+#    except json.decoder.JSONDecodeError:
+#        return f'ISBN not in database' # add full error page
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+    pass

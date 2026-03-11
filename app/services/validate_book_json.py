@@ -1,112 +1,135 @@
-def validate_book(json, create_type):
-    try:
-        if 'ISBN' in json and len(str(json['ISBN'])) == 13 or len(str(json['ISBN'])) == 10:
-            json['ISBN'] = int(json['ISBN'])
-        else:
-            return 'ISBN is required for creating a book(must be 10 or 13 numbers)', 400
-    except TypeError and ValueError:
-        return 'Error: ISBN must be 10 or 13 integers.', 400
+import json
 
-    try:
-        if 'Title' in json and len(json['Title']) != 0:
-            json['Title'] = json['Title'].strip()
-        else:
-            return 'Title is required for creating a book', 400
-    except TypeError and ValueError:
-        return 'Title must be valid characters', 400
+def main():
+    pass
 
-    try:
-        if 'Author_First_Name_1' in json and len(json['Author_First_Name_1']) != 0:
-            json['Author_First_Name_1'] = json['Author_First_Name_1'].strip()
-        else:
-            return 'Primary Author First Name is required for creating a book', 400
-    except TypeError and ValueError:
-        return 'Author must be valid characters', 400
+def validate_book_for_frontend(json_input):
+    # Converts the tag values to reflect the frontend
+    json_input = json.loads(json_input)
+    json_input['Owned'] = 'on' if json_input['Owned'] == 'yes' else 'off'
+    json_input['Favorite'] = 'on' if json_input['Favorite'] == 'yes' else 'off'
+    json_input['Completed'] = 'on' if json_input['Completed'] == 'yes' else 'off'
+    json_input['Currently_Reading'] = 'on' if json_input['Currently_Reading'] == 'yes' else 'off'
+    return json.dumps(json_input)
 
-    try:
-        if 'Author_Last_Name_1' in json and len(json['Author_Last_Name_1']) != 0:
-            json['Author_Last_Name_1'] = json['Author_Last_Name_1'].strip()
-        else:
-            return 'Primary Author Last Name is required for creating a book', 400
-    except TypeError and ValueError:
-        return 'Author must be valid characters', 400
+def validate_book_from_local(json_input):
+    json_output = {}
 
-    try:
-        if 'Author_First_Name_2' in json and len(json['Author_First_Name_2']) != 0:
-            json['Author_First_Name_2'] = json['Author_First_Name_2'].strip()
-        else:
-            json['Author_First_Name_2'] = ''
-    except TypeError and ValueError:
-        return 'Author must be valid characters', 400
+    # Call each validation function to build the json input for the database
+    json_output.update(validate_book(json_input))
+    json_output.update(validate_author(json_input))
+    json_output.update(validate_publisher(json_input))
+    json_output.update(validate_genres(json_input))
+    json_output.update(validate_tags(json_input))
 
-    try:
-        if 'Author_Last_Name_2' in json and len(json['Author_Last_Name_2']) != 0:
-            json['Author_Last_Name_2'] = json['Author_Last_Name_2'].strip()
-        else:
-            json['Author_Last_Name_2'] = ''
-    except TypeError and ValueError:
-        return 'Author must be valid characters', 400
+    return json.dumps(json_output)
 
-    try:
-        if 'Publish_Year' in json and len(json['Publish_Year']) != 0:
-            json['Publish_Year'] = int(json['Publish_Year'])
-        else:
-            return 'Year published is required for creating a book (YYYY)', 400
-    except TypeError and ValueError:
-        return 'Year must be valid integers', 400
 
-    try:
-        if 'Publisher_Name' in json and len(json['Publisher_Name']) != 0:
-            json['Publisher_Name'] = json['Publisher_Name'].strip()
-        else:
-            return 'Publisher is required for creating a book', 400
-    except TypeError and ValueError:
-        return 'Publisher must be valid characters', 400
+def validate_book(json_input):
+    json_output = {}
 
-    try:
-        if 'Chapters' in json and int(json['Chapters']) >= 0:
-            json['Chapters'] = int(json['Chapters'])
-        else:
-            return 'Invalid Number of Chapters, must be 0 or more', 400
-    except TypeError and ValueError:
-        return 'Chapters must be valid integers', 400
+    isbn = str(json_input.get('ISBN', ''))
+    title = json_input.get('Title', '')
+    if isbn == '':
+        raise KeyError('Error: Book must have an ISBN.')
+    elif title == '':
+        raise KeyError('Error: Book must have a title.')
 
-    try:
-        if 'Genre_1' in json and json['Genre_1'].lower() in ['fiction', 'nonfiction']:
-            json['Genre_1'] = json['Genre_1'].lower()
-        else:
-            return 'Fiction or nonfiction is required for creating a book', 400
-    except TypeError and ValueError:
-        return 'Must be valid characters', 400
+    chapters = json_input.get('Chapters', '0')
+    chapters_completed = json_input.get('Chapters_Completed', '0')
+    summary = json_input.get('Summary', '')
+    cover_image = json_input.get('Cover_Image', '')
 
-    try:
-        if 'Owned' in json and json['Owned'].lower() in ['yes', 'no']:
-            json['Owned'] = json['Owned'].lower()
-            json['Owned'] = True if json['Owned'] == 'yes' else False
-        else:
-            return 'Owned is required for creating a book (yes/no)', 400
-    except TypeError and ValueError:
-        return 'Must be valid characters', 400
+    json_output.update({'ISBN': isbn.strip()})
+    json_output.update({'Title': title.strip().title()})
+    json_output.update({'Chapters': chapters.strip()})
+    json_output.update({'Chapters_Completed': chapters_completed.strip()})
+    json_output.update({'Summary': summary})
+    json_output.update({'Cover_Image': cover_image})
 
-    try:
-        if 'Favorite' in json:
-            json['Favorite'] = json['Favorite'].lower() == 'yes'
-        else:
-            json['Favorite'] = False
-    except TypeError and ValueError:
-        return 'Must be valid characters', 400
+    return json_output
 
-    try:
-        if 'Personal_Or_Academic' in json and json['Personal_Or_Academic'].lower() in ['personal', 'academic']:
-            json['Personal_Or_Academic'] = json['Personal_Or_Academic'].lower()
-            json['Personal_Or_Academic'] = True if json['Personal_Or_Academic'] == 'academic' else False
-        else:
-            return 'Personal or academic is required for creating a book (personal/academic)', 400
-    except TypeError and ValueError:
-        return 'Must be valid characters', 400
 
-    return json, create_type + 'Success', 200
+def validate_author(json_input):
+    json_output = {}
+
+    author_first_name_1 = json_input.get('Author_First_Name_1', '')
+    author_last_name_1 = json_input.get('Author_Last_Name_1', '')
+    if author_first_name_1 == '' or author_last_name_1 == '':
+        raise KeyError('Error: Book must have an author.')
+
+    json_output.update({'Author_First_Name_1': author_first_name_1.strip()})
+    json_output.update({'Author_Last_Name_1': author_last_name_1.strip()})
+
+    author_first_name_2 = json_input.get('Author_First_Name_2', '')
+    author_last_name_2 = json_input.get('Author_Last_Name_2', '')
+
+    json_output.update({'Author_First_Name_2': author_first_name_2.strip()})
+    json_output.update({'Author_Last_Name_2': author_last_name_2.strip()})
+
+    return json_output
+
+
+def validate_publisher(json_input):
+    json_output = {}
+
+    publisher_name = json_input.get('Publisher_Name', '')
+    publisher_year = json_input.get('Publish_Year', '')
+    if publisher_name == '':
+        raise KeyError('Error: Book must have a publisher.')
+    elif publisher_year == '':
+        raise KeyError('Error: Book must have a publish year.')
+
+    json_output.update({'Publisher_Name': publisher_name.strip().title()})
+    json_output.update({'Publish_Year': publisher_year.strip()})
+
+    return json_output
+
+
+def validate_tags(json_input, send_to_front=False):
+    json_output = {}
+
+    owned_value = json_input.get('Owned', 'no')
+    favorite_value = json_input.get('Favorite', 'no')
+    completed_value = json_input.get('Completed', 'no')
+    currently_reading_value = json_input.get('Currently_Reading', 'no')
+
+    # If the tags are present in JSON we need to convert from frontend syntax (on, off) to backend (yes, no)
+    tag_list = [('Owned', owned_value), ('Favorite', favorite_value), ('Completed', completed_value),
+                ('Currently_Reading', currently_reading_value)]
+
+    if not send_to_front:
+        for key, tag in tag_list:
+            match tag.lower():
+                case 'on':
+                    json_output.update({key: 'yes'})
+                case _:
+                    json_output.update({key: 'no'})
+
+    # Then add Personal_Or_Academic
+    personal_or_academic = json_input.get('Personal_Or_Academic', 'personal')  # Will default to personal
+    json_output.update({'Personal_Or_Academic': personal_or_academic})
+
+    return json_output
+
+
+def validate_genres(json_input):
+    json_output = {}
+
+    # Add possible missing genres
+    genre_1 = json_input.get('Genre_1', 'fiction')  # Will default Genre 1 to fiction
+    genre_2 = json_input.get('Genre_2', '')
+    genre_3 = json_input.get('Genre_3', '')
+    genre_4 = json_input.get('Genre_4', '')
+
+    # Add genres to the json output
+    json_output.update({'Genre_1': genre_1})
+    json_output.update({'Genre_2': genre_2})
+    json_output.update({'Genre_3': genre_3})
+    json_output.update({'Genre_4': genre_4})
+
+    return json_output
 
 
 if __name__ == '__main__':
-    pass
+    main()

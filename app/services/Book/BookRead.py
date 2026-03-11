@@ -4,11 +4,12 @@ import json
 SUCCESS = 200
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
+DB_PATH = "bt.db"
 
 
 def connect_to_database():
     try:
-        conn = sqlite3.connect('bt.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         return cursor, conn
     except sqlite3.Error as error:
@@ -676,6 +677,16 @@ def read_full_book_by_genre_id(genre_id):
     json_format = json.dumps(all_results_list, indent=4)
 
     return json_format
+
+def get_all_book_isbn():
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+
+    query = "SELECT * FROM Books"
+    cursor.execute(query)
+    result = cursor.fetchall()
+    conn.close()
+    return result
 
 
 if __name__ == '__main__':
