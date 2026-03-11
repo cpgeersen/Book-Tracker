@@ -20,7 +20,7 @@ def main():
                     print(read_book(books[0]))
             elif user_choice == 2:
                 print('User Defined Book')
-                user_isbn = int(input('Enter an ISBN to Read for: '))
+                user_isbn = input('Enter an ISBN to Read for: ')
                 print(read_book(user_isbn))
             elif user_choice == 3:
                 print('Exiting')

@@ -1,5 +1,5 @@
 from app.services.Book.BookUpdate import update_tags, update_summary, update_chapters, update_read_chapters
-from app.services.Book.Book import read_book
+from app.services.Book.Book import read_book, is_isbn_present
 import json
 
 def main():
@@ -18,6 +18,12 @@ def main():
             if user_choice == 1:
                 print('Update Book Tags')
                 book_isbn = input('Enter a Book ISBN to Update Tags: ')
+                isbn_present = is_isbn_present(book_isbn)
+
+                if not isbn_present:
+                    print('Error: ISBN not in Database. Try again.')
+                    continue
+
                 tag_update = get_tag_input(book_isbn)
                 update_tag_response = update_tags(*tag_update)
                 print(update_tag_response)
@@ -25,6 +31,13 @@ def main():
             elif user_choice == 2:
                 print('Update Book Summary')
                 book_isbn = input('Enter a Book ISBN to Update Summary: ')
+
+                isbn_present = is_isbn_present(book_isbn)
+
+                if not isbn_present:
+                    print('Error: ISBN not in Database. Try again.')
+                    continue
+
                 book_summary = input('Enter a Summary: ')
                 update_summary_response = update_summary(book_isbn, book_summary)
                 print(update_summary_response)
@@ -32,6 +45,13 @@ def main():
             elif user_choice == 3:
                 print('Update Book Chapters')
                 book_isbn = input('Enter a Book ISBN to Update the Number of Chapters: ')
+
+                isbn_present = is_isbn_present(book_isbn)
+
+                if not isbn_present:
+                    print('Error: ISBN not in Database. Try again.')
+                    continue
+
                 book_chapters = input('Enter the Number of Chapters: ')
                 update_chapters_response = update_chapters(book_isbn, book_chapters)
                 print(update_chapters_response)
@@ -39,6 +59,13 @@ def main():
             elif user_choice == 4:
                 print('Update Book Chapters Completed')
                 book_isbn = input('Enter a Book ISBN to Update Number of Completed Chapters: ')
+
+                isbn_present = is_isbn_present(book_isbn)
+
+                if not isbn_present:
+                    print('Error: ISBN not in Database. Try again.')
+                    continue
+
                 book_chapters_completed = input('Enter the Number of Completed Chapters: ')
                 update_chapters_completed_response = update_read_chapters(book_isbn, book_chapters_completed)
                 print(update_chapters_completed_response)
