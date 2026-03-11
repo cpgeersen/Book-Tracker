@@ -1,4 +1,5 @@
 import sqlite3
+import json
 from app.services.Book.BookRead import read_publisher_id, read_author_id_from_name, read_genre_id_from_genre_table
 from app.services.Book.BookPredicate import is_isbn_in_book_table
 
@@ -154,11 +155,12 @@ def create_book(isbn, title, publish_year, publisher_id, summary, tag_id,
     conn.close()
     return True
 
-def create_book_record(json):
+def create_book_record(json_input):
     # All required values have been validated by mediator at this point
     # All variables that use get() method have a default value of '', since they are optional for creation
+    json_input = json.loads(json_input)
 
-    isbn = json['ISBN']
+    isbn = json_input['ISBN']
 
     # First make sure ISBN not present in Book Table
     is_isbn_present = is_isbn_in_book_table(isbn)
@@ -170,38 +172,38 @@ def create_book_record(json):
         raise INTERNAL_SERVER_ERROR
 
     # Book Info
-    title = json['Title']
-    summary = json.get('Summary', '')
-    chapters = json.get('Chapters', '')
-    chapters_completed = json.get('Chapters_Completed', '')
+    title = json_input['Title']
+    summary = json_input.get('Summary', '')
+    chapters = json_input.get('Chapters', '')
+    chapters_completed = json_input.get('Chapters_Completed', '')
 
     # Primary Author
-    author_first_name_1 = json['Author_First_Name_1']
-    author_last_name_1 = json['Author_Last_Name_1']
+    author_first_name_1 = json_input['Author_First_Name_1']
+    author_last_name_1 = json_input['Author_Last_Name_1']
 
     # Secondary Author
-    author_first_name_2 = json.get('Author_First_Name_2', '')
-    author_last_name_2 = json.get('Author_Last_Name_2', '')
+    author_first_name_2 = json_input.get('Author_First_Name_2', '')
+    author_last_name_2 = json_input.get('Author_Last_Name_2', '')
 
     # Publisher Information
-    publisher_name = json['Publisher_Name']
-    publish_year = json['Publish_Year']
+    publisher_name = json_input['Publisher_Name']
+    publish_year = json_input['Publish_Year']
 
     # Tags
-    owned = json['Owned']
-    favorite = json['Favorite']
-    completed = json['Completed']
-    currently_reading = json['Currently_Reading']
-    personal_or_academic = json['Personal_Or_Academic']
+    owned = json_input['Owned']
+    favorite = json_input['Favorite']
+    completed = json_input['Completed']
+    currently_reading = json_input['Currently_Reading']
+    personal_or_academic = json_input['Personal_Or_Academic']
 
     # Genre
-    genre_1 = json['Genre_1']
-    genre_2 = json.get('Genre_2', '')
-    genre_3 = json.get('Genre_3', '')
-    genre_4 = json.get('Genre_4', '')
+    genre_1 = json_input['Genre_1']
+    genre_2 = json_input.get('Genre_2', '')
+    genre_3 = json_input.get('Genre_3', '')
+    genre_4 = json_input.get('Genre_4', '')
 
     # Cover Image
-    cover_image = json.get('Cover_Image', '')
+    cover_image = json_input.get('Cover_Image', '')
 
     # Next create the new tag record and return the new tag_id
     tag_response = create_tag(isbn, owned, favorite, completed, currently_reading, personal_or_academic)

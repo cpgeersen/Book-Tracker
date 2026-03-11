@@ -6,14 +6,11 @@ import json
 
 
 def create_book(json):
-    print('create')
     return create_book_record(json)
 
 def read_book(isbn):
     try:
-        result = read_full_book_record(isbn)
-        print('read')
-        return result
+        return read_full_book_record(isbn)
     except json.decoder.JSONDecodeError:
         return f'Error: Book with ISBN {isbn} not in database.'
 
@@ -25,3 +22,6 @@ def is_isbn_present(isbn):
 def delete_book(isbn):
     return delete_book_record(isbn)
 
+
+if __name__ == '__main__':
+    pass
