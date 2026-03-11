@@ -9,7 +9,7 @@ from Analytical_Functions import (
 )
 
 #--------------------------------------------------------------
-# Default JSON user profile
+# 4.11 - Default JSON user profile
 #--------------------------------------------------------------
 DEFAULT_USER_PROFILE = {
     "f_name": "",
@@ -17,11 +17,6 @@ DEFAULT_USER_PROFILE = {
     "username": "",
     "mission_statement": "",
     "theme": "",
-    "calculated_fields": {
-        "avg_chapter_read_speed": "",
-        "fav_genres": "",
-        "cur_reading": ""
-    }
 }
 
 class UserManager:
@@ -56,9 +51,8 @@ class UserManager:
             return user_from_db
 
         # Case 3: No JSON + no DB user → create default
-        profile = DEFAULT_USER_PROFILE.copy()
-        self.write_user_json(profile)
-        return profile
+        self.write_user_json(DEFAULT_USER_PROFILE.copy())
+        return DEFAULT_USER_PROFILE.copy()
 
     # ---------------------------------------------------------
     # Read JSON file into memory
@@ -79,15 +73,10 @@ class UserManager:
         if not user:
             user = DEFAULT_USER_PROFILE.copy()
 
-        # Sync JSON → DB dict (except calculated fields)
+        # Sync JSON → DB dict
         for key, value in file_json.items():
-            if key in user and key != "calculated_fields":
+            if key in user:
                 user[key] = value
-
-        # Populate calculated fields
-        user["calculated_fields"]["avg_chapter_read_speed"] = avg_Chapter_Speed()
-        user["calculated_fields"]["fav_genres"] = count_Books_Owned()
-        user["calculated_fields"]["cur_reading"] = display_Cur_Reading()
 
         # Save updated user to DB
         self.save_user_to_db(user)
@@ -119,16 +108,11 @@ class UserManager:
             "l_name": row[1],
             "username": row[2],
             "mission_statement": row[3],
-            "theme": row[4],
-            "calculated_fields": {
-                "avg_chapter_read_speed": "",
-                "fav_genres": "",
-                "cur_reading": ""
-            }
+            "theme": row[4]
         }
 
     # ---------------------------------------------------------
-    # Save user to DB
+    # Save user to DB (placeholder — you fill in)
     # ---------------------------------------------------------
     def save_user_to_db(self, user_dict):
         conn = sqlite3.connect(self.db_path)

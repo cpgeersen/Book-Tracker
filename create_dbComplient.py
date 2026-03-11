@@ -54,21 +54,6 @@ if not db_exists:
                    FOREIGN KEY (TagID) REFERENCES Tags(TagID)
                    )''')
 
-    # Should trigger a note creation with info for analysis functions. 
-    cursor.execute('''
-        CREATE TRIGGER IF NOT EXISTS create_blank_note_for_book
-            AFTER INSERT ON Books
-            BEGIN
-                -- Step 1: Create a blank note (timestamp auto-filled)
-                INSERT INTO Notes (Note)
-                VALUES ('Book Added to Library');
-
-                -- Step 2: Link the new note to the new book
-                INSERT INTO BookNotes (ISBN, NoteID)
-                VALUES (NEW.ISBN, last_insert_rowid());
-            END;
-
-
 #---------------------------------------------------------------
 # Here I have went ahead and added the DD_Sys table.
 #---------------------------------------------------------------
@@ -133,18 +118,6 @@ if not db_exists:
                    created_On TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
                    updated_At TEXT DEFAULT NULL
                    )''')
-
-        # TRIGGER FUNCTION.
-    cursor.execute("""
-        CREATE TRIGGER IF NOT EXISTS update_notes_timestamp
-        AFTER UPDATE ON Notes
-        FOR EACH ROW
-        BEGIN
-            UPDATE Notes
-            SET updated_At = CURRENT_TIMESTAMP
-            WHERE NoteID = NEW.NoteID;
-        END;
-    """)
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Tags (

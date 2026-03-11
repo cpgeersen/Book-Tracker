@@ -1,0 +1,274 @@
+#----------------------------------------------
+# 3.11 Analytical Functions
+#----------------------------------------------
+import sqlite3
+import json
+import os
+from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
+
+#---------------------------------------------------------
+# 3.11.1 - FUNCTION: NUMBER OF BOOKS
+#---------------------------------------------------------
+def count_Books(cursor):
+    return cursor.execute("""
+        SELECT COUNT(ISBN) FROM Books;
+    """).fetchone()[0]
+
+
+#---------------------------------------------------------
+# 3.11.2 - FUNCTION: NUMBER OF OWNED BOOKS
+#---------------------------------------------------------
+def count_Books_Owned(cursor):
+    return cursor.execute("""
+        SELECT COUNT(t.TagID)
+        FROM Books b
+        JOIN Tags t ON b.TagID = t.TagID
+        WHERE t.Owned = 1;
+    """).fetchone()[0]
+
+
+#---------------------------------------------------------
+# 3.11.3 - FUNCTION: Display Currently Reading
+#---------------------------------------------------------
+def display_Cur_Reading(cursor):
+    return cursor.execute("""
+        SELECT b.Title, b.ISBN
+        FROM Tags t
+        JOIN Books b ON t.TagID = b.TagID
+        WHERE t.Currently_Reading = 1;
+    """).fetchall()
+
+
+#---------------------------------------------------------
+# 3.11.4 - FUNCTION: Display Books Completed
+#---------------------------------------------------------
+def display_Count_Books_Completed(cursor):
+    return cursor.execute("""
+        SELECT COUNT(TagId)
+        FROM Tags
+        WHERE Completed = 1;
+    """).fetchone()[0]
+
+
+#---------------------------------------------------------
+# 3.11.5 - FUNCTION: Most Read Genres
+#---------------------------------------------------------
+def most_Read_Genre(cursor):
+    return cursor.execute("""
+        SELECT c.Genre, COUNT(b.GenreID) AS genre_count
+        FROM Books a
+        JOIN BookGenre b ON a.ISBN = b.ISBN
+        JOIN Genre c ON b.GenreID = c.GenreID
+        GROUP BY b.GenreID
+        ORDER BY genre_count DESC
+        LIMIT 5;
+    """).fetchall()
+
+
+#---------------------------------------------------------
+# FUNCTION: Average Chapter Read Speed
+#---------------------------------------------------------
+def avg_Chapter_Speed(cursor, ISBN):
+    # Chapters read
+    chapters_read = cursor.execute("""
+        SELECT Chapters_Completed
+        FROM Books
+        WHERE ISBN = ?
+    """, (ISBN,)).fetchone()[0]
+
+    # Total chapters
+    chapters_total = cursor.execute("""
+        SELECT Chapters
+        FROM Books
+        WHERE ISBN = ?
+    """, (ISBN,)).fetchone()[0]
+
+    # Earliest note timestamp
+    date_started = cursor.execute("""
+        SELECT c.created_On
+        FROM Notes c
+        JOIN BookNotes b ON c.NoteID = b.NoteID
+        JOIN Books a ON a.ISBN = b.ISBN
+        WHERE a.ISBN = ?
+        ORDER BY c.created_On ASC
+        LIMIT 1
+    """, (ISBN,)).fetchone()[0]
+
+    date_started = datetime.strptime(date_started, "%Y-%m-%d %H:%M:%S")
+    now = datetime.utcnow()
+
+    # Days elapsed
+    days_elapsed = (now - date_started).total_seconds() / 86400
+    if days_elapsed <= 0:
+        return 0
+
+    # Chapters per day
+    return chapters_read / days_elapsed
+
+
+#---------------------------------------------------------
+# FUNCTION: Average Page Read Speed (OUT OF SCOPE)
+#---------------------------------------------------------
+def avg_Page_Speed():
+    """Page-based speed not implemented (DB is chapter-oriented)."""
+    pass
+
+#---------------------------------------------------------
+# [EXTRA]
+# FUNCTION: Predicted Completion Date (OUT OF SCOPE)
+#---------------------------------------------------------
+
+def predicted_Completion_Date():
+
+    chapters_read = cursor.execute("""
+        SELECT Chapters_Completed 
+        FROM Books 
+        WHERE ISBN = ?
+        """, (ISBN,)).fetchone()[0]
+
+    chapters_total = cursor.execute("""
+        SELECT Chapters 
+        FROM Books 
+        WHERE ISBN = ?
+        """, (ISBN,)).fetchone()[0] 
+
+    date_started = cursor.execute("""
+        SELECT c.created_On 
+        FROM Notes c
+        JOIN BookNotes b ON c.NoteID = b.NoteID
+        JOIN Books a ON a.ISBN = b.ISBN
+        WHERE a.ISBN = ?
+        ORDER BY created_On ASC
+        """, (ISBN,)).fetchone()[0]
+
+    # Convert SQLite timestamp string → datetime
+    date_started = datetime.strptime(date_started, "%Y-%m-%d %H:%M:%S")
+
+    # Compute elapsed time
+    cur_time = datetime.utcnow()
+    elapsed_stamp = cur_time - date_started
+    days_elapsed = elapsed_stamp.total_seconds() / 86400
+
+    # Compute days to complete
+    remaining = chapters_total - chapters_read
+    days_to_Complete = remaining * (days_elapsed / chapters_read)
+    rem_time = cur_time + timedelta(days=days_to_Complete)
+    return rem_time
+
+#---------------------------------------------------------
+# FUNCTION: Display Mission Statement
+#---------------------------------------------------------
+def display_Mission_Statement(cursor, json_path="app/data/user.json"):
+    # Try JSON first
+    try:
+        with open(json_path, "r") as f:
+            profile = json.load(f)
+            mission = profile.get("mission_statement")
+            if mission and mission.strip():
+                return mission
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+
+    # Fallback to DB
+    row = cursor.execute("""
+        SELECT mission_statement
+        FROM Users
+        WHERE user_id = 1;
+    """).fetchone()
+
+    if row and row[0]:
+        return row[0]
+
+    return "No mission statement found."
+
+#----------------------
+# [EXTRA]
+# Function 4: Calculate % Completed
+#----------------------
+
+def percent_Completed(cursor, ISBN):
+    # Chapters read
+    chapters_read = cursor.execute("""
+        SELECT Chapters_Completed
+        FROM Books
+        WHERE ISBN = ?
+    """, (ISBN,)).fetchone()[0]
+
+    # Total chapters
+    chapters_total = cursor.execute("""
+        SELECT Chapters
+        FROM Books
+        WHERE ISBN = ?
+    """, (ISBN,)).fetchone()[0]
+
+    if chapters_total == 0:
+        return 0  # Avoid divide-by-zero
+
+    percent = (chapters_read / chapters_total) * 100
+    return percent
+
+#----------------------
+# [EXTRA]
+# Function 5: Graph of Book Completion
+#----------------------
+def plot_percent_completed(cursor):
+    # 1. Get all books that are NOT completed
+    rows = cursor.execute("""
+        SELECT b.Title, b.ISBN, t.Completed
+        FROM Books b
+        JOIN Tags t ON b.TagID = t.TagID
+        WHERE t.Completed = 0;
+    """).fetchall()
+
+    if not rows:
+        print("No in-progress books found.")
+        return
+
+    titles = []
+    percentages = []
+
+    # 2. Compute percent completed for each book
+    for title, ISBN, _ in rows:
+        chapters_read = cursor.execute("""
+            SELECT Chapters_Completed
+            FROM Books
+            WHERE ISBN = ?
+        """, (ISBN,)).fetchone()[0]
+
+        chapters_total = cursor.execute("""
+            SELECT Chapters
+            FROM Books
+            WHERE ISBN = ?
+        """, (ISBN,)).fetchone()[0]
+
+        if chapters_total == 0:
+            percent = 0
+        else:
+            percent = (chapters_read / chapters_total) * 100
+
+        titles.append(title)
+        percentages.append(percent)
+
+    # y positions
+    y_positions = list(range(len(titles)))
+
+    # Plot horizontal bars
+    plt.figure(figsize=(10, 6))
+    plt.barh(y_positions, percentages, color="brown")
+
+    # Axis settings
+    plt.xlabel("Percent Completed (%)")
+    plt.title("Current Book Progress")
+    plt.xlim(0, 110)
+    plt.xticks(range(0, 101, 10))
+
+    # Remove titles from the y-axis
+    plt.yticks(y_positions, [""] * len(titles))
+
+    # Add titles to the right of each bar
+    for i, (pct, title) in enumerate(zip(percentages, titles)):
+        plt.text(pct + 2, i, title, va="center", ha="left")
+
+    plt.tight_layout()
+    plt.show()
