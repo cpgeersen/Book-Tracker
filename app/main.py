@@ -11,16 +11,7 @@ SUCCESS = 200
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 
-json1 = {'author': 'John Doe',
-        'author2': '',
-        'chapters': 30,
-        'fiction-or-nonfiction': 'fiction',
-        'isbn': 1234567890123,
-        'owned': 'on',
-        'personal-or-academic': 'personal',
-        'publisher': 'SomePublisher',
-        'title': 'BookTitle',
-        'year-published': '2026',}
+
 
 # Create the Database
 #create_db()
@@ -51,7 +42,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
                 return redirect(url_for('individual_book_page', isbn=book_form_json['ISBN']))
 
             elif book_response[1] == BAD_REQUEST:
-                return render_template('add_book.html')  # add error page telling user book is already present
+                return render_template('add_book.html')  # !WIP! add error page telling user book is already present
 
             else:
                 return 'Server Error', 500
@@ -72,7 +63,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
         # This error occurs when the ISBN does not exist in database
         except json.decoder.JSONDecodeError:
-            return f'ISBN not in database'  # add full error page
+            return f'ISBN not in database'  # !WIP! add full error page
 
     @app.route('/book/local-search')
     def local_search_page():
