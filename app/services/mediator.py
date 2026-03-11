@@ -1,4 +1,4 @@
-from app.services.validate_book_json import validate_book_from_local
+from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend
 from app.services.Book.Book import create_book, read_book
 import json
 
@@ -41,8 +41,11 @@ def read(json_input, read_type):
         if read_type == 'book-all':
             pass
         elif read_type == 'book-isbn':
+            # First get the book record via ISBN
             result = read_book(json_input['ISBN'])
-            return result
+            # Then convert to frontend syntax for tags
+            converted_result = validate_book_for_frontend(result)
+            return converted_result
         elif read_type == 'book-title':
             pass
         elif read_type == 'book-author':

@@ -3,6 +3,15 @@ import json
 def main():
     pass
 
+def validate_book_for_frontend(json_input):
+    # Converts the tag values to reflect the frontend
+    json_input = json.loads(json_input)
+    json_input['Owned'] = 'on' if json_input['Owned'] == 'yes' else 'off'
+    json_input['Favorite'] = 'on' if json_input['Favorite'] == 'yes' else 'off'
+    json_input['Completed'] = 'on' if json_input['Completed'] == 'yes' else 'off'
+    json_input['Currently_Reading'] = 'on' if json_input['Currently_Reading'] == 'yes' else 'off'
+    return json.dumps(json_input)
+
 def validate_book_from_local(json_input):
     json_output = {}
 
@@ -96,14 +105,6 @@ def validate_tags(json_input, send_to_front=False):
                     json_output.update({key: 'yes'})
                 case _:
                     json_output.update({key: 'no'})
-    else:
-        # Reverse syntax to reflect frontend (off/on)
-        for key, tag in tag_list:
-            match tag.lower():
-                case 'yes':
-                    json_output.update({key: 'on'})
-                case _:
-                    json_output.update({key: 'off'})
 
     # Then add Personal_Or_Academic
     personal_or_academic = json_input.get('Personal_Or_Academic', 'personal')  # Will default to personal
