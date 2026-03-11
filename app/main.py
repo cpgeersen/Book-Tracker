@@ -26,7 +26,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
     app.register_blueprint(pages_bp)
 
     # Pages
-    @app.route('/book/add-local', methods=['GET', 'POST'])
+    @app.route('/book/add-local', methods=['POST', 'GET'])
     def add_book_page():
         if request.method == 'POST':
             # First get the form information
@@ -65,9 +65,40 @@ def create_routes(app): # Placeholder returns for unfinished pages
         except json.decoder.JSONDecodeError:
             return f'ISBN not in database'  # !WIP! add full error page
 
-    @app.route('/book/local-search')
+    @app.route('/book/local-search', methods=['GET'])
     def local_search_page():
-        return render_template('search.html'), 200
+        search_type = request.args.get('search_type')
+
+        if search_type == 'isbn':
+            isbn = request.args.get('search', 'isbn')
+
+            # Create a dict with the isbn, makes it possible to reuse mediator functions
+            isbn_dict = {"ISBN": isbn}
+            try:
+                book_result = json.loads(read(isbn_dict, 'book-isbn'))
+
+                book_result = json.dumps({"Book_Result_1" : book_result})
+                book_result = json.loads(book_result)
+
+                if book_result == '':
+                    return render_template('search.html', books={}), 200
+
+                return render_template('search.html', books=book_result), 200
+            except TypeError:   # When there is no book with ISBN match
+                return render_template('search.html', books={}), 200
+
+        elif search_type == 'title':
+            pass
+        elif search_type == 'author':
+            pass
+        else:
+            try:
+                book_result = read()
+                return render_template('search.html', books=book_result), 200
+            except TypeError: # When there are not books
+                return render_template('search.html', books={}), 200
+
+
 
     @app.route('/openlibrary-search')
     #def openlibrary_search_page():
@@ -102,25 +133,6 @@ def create_routes(app): # Placeholder returns for unfinished pages
         return jsonify(query=query, num_found=search_result.get('numFound', 0), results=trimmed_results), 200
 
 
-
-    # WIP
-    # @app.route('/book/<int:isbn>/note')
-    # def note_page(isbn):
-    #    return f'Note for book with ISBN {isbn}'
-
-    # Routes for POST, GET, UPDATE, DELETE
-    # Book API Route
-    #@app.route('/book-api', methods=['POST', 'GET', 'PATCH', 'DELETE'])
-    #def book_api():
-    #    if request.method == 'POST':
-    #        return create(json)
-    #    elif request.method == 'GET':
-    #        return read(json)
-    #    elif request.method == 'PATCH':
-    #        return update(json)
-    #    elif request.method == 'DELETE':
-    #        return delete(json)
-    #    return None  # TEMP
 
 if __name__ == '__main__':
     pass

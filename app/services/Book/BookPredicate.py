@@ -1,6 +1,6 @@
 import sqlite3
 
-DB_PATH = "app/data/bt.db"
+DB_PATH = "bt.db"
 
 def connect_to_database():
     try:

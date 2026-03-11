@@ -1,5 +1,5 @@
 from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend
-from app.services.Book.Book import create_book, read_book
+from app.services.Book.Book import create_book, read_book, read_all_books
 import json
 
 
@@ -8,10 +8,11 @@ BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 
 def main(): # Test main
-    result = create(normal_data, 'book-local')
+    #result = create(normal_data, 'book-local')
     #print(result)
     #print(read_book('0061091464'))
-    print(read(normal_data, 'book-isbn'))
+    #print(read())
+    pass
 
 
 # POST - Takes JSON as input
@@ -36,10 +37,11 @@ def create(json_input, create_type):
         return error, BAD_REQUEST
 
 # GET - Takes JSON as input
-def read(json_input, read_type):
+def read(json_input=None, read_type='book-all'):
     try:
         if read_type == 'book-all':
-            pass
+            result = read_all_books()
+            return result
         elif read_type == 'book-isbn':
             # First get the book record via ISBN
             result = read_book(json_input['ISBN'])

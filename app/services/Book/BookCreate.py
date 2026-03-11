@@ -9,7 +9,7 @@ from app.services.Book.BookPredicate import is_isbn_in_book_table
 SUCCESS = 200
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
-DB_PATH = "app/data/bt.db"
+DB_PATH = "bt.db"
 
 def connect_to_database():
     try:
