@@ -26,10 +26,10 @@ def validate_book(json_input):
     elif title == '':
         raise KeyError('Error: Book must have a title.')
 
-    chapters = str(json_input.setdefault('Chapters', ''))
-    chapters_completed = str(json_input.setdefault('Chapters_Completed', ''))
-    summary = json_input.setdefault('Summary', '')
-    cover_image = json_input.setdefault('Cover_Image', '')
+    chapters = json_input.get('Chapters', '')
+    chapters_completed = json_input.get('Chapters_Completed', '')
+    summary = json_input.get('Summary', '')
+    cover_image = json_input.get('Cover_Image', '')
 
     json_output.update({'ISBN': isbn.strip()})
     json_output.update({'Title': title.strip().title()})
@@ -52,8 +52,8 @@ def validate_author(json_input):
     json_output.update({'Author_First_Name_1': author_first_name_1.strip()})
     json_output.update({'Author_Last_Name_1': author_last_name_1.strip()})
 
-    author_first_name_2 = json_input.setdefault('Author_First_Name_2', '')
-    author_last_name_2 = json_input.setdefault('Author_Last_Name_2', '')
+    author_first_name_2 = json_input.get('Author_First_Name_2', '')
+    author_last_name_2 = json_input.get('Author_Last_Name_2', '')
 
     json_output.update({'Author_First_Name_2': author_first_name_2.strip()})
     json_output.update({'Author_Last_Name_2': author_last_name_2.strip()})
@@ -80,10 +80,10 @@ def validate_publisher(json_input):
 def validate_tags(json_input, send_to_front=False):
     json_output = {}
 
-    owned_value = json_input.setdefault('Owned', 'no')
-    favorite_value = json_input.setdefault('Favorite', 'no')
-    completed_value = json_input.setdefault('Completed', 'no')
-    currently_reading_value = json_input.setdefault('Currently_Reading', 'no')
+    owned_value = json_input.get('Owned', 'no')
+    favorite_value = json_input.get('Favorite', 'no')
+    completed_value = json_input.get('Completed', 'no')
+    currently_reading_value = json_input.get('Currently_Reading', 'no')
 
     # If the tags are present in JSON we need to convert from frontend syntax (on, off) to backend (yes, no)
     tag_list = [('Owned', owned_value), ('Favorite', favorite_value), ('Completed', completed_value),
@@ -106,7 +106,7 @@ def validate_tags(json_input, send_to_front=False):
                     json_output.update({key: 'off'})
 
     # Then add Personal_Or_Academic
-    personal_or_academic = json_input.setdefault('Personal_Or_Academic', 'personal')  # Will default to personal
+    personal_or_academic = json_input.get('Personal_Or_Academic', 'personal')  # Will default to personal
     json_output.update({'Personal_Or_Academic': personal_or_academic})
 
     return json_output
@@ -116,10 +116,10 @@ def validate_genres(json_input):
     json_output = {}
 
     # Add possible missing genres
-    genre_1 = json_input.setdefault('Genre_1', 'fiction')  # Will default Genre 1 to fiction
-    genre_2 = json_input.setdefault('Genre_2', '')
-    genre_3 = json_input.setdefault('Genre_3', '')
-    genre_4 = json_input.setdefault('Genre_4', '')
+    genre_1 = json_input.get('Genre_1', 'fiction')  # Will default Genre 1 to fiction
+    genre_2 = json_input.get('Genre_2', '')
+    genre_3 = json_input.get('Genre_3', '')
+    genre_4 = json_input.get('Genre_4', '')
 
     # Add genres to the json output
     json_output.update({'Genre_1': genre_1})

@@ -1,5 +1,6 @@
 from app.services.validate_book_json import validate_book_from_local
-from app.services.Book.Book import create_book
+from app.services.Book.Book import create_book, read_book
+import json
 
 
 SUCCESS = 200
@@ -8,7 +9,9 @@ INTERNAL_SERVER_ERROR = 500
 
 def main(): # Test main
     result = create(normal_data, 'book-local')
-    print(result)
+    #print(result)
+    #print(read_book('0061091464'))
+    print(read(normal_data, 'book-isbn'))
 
 
 # POST - Takes JSON as input
@@ -33,8 +36,25 @@ def create(json_input, create_type):
         return error, BAD_REQUEST
 
 # GET - Takes JSON as input
-def read(json):
-    return str(json)
+def read(json_input, read_type):
+    try:
+        if read_type == 'book-all':
+            pass
+        elif read_type == 'book-isbn':
+            result = read_book(json_input['ISBN'])
+            return result
+        elif read_type == 'book-title':
+            pass
+        elif read_type == 'book-author':
+            pass
+        elif read_type == 'book-genre':
+            pass
+        else:
+            return 'Error: Not a valid call'
+    except:
+        'TEMP EXCEPT'
+
+
 
 
 # PATCH - Takes JSON as input
