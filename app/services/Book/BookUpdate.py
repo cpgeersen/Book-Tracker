@@ -4,10 +4,11 @@ SUCCESS = 200
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 
+DB_PATH = "app/data/bt.db"
 
 def connect_to_database():
     try:
-        conn = sqlite3.connect('bt.db')
+        conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
         return cursor, conn
     except sqlite3.Error as error:

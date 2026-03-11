@@ -3,7 +3,7 @@ import os
 from app.services.genres import genres_for_table
 
 # !!Add actual path to the database!!
-DB_PATH = "bt.db"
+DB_PATH = "app/data/bt.db"
 
 # Check if database already exists
 db_exists = os.path.exists(DB_PATH)
