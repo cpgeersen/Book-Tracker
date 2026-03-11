@@ -35,8 +35,8 @@ def validate_book(json_input):
     elif title == '':
         raise KeyError('Error: Book must have a title.')
 
-    chapters = json_input.get('Chapters', '')
-    chapters_completed = json_input.get('Chapters_Completed', '')
+    chapters = json_input.get('Chapters', '0')
+    chapters_completed = json_input.get('Chapters_Completed', '0')
     summary = json_input.get('Summary', '')
     cover_image = json_input.get('Cover_Image', '')
 
