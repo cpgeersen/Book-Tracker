@@ -1,0 +1,71 @@
+#----------------------------------------------
+# 3.11 Analytical Functions
+#----------------------------------------------
+import sqlite3
+import json
+import os
+from datetime import datetime, timedelta
+import matplotlib.pyplot as plt
+
+#---------------------------------------------------------
+# 3.11.1 - FUNCTION: NUMBER OF BOOKS
+#---------------------------------------------------------
+def total_books(cursor):
+    total_Books = cursor.execute("""
+        SELECT COUNT(ISBN) FROM Books;
+    """).fetchone()[0]
+    return {"Total Books": total_Books}
+
+#---------------------------------------------------------
+# 3.11.2 - FUNCTION: NUMBER OF OWNED BOOKS
+#---------------------------------------------------------
+def total_owned_books(cursor):
+        total_Owned_Books = cursor.execute("""
+            SELECT COUNT(t.TagID)
+            FROM Books b
+            JOIN Tags t ON b.TagID = t.TagID
+            WHERE t.Owned = 1;
+        """).fetchone()[0]
+    return {"Total Owned Books": total_Owned_Books}
+
+
+#---------------------------------------------------------
+# 3.11.3 - FUNCTION: Display Currently Reading
+#---------------------------------------------------------
+def total_current_books(cursor):
+        total_Current_Books = cursor.execute("""
+                SELECT COUNT(b.ISBN)
+                FROM Tags t
+                JOIN Books b ON t.TagID = b.TagID
+             WHERE t.Currently_Reading = 1;
+            """).fetchone()[0]
+    return {"Currently Reading": total_Current_Books}
+
+#---------------------------------------------------------
+# 3.11.4 - FUNCTION: Display Books Completed
+#---------------------------------------------------------
+def total_completed_books(cursor):
+    count_Completed_Books = cursor.execute("""
+        SELECT COUNT(TagId)
+        FROM Tags
+        WHERE Completed = 1;
+    """).fetchone()[0]
+    return {"Books Completed": count_Completed_Books}
+
+#---------------------------------------------------------
+# 3.11.5 - FUNCTION: Most Read Genres
+#---------------------------------------------------------
+def most_read_genre(cursor):
+    most_Read_Genres = cursor.execute("""
+            SELECT c.Genre, COUNT(b.GenreID) AS genre_count
+            FROM Books a
+            JOIN BookGenre b ON a.ISBN = b.ISBN
+            JOIN Genre c ON b.GenreID = c.GenreID
+            GROUP BY b.GenreID
+            ORDER BY genre_count DESC
+            LIMIT 5;
+        """).fetchall()
+    for item in most_Read_Genres:
+        most_read_genre = (f"Genre: {item[0]} \n Genre2: {item[2]} \n Genre3: {item[4]} \n Genre4: {item6} \n Genre5: {item8}")
+    return most_read_genre
+    
