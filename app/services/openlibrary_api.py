@@ -6,13 +6,13 @@ import json
 #from app.services.Book.Book import read_book, is_isbn_present
 
 BASE_URL = "https://openlibrary.org"
-last_serach_time = None
+last_search_time = None
 Title_search_cooldown = timedelta(seconds=1.5)
 def is_search_allowed():
-    global last_serach_time
+    global last_search_time
     now = datetime.now()
-    if last_serach_time is None or (now - last_serach_time) >= Title_search_cooldown:
-        last_serach_time = now
+    if last_search_time is None or (now - last_search_time) >= Title_search_cooldown:
+        last_search_time = now
         return True
     else:
         return False
