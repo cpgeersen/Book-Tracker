@@ -1,8 +1,15 @@
 import sqlite3
 
+#=============================================================================================================
+# Original Author: Christopher O'Brien
+# Second Author: ? 
+# 
+# [] Is this code program worthy? Y/N?
+# [Note] This Code needs to be reviewed to make it complient.
+#
 # Contains functions for CRUD functionality for Notes table. 
 # Read functionality retreives binary files - May need to further refine to accommodate potential extensions. 
-
+#=============================================================================================================
 
 # Inserts new BLOB file into Note column, adds generated NoteID to BookNote table and assoicates with an ISBN.
 def create_note(ISBN_value, blob_file):

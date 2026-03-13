@@ -1,4 +1,17 @@
 import sqlite3
+import json
+
+#==========================================================
+# Original Author: Christopher O'Brien
+# Editors:
+#
+# [] Is this program worthy? N/Y?
+#
+# This file contain the CRUD_Delete_Books code. 
+# [NOTE]: Java formatted wrapper || terminology misunderstood.
+# Target
+# Reference
+#==========================================================
 # This file contains the CRUD code for a delete function.
 DB_PATH = "bt.db"
 #---------------------------------------------------------------------

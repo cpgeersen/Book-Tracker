@@ -1,6 +1,17 @@
 import sqlite3
 import os
 
+#==========================================================
+# [Project Manager]: Collin Geershen
+# Original Author: Christopher O'Brien
+# Editors:
+#
+# [] Is this Program Worth Code? Y/N?
+#
+# This is the create database file.
+# This file is Code Complient Minimal Deviation
+#==========================================================
+
 #!!Add actual path to the database!!
 DB_PATH = "bt.db"
 
@@ -14,31 +25,14 @@ if not db_exists:
     print("Database not found. Creating new database...")
 
 
-    # ---------------------------
-    # BEGIN ORIGINAL create_db.py
-    # ---------------------------
-
+#----------------------------
+# BEGIN ORIGINAL create_db.py
+#----------------------------
     cursor.execute("PRAGMA foreign_keys = ON;")
 
-    #----------------------------
-    # CREATE USER TABLE
-    #----------------------------
-
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS Users (
-        user_id INTEGER PRIMARY KEY,
-        f_name TEXT DEFAULT NULL,
-        l_name TEXT DEFAULT NULL,
-        username TEXT DEFAULT NULL,
-        mission_statement TEXT DEFAULT NULL,
-        theme BOOLEAN DEFAULT 0
-    )''');
-    # added user_id = 1 to enforce only one user record, since this is a single user application.
-    #----------------------------
-    # Beginning of the book DB
-    #----------------------------
-    
-
+#----------------------------
+# Books table.
+#----------------------------
     cursor.execute ('''
         CREATE TABLE IF NOT EXISTS Books (
                    ISBN TEXT PRIMARY KEY,
@@ -49,15 +43,14 @@ if not db_exists:
                    TagID INTEGER,
                    Chapters INTEGER,
                    Chapters_Completed INTEGER,
-                   Cover_Image BLOB,
+                   Cover_Image TEXT DEFAULT NULL,
                    FOREIGN KEY (PublisherID) REFERENCES Publishers(PublisherID),
                    FOREIGN KEY (TagID) REFERENCES Tags(TagID)
                    )''')
 
 #---------------------------------------------------------------
-# Here I have went ahead and added the DD_Sys table.
+# DD_Sys table.
 #---------------------------------------------------------------
-
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS DD_Sys(
                 Class_Num INT,
@@ -65,7 +58,9 @@ if not db_exists:
                 )
                 ''')
 
-
+#---------------------------------------------------------------
+# BookAuthor Join Table
+#---------------------------------------------------------------
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS BookAuthor (
                    ISBN TEXT NOT NULL,
@@ -74,7 +69,9 @@ if not db_exists:
                    FOREIGN KEY (ISBN) REFERENCES Books(ISBN), -- Constraint enforces realtional integrity, by ensuring items exist.
                    FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID)
                    )''')
-
+#---------------------------------------------------------------
+# Authors Table
+#---------------------------------------------------------------
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Authors (
                    AuthorID INTEGER PRIMARY KEY,
@@ -83,12 +80,18 @@ if not db_exists:
                    Author_Last_Name TEXT NOT NULL
                    )''')
 
+#---------------------------------------------------------------
+# Publishers Table
+#---------------------------------------------------------------
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Publishers (
                    PublisherID INTEGER PRIMARY KEY,
                    Publisher_Name TEXT NOT NULL
                    )''')
 
+#---------------------------------------------------------------
+# BookGenre Join Table
+#----------------------------------------------------------------
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS BookGenre (
                    ISBN TEXT,
@@ -98,12 +101,18 @@ if not db_exists:
                    FOREIGN KEY (ISBN) REFERENCES Books(ISBN)
                    )''')
 
+#---------------------------------------------------------------
+# Genre Table
+#---------------------------------------------------------------
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Genre (
                    GenreID INTEGER PRIMARY KEY,
                    GENRE VARCHAR(15)
                    )''')
 
+#---------------------------------------------------------------
+# BookNotes Join Table
+#---------------------------------------------------------------
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS BookNotes (
                    ISBN TEXT,
@@ -111,6 +120,9 @@ if not db_exists:
                    PRIMARY KEY (ISBN, NoteID)
                    )''')
 
+#---------------------------------------------------------------
+# Notes Table
+#---------------------------------------------------------------
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Notes (
                    NoteID INTEGER PRIMARY KEY,
@@ -119,6 +131,9 @@ if not db_exists:
                    updated_At TEXT DEFAULT NULL
                    )''')
 
+#---------------------------------------------------------------
+# Tags Table
+#---------------------------------------------------------------
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Tags (
                     TagID INTEGER PRIMARY KEY,
@@ -129,9 +144,9 @@ if not db_exists:
                     PersonalOrAcademic BOOLEAN NOT NULL -- 0="Personal" & 1="Academic"
                     )''')
 
-    # ---------------------------
-    # END ORIGINAL create_db.py
-    # ---------------------------
+#----------------------------
+# END ORIGINAL create_db.py
+#----------------------------
 
     con.commit()
     print("Database and tables created successfully.")

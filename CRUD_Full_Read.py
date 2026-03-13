@@ -3,6 +3,8 @@ import json
 
 # Code contains functions 2.5.2 - Read Full Book Record (i.e. return all entries)
 
+# Author: Holly Green
+
 #2.5.2.1 - read_book_table(ISBN) -> JSON
 # Read Functionality for Book Table: return all records in table based on ISBN. Returns dictionary for JSON formatting.
 def read_book_table(ISBN_value):

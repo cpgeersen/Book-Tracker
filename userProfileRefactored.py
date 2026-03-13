@@ -1,15 +1,18 @@
 import json
 import os
 from datetime import datetime, timedelta
-from Analytical_Functions import (
-    display_Cur_Reading,
-    count_Books_Owned,
-    avg_Chapter_Speed
-)
 
-#--------------------------------------------------------------
-# 4.11 - Default JSON user profile
-#--------------------------------------------------------------
+#===========================================================
+# Original Author: Christopher O'Brien
+# Second Author: 
+#
+# [] Is this code program worthy? Y/N?
+#
+# 4.11-Create JSON user file 4 
+# + 3.11 - Count Completed Books [code at bottom]
+# I think I need to do more work on this file 
+# to allow for for calculated fields to be generated
+#===========================================================
 
 #----------------------------------------------------------
 # 4.7.1 - User Setting Storage
@@ -34,29 +37,27 @@ def user_Setting_Storage(data):
 # 4.7.2 - Read User Settings
 #------------------------------------------------
 def read_User_Settings():
-    manager = UserManager()
-    return manager.read_user_json()
+    return UserManager.read_user_json()
 #------------------------------------------------
 # 4.7.3 - Update User Function
 #------------------------------------------------
 def update_User_Profile():
-    manager = UserManager()
-    return manager.edit_user_profile()
+    return UserManager.edit_user_profile()
 
-
+#--------------------------------------------------------------
+# 4.11 - Default JSON user profile
+#--------------------------------------------------------------
 #--------------------------------
-# Save Time
+# Class Definition and Default Profile
 #--------------------------------
 class UserManager:
     def __init__(self, json_path="app/data/user_settings.json"):
         self.json_path = json_path
 
         self.DEFAULT_USER_PROFILE = {
-            "f_name": "",
-            "l_name": "",
             "username": "",
             "mission_statement": "",
-            "theme": "",
+            "theme": ""
         }
 
     # ---------------------------------------------------------
@@ -65,12 +66,14 @@ class UserManager:
     def write_user_json(self, data):
         if not isinstance(data, dict):
             raise TypeError("User profile must be a dictionary.")
+            return False
+        else:    
+            os.makedirs(os.path.dirname(self.json_path), exist_ok=True)
 
-        os.makedirs(os.path.dirname(self.json_path), exist_ok=True)
-
-        with open(self.json_path, "w") as f:
-            json.dump(data, f, indent=4)
-
+            with open(self.json_path, "w") as f:
+                json.dump(data, f, indent=4)
+            return True
+            
     # ---------------------------------------------------------
     # Load user profile (JSON → default)
     # ---------------------------------------------------------

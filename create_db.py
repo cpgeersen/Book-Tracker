@@ -1,6 +1,16 @@
 import sqlite3
 import os
 
+#==========================================================
+# [Project Manager]: Collin Geershen
+# Original Author: Christopher O'Brien
+# Editors:
+#
+# [] Is this Program Worth Code? Y/N?
+#
+# This is the create database file.
+#==========================================================
+
 #!!Add actual path to the database!!
 DB_PATH = "bt.db"
 
