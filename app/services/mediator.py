@@ -1,65 +1,79 @@
-from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend
-from app.services.Book.Book import create_book, read_book, read_all_books
-import json
+from openlibrary_api import search_books_by_title,get_work_data
+from validate_book_json import validate_book
+#from Book import create_book
 
 
-SUCCESS = 200
-BAD_REQUEST = 400
-INTERNAL_SERVER_ERROR = 500
-
-def main(): # Test main
-    #result = create(normal_data, 'book-local')
-    #print(result)
-    #print(read_book('0061091464'))
-    #print(read())
+def main():
     pass
 
 
-# POST - Takes JSON as input
-def create(json_input, create_type):
-    try:
-        if create_type == 'book-local':
-            json_input = validate_book_from_local(json_input)
-            result = create_book(json_input)
-            return result
+#using .get to avoid key errors.
+def complete_book_from_ol(query,):
+    #searh by title
+    search_results = search_books_by_title(query=query)
+    #search fails
+    if "error" in search_results:
+        return search_results
+    #search succeeds, return search results for user to select from
+    docs = search_results['docs']
+    if 'docs' not in search_results:
+        return {"error": "No search results found for the given title."}
+        #create_book(json) #should we handle 3.2.2 like this ?
+    
+    if len(docs) == 0:
+        return {"error": "No search results found for the given title."}
+    #testing first result
+    first_result = docs[0]
+    book_title = first_result.get('title')
+    first_publish_year = first_result.get('first_publish_year')    
+    isbn_list = first_result.get('isbn', [])
 
-        elif create_type == 'book-ol':
-            return 'WIP'
-        elif create_type == 'note':
-            return 'WIP'
-        elif create_type == 'cover-image':
-            return 'WIP'
-        else:
-            return 'Error: Not a valid call'
-    except TypeError and ValueError:
-        return f'Error: Invalid Entry, could not parse. Try again.', BAD_REQUEST
-    except KeyError as error: # If any required keys are missing from JSON
-        return error, BAD_REQUEST
+    # now works api 
+    work_key = first_result.get('key')
+    author_olids = []
+    if work_key:
+        # Get work data from imported function, which will include author OLIDs
+        work_data = get_work_data(work_key)
+        #check if work_data is a dict and contains "authors" key before trying to access it PS. ALL API CALLS IN OL ARE Dictionaries
+        if isinstance(work_data, dict) and "authors" in work_data:
+            # Loop through authors in work data and extract OLIDs
+            for author in work_data["authors"]:
+                #check if "author" key exists and is a dict, and if it contains "key" before trying to access it
+                if "author" in author and "key" in author["author"]:
+                    # If all checks pass, append the author OLID to the list
+                    author_olids.append(author["author"]["key"])
+
+    complete_book_json = {
+            "title": book_title,
+            "publish_year": first_publish_year,
+            "isbn_list": isbn_list,
+            "work_key": work_key,
+            "author_olids": author_olids,
+            "first_publish_year": first_publish_year
+        }
+    return complete_book_json
+            
+
+# POST - Takes JSON as input
+def create(json, create_type):
+    create_type = create_type.lower() 
+    if create_type == 'book':
+        #return validate_book(json, create_type)  # the validated JSON will then be called with database INSERT here
+        pass
+    #work in progress 
+    if create_type == "book_ol":
+        pass
+
+        
+    elif create_type == 'note':
+        return 'WIP'
+    else:
+        return 'Error: Not a valid call'
+
 
 # GET - Takes JSON as input
-def read(json_input=None, read_type='book-all'):
-    try:
-        if read_type == 'book-all':
-            result = read_all_books()
-            return result
-        elif read_type == 'book-isbn':
-            # First get the book record via ISBN
-            result = read_book(json_input['ISBN'])
-            # Then convert to frontend syntax for tags
-            converted_result = validate_book_for_frontend(result)
-            return converted_result
-        elif read_type == 'book-title':
-            pass
-        elif read_type == 'book-author':
-            pass
-        elif read_type == 'book-genre':
-            pass
-        else:
-            return 'Error: Not a valid call'
-    except:
-        'TEMP EXCEPT'
-
-
+def read(json):
+    return str(json)
 
 
 # PATCH - Takes JSON as input
@@ -71,31 +85,47 @@ def update(json):
 def delete(json):
     return str(json)
 
-normal_data = {"ISBN": "0061091464",
-               "Title": "The Thief of Always",
-               "Publish_Year": "1993",
-               "Summary": "After a mysterious stranger promises to end"
-                          " his boredom with a trip to the magical Holiday"
-                          " House, ten-year-old Harvey learns that his fun"
-                          " has a high price.",
-               "Chapters": "24",
-               "Chapters_Completed": "24",
-               "Cover_Image": "",
-               "Author_First_Name_1": "Clive",
-               "Author_Last_Name_1": "Barker",
-               "Author_First_Name_2": "",
-               "Author_Last_Name_2": "",
-               "Publisher_Name": "HarperCollins",
-               "Owned": "yes",
-               "Favorite": "yes",
-               "Completed": "yes",
-               "Currently_Reading": "no",
-               "Personal_Or_Academic": "personal",
-               "Genre_1": "fiction",
-               "Genre_2": "horror",
-               "Genre_3": "fantasy"}
+json_test = {'Author_First_Name_1': 'John',
+             'Author_Last_Name_1':'Doe',
+        'Chapters': 30,
+        'Genre_1': 'fiction',
+        'ISBN': 1234567890123,
+        'Owned': 'yes',
+        'Personal_Or_Academic': 'personal',
+        'Publisher_Name': 'SomePublisher',
+        'Title': 'The Hobbit',
+        'Publish_Year': '2026',}
 
 
+json1 = {"ISBN": 1234567890123,
+             "Title": "SomeBook",
+             "Publish_Year": "2026",
+             "Publisher_ID": "3",
+             "Summary": "asdfdasadfsdfsafds",
+             "Tag_ID": "4",
+             "Chapters": "23",
+             "Chapters_Completed": "3",
+             "Cover_Image_Bytes": "",
+             "AuthorID_1": "1",
+             "Author_First_Name_1": "John",
+             "Author_Last_Name_1": "Doe",
+             "AuthorID_2": "4",
+             "Author_First_Name_2": "Jane",
+             "Author_Last_Name_2": "Doe",
+             "Publisher_Name": "SomePublisher",
+             "Owned": "yes",
+             "Favorite": "yes",
+             "Completed": "no",
+             "Currently_Reading": "yes",
+             "Personal_Or_Academic": "personal",
+             "GenreID_1": "1",
+             "Genre_1": "fiction",
+             "GenreID_2": "3",
+             "Genre_2": "fantasy",
+             "GenreID_3": "6",
+             "Genre_3": "humor",
+             "GenreID_4": "4",
+             "Genre_4": "drama"}
 
 if __name__ == '__main__':
     main()
