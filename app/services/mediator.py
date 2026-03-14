@@ -15,6 +15,51 @@ def main(): # Test main
     pass
 
 
+def complete_book_from_ol(query,):
+    #searh by title
+    search_results = search_books_by_title(query=query)
+    #search fails
+    if "error" in search_results:
+        return search_results
+    #search succeeds, return search results for user to select from
+    docs = search_results['docs']
+    if 'docs' not in search_results:
+        return {"error": "No search results found for the given title."}
+        #create_book(json) #should we handle 3.2.2 like this ?
+    
+    if len(docs) == 0:
+        return {"error": "No search results found for the given title."}
+    #testing first result
+    first_result = docs[0]
+    book_title = first_result.get('title')
+    first_publish_year = first_result.get('first_publish_year')    
+    isbn_list = first_result.get('isbn', [])
+
+    # now works api 
+    work_key = first_result.get('key')
+    author_olids = []
+    if work_key:
+        # Get work data from imported function, which will include author OLIDs
+        work_data = get_work_data(work_key)
+        #check if work_data is a dict and contains "authors" key before trying to access it PS. ALL API CALLS IN OL ARE Dictionaries
+        if isinstance(work_data, dict) and "authors" in work_data:
+            # Loop through authors in work data and extract OLIDs
+            for author in work_data["authors"]:
+                #check if "author" key exists and is a dict, and if it contains "key" before trying to access it
+                if "author" in author and "key" in author["author"]:
+                    # If all checks pass, append the author OLID to the list
+                    author_olids.append(author["author"]["key"])
+
+    complete_book_json = {
+            "title": book_title,
+            "publish_year": first_publish_year,
+            "isbn_list": isbn_list,
+            "work_key": work_key,
+            "author_olids": author_olids,
+            "first_publish_year": first_publish_year
+        }
+    return complete_book_json
+
 # POST - Takes JSON as input
 def create(json_input, create_type):
     try:
