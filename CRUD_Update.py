@@ -1,7 +1,15 @@
 import sqlite3
 
+#==================================================================================
+# Original Author: Christopher O'Brien
+# Second Author: ?Joseph Candalena 
+#
+# [] Reviewed? Y/N: Is this program worthy code?
+# [Note] This Code needs to be edited to make it Code Complient.
+# 
 # This code should use ISBN to Update Chapters_Completed.  
 # Additionally, an automatic update is made to the tags table to mark a book completed.
+#===================================================================================
 
 def update_chapters(ISBN, Chapters_Completed):
     try:
@@ -32,7 +40,7 @@ def update_chapters(ISBN, Chapters_Completed):
         if result is None:
             raise Exception(f"No book found with ISBN: {ISBN}")
 
-        total_chapters, tag_id = result
+        total_chapters, tag_id = result or (None, None)
 
         # 3. Decide how to update Tags
         if Chapters_Completed >= total_chapters:

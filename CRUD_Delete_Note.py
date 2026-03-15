@@ -1,7 +1,9 @@
 import sqlite3
+
 # This file contains the CRUD code for a delete function.
 # The target of this function is the Notes Table.  
 # The target of this function contains a reference table. 
+
 DB_PATH = "bt.db"
 
 def _connect():

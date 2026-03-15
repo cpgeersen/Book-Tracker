@@ -2,16 +2,20 @@ import json
 import os
 import sqlite3
 import datetime
-#######################################
-# I'm unsure about path of the JSON import file. 
-#######################################
 
-#--------------------------------------------------------------
+#===========================================================
+# Original Author: Christopher O'Brien
+# Second Author: 
+#
+# [] Is this code program worthy? Y/N?
+#
 # 4.11-Create JSON user file 4 
 # + 3.11 - Count Completed Books [code at bottom]
 # I think I need to do more work on this file 
 # to allow for for calculated fields to be generated
-#---------------------------------------------------------------
+#===========================================================
+
+
 class UserManager:
     def __init__(self, db_path="bt.db", json_path="app/data/user.json"):
         self.db_path = db_path

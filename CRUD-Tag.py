@@ -1,6 +1,14 @@
 import sqlite3
 
+#============================================================
+# Original Author: Christopher O'Brien
+# Second Author: ?
+#
+# [] Is this code program worthy? Y/N?
+# [Note] This Code needs to be reviewed to make it complient.
+#
 # Contains functions for CRUD functionality for Tags table.
+#============================================================
 
 # Inserts new Tags record into Tags table.
 def create_tag(owned, favorite, completed, currently_reading, personal_or_academic):

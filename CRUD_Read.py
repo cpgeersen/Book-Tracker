@@ -1,6 +1,8 @@
 import sqlite3
 
 
+# Author: Holly Green
+
 # This file contains Read functionality for book, author, publisher, and genre records.
 # Uses ISBN as parameter. 
 
