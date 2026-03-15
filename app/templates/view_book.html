@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <!-- Basic page metadata -->
   <meta charset="UTF-8">
   <title>Book Entry</title>
@@ -58,58 +59,11 @@
       align-items: center;
       justify-content: center;
       color: #9ca3af;
-      font-size: 0.9rem;
-    }
-
-    /* Book information text */
-    .book-info h2 {
-      margin-top: 0;
-    }
-
-    .book-info p {
-      margin: 0.4rem 0;
-      font-size: 0.95rem;
     }
 
     /* Generic section spacing */
     .section {
       margin-top: 2rem;
-    }
-
-    /* Chapter control buttons */
-    .chapter-controls button {
-      padding: 0.4rem 0.8rem;
-      margin-right: 0.5rem;
-      border-radius: 6px;
-      border: none;
-      background-color: #374151;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Action buttons */
-    .button-group button {
-      padding: 0.5rem 0.9rem;
-      border-radius: 8px;
-      border: none;
-      background-color: #6366f1;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-      margin-right: 0.5rem;
-    }
-
-    .button-group button:hover {
-      background-color: #4f46e5;
-    }
-
-    /* Special styling for Remove button */
-    .remove-btn {
-      background-color: #dc2626;
-    }
-
-    .remove-btn:hover {
-      background-color: #b91c1c;
     }
 
     /* Genre and tag styling */
@@ -124,7 +78,7 @@
       cursor: pointer;
     }
 
-    /* Active state when tag is toggled */
+    /* Active tag state */
     .tag.active {
       background-color: #6366f1;
     }
@@ -146,7 +100,6 @@
       background-color: #1f2933;
       color: #e5e7eb;
       padding: 0.6rem;
-      resize: vertical;
     }
 
     /* Individual note card styling */
@@ -155,7 +108,11 @@
       padding: 0.6rem;
       border-radius: 6px;
       margin-top: 0.6rem;
-      font-size: 0.9rem;
+    }
+
+    /* Hidden edit sections */
+    .hidden {
+      display: none;
     }
 
   </style>
@@ -186,30 +143,63 @@
         <div class="book-info">
 
           <h2>{{ book["Title"] }}</h2>
-          <p><strong>Author:</strong> {{ book["Author_First_Name_1"] }} {{ book["Author_Last_Name_1"] }}</p>
+
+          <p>
+            <strong>Author:</strong>
+            {{ book["Author_First_Name_1"] }} {{ book["Author_Last_Name_1"] }}
+          </p>
+
+          <!-- Optional second author -->
           {% if book["Author_First_Name_2"] %}
-            <p><strong>Second Author:</strong> {{ book["Author_First_Name_2"] }} {{ book["Author_Last_Name_2"] }}</p>
+          <p>
+            <strong>Second Author:</strong>
+            {{ book["Author_First_Name_2"] }} {{ book["Author_Last_Name_2"] }}
+          </p>
           {% endif %}
+
           <p><strong>Publisher:</strong> {{ book["Publisher_Name"] }}</p>
           <p><strong>Year:</strong> {{ book["Publish_Year"] }}</p>
           <p><strong>ISBN:</strong> {{ book["ISBN"] }}</p>
-          {% if book["Summary"] %}
-            <p><strong>Summary:</strong> {{ book["Summary"] }}</p>
-          {% else %}
-            <p><strong>Summary:</strong> No summary available.</p>
-          {% endif %}
-        </div>
 
+          <!-- Summary display section -->
+          <div id="summary-display">
+
+            {% if book["Summary"] %}
+              <p><strong>Summary:</strong> {{ book["Summary"] }}</p>
+            {% else %}
+              <p><strong>Summary:</strong> No summary available.</p>
+            {% endif %}
+
+            <!-- Button to enable editing summary -->
+            <button onclick="editSummary()">Edit Summary</button>
+
+          </div>
+
+          <!-- Summary edit section -->
+          <div id="summary-edit" class="hidden">
+
+            <textarea id="summary-text">{{ book["Summary"] }}</textarea>
+
+            <br><br>
+
+            <!-- Save summary button -->
+            <button onclick="saveSummary()">Save</button>
+
+          </div>
+
+        </div>
       </div>
 
       <!-- Chapter tracking section -->
       <div class="section">
 
-        <!-- Chapter tracking title -->
         <h3>Chapters</h3>
 
         <!-- Chapter progress display -->
-        <p>Chapters Read: {{ book["Chapters_Completed"] }} / {{ book["Chapters"] }}</p>
+        <p>
+          Chapters Read:
+          {{ book["Chapters_Completed"] }} / {{ book["Chapters"] }}
+        </p>
 
         <!-- Chapter increment / decrement buttons -->
         <div class="chapter-controls">
@@ -219,21 +209,40 @@
 
         <br>
 
-        <!-- Input for total chapter count -->
-        <label>Total Chapters:</label>
-        <input type="number" placeholder="Enter total chapters">
+        <!-- Chapter edit display -->
+        <div id="chapters-display">
+
+          <label>Total Chapters:</label>
+          <span>{{ book["Chapters"] }}</span>
+
+          <!-- Edit chapters button -->
+          <button onclick="editChapters()">Edit</button>
+
+        </div>
+
+        <!-- Chapter edit input -->
+        <div id="chapters-edit" class="hidden">
+
+          <input type="number"
+                 id="chapters-input"
+                 value="{{ book["Chapters"] }}">
+
+          <!-- Save chapters button -->
+          <button onclick="saveChapters()">Save</button>
+
+        </div>
 
       </div>
 
       <!-- Genres section -->
       <div class="section">
 
-        <!-- Genre title -->
         <h3>Genres</h3>
 
-        <!-- Example genre tags -->
+        <!-- Primary genre -->
         <span class="tag">{{ book["Genre_1"].title() }}</span>
 
+        <!-- Optional additional genres -->
         {% if book["Genre_2"] %}
           <span class="tag">{{ book["Genre_2"].title() }}</span>
         {% endif %}
@@ -248,91 +257,67 @@
 
       </div>
 
-      <!-- Toggleable tags section -->
+      <!-- Toggleable reading tags section -->
       <div class="section">
 
-        <!-- Tags title -->
         <h3>Tags</h3>
 
-        <!-- Toggleable reading tags -->
-        {% if book["Owned"] == "on" %}
-          <button class="tag toggle active">Owned</button>
-        {% else %}
-          <button class="tag toggle">Owned</button>
-        {% endif %}
+        <!-- Toggleable tags -->
+        <button class="tag toggle {% if book['Owned']=='on' %}active{% endif %}">Owned</button>
+        <button class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}">Favorite</button>
+        <button class="tag toggle {% if book['Completed']=='on' %}active{% endif %}">Read</button>
+        <button class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}">Currently Reading</button>
 
-        {% if book["Favorite"] == "on" %}
-          <button class="tag toggle active">Favorite</button>
-        {% else %}
-          <button class="tag toggle">Favorite</button>
-        {% endif %}
+        <br><br>
 
-        {% if book["Completed"] == "on" %}
-          <button class="tag toggle active">Read</button>
-        {% else %}
-          <button class="tag toggle">Read</button>
-        {% endif %}
-
-        {% if book["Currently_Reading"] == "on" %}
-          <button class="tag toggle active">Currently Reading</button>
-        {% else %}
-          <button class="tag toggle">Currently Reading</button>
-        {% endif %}
+        <!-- Save tag changes button -->
+        <button onclick="saveTags()">Save Tags</button>
 
       </div>
 
       <!-- Notes section -->
       <div class="section">
 
-        <!-- Notes section title -->
         <h3>Notes</h3>
 
-        <!-- Textarea for writing a note -->
+        <!-- Note input -->
         <textarea rows="4" placeholder="Write a note about this book..."></textarea>
 
         <br><br>
 
-        <!-- Save note button (frontend only for now) -->
+        <!-- Save note button -->
         <button>Save Note</button>
 
-        <!-- Existing notes list -->
-        <div class="section">
+        <!-- Example notes -->
+        <div class="note-card">
+          Example note: Remember key themes in chapter 2.
+        </div>
 
-          <!-- Example note -->
-          <div class="note-card">
-            Example note: Remember key themes in chapter 2.
-          </div>
-
-          <!-- Another example note -->
-          <div class="note-card">
-            Example note: Important quote on page 45.
-          </div>
-
+        <div class="note-card">
+          Example note: Important quote on page 45.
         </div>
 
       </div>
 
-      <!-- Action buttons section -->
+      <!-- Actions section -->
       <div class="section">
 
-        <!-- Actions title -->
         <h3>Actions</h3>
 
-        <!-- Book action buttons -->
-        <div class="button-group">
-          <button class="remove-btn">Remove</button>
-          <button>Notes</button>
-          <button>Update</button>
-        </div>
+        <!-- Action buttons -->
+        <button class="remove-btn">Remove</button>
+        <button>Notes</button>
+        <button>Update</button>
 
       </div>
 
     </div>
   </div>
 
-  <!-- JavaScript for toggling tag active state -->
+  <!-- JavaScript behavior -->
   <script>
 
+    /* Toggle tag active state */
     const toggleTags = document.querySelectorAll('.toggle');
 
     toggleTags.forEach(tag => {
@@ -340,6 +325,35 @@
         tag.classList.toggle('active');
       });
     });
+
+    /* Enable chapter editing */
+    function editChapters() {
+      document.getElementById("chapters-display").classList.add("hidden");
+      document.getElementById("chapters-edit").classList.remove("hidden");
+    }
+
+    /* Save chapters placeholder */
+    function saveChapters() {
+      document.getElementById("chapters-edit").classList.add("hidden");
+      document.getElementById("chapters-display").classList.remove("hidden");
+    }
+
+    /* Enable summary editing */
+    function editSummary() {
+      document.getElementById("summary-display").classList.add("hidden");
+      document.getElementById("summary-edit").classList.remove("hidden");
+    }
+
+    /* Save summary placeholder */
+    function saveSummary() {
+      document.getElementById("summary-edit").classList.add("hidden");
+      document.getElementById("summary-display").classList.remove("hidden");
+    }
+
+    /* Save tag changes placeholder */
+    function saveTags() {
+      alert("Tags saved (backend integration coming next).");
+    }
 
   </script>
 
