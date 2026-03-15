@@ -1,0 +1,93 @@
+# Task 3.5 – OpenLibrary Search Frontend
+
+# Route for OpenLibrary search page
+function openlibrary_search():
+
+    # Get search query from request
+    query = request.args.get("search")
+
+    # If no query provided
+    if query is empty:
+        books = empty dictionary
+
+    # Temporary placeholder until API integration
+    else:
+        books = {
+            "placeholder1": {
+                "Title": "Example Book",
+                "Author_First_Name_1": "John",
+                "Author_Last_Name_1": "Doe",
+                "Publisher_Name": "Placeholder Publishing",
+                "Publish_Year": "2024",
+                "ISBN": "0000000000"
+            }
+        }
+
+    # Render template with book results
+    return render_template(
+        "openlibrary_search.html",
+        books = books
+    )
+
+
+# Frontend Logic (openlibrary_search.html)
+
+display_search_form():
+
+    input field: search
+    radio buttons:
+        - isbn
+        - title
+        - author
+    submit button
+
+
+# When form submitted
+on_submit():
+
+    send GET request to:
+        /book/openlibrary-search
+
+    include parameters:
+        search
+        search_type
+
+
+# Display results
+
+if books exist:
+
+    for each book in books:
+
+        display book card with:
+            title
+            author
+            publisher
+            publish year
+            isbn
+            placeholder cover image
+
+        display button:
+            "Add / View Book"
+
+else if search query exists:
+
+    display message:
+        "No books found"
+
+
+# Future implementation (tomorrow)
+
+function fetch_openlibrary_data(query):
+
+    call OpenLibrary API endpoint
+
+    parse JSON response
+
+    convert API fields to match local schema:
+        title -> Title
+        author_name -> Author_First_Name_1 / Author_Last_Name_1
+        first_publish_year -> Publish_Year
+        isbn -> ISBN
+
+    return formatted book dictionary
