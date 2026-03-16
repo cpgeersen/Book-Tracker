@@ -65,8 +65,8 @@ def create_routes(app): # Placeholder returns for unfinished pages
             return render_template('view_book.html', book=book_result), 200
 
         # This error occurs when the ISBN does not exist in database
-        except json.decoder.JSONDecodeError:
-            return f'ISBN not in database'  # !WIP! add full error page
+        except TypeError as error:
+            return INTERNAL_SERVER_ERROR # !WIP! add full error page
 
     @app.route('/book/local-search', methods=['GET'])
     def local_search_page():
