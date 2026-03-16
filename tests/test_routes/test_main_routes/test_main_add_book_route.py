@@ -1,4 +1,9 @@
+import pytest
 
+SUCCESS = 200
+FOUND = 302
+BAD_REQUEST = 400
+INTERNAL_SERVER_ERROR = 500
 
 normal_data = {"ISBN": "0061091464",
                "Title": "The Thief of Always",
@@ -50,11 +55,17 @@ bad_data = {   "Title": "The Thief of Always",
 def test_add_book_success(client):
     client.post('/book/add-local', data=normal_data)
     get_response = client.get('/book/add-local', data=normal_data['ISBN'])
-    assert get_response.status_code == 200
+    assert get_response.status_code == SUCCESS
 
 def test_add_book_bad_request(client):
     response = client.post('/book/add-local', data=normal_data)
-    assert response.status_code == 302
+    print(response)
+    assert response.status_code == FOUND
+
+def test_a(client):
+    #with pytest.raises(TypeError):
+    response = client.post('/book/add-local', data={})
+    assert response.status_code == INTERNAL_SERVER_ERROR
 
 
 
