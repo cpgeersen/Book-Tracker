@@ -7,6 +7,7 @@ from app.services.Book.BookPredicate import is_isbn_in_book_table
 
 
 SUCCESS = 200
+FOUND = 302
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 DB_PATH = "bt.db"
@@ -171,7 +172,7 @@ def create_book_record(json_input):
 
     try:
         if is_isbn_present:
-            return 'Error: Book with ISBN present.', BAD_REQUEST
+            return 'Error: Book with ISBN present.', FOUND
     except:
         raise INTERNAL_SERVER_ERROR
 

@@ -28,7 +28,6 @@ normal_data = {"ISBN": "0061091464",
 
 def test_validate_book():
     result = json.loads(validate_book_from_local(normal_data))
-    print(result)
     assert result['ISBN'] == '0061091464'
     assert result['Title'] == 'The Thief Of Always'
     assert result['Publish_Year'] == '1993'
@@ -51,4 +50,5 @@ def test_validate_book():
     assert result['Genre_1'] == 'fiction'
     assert result['Genre_2'] == 'horror'
     assert result['Genre_3'] == 'fantasy'
+    assert result['Genre_4'] == ''
 

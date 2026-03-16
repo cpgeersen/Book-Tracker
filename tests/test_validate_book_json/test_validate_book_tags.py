@@ -1,30 +1,6 @@
 from app.services.validate_book_json import validate_tags, validate_book_for_frontend
 import json
 
-normal_data = {"ISBN": "0061091464",
-               "Title": "The Thief of Always",
-               "Publish_Year": "1993",
-               "Summary": "After a mysterious stranger promises to end"
-                          " his boredom with a trip to the magical Holiday"
-                          " House, ten-year-old Harvey learns that his fun"
-                          " has a high price.",
-               "Chapters": "24",
-               "Chapters_Completed": "24",
-               "Cover_Image": "",
-               "Author_First_Name_1": "Clive",
-               "Author_Last_Name_1": "Barker",
-               "Author_First_Name_2": "",
-               "Author_Last_Name_2": "",
-               "Publisher_Name": "HarperCollins",
-               "Owned": "yes",
-               "Favorite": "yes",
-               "Completed": "yes",
-               "Currently_Reading": "no",
-               "Personal_Or_Academic": "personal",
-               "Genre_1": "fiction",
-               "Genre_2": "horror",
-               "Genre_3": "fantasy"}
-
 backend_tags = {"Owned": "yes",
                 "Favorite": "yes",
                 "Completed": "yes",
@@ -34,6 +10,8 @@ frontend_tags = {"Owned": "on",
                 "Favorite": "on",
                 "Completed": "on",
                 "Currently_Reading": "off"}
+
+missing_tags = {}
 
 def test_validate_tags():
     result = validate_tags(frontend_tags)
@@ -57,3 +35,10 @@ def test_validate_book_for_frontend():
     assert result['Completed'] == 'on'
     assert result['Currently_Reading'] == 'off'
 
+def test_validate_tags_missing():
+    result = validate_tags(missing_tags)
+    assert result['Owned'] == 'no'
+    assert result['Favorite'] == 'no'
+    assert result['Completed'] == 'no'
+    assert result['Currently_Reading'] == 'no'
+    assert result['Personal_Or_Academic'] == 'personal'
