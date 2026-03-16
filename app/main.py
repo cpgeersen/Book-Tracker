@@ -41,7 +41,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
             book_result = json.loads(read(book_form_json, 'book-isbn'))
 
             if book_response[1] == SUCCESS:
-                return redirect(url_for('individual_book_page', isbn=book_form_json['ISBN']))
+                return redirect(url_for('individual_book_page', isbn=book_result['ISBN']))
 
             elif book_response[1] == BAD_REQUEST:
                 return render_template('add_book.html')  # !WIP! add error page telling user book is already present
