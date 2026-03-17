@@ -31,10 +31,7 @@ def delete_function(table, condition, condition_value):
     result = cursor.fetchall()
     conn.close()
 
-    if not result:  # When the result is empty, meaning it was deleted
-        return f'Successfully deleted from {table} table where {condition} is {condition_value}'
-    else:
-        return f'No records exist for {condition} being {condition_value} in {table}'
+    return f'Successfully deleted from {table} table where {condition} is {condition_value}'
 
 
 def delete_book_record(isbn):
