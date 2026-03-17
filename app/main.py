@@ -2,7 +2,7 @@ from flask import request, render_template, jsonify, redirect, url_for
 from app.services.mediator import create, read, update, delete
 #from app.services.openlibrary_api import search_books # temporary markout until added
 from app.routes.test import test_bp
-from app.routes.pages import pages_bp
+#from app.routes.pages import pages_bp
 from app.services.create_db import create_db
 import json
 from app.services.create_example_records import create_sample_books
@@ -26,7 +26,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
     # Register Blueprints
     app.register_blueprint(test_bp)
-    app.register_blueprint(pages_bp)
+    #app.register_blueprint(pages_bp)
 
     # Pages
     @app.route('/book/add-local', methods=['POST', 'GET'])
@@ -137,7 +137,28 @@ def create_routes(app): # Placeholder returns for unfinished pages
         # Return compact JSON payload
         return jsonify(query=query, num_found=search_result.get('numFound', 0), results=trimmed_results), 200
 
+    @app.route('/', methods=['GET'])
+    def homepage():
+        return render_template('homepage.html')
 
+    @app.route('/search', methods=['GET'])
+    def search_page():
+        return render_template('search.html')
+
+    # WIP
+    @app.route('/add-openlibrary', methods=['GET'])
+    def add_openlibrary_page():
+        return 'WIP', 200
+
+    # WIP
+    @app.route('/settings', methods=['GET'])
+    def settings_page():
+        return 'WIP', 200
+
+    # WIP
+    @app.route('/dashboard', methods=['GET'])
+    def dashboard_page():
+        return 'WIP', 200
 
 if __name__ == '__main__':
     pass

@@ -1,4 +1,3 @@
-import pytest
 
 SUCCESS = 200
 FOUND = 302
