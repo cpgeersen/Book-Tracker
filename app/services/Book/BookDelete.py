@@ -56,5 +56,5 @@ def delete_book_record(isbn):
         return f'Error: Book with {isbn} not present', BAD_REQUEST
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     pass
