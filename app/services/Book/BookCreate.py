@@ -56,10 +56,11 @@ def create_book_author_table_record(isbn, author_id):
     cursor.execute(query_book_author, (isbn, author_id))
     record_combo_present = cursor.fetchall()
 
+    # Author already present with ISBN combo
     if record_combo_present:
         conn.close()
         return False
-    else:
+    else:   # When the author is present, but not with current ISBN combo
         insert_book_author = ''' INSERT INTO BookAuthor (ISBN, Author_ID)
                                  VALUES(?, ?)
                              '''
@@ -170,11 +171,9 @@ def create_book_record(json_input):
     # First make sure ISBN not present in Book Table
     is_isbn_present = is_isbn_in_book_table(isbn)
 
-    try:
-        if is_isbn_present:
-            return 'Error: Book with ISBN present.', FOUND
-    except:
-        raise INTERNAL_SERVER_ERROR
+    if is_isbn_present:
+        return 'Error: Book with ISBN present.', FOUND
+
 
     # Book Info
     title = json_input['Title']
@@ -195,14 +194,14 @@ def create_book_record(json_input):
     publish_year = json_input['Publish_Year']
 
     # Tags
-    owned = json_input['Owned']
-    favorite = json_input['Favorite']
-    completed = json_input['Completed']
-    currently_reading = json_input['Currently_Reading']
-    personal_or_academic = json_input['Personal_Or_Academic']
+    owned = json_input.get('Owned', 'no')
+    favorite = json_input.get('Favorite', 'no')
+    completed = json_input.get('Completed', 'no')
+    currently_reading = json_input.get('Currently_Reading', 'no')
+    personal_or_academic = json_input.get('Personal_Or_Academic', 'personal')
 
     # Genre
-    genre_1 = json_input['Genre_1']
+    genre_1 = json_input.get('Genre_1', 'fiction')
     genre_2 = json_input.get('Genre_2', '')
     genre_3 = json_input.get('Genre_3', '')
     genre_4 = json_input.get('Genre_4', '')
@@ -212,32 +211,22 @@ def create_book_record(json_input):
 
     # Next create the new tag record and return the new tag_id
     tag_response = create_tag(isbn, owned, favorite, completed, currently_reading, personal_or_academic)
-    try:
-        if tag_response.get('Tag_ID', 'No_Tag') != 'No_Tag':
-            tag_id = tag_response['Tag_ID']
-        else:
-            return 'Error: No Tag Present', BAD_REQUEST
-    except:
-        raise INTERNAL_SERVER_ERROR
+    tag_id = tag_response['Tag_ID']
 
     # Next check if Author_ID is present based on Author Name in Author Table
-    try:
-        author_1_response = read_author_id_from_name(author_first_name_1, author_last_name_1)
+    # Primary author will be guaranteed at this point
+    author_1_response = read_author_id_from_name(author_first_name_1, author_last_name_1)
 
-        if not author_1_response:
-            return 'Error: No Author', BAD_REQUEST
+    # We do author_1 first since there is always at least one author
+    if author_1_response['Author_ID']:
+        # Here we use existing author_id and add a new record to the BookAuthor bridging table
+        author_id_1 = author_1_response['Author_ID']
+        create_book_author_table_record(isbn, author_id_1)
+    else:
+        # Otherwise we first create a new author_id
+        author_id_1 = create_author(author_first_name_1, author_last_name_1)
+        create_book_author_table_record(isbn, author_id_1['Author_ID'])
 
-        # We do author_1 first since there is always at least one author
-        if author_1_response['Author_ID']:
-            # Here we use existing author_id and add a new record to the BookAuthor bridging table
-            author_id_1 = author_1_response['Author_ID']
-            create_book_author_table_record(isbn, author_id_1)
-        else:
-            # Otherwise we first create a new author_id
-            author_id_1 = create_author(author_first_name_1, author_last_name_1)
-            create_book_author_table_record(isbn, author_id_1['Author_ID'])
-    except:
-        raise INTERNAL_SERVER_ERROR
 
     # Then we do author_2 if present
     if author_first_name_2 != '':
@@ -251,42 +240,33 @@ def create_book_record(json_input):
             create_book_author_table_record(isbn, author_id_2['Author_ID'])
 
     # Next we read or create publisher_id from publisher_name
-    try:
-        publisher_response = read_publisher_id(publisher_name)
 
-        if not publisher_response:
-            return 'Error: No Publisher', BAD_REQUEST
+    publisher_response = read_publisher_id(publisher_name)
 
-        if publisher_response['Publisher_ID']:
-            publisher_id = publisher_response['Publisher_ID']
-        else:
-            publisher_id = create_publisher(publisher_name)
-    except:
-        raise INTERNAL_SERVER_ERROR
+    if publisher_response['Publisher_ID']:
+        publisher_id = publisher_response['Publisher_ID']
+    else:
+        publisher_id = create_publisher(publisher_name)
 
     # Next we get the genre_id from the Genre Table using the genres
     genre_id_1 = read_genre_id_from_genre_table(genre_1)
 
     # Create the record for the BookGenre bridging table
-    try:
-        genre_response_1 = create_book_genre_table_record(isbn, genre_id_1)
 
-        if not genre_response_1:
-            return 'Error: No Genre', BAD_REQUEST
+    genre_response_1 = create_book_genre_table_record(isbn, genre_id_1)
 
-        if genre_2 != '':
-            genre_id_2 = read_genre_id_from_genre_table(genre_2)
-            genre_response_2 = create_book_genre_table_record(isbn, genre_id_2)
+    if genre_2 != '':
+        genre_id_2 = read_genre_id_from_genre_table(genre_2)
+        genre_response_2 = create_book_genre_table_record(isbn, genre_id_2)
 
-        if genre_3 != '':
-            genre_id_3 = read_genre_id_from_genre_table(genre_3)
-            genre_response_3 = create_book_genre_table_record(isbn, genre_id_3)
+    if genre_3 != '':
+        genre_id_3 = read_genre_id_from_genre_table(genre_3)
+        genre_response_3 = create_book_genre_table_record(isbn, genre_id_3)
 
-        if genre_4 != '':
-            genre_id_4 = read_genre_id_from_genre_table(genre_4)
-            genre_response_4 = create_book_genre_table_record(isbn, genre_id_4)
-    except:
-        raise INTERNAL_SERVER_ERROR
+    if genre_4 != '':
+        genre_id_4 = read_genre_id_from_genre_table(genre_4)
+        genre_response_4 = create_book_genre_table_record(isbn, genre_id_4)
+
 
     # Finally we create the Book Table Record
     create_book_response = create_book(isbn, title, publish_year, publisher_id, summary, tag_id,

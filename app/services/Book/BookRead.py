@@ -35,13 +35,13 @@ def read_book_table(isbn):
         convert_to_dict = {
             "ISBN": result[0][0],
             "Title": result[0][1],
-            "Publish_Year": result[0][2],
+            "Publish_Year": str(result[0][2]),
             "Publisher_ID": result[0][3],
             "Summary": result[0][4],
             "Tag_ID": result[0][5],
-            "Chapters": result[0][6],
-            "Chapters_Completed": result[0][7],
-            "Cover_Image_Bytes": result[0][8]
+            "Chapters": str(result[0][6]),
+            "Chapters_Completed": str(result[0][7]),
+            "Cover_Image": result[0][8]
         }
 
         json_format = json.dumps(convert_to_dict)
