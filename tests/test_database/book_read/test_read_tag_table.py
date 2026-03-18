@@ -69,8 +69,8 @@ def test_read_tag_table_all_tags_yes():
     assert response['Personal_Or_Academic'] == book_all_tags_yes['Personal_Or_Academic']
 
 def test_read_tag_table_missing_tag_id():
-    response = read_tag_table(1)
-    assert response == 'Tag_ID not found'
+    response = json.loads(read_tag_table(1))
+    assert response['Error'] == 'Tag_ID not found'
 
 
 

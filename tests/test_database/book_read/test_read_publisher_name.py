@@ -31,12 +31,12 @@ def test_read_publisher_name():
     create_book(book)
     pub_id = read_publisher_id(book['Publisher_Name'])
     pub_name = json.loads(read_publisher_name(pub_id['Publisher_ID'][0]))
-    assert pub_name[str(pub_id['Publisher_ID'][0])] == book['Publisher_Name']
+    assert pub_name['1'] == book['Publisher_Name']
 
 def test_read_publisher_name_missing():
     pub_id = read_publisher_id(book['Publisher_Name'])
-    response = read_publisher_name(pub_id['Publisher_ID'])
-    assert response == 'Publisher_ID not found'
+    response = json.loads(read_publisher_name(pub_id['Publisher_ID']))
+    assert response['Error'] == 'Publisher_ID not found'
 
 
 

@@ -1,6 +1,6 @@
 import json
 
-from app.services.Book.BookRead import read_author_name, read_author_id_from_name
+from app.services.Book.BookRead import read_author_name, read_author_id_from_name, read_author_id
 from app.services.Book.Book import create_book
 
 book = {"ISBN": "0061091464",
@@ -15,8 +15,8 @@ book = {"ISBN": "0061091464",
           "Cover_Image": "",
           "Author_First_Name_1": "Clive",
           "Author_Last_Name_1": "Barker",
-          "Author_First_Name_2": "",
-          "Author_Last_Name_2": "",
+          "Author_First_Name_2": "John",
+          "Author_Last_Name_2": "Doe",
           "Publisher_Name": "HarperCollins",
           "Owned": "yes",
           "Favorite": "yes",
@@ -27,14 +27,25 @@ book = {"ISBN": "0061091464",
           "Genre_2": "horror",
           "Genre_3": "fantasy"}
 
-def test_read_author_name():
+def test_read_author_name_success():
     create_book(book)
-    author_id = read_author_id_from_name("Clive", "Barker")
+    author_id = read_author_id(book['ISBN'])
     print(author_id)
-    #new_e = [author_id['Author_ID']]
-    #print(new_e)
-    #response = read_author_name(new_e)
-    #print(response)
+    response = json.loads(read_author_name(author_id))
+    print(response)
+    assert response['1'] == ['Clive', 'Barker']
+    assert response['2'] == ['John', 'Doe']
+
+def test_read_author_name_failure_author_id():
+    json_dump = json.dumps({"Author_IDs": [1, 2]})
+    response = json.loads(read_author_name(json_dump))
+    assert response['Error'] == 'Author_ID not found'
+
+def test_read_author_name_failure_isbn():
+    author_id = read_author_id(book['ISBN'])
+    response = json.loads(read_author_name(author_id))
+    assert response['Error'] == 'ISBN not found'
+
 
 
 

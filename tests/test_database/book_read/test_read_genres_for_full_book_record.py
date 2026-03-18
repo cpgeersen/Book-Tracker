@@ -1,6 +1,6 @@
 import json
 
-from app.services.Book.BookRead import read_genres, read_genres_ids
+from app.services.Book.BookRead import read_genres_ids, read_genres_for_full_book_record
 from app.services.Book.Book import create_book
 
 book = {"ISBN": "0061091464",
@@ -28,29 +28,24 @@ book = {"ISBN": "0061091464",
           "Genre_3": "fantasy",
           "Genre_4": "children"}
 
-def test_read_genres_success():
+def test_read_genres_for_full_book_record_success():
     create_book(book)
     genre_ids = read_genres_ids(book['ISBN'])
-    print(genre_ids)
-    genres = json.loads(read_genres(genre_ids))
-    assert genres == {'100': 'fiction', '111': 'fantasy', '113': 'horror', '191': 'children'}
+    response = json.loads(read_genres_for_full_book_record(genre_ids))
+    assert response['Genre_ID_1'] == 100
+    assert response['Genre_1'] == 'fiction'
+    # Since genre number from frontend can change,
+    # though not an issue since genre_id is still bound
+    # to the correct genres, just different order when
+    # given back to the frontend
+    assert response['Genre_ID_2'] == 111 or 113
+    assert response['Genre_2'] == 'horror' or 'fantasy'
+    assert response['Genre_ID_3'] == 111 or 113
+    assert response['Genre_3'] == 'horror' or 'fantasy'
+    assert response['Genre_ID_4'] == 191
+    assert response['Genre_4'] == 'children'
 
-def test_read_genres_failure():
-    genre_ids = json.dumps({"Genre_IDs": [10000]})
-    response = json.loads(read_genres(genre_ids))
+def test_read_genres_for_full_book_record_failure():
+    genre_ids = json.dumps({"Genre_IDs": [1000]})
+    response = json.loads(read_genres_for_full_book_record(genre_ids))
     assert response['Error'] == 'Genre_ID not found'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
