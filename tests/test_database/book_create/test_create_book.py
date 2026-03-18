@@ -1,4 +1,4 @@
-from app.services.Book.BookCreate import create_book, create_tag, create_publisher
+from app.services.Book.BookCreate import create_book, create_tag, create_publisher, create_book_record
 from app.services.Book.BookRead import read_publisher_id
 
 book = {"ISBN": "0061091464",
@@ -26,7 +26,7 @@ book = {"ISBN": "0061091464",
           "Genre_3": "fantasy"}
 
 
-def test_create_book():
+def test_create_book_success():
     isbn = book['ISBN']
     title = book['Title']
     publisher_year = book['Publish_Year']
@@ -55,8 +55,10 @@ def test_create_book():
     assert book_response
 
 
-
-
+def test_create_book_failure():
+    create_book_record(book)
+    response = create_book_record(book)
+    assert response[1] == 302
 
 
 

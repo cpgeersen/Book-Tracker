@@ -1,4 +1,6 @@
 import sqlite3
+import json
+from app.services.Book.BookPredicate import is_tag_id_in_tag_table
 
 SUCCESS = 200
 BAD_REQUEST = 400
@@ -17,6 +19,11 @@ def connect_to_database():
 
 
 def update_tags(tag_id, owned, favorite, completed, currently_reading, personal_or_academic):
+
+    tag_id_presence = is_tag_id_in_tag_table(tag_id)
+    if not tag_id_presence:
+        return json.dumps({"Error": "Tag_ID not found"}), 400
+
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
 
@@ -33,7 +40,8 @@ def update_tags(tag_id, owned, favorite, completed, currently_reading, personal_
     cursor.execute(update_query, criteria)
     conn.commit()
     conn.close()
-    return f"Tag {tag_id} updated successfully.", 200
+    #return f"Tag {tag_id} updated successfully.", 200
+    return json.dumps({"Success": f"Tag {tag_id} updated"}), 200
 
 def update_summary(isbn, summary):
     # Get a cursor and connection to database

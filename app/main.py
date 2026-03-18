@@ -17,7 +17,7 @@ INTERNAL_SERVER_ERROR = 500
 
 # Create the Database
 #create_db()
-#create_sample_books()
+create_sample_books()
 
 
 def create_routes(app): # Placeholder returns for unfinished pages

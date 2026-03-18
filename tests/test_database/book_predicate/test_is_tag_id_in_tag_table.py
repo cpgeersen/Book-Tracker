@@ -1,5 +1,5 @@
 from app.services.Book.Book import create_book
-from app.services.Book.BookPredicate import is_isbn_in_book_table
+from app.services.Book.BookPredicate import is_tag_id_in_tag_table
 
 book = {"ISBN": "0061091464",
         "Title": "The Thief of Always",
@@ -29,9 +29,9 @@ book = {"ISBN": "0061091464",
 
 def test_is_isbn_in_book_table_true():
     create_book(book)
-    response = is_isbn_in_book_table(book['ISBN'])
+    response = is_tag_id_in_tag_table(1)
     assert response
 
 def test_is_isbn_in_book_table_false():
-    response = is_isbn_in_book_table(book['ISBN'])
+    response = is_tag_id_in_tag_table(1)
     assert not response

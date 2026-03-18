@@ -172,7 +172,7 @@ def create_book_record(json_input):
     is_isbn_present = is_isbn_in_book_table(isbn)
 
     if is_isbn_present:
-        return 'Error: Book with ISBN present.', FOUND
+        return json.dumps({'Error': 'Book with ISBN present', }), FOUND
 
 
     # Book Info
@@ -272,9 +272,10 @@ def create_book_record(json_input):
     create_book_response = create_book(isbn, title, publish_year, publisher_id, summary, tag_id,
                                        chapters, chapters_completed, cover_image)
     if not create_book_response:
-        return 'Error: Book Present in Database', BAD_REQUEST
+        return json.dumps({'Error': 'Book Present in Database', }), BAD_REQUEST
     else:
-        return 'Successfully Created New Book Record', SUCCESS
+        return json.dumps({'Success': 'Created New Book Record', }), SUCCESS
+
 
 
 if __name__ == '__main__':
