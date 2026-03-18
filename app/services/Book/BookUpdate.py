@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from app.services.Book.BookPredicate import is_tag_id_in_tag_table
+from app.services.Book.BookPredicate import is_tag_id_in_tag_table, is_isbn_in_book_table
 
 SUCCESS = 200
 BAD_REQUEST = 400
@@ -44,6 +44,11 @@ def update_tags(tag_id, owned, favorite, completed, currently_reading, personal_
     return json.dumps({"Success": f"Tag {tag_id} updated"}), 200
 
 def update_summary(isbn, summary):
+
+    isbn_presence = is_isbn_in_book_table(isbn)
+    if not isbn_presence:
+        return json.dumps({"Error": "ISBN not found"}), 400
+
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
 
@@ -55,9 +60,14 @@ def update_summary(isbn, summary):
     cursor.execute(update_query, criteria)
     conn.commit()
     conn.close()
-    return f"Book with {isbn} updated summary successfully.", 200
+    return json.dumps({"Success": f"Book with {isbn} updated summary successfully."}), 200
 
 def update_chapters(isbn, chapters):
+
+    isbn_presence = is_isbn_in_book_table(isbn)
+    if not isbn_presence:
+        return json.dumps({"Error": "ISBN not found"}), 400
+
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
 
@@ -69,9 +79,14 @@ def update_chapters(isbn, chapters):
     cursor.execute(update_query, criteria)
     conn.commit()
     conn.close()
-    return f"Book with {isbn} updated number of chapters successfully.", 200
+    return json.dumps({"Success": f"Book with {isbn} updated chapters to {chapters}."}), 200
 
 def update_read_chapters(isbn, chapters_competed):
+
+    isbn_presence = is_isbn_in_book_table(isbn)
+    if not isbn_presence:
+        return json.dumps({"Error": "ISBN not found"}), 400
+
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
 
@@ -83,7 +98,7 @@ def update_read_chapters(isbn, chapters_competed):
     cursor.execute(update_query, criteria)
     conn.commit()
     conn.close()
-    return f"Book with {isbn} updated number of completed chapters successfully.", 200
+    return json.dumps({"Success": f"Book with {isbn} updated chapters completed to {chapters_competed}."}), 200
 
 # WIP - Will Implement Later
 def update_genre(isbn, genre):

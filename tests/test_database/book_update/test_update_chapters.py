@@ -1,7 +1,7 @@
 import json
 
 from app.services.Book.Book import create_book, read_book
-from app.services.Book.BookUpdate import update_tags
+from app.services.Book.BookUpdate import update_chapters
 
 book = {"ISBN": "0061091464",
           "Title": "The Thief of Always",
@@ -28,48 +28,18 @@ book = {"ISBN": "0061091464",
           "Genre_3": "fantasy",
           "Genre_4": "children"}
 
-def test_update_tags_success():
+def test_update_chapters_success():
+    new_chapters_completed = '0'
     create_book(book)
-    book_response = json.loads(read_book(book['ISBN']))
-    response = update_tags(book_response['Tag_ID'], 'no', 'no', 'no', 'no',
-                           'academic')
-    book_response_updated = json.loads(read_book(book['ISBN']))
+    response = update_chapters(book['ISBN'], new_chapters_completed)
+    book_chapters_updated = json.loads(read_book(book['ISBN']))
     assert response[1] == 200
-    assert book_response_updated['Owned'] != book_response['Owned']
-    assert book_response_updated['Favorite'] != book_response['Favorite']
-    assert book_response_updated['Completed'] != book_response['Completed']
-    assert book_response_updated['Currently_Reading'] != book_response['Currently_Reading']
-    assert book_response_updated['Personal_Or_Academic'] != book_response['Personal_Or_Academic']
+    assert book_chapters_updated['Chapters'] == new_chapters_completed
 
-def test_update_tags_failure():
-    response = update_tags(1, 'no', 'no', 'no', 'no',
-                           'academic')
+def test_update_chapters_failure():
+    new_chapters_completed = '0'
+    response = update_chapters(book['ISBN'], new_chapters_completed)
     assert response[1] == 400
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

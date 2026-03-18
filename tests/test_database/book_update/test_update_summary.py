@@ -1,7 +1,7 @@
 import json
 
 from app.services.Book.Book import create_book, read_book
-from app.services.Book.BookUpdate import update_tags
+from app.services.Book.BookUpdate import update_summary
 
 book = {"ISBN": "0061091464",
           "Title": "The Thief of Always",
@@ -28,48 +28,15 @@ book = {"ISBN": "0061091464",
           "Genre_3": "fantasy",
           "Genre_4": "children"}
 
-def test_update_tags_success():
+def test_update_summary_success():
     create_book(book)
-    book_response = json.loads(read_book(book['ISBN']))
-    response = update_tags(book_response['Tag_ID'], 'no', 'no', 'no', 'no',
-                           'academic')
-    book_response_updated = json.loads(read_book(book['ISBN']))
+    response = update_summary(book['ISBN'], 'TEST')
+    book_summary = json.loads(read_book(book['ISBN']))['Summary']
     assert response[1] == 200
-    assert book_response_updated['Owned'] != book_response['Owned']
-    assert book_response_updated['Favorite'] != book_response['Favorite']
-    assert book_response_updated['Completed'] != book_response['Completed']
-    assert book_response_updated['Currently_Reading'] != book_response['Currently_Reading']
-    assert book_response_updated['Personal_Or_Academic'] != book_response['Personal_Or_Academic']
+    assert book_summary == 'TEST'
 
-def test_update_tags_failure():
-    response = update_tags(1, 'no', 'no', 'no', 'no',
-                           'academic')
+def test_update_summary_failure():
+    response = update_summary(book['ISBN'], 'TEST')
     assert response[1] == 400
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
