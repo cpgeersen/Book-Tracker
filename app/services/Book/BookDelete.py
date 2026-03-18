@@ -35,22 +35,24 @@ def delete_function(table, condition, condition_value):
 
 
 def delete_book_record(isbn):
-    try:
-        # Get the book record for Tag_ID and NoteID
-        book_result = json.loads(read_full_book_record(isbn))
 
-        # First, delete the Books record
-        delete_function('Books', 'ISBN', isbn)
+    # Get the book record for Tag_ID and NoteID
+    book_result = json.loads(read_full_book_record(isbn))
+    if book_result.get('Error') == 'Publisher_ID not found':
+        return 'Error: Publisher_ID not present', BAD_REQUEST
 
-        # Second, delete the BookGenre records
-        delete_function('BookGenre', 'ISBN', isbn)
+    # First, delete the Books record
+    delete_function('Books', 'ISBN', isbn)
 
-        # Third, delete the Tags record
-        delete_function('Tags', 'Tag_ID', book_result['Tag_ID'])
+    # Second, delete the BookGenre records
+    delete_function('BookGenre', 'ISBN', isbn)
 
-        return f'Success: Book with {isbn} deleted.', SUCCESS
-    except json.decoder.JSONDecodeError:
-        return f'Error: Book with {isbn} not present', BAD_REQUEST
+    # Third, delete the Tags record
+    delete_function('Tags', 'Tag_ID', book_result['Tag_ID'])
+
+    # Fourth, delete Notes !!WIP!!
+
+    return f'Success: Book with {isbn} deleted.', SUCCESS
 
 
 if __name__ == '__main__':

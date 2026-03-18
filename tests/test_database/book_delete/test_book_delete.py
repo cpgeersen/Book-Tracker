@@ -27,11 +27,11 @@ normal_data = {"ISBN": "0061091464",
                "Genre_2": "horror",
                "Genre_3": "fantasy"}
 
-def test_book_delete():
+def test_delete_book_record_success():
     create_book(normal_data)
     response = delete_book(normal_data['ISBN'])
     assert response[1] == 200
 
-def test_delete_function():
+def test_delete_book_record_failure():
     response = delete_book_record(normal_data['ISBN'])
     assert response[1] == 400
