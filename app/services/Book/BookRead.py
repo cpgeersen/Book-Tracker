@@ -47,7 +47,8 @@ def read_book_table(isbn):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        return "ISBN not found"
+        #return "ISBN not found" # Changed to json to make output consistent
+        return json.dumps({"Error": "ISBN not found", "Status_Code": "400"})
 
 
 # 2.5.2.2 - read_author_id(ISBN) -> JSON
@@ -80,7 +81,8 @@ def read_author_id(isbn):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        return "ISBN not found"
+        #return "ISBN not found" # Changed to json to make output consistent
+        return json.dumps({"Error": "ISBN not found", "Status_Code": "400"})
 
 
 def read_author_id_from_name(author_first_name, author_last_name):
@@ -137,6 +139,7 @@ def read_author_name(author_ids):
         return json_format
     else:
         return "Author_ID not found"
+        #return json.dumps({"Error": "Author_ID not found", "Status_Code": "400"})
 
 
 # Option 2 - Read Functionality for Author Table: return all values based on a book's ISBN. Returns dictionary for JSON formatting.
@@ -174,6 +177,7 @@ def read_author_name_by_isbn(isbn):
         return json_format
     else:
         return "ISBN not found"
+        #return json.dumps({"Error": "ISBN not found", "Status_Code": "400"})
 
 
 # 2.5.2.4 - read_publisher_name(publisher_id) -> JSON
@@ -199,6 +203,7 @@ def read_publisher_name(publisher_id):
         return json_format
     else:
         return "Publisher_ID not found"
+        #return json.dumps({"Error": "Publisher_ID not found", "Status_Code": "400"})
 
 
 def read_publisher_id(publisher_name):
@@ -251,6 +256,7 @@ def read_tag_table(tag_id):
         return json_format
     else:
         return "Tag_ID not found"
+        #return json.dumps({"Error": "Tag_ID not found", "Status_Code": "400"})
 
 
 # 2.5.2.6 - read_genre_ids(ISBN) -> JSON
@@ -288,7 +294,8 @@ def read_genres_ids(isbn):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        return "ISBN not found"
+        #return "ISBN not found" # Changed to json to make output consistent
+        return json.dumps({"Error": "ISBN not found", "Status_Code": "400"})
 
 
 def read_genre_id_from_genre_table(genre):
@@ -343,7 +350,8 @@ def read_genres(genre_ids):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        return "Genre_ID not found"
+        return "Genre_ID not found" # Changed to json to make output consistent
+        #return json.dumps({"Error": "Genre_ID not found", "Status_Code": "400"})
 
 
 # Read functions to assist with creating full book record.
@@ -370,6 +378,7 @@ def read_publisher_name_for_full_book_record(publisher_id):
         return json_format
     else:
         return "Publisher_ID not found"
+        #return json.dumps({"Error": "Publisher_ID not found", "Status_Code": "400"})
 
 
 # Revised function for author name in order to have output match what is needed for reading full book record.
@@ -409,6 +418,7 @@ def read_author_name_by_isbn_full_record(isbn):
 
     else:
         return "ISBN not found"
+        #return json.dumps({"Error": "ISBN not found", "Status_Code": "400"})
 
 
 # Revised function for genre name in order to have output match what is needed for reading full book record.
@@ -447,6 +457,8 @@ def read_genres_for_full_book_record(genre_ids):
 
     else:
         return "Genre_ID not found"
+        #return json.dumps({"Error": "Genre_ID not found", "Status_Code": "400"})
+
 
 
 # Returns full book record based on ISBN.
@@ -525,6 +537,7 @@ def read_isbn_by_title(title):
 
     else:
         return "Title not found"
+        #return json.dumps({"Error": "Title not found", "Status_Code": "400"})
 
 
 # 2.11.1 - Read Book Record by Title function. Returns all book records based on title searching. Return results in JSON formatting.
@@ -599,6 +612,7 @@ def read_isbn_by_author(author_last_name, author_first_name=None):
 
     else:
         return "Author not found"
+        #return json.dumps({"Error": "Author not found", "Status_Code": "400"})
 
 
 # 2.11.2 - Read Book Record(s) Based on Author. Returns all book records based on author's name. Return results in JSON formatting.
@@ -654,6 +668,7 @@ def read_isbn_by_genre_id(genre_id):
 
     else:
         return "Genre not found"
+        #return json.dumps({"Error": "Genre not found", "Status_Code": "400"})
 
 
 # 2.11.3 - Read Book Record(s) Based on Genre. Returns all book records based on genre ID. Return results in JSON formatting.
