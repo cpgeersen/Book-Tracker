@@ -34,5 +34,4 @@ def test_book_delete():
 
 def test_delete_function():
     response = delete_book_record(normal_data['ISBN'])
-    print(response)
     assert response[1] == 400
