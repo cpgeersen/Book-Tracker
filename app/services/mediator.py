@@ -7,12 +7,12 @@ SUCCESS = 200
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 
-def main(): # Test main
+#def main(): # Test main
     #result = create(normal_data, 'book-local')
     #print(result)
     #print(read_book('0061091464'))
     #print(read())
-    pass
+    #pass
 
 
 def complete_book_from_ol(query,):
@@ -76,7 +76,7 @@ def create(json_input, create_type):
             return 'WIP'
         else:
             return 'Error: Not a valid call'
-    except TypeError and ValueError:
+    except TypeError and ValueError and AttributeError:
         return f'Error: Invalid Entry, could not parse. Try again.', BAD_REQUEST
     except KeyError as error: # If any required keys are missing from JSON
         return error, BAD_REQUEST
@@ -143,4 +143,5 @@ normal_data = {"ISBN": "0061091464",
 
 
 if __name__ == '__main__':
-    main()
+    #main()
+    pass
