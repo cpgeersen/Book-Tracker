@@ -49,7 +49,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
                 elif book_response[1] == BAD_REQUEST:
                     return render_template('add_book.html'), BAD_REQUEST
             except TypeError as error:
-                return f'{error}: Invalid Data', INTERNAL_SERVER_ERROR
+                return render_template('add_book.html'), BAD_REQUEST # !WIP! add error page for malformed ISBN
 
 
         return render_template('add_book.html')

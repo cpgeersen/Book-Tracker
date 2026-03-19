@@ -64,7 +64,7 @@ def test_add_book_bad_request(client):
 def test_a(client):
     #with pytest.raises(TypeError):
     response = client.post('/book/add-local', data={})
-    assert response.status_code == INTERNAL_SERVER_ERROR
+    assert response.status_code == BAD_REQUEST
 
 
 

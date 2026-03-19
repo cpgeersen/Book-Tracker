@@ -32,7 +32,9 @@ def validate_book(json_input):
     title = json_input.get('Title', '')
     if isbn == '':
         raise KeyError('Error: Book must have an ISBN.')
-    elif title == '':
+    if len(isbn) != 10 and len(isbn) != 13:
+        return ValueError('Error: Book must have a valid ISBN (10 or 13 integers).')
+    if title == '':
         raise KeyError('Error: Book must have a title.')
 
     chapters = json_input.get('Chapters', '0')
