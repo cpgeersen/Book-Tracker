@@ -26,9 +26,6 @@ def read_all_books():
 
     return json_output
 
-def is_isbn_present(isbn):
-    return is_isbn_in_book_table(isbn)
-
 def delete_book(isbn):
     return delete_book_record(isbn)
 

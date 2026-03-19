@@ -7,6 +7,7 @@ def genres_for_table():
                    112: 'science fiction',
                    113: 'horror',
                    114: 'historical fiction',
+                   115: 'dystopian',
                    120: 'mystery',
                    121: 'detective',
                    130: 'romance',
