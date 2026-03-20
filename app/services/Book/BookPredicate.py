@@ -29,6 +29,23 @@ def is_isbn_in_book_table(isbn):
     else:
         return True
 
+def is_tag_id_in_tag_table(tag_id):
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+
+    # Query if the Tag_ID is in Tags Table
+    read_query = "SELECT * FROM Tags WHERE Tag_ID = ?"
+    criteria = (tag_id,)
+    cursor.execute(read_query, criteria)
+    result = cursor.fetchall()
+
+    conn.close()
+
+    # Return False when there is no Tag_ID that matches
+    if len(result) == 0:
+        return False
+    else:
+        return True
 
 
 if __name__ == '__main__':

@@ -2,13 +2,14 @@ from flask import request, render_template, jsonify, redirect, url_for
 from app.services.mediator import create, read, update, delete
 #from app.services.openlibrary_api import search_books # temporary markout until added
 from app.routes.test import test_bp
-from app.routes.pages import pages_bp
+#from app.routes.pages import pages_bp
 from app.services.create_db import create_db
 import json
 from app.services.create_example_records import create_sample_books
 
 
 SUCCESS = 200
+FOUND = 302
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 
@@ -16,7 +17,7 @@ INTERNAL_SERVER_ERROR = 500
 
 # Create the Database
 #create_db()
-#create_sample_books()
+create_sample_books()
 
 
 def create_routes(app): # Placeholder returns for unfinished pages
@@ -25,29 +26,31 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
     # Register Blueprints
     app.register_blueprint(test_bp)
-    app.register_blueprint(pages_bp)
+    #app.register_blueprint(pages_bp)
 
     # Pages
     @app.route('/book/add-local', methods=['POST', 'GET'])
     def add_book_page():
         if request.method == 'POST':
-            # First get the form information
-            book_form_json = dict(request.form)
+            try:
+                # First get the form information
+                book_form_json = dict(request.form)
 
-            # Next send to mediator for validation and creation
-            book_response = create(book_form_json, 'book-local')
+                # Next send to mediator for validation and creation
+                book_response = create(book_form_json, 'book-local')
 
-            # Read the result back to populate the individual page
-            book_result = json.loads(read(book_form_json, 'book-isbn'))
+                # Read the result back to populate the individual page
+                book_result = json.loads(read(book_form_json, 'book-isbn'))
 
-            if book_response[1] == SUCCESS:
-                return redirect(url_for('individual_book_page', isbn=book_form_json['ISBN']))
+                if book_response[1] == SUCCESS:
+                    return redirect(url_for('individual_book_page', isbn=book_result['ISBN']))
+                elif book_response[1] == FOUND:
+                    return render_template('add_book.html'), FOUND # !WIP! add error page telling user book is already present
+                elif book_response[1] == BAD_REQUEST:
+                    return render_template('add_book.html'), BAD_REQUEST
+            except TypeError as error:
+                return render_template('add_book.html'), BAD_REQUEST # !WIP! add error page for malformed ISBN
 
-            elif book_response[1] == BAD_REQUEST:
-                return render_template('add_book.html')  # !WIP! add error page telling user book is already present
-
-            else:
-                return 'Server Error', 500
 
         return render_template('add_book.html')
 
@@ -64,8 +67,8 @@ def create_routes(app): # Placeholder returns for unfinished pages
             return render_template('view_book.html', book=book_result), 200
 
         # This error occurs when the ISBN does not exist in database
-        except json.decoder.JSONDecodeError:
-            return f'ISBN not in database'  # !WIP! add full error page
+        except TypeError as error:
+            return INTERNAL_SERVER_ERROR # !WIP! add full error page
 
     @app.route('/book/local-search', methods=['GET'])
     def local_search_page():
@@ -134,7 +137,28 @@ def create_routes(app): # Placeholder returns for unfinished pages
         # Return compact JSON payload
         return jsonify(query=query, num_found=search_result.get('numFound', 0), results=trimmed_results), 200
 
+    @app.route('/', methods=['GET'])
+    def homepage():
+        return render_template('homepage.html')
 
+    @app.route('/search', methods=['GET'])
+    def search_page():
+        return render_template('search.html')
+
+    # WIP
+    @app.route('/add-openlibrary', methods=['GET'])
+    def add_openlibrary_page():
+        return 'WIP', 200
+
+    # WIP
+    @app.route('/settings', methods=['GET'])
+    def settings_page():
+        return 'WIP', 200
+
+    # WIP
+    @app.route('/dashboard', methods=['GET'])
+    def dashboard_page():
+        return 'WIP', 200
 
 if __name__ == '__main__':
     pass

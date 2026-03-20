@@ -1,11 +1,11 @@
 import json
 
-def main():
-    pass
 
 def validate_book_for_frontend(json_input):
     # Converts the tag values to reflect the frontend
-    json_input = json.loads(json_input)
+    if not isinstance(json_input, dict):
+        json_input = json.loads(json_input)
+
     json_input['Owned'] = 'on' if json_input['Owned'] == 'yes' else 'off'
     json_input['Favorite'] = 'on' if json_input['Favorite'] == 'yes' else 'off'
     json_input['Completed'] = 'on' if json_input['Completed'] == 'yes' else 'off'
@@ -32,7 +32,9 @@ def validate_book(json_input):
     title = json_input.get('Title', '')
     if isbn == '':
         raise KeyError('Error: Book must have an ISBN.')
-    elif title == '':
+    if len(isbn) != 10 and len(isbn) != 13:
+        return ValueError('Error: Book must have a valid ISBN (10 or 13 integers).')
+    if title == '':
         raise KeyError('Error: Book must have a title.')
 
     chapters = json_input.get('Chapters', '0')
@@ -86,7 +88,7 @@ def validate_publisher(json_input):
     return json_output
 
 
-def validate_tags(json_input, send_to_front=False):
+def validate_tags(json_input):
     json_output = {}
 
     owned_value = json_input.get('Owned', 'no')
@@ -98,13 +100,14 @@ def validate_tags(json_input, send_to_front=False):
     tag_list = [('Owned', owned_value), ('Favorite', favorite_value), ('Completed', completed_value),
                 ('Currently_Reading', currently_reading_value)]
 
-    if not send_to_front:
-        for key, tag in tag_list:
-            match tag.lower():
-                case 'on':
-                    json_output.update({key: 'yes'})
-                case _:
-                    json_output.update({key: 'no'})
+
+    for key, tag in tag_list:
+        match tag.lower():
+            case 'on':
+                json_output.update({key: 'yes'})
+            case 'off':
+                json_output.update({key: 'no'})
+            case _: json_output.update({key: tag})
 
     # Then add Personal_Or_Academic
     personal_or_academic = json_input.get('Personal_Or_Academic', 'personal')  # Will default to personal
@@ -132,4 +135,4 @@ def validate_genres(json_input):
 
 
 if __name__ == '__main__':
-    main()
+    pass

@@ -10,6 +10,7 @@ instance/
 # pytest
 htmlcov/
 .pytest_cache/
+.coverage
 
 # Environments
 .env
@@ -25,3 +26,4 @@ venv.bak/
 
 # SQLite
 *.sqlite
+*.db

@@ -196,11 +196,11 @@
         <!-- ISBN + Publisher row -->
         <div class="row">
             <div>
-                <label for="ISBN">ISBN</label>
+                <label for="ISBN">ISBN (10 or 13)</label>
                 <input type="text"
                        id="ISBN"
                        name="ISBN"
-                       pattern="[0-9]+"
+                       pattern="[0-9]{10}|[0-9]{13}"
                        inputmode="numeric"
                        required>
             </div>
