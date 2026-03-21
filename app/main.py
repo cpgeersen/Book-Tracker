@@ -6,6 +6,7 @@ from app.routes.test import test_bp
 from app.services.create_db import create_db
 import json
 from app.services.create_example_records import create_sample_books
+from app.services.create_many_records import create_many_records
 
 
 SUCCESS = 200
@@ -17,7 +18,8 @@ INTERNAL_SERVER_ERROR = 500
 
 # Create the Database
 #create_db()
-create_sample_books()
+#create_sample_books()
+create_many_records(100)
 
 
 def create_routes(app): # Placeholder returns for unfinished pages
