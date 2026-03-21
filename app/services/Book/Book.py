@@ -1,5 +1,6 @@
 from app.services.Book.BookCreate import create_book_record
-from app.services.Book.BookRead import read_full_book_record, get_all_book_isbn, read_full_book_by_author
+from app.services.Book.BookRead import (read_full_book_record, get_all_book_isbn, read_full_book_by_title,
+                                        read_full_book_by_author)
 from app.services.Book.BookDelete import delete_book_record
 from app.services.Book.BookPredicate import is_isbn_in_book_table
 import json
@@ -25,6 +26,9 @@ def read_all_books():
         book_result_number += 1
 
     return json_output
+
+def read_all_books_by_title(title):
+    return read_full_book_by_title(title)
 
 def read_all_books_by_author(author_last_name, author_first_name=None):
     return read_full_book_by_author(author_last_name, author_first_name)

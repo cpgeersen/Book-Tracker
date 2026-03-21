@@ -77,6 +77,10 @@ def create_routes(app): # Placeholder returns for unfinished pages
         if search_type == 'isbn':
             isbn = request.args.get('search', 'isbn')
 
+            if len(isbn) == 0:
+                book_result = read()
+                return render_template('search.html', books=book_result), 200
+
             # Create a dict with the isbn, makes it possible to reuse mediator functions
             isbn_dict = {"ISBN": isbn}
             try:
@@ -93,10 +97,27 @@ def create_routes(app): # Placeholder returns for unfinished pages
                 return render_template('search.html', books={}), 200
 
         elif search_type == 'title':
-            pass
+            title = request.args.get('search', 'title')
+
+            if len(title) == 0:
+                book_result = read()
+                return render_template('search.html', books=book_result), 200
+
+            title_json = {'Title': title.strip()}
+            book_result = json.loads(read(title_json, 'book-title'))
+
+            if dict(book_result).get('Error') == 'Title not found':
+                return render_template('search.html', books={}), 200
+            else:
+                return render_template('search.html', books=book_result), 200
+
         elif search_type == 'author':
             author_name = request.args.get('search', 'author')
             author_name_list = author_name.split(' ')
+
+            if len(author_name) == 0:
+                book_result = read()
+                return render_template('search.html', books=book_result), 200
 
             match len(author_name_list):
                 case 1:author_name_json = {'Author_Last_Name': author_name_list[0].strip().capitalize()}
