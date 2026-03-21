@@ -206,7 +206,11 @@
             <legend>Personal or Academic</legend>
         <div class="radio-group">
                   <label>
-                      <input type="radio" name="Personal_Or_Academic" value="personal" checked>
+                      <input type="radio" name="Personal_Or_Academic" value="any" checked>
+                      Any
+                  </label>
+                  <label>
+                      <input type="radio" name="Personal_Or_Academic" value="personal">
                       Personal
                   </label>
 
@@ -216,6 +220,34 @@
                   </label>
         </div>
       </fieldset>
+
+      <h2>Filter by Genre</h2>
+      <fieldset>
+            <legend>Fiction or Nonfiction</legend>
+        <div class="radio-group">
+                  <label>
+                      <input type="radio" name="Genre_1" value="any" checked>
+                      Any
+                  </label>
+                  <label>
+                      <input type="radio" name="Genre_1" value="fiction">
+                      Fiction
+                  </label>
+
+                  <label>
+                      <input type="radio" name="Genre_1" value="nonfiction">
+                      Nonfiction
+                  </label>
+        </div>
+      </fieldset>
+
+      <label for="genres">Choose a Genre</label>
+      <select name="genres" id="genres">
+        <option value="">--Choose an option:--</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="horror">Horror</option>
+
+      </select>
 
       <button>Apply Filters</button>
 
