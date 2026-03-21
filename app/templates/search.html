@@ -270,9 +270,28 @@
               <p><strong>ISBN:</strong> {{ book_info['ISBN'] }}</p>
 
               <div class="tags">
-                <span>Owned</span>
+                {% if book_info['Owned'] == 'yes' %}
+                  <span>Owned</span>
+                {% endif %}
+
+                {% if book_info['Favorite'] == 'yes' %}
                 <span>Favorite</span>
-                <span>Read</span>
+                {% endif %}
+
+                {% if book_info['Completed'] == 'yes' %}
+                <span>Completed</span>
+                {% endif %}
+
+                {% if book_info['Currently_Reading'] == 'yes' %}
+                <span>Currently Reading</span>
+                {% endif %}
+
+                {% if book_info['Personal_Or_Academic'] == 'academic' %}
+                <span>Academic</span>
+                {% else %}
+                <span>Personal</span>
+                {% endif %}
+
               </div>
 
               <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button">
