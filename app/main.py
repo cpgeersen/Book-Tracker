@@ -95,7 +95,21 @@ def create_routes(app): # Placeholder returns for unfinished pages
         elif search_type == 'title':
             pass
         elif search_type == 'author':
-            pass
+            author_name = request.args.get('search', 'author')
+            author_name_list = author_name.split(' ')
+
+            match len(author_name_list):
+                case 1:author_name_json = {'Author_Last_Name': author_name_list[0].strip().capitalize()}
+                case 2: author_name_json = {'Author_Last_Name': author_name_list[1].strip().capitalize(),
+                                            'Author_First_Name': author_name_list[0].strip().capitalize()}
+                case _: return 'Not valid' # Add error pop up here
+
+            book_result = json.loads(read(author_name_json, 'book-author'))
+
+            if dict(book_result).get('Error') == 'Author not found':
+                return render_template('search.html', books={}), 200
+            else:
+                return render_template('search.html', books=book_result), 200
         else:
             try:
                 book_result = read()

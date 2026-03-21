@@ -1,5 +1,5 @@
 from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend
-from app.services.Book.Book import create_book, read_book, read_all_books
+from app.services.Book.Book import create_book, read_book, read_all_books, read_all_books_by_author
 import json
 from app.services.openlibrary_api import search_books_by_title, get_work_data
 
@@ -86,6 +86,7 @@ def read(json_input=None, read_type='book-all'):
     try:
         if read_type == 'book-all':
             result = read_all_books()
+            print(type(result))
             return result
         elif read_type == 'book-isbn':
             # First get the book record via ISBN
@@ -96,7 +97,21 @@ def read(json_input=None, read_type='book-all'):
         elif read_type == 'book-title':
             pass
         elif read_type == 'book-author':
-            pass
+            all_books_by_author = json.loads(read_all_books_by_author(json_input['Author_Last_Name'],
+                                                           json_input.get('Author_First_Name')))
+
+            if not isinstance(all_books_by_author, list):
+                return json.dumps({"Error": "Author not found", "Status_Code": "404"})
+
+            json_output = {}
+            book_result_number = 1
+
+            for book in all_books_by_author:
+                json_output[f'Book_Result_{book_result_number}'] = book
+                book_result_number += 1
+
+            return json.dumps(json_output)
+
         elif read_type == 'book-genre':
             pass
         else:
