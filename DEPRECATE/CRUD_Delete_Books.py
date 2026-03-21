@@ -13,7 +13,7 @@ import json
 # Reference
 #==========================================================
 # This file contains the CRUD code for a delete function.
-DB_PATH = "bt.db"
+DB_PATH = "../bt.db"
 #---------------------------------------------------------------------
 # Defining A JSON Wrapper Function:
 #--------------------------------------------------------------------- 
