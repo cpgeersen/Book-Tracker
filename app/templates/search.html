@@ -228,9 +228,9 @@
           value="{{ request.args.get('search', '') }}">
 
         {% if search_type == 'isbn' %}
-          <label><input type="radio" name="search_type" value="isbn" checked> ISBN</label>
+          <label><input type="radio" name="search_type" value="isbn" checked required> ISBN</label>
         {% else %}
-          <label><input type="radio" name="search_type" value="isbn"> ISBN</label>
+          <label><input type="radio" name="search_type" value="isbn" required> ISBN</label>
         {% endif %}
 
         {% if search_type == 'title' %}
