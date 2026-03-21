@@ -202,6 +202,21 @@
       <label><input type="checkbox"> Read</label>
       <label><input type="checkbox"> Currently Reading</label>
 
+      <fieldset>
+            <legend>Personal or Academic</legend>
+        <div class="radio-group">
+                  <label>
+                      <input type="radio" name="Personal_Or_Academic" value="personal" checked>
+                      Personal
+                  </label>
+
+                  <label>
+                      <input type="radio" name="Personal_Or_Academic" value="academic">
+                      Academic
+                  </label>
+        </div>
+      </fieldset>
+
       <button>Apply Filters</button>
 
       <button onclick=window.location.href='/book/local-search'>
