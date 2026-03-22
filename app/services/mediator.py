@@ -2,7 +2,7 @@ import json
 from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend, validate_tags
 from app.services.Book.Book import (create_book, read_book, read_all_books, read_all_books_by_title,
                                     read_all_books_by_author, update_book_summary, update_book_chapters,
-                                    update_book_chapters_completed, update_book_tags)
+                                    update_book_chapters_completed, update_book_tags, delete_book)
 from app.services.openlibrary_api import search_books_by_title, get_work_data
 
 SUCCESS = 200
@@ -163,8 +163,14 @@ def update(json_input, update_type):
 
 
 # DELETE - Takes JSON as input
-def delete(json):
-    return str(json)
+def delete(json_input):
+    json_input = json.loads(json_input)
+    response = delete_book(json_input['ISBN'])
+    return response
+
+
+
+
 
 normal_data = {"ISBN": "0061091464",
                "Title": "The Thief of Always",

@@ -94,7 +94,11 @@ def create_routes(app): # Placeholder returns for unfinished pages
                                          'Currently_Reading': book_update['currently_reading']})
                 response = update(json_input, 'tag')
 
+            elif book_update.get('delete') is not None:
+                json_input = json.dumps({'ISBN': isbn})
+                response = delete(json_input)
 
+                return redirect('/book/local-search') # !!WIP!! give pop-up for success
 
             book_result = json.loads(read(isbn_dict, 'book-isbn'))
             return render_template('view_book.html', book=book_result), 200

@@ -324,9 +324,48 @@
         <h3>Actions</h3>
 
         <!-- Action buttons -->
-        <button class="remove-btn">Remove</button>
-        <button>Notes</button>
-        <button>Update</button>
+        <button command="show-modal" commandfor="delete-confirmation-modal" class="delete-btn">Delete Book</button>
+
+        <dialog id="delete-confirmation-modal">
+
+          <p>Delete Book Record from Database</p>
+          <p>WARNING: Deleting a book is irreversible.</p>
+          <p>Do you still want to delete the book?</p>
+
+          <form id="delete" method="POST">
+            <button class="yes-btn" type="submit" form="delete" name="delete" >Yes</button>
+          </form>
+          <button class="no-btn" commandfor="delete-confirmation-modal" command="close" >No</button>
+        </dialog>
+
+        <button command="show-modal" commandfor="update-confirmation-modal" class="update-btn">Update with OpenLibrary Data</button>
+        <dialog id="update-confirmation-modal">
+
+          <p>Use data from the OpenLibrary API to update book record.</p>
+          <p>WARNING: Updating is destructive, cannot be reverted, and can only be done once.</p>
+          <p>Records Updated (unless otherwise specified by user):</p>
+          <ul>
+            <li>Cover Image</li>
+            <li>Summary</li>
+            <li>Publisher</li>
+            <li>Author Spelling</li>
+          </ul>
+          <p>Do you still want to update the book?</p>
+
+          <form id="update-with-ol" method="POST">
+
+            <label for="update-cover_image">Update Cover Image</label>
+            <input id="update-cover_image" type="checkbox" name="update_cover" checked>
+
+            <label for="update-summary">Update Summary</label>
+            <input id="update-summary" type="checkbox" name="update_summary" checked>
+
+            <button class="yes-btn" type="submit" form="update-with-ol" name="update_with_ol" >Yes</button>
+          </form>
+
+          <button class="no-btn" commandfor="update-confirmation-modal" command="close" >No</button>
+        </dialog>
+
 
       </div>
 
