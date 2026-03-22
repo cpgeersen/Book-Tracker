@@ -1,7 +1,8 @@
 # GenreID: 'Genre'
 
 def genres_for_table():
-    genre_table = {100: 'fiction',
+    genre_table = {1:   'fiction',
+                   2:   'nonfiction',
                    110: 'speculative fiction',
                    111: 'fantasy',
                    112: 'science fiction',
@@ -36,7 +37,6 @@ def genres_for_table():
                    309: 'coming-of-age',
                    310: 'military',
                    311: 'realist',
-                   400: 'nonfiction',
                    401: 'education',
                    402: 'religion',
                    410: 'wellness',

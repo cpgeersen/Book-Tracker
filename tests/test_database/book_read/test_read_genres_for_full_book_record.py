@@ -32,7 +32,7 @@ def test_read_genres_for_full_book_record_success():
     create_book(book)
     genre_ids = read_genres_ids(book['ISBN'])
     response = json.loads(read_genres_for_full_book_record(genre_ids))
-    assert response['Genre_ID_1'] == 100
+    assert response['Genre_ID_1'] == 1
     assert response['Genre_1'] == 'fiction'
     # Since genre number from frontend can change,
     # though not an issue since genre_id is still bound
