@@ -177,13 +177,16 @@
 
           <!-- Summary edit section -->
           <div id="summary-edit" class="hidden">
+            <form method="POST">
+              <textarea id="summary-text" name="summary">{{ book["Summary"] }}</textarea >
 
-            <textarea id="summary-text">{{ book["Summary"] }}</textarea>
+              <br><br>
 
-            <br><br>
+              <!-- Save summary button -->
+              <button onclick="saveSummary()" type="submit">Save</button>
+            </form>
 
-            <!-- Save summary button -->
-            <button onclick="saveSummary()">Save</button>
+
 
           </div>
 
@@ -222,14 +225,15 @@
 
         <!-- Chapter edit input -->
         <div id="chapters-edit" class="hidden">
+          <form method="POST">
+            <input type="number"
+                    id="chapters-input"
+                    name="chapters"
+                    value="{{ book["Chapters"] }}">
 
-          <input type="number"
-                 id="chapters-input"
-                 value="{{ book["Chapters"] }}">
-
-          <!-- Save chapters button -->
-          <button onclick="saveChapters()">Save</button>
-
+            <!-- Save chapters button -->
+            <button onclick="saveChapters()" type="submit">Save</button>
+          </form>
         </div>
 
       </div>
@@ -259,20 +263,35 @@
 
       <!-- Toggleable reading tags section -->
       <div class="section">
+        <form id="tag_edit" method="POST">
+          <h3>Tags</h3>
 
-        <h3>Tags</h3>
+          <!-- Toggleable tags -->
+          <button onclick="changeTagValue('owned'); " class="tag toggle {% if book['Owned']=='on' %}active{% endif %}"
+                  id="owned" type="button"
+                  name="owned" value="{{ book["Owned"] }}">Owned</button>
+          <input type="hidden" id="owned_value" name="owned" value="{{ book["Owned"] }}">
 
-        <!-- Toggleable tags -->
-        <button class="tag toggle {% if book['Owned']=='on' %}active{% endif %}">Owned</button>
-        <button class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}">Favorite</button>
-        <button class="tag toggle {% if book['Completed']=='on' %}active{% endif %}">Read</button>
-        <button class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}">Currently Reading</button>
+          <button onclick="changeTagValue('favorite'); " class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}"
+                  id='favorite' type="button"
+                  name="favorite" value="{{ book["Favorite"] }}">Favorite</button>
+          <input type="hidden" id="favorite_value" name="favorite" value="{{ book["Favorite"] }}">
 
-        <br><br>
+          <button onclick="changeTagValue('completed'); " class="tag toggle {% if book['Completed']=='on' %}active{% endif %}"
+                  id='completed' type="button"
+                  name="completed" value="{{ book["Completed"] }}">Completed</button>
+          <input type="hidden" id="completed_value" name="completed" value="{{ book["Completed"] }}">
 
-        <!-- Save tag changes button -->
-        <button onclick="saveTags()">Save Tags</button>
+          <button onclick="changeTagValue('currently_reading'); " class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}"
+                  id='currently_reading' type="button"
+                  name="currently_reading" value="{{ book["Currently_Reading"] }}">Currently Reading</button>
+          <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book["Currently_Reading"] }}">
 
+          <br><br>
+
+          <!-- Save tag changes button -->
+          <button onclick="saveTags()" type="submit" form="tag_edit" name="tag_edit">Save Tags</button>
+        </form>
       </div>
 
       <!-- Notes section -->
@@ -352,7 +371,21 @@
 
     /* Save tag changes placeholder */
     function saveTags() {
-      alert("Tags saved (backend integration coming next).");
+      // alert("Tags saved (backend integration coming next).");
+
+    }
+
+    /* Toggle function for tags */
+    function changeTagValue(tag_type){
+      tag_value = document.getElementById(tag_type).value;
+
+      if (tag_value == 'on'){
+        document.getElementById(tag_type).value = 'off'
+        document.getElementById(tag_type + "_value").value = 'off';
+      } else {
+        document.getElementById(tag_type).value = 'on'
+        document.getElementById(tag_type + "_value").value = 'on';
+      }
     }
 
   </script>

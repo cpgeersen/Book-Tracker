@@ -56,7 +56,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
         return render_template('add_book.html')
 
-    @app.route('/book/isbn/<isbn>')
+    @app.route('/book/isbn/<isbn>', methods=['GET', 'POST'])
     def individual_book_page(isbn):
         try:
             # Create a dict with the isbn, makes it possible to reuse mediator functions
@@ -65,12 +65,32 @@ def create_routes(app): # Placeholder returns for unfinished pages
             # Get the result in JSON format
             book_result = json.loads(read(isbn_dict, 'book-isbn'))
 
+        # This error occurs when the ISBN does not exist in database
+        except TypeError as error:
+            return INTERNAL_SERVER_ERROR  # !WIP! add full error page
+
+        if request.method == 'GET':
             # Display the result
             return render_template('view_book.html', book=book_result), 200
 
-        # This error occurs when the ISBN does not exist in database
-        except TypeError as error:
-            return INTERNAL_SERVER_ERROR # !WIP! add full error page
+        elif request.method == 'POST':
+            # Note: May fix to correctly use update method
+            book_update = dict(request.form)
+            print(book_update)
+            print(request.mimetype)
+
+            if book_update.get('summary') is not None:
+                print('summary edit')
+            elif book_update.get('chapters') is not None:
+                print('chapters edit')
+            elif book_update.get('tag_edit') is not None:
+                print('tag edit')
+
+            return render_template('view_book.html', book=book_result), 200
+
+        else:
+            return render_template('view_book.html'), 200 # !!WIP!! Add Error for nonexistent book
+
 
     @app.route('/book/local-search', methods=['GET'])
     def local_search_page():
