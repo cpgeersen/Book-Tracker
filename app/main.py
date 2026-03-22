@@ -19,7 +19,7 @@ INTERNAL_SERVER_ERROR = 500
 # Create the Database
 #create_db()
 #create_sample_books()
-create_many_records(100)
+#create_many_records(100)
 
 
 def create_routes(app): # Placeholder returns for unfinished pages
@@ -74,18 +74,29 @@ def create_routes(app): # Placeholder returns for unfinished pages
             return render_template('view_book.html', book=book_result), 200
 
         elif request.method == 'POST':
-            # Note: May fix to correctly use update method
+
             book_update = dict(request.form)
             print(book_update)
-            print(request.mimetype)
 
             if book_update.get('summary') is not None:
-                print('summary edit')
-            elif book_update.get('chapters') is not None:
-                print('chapters edit')
-            elif book_update.get('tag_edit') is not None:
-                print('tag edit')
+                json_input = json.dumps({'ISBN': isbn, 'Summary': book_update['summary']})
+                response = update(json_input, 'summary')
 
+            elif book_update.get('chapters') is not None:
+                json_input = json.dumps({'ISBN': isbn, 'Chapters': book_update['chapters']})
+                response = update(json_input, 'chapters')
+
+            elif book_update.get('tag') is not None:
+                json_input = json.dumps({'Tag_ID': book_result['Tag_ID'],
+                                         'Owned': book_update['owned'],
+                                         'Favorite': book_update['favorite'],
+                                         'Completed': book_update['completed'],
+                                         'Currently_Reading': book_update['currently_reading']})
+                response = update(json_input, 'tag')
+
+
+
+            book_result = json.loads(read(isbn_dict, 'book-isbn'))
             return render_template('view_book.html', book=book_result), 200
 
         else:
