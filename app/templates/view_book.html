@@ -199,15 +199,19 @@
         <h3>Chapters</h3>
 
         <!-- Chapter progress display -->
-        <p>
-          Chapters Read:
-          {{ book["Chapters_Completed"] }} / {{ book["Chapters"] }}
-        </p>
+        <span>Chapters Read:</span>
+        <span id="chapters-completed">{{ book["Chapters_Completed"] }}</span>
+        <span> / </span>
+        <span id="chapter-total-value">{{ book["Chapters"] }}</span>
 
         <!-- Chapter increment / decrement buttons -->
         <div class="chapter-controls">
-          <button>-</button>
-          <button>+</button>
+          <button id="decrement-chapters" onclick="decrementChapters()">-</button>
+          <button id="increment-chapters" onclick="incrementChapters()">+</button>
+          <form id="chapters_completed" method="POST">
+            <input type="hidden" id="chapters_completed_value" name="chapters_completed" value="{{ book["Chapters_Completed"] }}">
+            <button type="submit" form="chapters_completed" name="chapters_completed">Save</button>
+          </form>
         </div>
 
         <br>
@@ -424,6 +428,26 @@
       } else {
         document.getElementById(tag_type).value = 'on'
         document.getElementById(tag_type + "_value").value = 'on';
+      }
+    }
+
+    function decrementChapters(){
+      chaptersCompletedValue = document.getElementById('chapters-completed').innerText
+
+      if (chaptersCompletedValue != 0){
+        document.getElementById('chapters_completed_value').value--;
+        document.getElementById('chapters-completed').innerText--;
+      }
+    }
+
+    function incrementChapters(){
+      chaptersCompletedValue = document.getElementById('chapters-completed').innerText
+      chapterTotalValue = document.getElementById('chapter-total-value').innerText
+      console.log(chapterTotalValue);
+
+      if (chaptersCompletedValue < Number(chapterTotalValue)){
+        document.getElementById('chapters_completed_value').value++;
+        document.getElementById('chapters-completed').innerText++;
       }
     }
 

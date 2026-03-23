@@ -146,7 +146,15 @@ def update(json_input, update_type):
 
         elif update_type == 'chapters':
             json_input = json.loads(json_input)
+            if json_input['Chapters_Completed'] > json_input['Chapters']:
+                update_book_chapters_completed(json_input['ISBN'], json_input['Chapters'])
+
             response = update_book_chapters(json_input['ISBN'], json_input['Chapters'])
+            return response
+
+        elif update_type == 'chapters-completed':
+            json_input = json.loads(json_input)
+            response = update_book_chapters_completed(json_input['ISBN'], json_input['Chapters_Completed'])
             return response
 
         elif update_type == 'tag':

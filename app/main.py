@@ -83,7 +83,8 @@ def create_routes(app): # Placeholder returns for unfinished pages
                 response = update(json_input, 'summary')
 
             elif book_update.get('chapters') is not None:
-                json_input = json.dumps({'ISBN': isbn, 'Chapters': book_update['chapters']})
+                json_input = json.dumps({'ISBN': isbn, 'Chapters': book_update['chapters'],
+                                         'Chapters_Completed': book_result['Chapters_Completed']})
                 response = update(json_input, 'chapters')
 
             elif book_update.get('tag') is not None:
@@ -93,6 +94,11 @@ def create_routes(app): # Placeholder returns for unfinished pages
                                          'Completed': book_update['completed'],
                                          'Currently_Reading': book_update['currently_reading']})
                 response = update(json_input, 'tag')
+
+            elif book_update.get('chapters_completed') is not None:
+                json_input = json.dumps({'ISBN': isbn, 'Chapters_Completed': book_update['chapters_completed']})
+                response = update(json_input, 'chapters-completed')
+                print(response)
 
             elif book_update.get('delete') is not None:
                 json_input = json.dumps({'ISBN': isbn})
