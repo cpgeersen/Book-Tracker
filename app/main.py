@@ -6,6 +6,7 @@ from app.routes.test import test_bp
 from app.services.create_db import create_db
 import json
 from app.services.create_example_records import create_sample_books
+from app.services.create_many_records import create_many_records
 
 
 SUCCESS = 200
@@ -17,7 +18,8 @@ INTERNAL_SERVER_ERROR = 500
 
 # Create the Database
 #create_db()
-create_sample_books()
+#create_sample_books()
+#create_many_records(100)
 
 
 def create_routes(app): # Placeholder returns for unfinished pages
@@ -54,7 +56,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
         return render_template('add_book.html')
 
-    @app.route('/book/isbn/<isbn>')
+    @app.route('/book/isbn/<isbn>', methods=['GET', 'POST'])
     def individual_book_page(isbn):
         try:
             # Create a dict with the isbn, makes it possible to reuse mediator functions
@@ -63,12 +65,53 @@ def create_routes(app): # Placeholder returns for unfinished pages
             # Get the result in JSON format
             book_result = json.loads(read(isbn_dict, 'book-isbn'))
 
+        # This error occurs when the ISBN does not exist in database
+        except TypeError as error:
+            return INTERNAL_SERVER_ERROR  # !WIP! add full error page
+
+        if request.method == 'GET':
             # Display the result
             return render_template('view_book.html', book=book_result), 200
 
-        # This error occurs when the ISBN does not exist in database
-        except TypeError as error:
-            return INTERNAL_SERVER_ERROR # !WIP! add full error page
+        elif request.method == 'POST':
+
+            book_update = dict(request.form)
+            print(book_update)
+
+            if book_update.get('summary') is not None:
+                json_input = json.dumps({'ISBN': isbn, 'Summary': book_update['summary']})
+                response = update(json_input, 'summary')
+
+            elif book_update.get('chapters') is not None:
+                json_input = json.dumps({'ISBN': isbn, 'Chapters': book_update['chapters'],
+                                         'Chapters_Completed': book_result['Chapters_Completed']})
+                response = update(json_input, 'chapters')
+
+            elif book_update.get('tag') is not None:
+                json_input = json.dumps({'Tag_ID': book_result['Tag_ID'],
+                                         'Owned': book_update['owned'],
+                                         'Favorite': book_update['favorite'],
+                                         'Completed': book_update['completed'],
+                                         'Currently_Reading': book_update['currently_reading']})
+                response = update(json_input, 'tag')
+
+            elif book_update.get('chapters_completed') is not None:
+                json_input = json.dumps({'ISBN': isbn, 'Chapters_Completed': book_update['chapters_completed']})
+                response = update(json_input, 'chapters-completed')
+                print(response)
+
+            elif book_update.get('delete') is not None:
+                json_input = json.dumps({'ISBN': isbn})
+                response = delete(json_input)
+
+                return redirect('/book/local-search') # !!WIP!! give pop-up for success
+
+            book_result = json.loads(read(isbn_dict, 'book-isbn'))
+            return render_template('view_book.html', book=book_result), 200
+
+        else:
+            return render_template('view_book.html'), 200 # !!WIP!! Add Error for nonexistent book
+
 
     @app.route('/book/local-search', methods=['GET'])
     def local_search_page():
@@ -76,6 +119,10 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
         if search_type == 'isbn':
             isbn = request.args.get('search', 'isbn')
+
+            if len(isbn) == 0:
+                book_result = read()
+                return render_template('search.html', books=book_result, search_type='isbn'), 200
 
             # Create a dict with the isbn, makes it possible to reuse mediator functions
             isbn_dict = {"ISBN": isbn}
@@ -86,16 +133,47 @@ def create_routes(app): # Placeholder returns for unfinished pages
                 book_result = json.loads(book_result)
 
                 if book_result == '':
-                    return render_template('search.html', books={}), 200
+                    return render_template('search.html', books={}, search_type='isbn'), 200
 
-                return render_template('search.html', books=book_result), 200
+                return render_template('search.html', books=book_result, search_type='isbn'), 200
             except TypeError:   # When there is no book with ISBN match
-                return render_template('search.html', books={}), 200
+                return render_template('search.html', books={}, search_type='isbn'), 200
 
         elif search_type == 'title':
-            pass
+            title = request.args.get('search', 'title')
+
+            if len(title) == 0:
+                book_result = read()
+                return render_template('search.html', books=book_result, search_type='title'), 200
+
+            title_json = {'Title': title.strip()}
+            book_result = json.loads(read(title_json, 'book-title'))
+
+            if dict(book_result).get('Error') == 'Title not found':
+                return render_template('search.html', books={}, search_type='title'), 200
+            else:
+                return render_template('search.html', books=book_result, search_type='title'), 200
+
         elif search_type == 'author':
-            pass
+            author_name = request.args.get('search', 'author')
+            author_name_list = author_name.split(' ')
+
+            if len(author_name) == 0:
+                book_result = read()
+                return render_template('search.html', books=book_result, search_type='author'), 200
+
+            match len(author_name_list):
+                case 1:author_name_json = {'Author_Last_Name': author_name_list[0].strip().capitalize()}
+                case 2: author_name_json = {'Author_Last_Name': author_name_list[1].strip().capitalize(),
+                                            'Author_First_Name': author_name_list[0].strip().capitalize()}
+                case _: return 'Not valid' # Add error pop up here
+
+            book_result = json.loads(read(author_name_json, 'book-author'))
+
+            if dict(book_result).get('Error') == 'Author not found':
+                return render_template('search.html', books={}, search_type='author'), 200
+            else:
+                return render_template('search.html', books=book_result, search_type='author'), 200
         else:
             try:
                 book_result = read()

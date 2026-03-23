@@ -18,7 +18,7 @@ def connect_to_database():
             conn.close()
 
 
-def update_tags(tag_id, owned, favorite, completed, currently_reading, personal_or_academic):
+def update_tags(tag_id, owned, favorite, completed, currently_reading):
 
     tag_id_presence = is_tag_id_in_tag_table(tag_id)
     if not tag_id_presence:
@@ -32,11 +32,10 @@ def update_tags(tag_id, owned, favorite, completed, currently_reading, personal_
                        SET Owned = ?,
                        Favorite = ?,
                        Completed = ?,
-                       Currently_Reading = ?,
-                       Personal_Or_Academic = ?
+                       Currently_Reading = ?
                        WHERE Tag_ID = ?
                    '''
-    criteria = (owned, favorite, completed, currently_reading, personal_or_academic, tag_id)
+    criteria = (owned, favorite, completed, currently_reading, tag_id)
     cursor.execute(update_query, criteria)
     conn.commit()
     conn.close()

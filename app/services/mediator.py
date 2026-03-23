@@ -1,6 +1,8 @@
-from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend
-from app.services.Book.Book import create_book, read_book, read_all_books
 import json
+from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend, validate_tags
+from app.services.Book.Book import (create_book, read_book, read_all_books, read_all_books_by_title,
+                                    read_all_books_by_author, update_book_summary, update_book_chapters,
+                                    update_book_chapters_completed, update_book_tags, delete_book)
 from app.services.openlibrary_api import search_books_by_title, get_work_data
 
 SUCCESS = 200
@@ -87,16 +89,43 @@ def read(json_input=None, read_type='book-all'):
         if read_type == 'book-all':
             result = read_all_books()
             return result
+
         elif read_type == 'book-isbn':
             # First get the book record via ISBN
             result = read_book(json_input['ISBN'])
             # Then convert to frontend syntax for tags
             converted_result = validate_book_for_frontend(result)
             return converted_result
+
         elif read_type == 'book-title':
-            pass
+            all_books_by_title = json.loads(read_all_books_by_title(json_input['Title']))
+
+            if not isinstance(all_books_by_title, list):
+                return json.dumps({"Error": "Title not found", "Status_Code": "404"})
+
+            json_output = {}
+            book_result_number = 1
+            for book in all_books_by_title:
+                json_output[f'Book_Result_{book_result_number}'] = book
+                book_result_number += 1
+
+            return json.dumps(json_output)
+
         elif read_type == 'book-author':
-            pass
+            all_books_by_author = json.loads(read_all_books_by_author(json_input['Author_Last_Name'],
+                                                           json_input.get('Author_First_Name')))
+
+            if not isinstance(all_books_by_author, list):
+                return json.dumps({"Error": "Author not found", "Status_Code": "404"})
+
+            json_output = {}
+            book_result_number = 1
+            for book in all_books_by_author:
+                json_output[f'Book_Result_{book_result_number}'] = book
+                book_result_number += 1
+
+            return json.dumps(json_output)
+
         elif read_type == 'book-genre':
             pass
         else:
@@ -108,13 +137,48 @@ def read(json_input=None, read_type='book-all'):
 
 
 # PATCH - Takes JSON as input
-def update(json):
-    return str(json)
+def update(json_input, update_type):
+    try:
+        if update_type == 'summary':
+            json_input = json.loads(json_input)
+            response = update_book_summary(json_input['ISBN'], json_input['Summary'])
+            return response
+
+        elif update_type == 'chapters':
+            json_input = json.loads(json_input)
+            if json_input['Chapters_Completed'] > json_input['Chapters']:
+                update_book_chapters_completed(json_input['ISBN'], json_input['Chapters'])
+
+            response = update_book_chapters(json_input['ISBN'], json_input['Chapters'])
+            return response
+
+        elif update_type == 'chapters-completed':
+            json_input = json.loads(json_input)
+            response = update_book_chapters_completed(json_input['ISBN'], json_input['Chapters_Completed'])
+            return response
+
+        elif update_type == 'tag':
+            json_input = json.loads(json_input)
+            json_input_converted_tags = validate_tags(json_input)
+            response = update_book_tags(json_input['Tag_ID'], json_input_converted_tags['Owned'],
+                                        json_input_converted_tags['Favorite'], json_input_converted_tags['Completed'],
+                                        json_input_converted_tags['Currently_Reading'])
+            return response
+
+
+    except TypeError:
+        pass
 
 
 # DELETE - Takes JSON as input
-def delete(json):
-    return str(json)
+def delete(json_input):
+    json_input = json.loads(json_input)
+    response = delete_book(json_input['ISBN'])
+    return response
+
+
+
+
 
 normal_data = {"ISBN": "0061091464",
                "Title": "The Thief of Always",

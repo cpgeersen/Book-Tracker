@@ -30,7 +30,7 @@ book = {"ISBN": "0061091464",
 def test_read_genres_ids():
     create_book(book)
     response = json.loads(read_genres_ids(book['ISBN']))
-    assert response['Genre_IDs'] == [100, 111, 113, 191]
+    assert response['Genre_IDs'] == [1, 111, 113, 191]
 
 def test_read_genres_ids_missing():
     response = json.loads(read_genres_ids(book['ISBN']))

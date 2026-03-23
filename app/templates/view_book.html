@@ -177,13 +177,16 @@
 
           <!-- Summary edit section -->
           <div id="summary-edit" class="hidden">
+            <form method="POST">
+              <textarea id="summary-text" name="summary">{{ book["Summary"] }}</textarea >
 
-            <textarea id="summary-text">{{ book["Summary"] }}</textarea>
+              <br><br>
 
-            <br><br>
+              <!-- Save summary button -->
+              <button onclick="saveSummary()" type="submit">Save</button>
+            </form>
 
-            <!-- Save summary button -->
-            <button onclick="saveSummary()">Save</button>
+
 
           </div>
 
@@ -196,15 +199,19 @@
         <h3>Chapters</h3>
 
         <!-- Chapter progress display -->
-        <p>
-          Chapters Read:
-          {{ book["Chapters_Completed"] }} / {{ book["Chapters"] }}
-        </p>
+        <span>Chapters Read:</span>
+        <span id="chapters-completed">{{ book["Chapters_Completed"] }}</span>
+        <span> / </span>
+        <span id="chapter-total-value">{{ book["Chapters"] }}</span>
 
         <!-- Chapter increment / decrement buttons -->
         <div class="chapter-controls">
-          <button>-</button>
-          <button>+</button>
+          <button id="decrement-chapters" onclick="decrementChapters()">-</button>
+          <button id="increment-chapters" onclick="incrementChapters()">+</button>
+          <form id="chapters_completed" method="POST">
+            <input type="hidden" id="chapters_completed_value" name="chapters_completed" value="{{ book["Chapters_Completed"] }}">
+            <button type="submit" form="chapters_completed" name="chapters_completed">Save</button>
+          </form>
         </div>
 
         <br>
@@ -222,14 +229,15 @@
 
         <!-- Chapter edit input -->
         <div id="chapters-edit" class="hidden">
+          <form method="POST">
+            <input type="number"
+                    id="chapters-input"
+                    name="chapters"
+                    value="{{ book["Chapters"] }}">
 
-          <input type="number"
-                 id="chapters-input"
-                 value="{{ book["Chapters"] }}">
-
-          <!-- Save chapters button -->
-          <button onclick="saveChapters()">Save</button>
-
+            <!-- Save chapters button -->
+            <button onclick="saveChapters()" type="submit">Save</button>
+          </form>
         </div>
 
       </div>
@@ -259,26 +267,46 @@
 
       <!-- Toggleable reading tags section -->
       <div class="section">
+        <form id="tag" method="POST">
+          <h3>Tags</h3>
 
-        <h3>Tags</h3>
+          <!-- Toggleable tags -->
+          <button onclick="changeTagValue('owned'); " class="tag toggle {% if book['Owned']=='on' %}active{% endif %}"
+                  id="owned" type="button"
+                  name="owned" value="{{ book["Owned"] }}">Owned</button>
+          <input type="hidden" id="owned_value" name="owned" value="{{ book["Owned"] }}">
 
-        <!-- Toggleable tags -->
-        <button class="tag toggle {% if book['Owned']=='on' %}active{% endif %}">Owned</button>
-        <button class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}">Favorite</button>
-        <button class="tag toggle {% if book['Completed']=='on' %}active{% endif %}">Read</button>
-        <button class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}">Currently Reading</button>
+          <button onclick="changeTagValue('favorite'); " class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}"
+                  id='favorite' type="button"
+                  name="favorite" value="{{ book["Favorite"] }}">Favorite</button>
+          <input type="hidden" id="favorite_value" name="favorite" value="{{ book["Favorite"] }}">
 
-        <br><br>
+          <button onclick="changeTagValue('completed'); " class="tag toggle {% if book['Completed']=='on' %}active{% endif %}"
+                  id='completed' type="button"
+                  name="completed" value="{{ book["Completed"] }}">Completed</button>
+          <input type="hidden" id="completed_value" name="completed" value="{{ book["Completed"] }}">
 
-        <!-- Save tag changes button -->
-        <button onclick="saveTags()">Save Tags</button>
+          <button onclick="changeTagValue('currently_reading'); " class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}"
+                  id='currently_reading' type="button"
+                  name="currently_reading" value="{{ book["Currently_Reading"] }}">Currently Reading</button>
+          <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book["Currently_Reading"] }}">
 
+          <br><br>
+
+          <!-- Save tag changes button -->
+          <button onclick="saveTags()" type="submit" form="tag" name="tag">Save Tags</button>
+        </form>
       </div>
 
       <!-- Notes section -->
       <div class="section">
 
         <h3>Notes</h3>
+        <label for="note-select">Select a note to view or edit:</label>
+        <select id="note-select" name="notes">
+          <option value="test_note_1">Note 1</option>
+          <option value="test_note_2">Note 2</option>
+        </select>
 
         <!-- Note input -->
         <textarea rows="4" placeholder="Write a note about this book..."></textarea>
@@ -305,9 +333,48 @@
         <h3>Actions</h3>
 
         <!-- Action buttons -->
-        <button class="remove-btn">Remove</button>
-        <button>Notes</button>
-        <button>Update</button>
+        <button command="show-modal" commandfor="delete-confirmation-modal" class="delete-btn">Delete Book</button>
+
+        <dialog id="delete-confirmation-modal">
+
+          <p>Delete Book Record from Database</p>
+          <p>WARNING: Deleting a book is irreversible.</p>
+          <p>Do you still want to delete the book?</p>
+
+          <form id="delete" method="POST">
+            <button class="yes-btn" type="submit" form="delete" name="delete" >Yes</button>
+          </form>
+          <button class="no-btn" commandfor="delete-confirmation-modal" command="close" >No</button>
+        </dialog>
+
+        <button command="show-modal" commandfor="update-confirmation-modal" class="update-btn">Update with OpenLibrary Data</button>
+        <dialog id="update-confirmation-modal">
+
+          <p>Use data from the OpenLibrary API to update book record.</p>
+          <p>WARNING: Updating is destructive, cannot be reverted, and can only be done once.</p>
+          <p>Records Updated (unless otherwise specified by user):</p>
+          <ul>
+            <li>Cover Image</li>
+            <li>Summary</li>
+            <li>Publisher</li>
+            <li>Author Spelling</li>
+          </ul>
+          <p>Do you still want to update the book?</p>
+
+          <form id="update-with-ol" method="POST">
+
+            <label for="update-cover_image">Update Cover Image</label>
+            <input id="update-cover_image" type="checkbox" name="update_cover" checked>
+
+            <label for="update-summary">Update Summary</label>
+            <input id="update-summary" type="checkbox" name="update_summary" checked>
+
+            <button class="yes-btn" type="submit" form="update-with-ol" name="update_with_ol" >Yes</button>
+          </form>
+
+          <button class="no-btn" commandfor="update-confirmation-modal" command="close" >No</button>
+        </dialog>
+
 
       </div>
 
@@ -352,7 +419,41 @@
 
     /* Save tag changes placeholder */
     function saveTags() {
-      alert("Tags saved (backend integration coming next).");
+      // alert("Tags saved (backend integration coming next).");
+
+    }
+
+    /* Toggle function for tags */
+    function changeTagValue(tag_type){
+      tag_value = document.getElementById(tag_type).value;
+
+      if (tag_value == 'on'){
+        document.getElementById(tag_type).value = 'off'
+        document.getElementById(tag_type + "_value").value = 'off';
+      } else {
+        document.getElementById(tag_type).value = 'on'
+        document.getElementById(tag_type + "_value").value = 'on';
+      }
+    }
+
+    function decrementChapters(){
+      chaptersCompletedValue = document.getElementById('chapters-completed').innerText
+
+      if (chaptersCompletedValue != 0){
+        document.getElementById('chapters_completed_value').value--;
+        document.getElementById('chapters-completed').innerText--;
+      }
+    }
+
+    function incrementChapters(){
+      chaptersCompletedValue = document.getElementById('chapters-completed').innerText
+      chapterTotalValue = document.getElementById('chapter-total-value').innerText
+      console.log(chapterTotalValue);
+
+      if (chaptersCompletedValue < Number(chapterTotalValue)){
+        document.getElementById('chapters_completed_value').value++;
+        document.getElementById('chapters-completed').innerText++;
+      }
     }
 
   </script>

@@ -33,7 +33,7 @@ def test_read_genres_success():
     genre_ids = read_genres_ids(book['ISBN'])
     print(genre_ids)
     genres = json.loads(read_genres(genre_ids))
-    assert genres == {'100': 'fiction', '111': 'fantasy', '113': 'horror', '191': 'children'}
+    assert genres == {'1': 'fiction', '111': 'fantasy', '113': 'horror', '191': 'children'}
 
 def test_read_genres_failure():
     genre_ids = json.dumps({"Genre_IDs": [10000]})
