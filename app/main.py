@@ -1,3 +1,5 @@
+from http.client import responses
+
 from flask import request, render_template, jsonify, redirect, url_for
 from app.services.mediator import create, read, update, delete
 #from app.services.openlibrary_api import search_books # temporary markout until added
@@ -65,13 +67,17 @@ def create_routes(app): # Placeholder returns for unfinished pages
             # Get the result in JSON format
             book_result = json.loads(read(isbn_dict, 'book-isbn'))
 
+            #Get notes if they exist
+            note_result = read(isbn_dict, 'note')
+            #print(note_result)
+
         # This error occurs when the ISBN does not exist in database
         except TypeError as error:
             return INTERNAL_SERVER_ERROR  # !WIP! add full error page
 
         if request.method == 'GET':
             # Display the result
-            return render_template('view_book.html', book=book_result), 200
+            return render_template('view_book.html', book=book_result, notes=note_result), 200
 
         elif request.method == 'POST':
 
@@ -98,16 +104,28 @@ def create_routes(app): # Placeholder returns for unfinished pages
             elif book_update.get('chapters_completed') is not None:
                 json_input = json.dumps({'ISBN': isbn, 'Chapters_Completed': book_update['chapters_completed']})
                 response = update(json_input, 'chapters-completed')
-                print(response)
 
             elif book_update.get('delete') is not None:
                 json_input = json.dumps({'ISBN': isbn})
-                response = delete(json_input)
-
+                response = delete(json_input, 'book')
                 return redirect('/book/local-search') # !!WIP!! give pop-up for success
 
+            elif book_update.get('note-delete') is not None:
+                json_input = json.dumps({'Note_ID': book_update['note_id']})
+                response = delete(json_input, 'note')
+
+            elif book_update.get('note-edit') is not None:
+                json_input = json.dumps({'ISBN': isbn, 'Note_Content': book_update['note-edit'],
+                                         'Note_ID': book_update['note_id']})
+                response = create(json_input, 'note')
+
+
+
+
             book_result = json.loads(read(isbn_dict, 'book-isbn'))
-            return render_template('view_book.html', book=book_result), 200
+            note_result = read(isbn_dict, 'note')
+
+            return render_template('view_book.html', book=book_result, notes=note_result), 200
 
         else:
             return render_template('view_book.html'), 200 # !!WIP!! Add Error for nonexistent book

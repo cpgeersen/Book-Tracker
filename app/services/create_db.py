@@ -80,7 +80,7 @@ def create_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Notes (
                    Note_ID INTEGER PRIMARY KEY,
-                   Note BLOB NOT NULL
+                   Note TEXT NOT NULL
                    )''')
 
     # Next create the Tags Table

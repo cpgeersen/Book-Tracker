@@ -3,7 +3,7 @@ from app.services.Book.BookRead import (read_full_book_record, get_all_book_isbn
                                         read_full_book_by_author)
 from app.services.Book.BookUpdate import update_summary, update_chapters, update_read_chapters, update_tags
 from app.services.Book.BookDelete import delete_book_record
-from app.services.Book.BookNotes import create_note, read_note, update_note, delete_note
+from app.services.Book.BookNotes import create_note, read_note, update_note, delete_note, is_note_id_in_note_table
 from app.services.Book.BookPredicate import is_isbn_in_book_table
 import json
 
@@ -62,7 +62,8 @@ def update_book_note(json_input):
 def delete_book_note(json_input):
     return delete_note(json_input)
 
-
+def is_note_id_in_database(json_input):
+    return is_note_id_in_note_table(json_input)
 
 
 

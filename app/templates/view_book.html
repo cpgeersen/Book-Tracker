@@ -107,7 +107,11 @@
       background-color: #1f2933;
       padding: 0.6rem;
       border-radius: 6px;
-      margin-top: 0.6rem;
+      margin: 0.6rem;
+      margin-bottom: 0;
+      height: 100px;
+      width: 200px;
+      display: grid;
     }
 
     /* Hidden edit sections */
@@ -116,6 +120,7 @@
     }
 
   </style>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='temp.css') }}" />
 </head>
 
 <body>
@@ -300,32 +305,53 @@
 
       <!-- Notes section -->
       <div class="section">
-
         <h3>Notes</h3>
-        <label for="note-select">Select a note to view or edit:</label>
-        <select id="note-select" name="notes">
-          <option value="test_note_1">Note 1</option>
-          <option value="test_note_2">Note 2</option>
-        </select>
 
-        <!-- Note input -->
-        <textarea rows="4" placeholder="Write a note about this book..."></textarea>
+        <div id="notes" class="collapsible">
 
-        <br><br>
+          <div id="notes-left">
+            <div id="note-select">
 
-        <!-- Save note button -->
-        <button>Save Note</button>
+              {% if notes %}
+                {% for note_id, note_content in notes.items() %}
 
-        <!-- Example notes -->
-        <div class="note-card">
-          Example note: Remember key themes in chapter 2.
+                  <div class="note-card">
+
+                    <p class="note-text-id">Note ID: {{ note_content['Note_ID'] }}</p>
+                    <p class="note-text" id="{{ note_content['Note_ID'] }}">{{ note_content['Note_Content'] }}</p>
+                    <button onclick="editNote(this)" class="note-card-button" value="{{ note_content['Note_ID'] }}">
+                      View/Edit Note</button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+
+
+            </div>
+            <button id="note-add" onclick="addNote(this)">Add New Note</button>
+          </div>
+
+          <div id="notes-right">
+            <form id="note-edit" method="POST">
+              <button class="note-edit-btn" type="submit" form="note-edit">Save Note</button>
+              <button class="note-edit-btn" id="note-edit-delete" type="submit" form="note-edit"
+                      name="note-delete">Delete Note</button>
+              <input type="hidden" id="note_id" name="note_id" value="">
+              <textarea required name="note-edit" id="note-edit-textarea" rows="22" cols="40"
+                        placeholder="Write a note about this book..."></textarea>
+            </form>
+          </div>
+
+
+
+
         </div>
 
-        <div class="note-card">
-          Example note: Important quote on page 45.
-        </div>
+
 
       </div>
+
+
+
 
       <!-- Actions section -->
       <div class="section">
@@ -454,6 +480,23 @@
         document.getElementById('chapters_completed_value').value++;
         document.getElementById('chapters-completed').innerText++;
       }
+    }
+
+    function editNote(element){
+      noteID = element.value;
+      noteContent = document.getElementById(noteID).textContent;
+      noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'visible');
+      document.getElementById('note_id').value = noteID;
+      document.getElementById('note-edit-textarea').textContent = noteContent;
+
+
+
+    }
+
+    function addNote(element){
+      noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'hidden');
+      document.getElementById('note_id').value = '';
+      document.getElementById('note-edit-textarea').textContent = '';
     }
 
   </script>

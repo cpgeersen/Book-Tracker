@@ -2,7 +2,9 @@ import json
 from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend, validate_tags
 from app.services.Book.Book import (create_book, read_book, read_all_books, read_all_books_by_title,
                                     read_all_books_by_author, update_book_summary, update_book_chapters,
-                                    update_book_chapters_completed, update_book_tags, delete_book)
+                                    update_book_chapters_completed, update_book_tags, delete_book,
+                                    create_book_note, read_book_notes, update_book_note, delete_book_note,
+                                    is_note_id_in_database)
 from app.services.openlibrary_api import search_books_by_title, get_work_data
 
 SUCCESS = 200
@@ -73,7 +75,18 @@ def create(json_input, create_type):
         elif create_type == 'book-ol':
             return 'WIP'
         elif create_type == 'note':
-            return 'WIP'
+            json_input = json.loads(json_input)
+            if len(json_input.get('Note_Content')) > 0:
+                note_id_in_database = is_note_id_in_database(json_input)
+                if not note_id_in_database:
+                    result = create_book_note(json_input)
+                    return result
+                else:
+                    result = update_book_note(json_input)
+                    return result
+            else:
+                return json.dumps({'Error': 'Empty Note'})
+
         elif create_type == 'cover-image':
             return 'WIP'
         else:
@@ -128,6 +141,10 @@ def read(json_input=None, read_type='book-all'):
 
         elif read_type == 'book-genre':
             pass
+        elif read_type == 'note':
+            response = read_book_notes(json_input)
+            return response
+
         else:
             return 'Error: Not a valid call'
     except:
@@ -171,12 +188,23 @@ def update(json_input, update_type):
 
 
 # DELETE - Takes JSON as input
-def delete(json_input):
-    json_input = json.loads(json_input)
-    response = delete_book(json_input['ISBN'])
-    return response
+def delete(json_input, update_type):
+    if update_type == 'book':
+        json_input = json.loads(json_input)
+        response = delete_book(json_input['ISBN'])
 
+        note_ids = read_book_notes(json_input)
+        for value in note_ids.values():
+            rep = delete_book_note(value)
 
+        return response
+
+    elif update_type == 'note':
+        json_input = json.loads(json_input)
+        response = delete_book_note(json_input)
+        return response
+    else:
+        return 'Error: Not a valid call'
 
 
 
