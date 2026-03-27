@@ -5,6 +5,7 @@
   <!-- Basic page metadata -->
   <meta charset="UTF-8">
   <title>Book Entry</title>
+  <link rel="stylesheet" type="text/css" href="modal_formatting.css"/>
 
   <style>
 
@@ -341,10 +342,13 @@
           <p>WARNING: Deleting a book is irreversible.</p>
           <p>Do you still want to delete the book?</p>
 
+        <div class="button-align">
+
           <form id="delete" method="POST">
-            <button class="yes-btn" type="submit" form="delete" name="delete" >Yes</button>
+            <button class="yes-btn modal-button button-group" type="submit" form="delete" name="delete" >Yes</button>
           </form>
-          <button class="no-btn" commandfor="delete-confirmation-modal" command="close" >No</button>
+          <button class="no-btn modal-button button-group" commandfor="delete-confirmation-modal" command="close" >No</button>
+        </div>  
         </dialog>
 
         <button command="show-modal" commandfor="update-confirmation-modal" class="update-btn">Update with OpenLibrary Data</button>
@@ -361,6 +365,8 @@
           </ul>
           <p>Do you still want to update the book?</p>
 
+          <div class="button-align2">
+
           <form id="update-with-ol" method="POST">
 
             <label for="update-cover_image">Update Cover Image</label>
@@ -369,11 +375,12 @@
             <label for="update-summary">Update Summary</label>
             <input id="update-summary" type="checkbox" name="update_summary" checked>
 
-            <button class="yes-btn" type="submit" form="update-with-ol" name="update_with_ol" >Yes</button>
+            <button class="yes-btn modal-button" type="submit" form="update-with-ol" name="update_with_ol" >Yes</button>
           </form>
 
-          <button class="no-btn" commandfor="update-confirmation-modal" command="close" >No</button>
+          <button class="no-btn modal-button" commandfor="update-confirmation-modal" command="close" >No</button>
         </dialog>
+      </div>
 
 
       </div>
