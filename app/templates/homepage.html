@@ -2,25 +2,103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>BookTracker</title>
+    <!--For awareness: Logo images were created with the assistance of Copilot AI.  -->
 </head>
 <style>
-  body{
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
-    margin-bottom: 100px;
-  }
-  a {
-    padding: 50px;
-  }
+ 
+  /* Global page styling */
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-color: #0f172a;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 50;
+    }
+
+    /* Resizes the Book Tracker Logo png */
+    .Logo {
+      width: 300px;
+      height: auto;
+    }
+
+    /*Aligns the top portion of the webpage. */
+    .Header {
+      display: flex;
+      gap:10px;
+    }
+
+    /* Formats the logo's position. */
+    .left_side {
+      flex: 1;
+      padding: 20px;
+    }
+
+    /*Formats the header and website description.*/
+    .right_side {
+      flex: 3;
+      padding: 20px;
+    }
+
+    /* Resizes the logos inside the table. */
+    .table_pic {
+      width: 200px;
+      height: auto;
+    }
+
+    /* Center table */
+    table{
+      margin-left: auto;
+      margin-right: auto;
+      padding: 20px
+    }
+
+    /* Center contents of table. */
+    td, th {
+      padding: 10px;
+      text-align: center;
+    }
+ 
+    /* Add shadow detail around table header section. */
+    th{
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
 </style>
+
 <body>
-  <a href="/book/add-local">Add Book Locally</a>
-  <a href="/book/local-search">Search Book Database</a>
-  <a href="/add-openlibrary">Add from OpenLibrary Database (Preferred)</a>
-  <a href="/settings">Settings</a>
-  <a href="/dashboard">User Dashboard</a>
-</body>
+  <!-- Creates top section of page, divides into two sections for positioning. -->
+  <div class="Header">
+    <section class="left_side">
+    <img src="../static/images/BookTracker_Logo.png" alt="BookTracker Logo" class="Logo">
+    </section>
+
+    <section class="right_side">
+      <H1> Welcome to Book Tracker</H1>
+      <p>
+        Create your own personal database using Book Tracker, making it easy to have a complete inventory of books available at your fingertips.<br><br> 
+        Book Tracker gives you the option to add a book manually or through Open Library's online database.<br><br>  
+        Use tags to mark books as read, owned, favorited, and more!</p>
+    </section>
+  </div>
+  <br>
+  <br>
+  <!--Create table for feature logo icons and descriptions. Formatted so clicking image will take to another page on site.  -->
+  <table>
+    <tr>
+      <th><a href="/book/add-local"><img src="../static/images/BookTracker_AddBook.png" alt="Add Book Locally" class="table_pic"></a></th>
+      <th><a href="/add-openlibrary"><img src="../static/images/BookTracker_AddBook_OpenLibrary.png" alt="Add Book Open Library" class="table_pic"></a></th>
+      <th><a href="/book/local-search"><img src="../static/images/BookTracker_Search.png" alt="Search Database" class="table_pic"></a></th>
+      <th><a href="/dashboard"><img src="../static/images/BookTracker_User_Dashboard.png" alt="User Dashboard" class="table_pic"></a></th>
+      <th><a href="/settings"><img src="../static/images/BookTracker_Settings.png" alt="Settings" class="table_pic"></a></th>
+    </tr>
+    <tr>
+      <td>Manually Add Book</td>
+      <td>Add from Open Library (Preferred)</td>
+      <td>Search Your Database</td>
+      <td>Personalized Dashboard</td>
+      <td>Adjust User Settings</td>
+    </tr>
+  </table>
+
+</body> 
 </html>

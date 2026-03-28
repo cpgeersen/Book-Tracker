@@ -49,11 +49,11 @@ def create_routes(app): # Placeholder returns for unfinished pages
                 if book_response[1] == SUCCESS:
                     return redirect(url_for('individual_book_page', isbn=book_result['ISBN']))
                 elif book_response[1] == FOUND:
-                    return render_template('add_book.html'), FOUND # !WIP! add error page telling user book is already present
+                    return render_template('add_book_error_present.html'), FOUND
                 elif book_response[1] == BAD_REQUEST:
-                    return render_template('add_book.html'), BAD_REQUEST
+                    return render_template('add_book_error_malformed.html'), BAD_REQUEST
             except TypeError as error:
-                return render_template('add_book.html'), BAD_REQUEST # !WIP! add error page for malformed ISBN
+                return render_template('add_book_error_malformed.html'), BAD_REQUEST
 
 
         return render_template('add_book.html')
@@ -128,7 +128,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
             return render_template('view_book.html', book=book_result, notes=note_result), 200
 
         else:
-            return render_template('view_book.html'), 200 # !!WIP!! Add Error for nonexistent book
+            return render_template('view_book.html'), 200
 
 
     @app.route('/book/local-search', methods=['GET'])
