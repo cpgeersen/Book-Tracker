@@ -1,11 +1,4 @@
-  /* Global page styling */
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background-color: #0f172a;
-      color: #e5e7eb;
-      margin: 0;
-      padding: 50;
-    }
+
 
     /* Resizes the Book Tracker Logo png */
     .Logo {
