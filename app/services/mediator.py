@@ -18,7 +18,6 @@ INTERNAL_SERVER_ERROR = 500
     #print(read())
     #pass
 
-
 def complete_book_from_ol(query,):
     #searh by title
     search_results = search_books_by_title(query=query)
@@ -34,25 +33,56 @@ def complete_book_from_ol(query,):
     if len(docs) == 0:
         return {"error": "No search results found for the given title."}
     #testing first result
-    first_result = docs[0]
+    first_result = search_results[docs][0]
     book_title = first_result.get('title')
     first_publish_year = first_result.get('first_publish_year')    
     isbn_list = first_result.get('isbn', [])
-
+    publishers = first_result.get("publisher", [])
+    subjects = first_result.get("subject", [])
+    # Cover image
+    cover_url = None
+    if "cover_i" in first_result:
+        cover_id = first_result["cover_i"]
+        cover_url = f"https://covers.openlibrary.org/b/id/{cover_id}-L.jpg"
     # now works api 
     work_key = first_result.get('key')
+
+    #setup empty lists
     author_olids = []
+    author_names = []
+    description = None
+
     if work_key:
         # Get work data from imported function, which will include author OLIDs
         work_data = get_work_data(work_key)
         #check if work_data is a dict and contains "authors" key before trying to access it PS. ALL API CALLS IN OL ARE Dictionaries
-        if isinstance(work_data, dict) and "authors" in work_data:
-            # Loop through authors in work data and extract OLIDs
-            for author in work_data["authors"]:
-                #check if "author" key exists and is a dict, and if it contains "key" before trying to access it
-                if "author" in author and "key" in author["author"]:
-                    # If all checks pass, append the author OLID to the list
-                    author_olids.append(author["author"]["key"])
+        if isinstance(work_data, dict):
+
+            # Description
+            if "description" in work_data:
+                if isinstance(work_data["description"], dict):
+                    description = work_data["description"].get("value")
+                else:
+                    description = work_data["description"]
+
+            # subjects "GENRE"
+            if "subjects" in work_data:
+                genre = work_data["subjects"]
+
+            # Authors
+            if "authors" in work_data:
+                for author in work_data["authors"]:
+                    if "author" in author and "key" in author["author"]:
+                        olid = author["author"]["key"]
+                        author_olids.append(olid)
+
+                        # Fetch author name
+                        author_data = get_author_info_from_authorid(olid)
+                        if isinstance(author_data, dict):
+                            name = author_data.get("name")
+                            if name:
+                                author_names.append(name)
+
 
     complete_book_json = {
             "title": book_title,
