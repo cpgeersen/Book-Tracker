@@ -4,6 +4,7 @@
     <!-- Basic page metadata -->
     <meta charset="UTF-8">
     <title>Add Book</title>
+    <link rel="stylesheet" type="text/css" href="modal_formatting.css"/>
 
     <style>
         /* Global page styling */
@@ -144,6 +145,12 @@
 </head>
 
 <body>
+  <!--This may not be correct spot.  Unable to fully test with Flask.
+  When testing just on page, the styling/dialog box only worked at the top of the body section.  -->
+  <!-- Child template inheritance placeholder for modal_present.html and modal_malformed.html. -->
+  {% block body %}
+  {% endblock %}
+
 <main class="container">
 
     <h1>Add Book</h1>
