@@ -311,12 +311,9 @@
 
           <div id="notes-left">
             <div id="note-select">
-
               {% if notes %}
                 {% for note_id, note_content in notes.items() %}
-
                   <div class="note-card">
-
                     <p class="note-text-id">Note ID: {{ note_content['Note_ID'] }}</p>
                     <p class="note-text" id="{{ note_content['Note_ID'] }}">{{ note_content['Note_Content'] }}</p>
                     <button onclick="editNote(this)" class="note-card-button" value="{{ note_content['Note_ID'] }}">
@@ -324,8 +321,6 @@
                   </div>
                 {% endfor %}
               {% endif %}
-
-
             </div>
             <button id="note-add" onclick="addNote(this)">Add New Note</button>
           </div>
@@ -339,19 +334,10 @@
               <textarea required name="note-edit" id="note-edit-textarea" rows="22" cols="40"
                         placeholder="Write a note about this book..."></textarea>
             </form>
+
           </div>
-
-
-
-
         </div>
-
-
-
       </div>
-
-
-
 
       <!-- Actions section -->
       <div class="section">
@@ -488,9 +474,6 @@
       noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'visible');
       document.getElementById('note_id').value = noteID;
       document.getElementById('note-edit-textarea').textContent = noteContent;
-
-
-
     }
 
     function addNote(element){
