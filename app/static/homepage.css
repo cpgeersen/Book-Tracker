@@ -1,0 +1,49 @@
+
+
+    /* Resizes the Book Tracker Logo png */
+    .Logo {
+      width: 300px;
+      height: auto;
+    }
+
+    /*Aligns the top portion of the webpage. */
+    .Header {
+      display: flex;
+      gap:10px;
+    }
+
+    /* Formats the logo's position. */
+    .left_side {
+      flex: 1;
+      padding: 20px;
+    }
+
+    /*Formats the header and website description.*/
+    .right_side {
+      flex: 3;
+      padding: 20px;
+    }
+
+    /* Resizes the logos inside the table. */
+    .table_pic {
+      width: 200px;
+      height: auto;
+    }
+
+    /* Center table */
+    table{
+      margin-left: auto;
+      margin-right: auto;
+      padding: 20px
+    }
+
+    /* Center contents of table. */
+    td, th {
+      padding: 10px;
+      text-align: center;
+    }
+
+    /* Add shadow detail around table header section. */
+    th{
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
