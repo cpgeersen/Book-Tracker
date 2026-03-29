@@ -103,9 +103,23 @@ def update_read_chapters(isbn, chapters_competed):
 def update_genre(isbn, genre):
     pass
 
-# WIP - Will Implement Later
-def update_cover_image(isbn, cover_image):
-    pass
+def update_cover_image(isbn, cover_image_path):
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+
+    isbn_presence = is_isbn_in_book_table(isbn)
+    if not isbn_presence:
+        return json.dumps({"Error": "ISBN not found"}), 400
+
+    cover_image_update = ''' UPDATE Books
+                             SET Cover_Image = ?
+                             WHERE ISBN = ? 
+                         '''
+    cursor.execute(cover_image_update, (cover_image_path, isbn))
+    conn.commit()
+    conn.close()
+
+    return json.dumps({"Success": f"Book with {isbn} updated cover image."}), 200
 
 
 

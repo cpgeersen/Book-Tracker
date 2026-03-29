@@ -1,11 +1,10 @@
-from http.client import responses
+import os
+from pathlib import Path
 
 from flask import request, render_template, jsonify, redirect, url_for
 from app.services.mediator import create, read, update, delete
 #from app.services.openlibrary_api import search_books # temporary markout until added
 from app.routes.test import test_bp
-#from app.routes.pages import pages_bp
-from app.services.create_db import create_db
 import json
 from app.services.create_example_records import create_sample_books
 from app.services.create_many_records import create_many_records
@@ -16,7 +15,12 @@ FOUND = 302
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+UPLOAD_FOLDER = './app/static/images/cover_images'
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Create the Database
 #create_db()
@@ -28,9 +32,14 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
 
 
+
     # Register Blueprints
     app.register_blueprint(test_bp)
     #app.register_blueprint(pages_bp)
+
+
+
+
 
     # Pages
     @app.route('/book/add-local', methods=['POST', 'GET'])
@@ -77,7 +86,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
         if request.method == 'GET':
             # Display the result
-            return render_template('view_book.html', book=book_result, notes=note_result), 200
+            return render_template('view_book.html', book=book_result, notes=note_result, cover_image=book_result['Cover_Image']), 200
 
         elif request.method == 'POST':
 
@@ -119,13 +128,32 @@ def create_routes(app): # Placeholder returns for unfinished pages
                                          'Note_ID': book_update['note_id']})
                 response = create(json_input, 'note')
 
+            elif request.files is not None:
+                file = request.files['cover-image']
+
+                if file.filename == '':
+                    return render_template('view_book.html', book=book_result, notes=note_result, cover_image=book_result['Cover_Image']), 200
+
+                if file and allowed_file(file.filename):
+                    # Gets the file extension for the image type
+                    file_extension = file.content_type.split('/')[-1]
+
+                    # Generates the file name and appends the file extension
+                    filename = isbn + '_' + 'cover_image' + '.' + file_extension
+
+                    # Saves the file to the images folder
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], Path(filename)))
+                    json_input = json.dumps({'ISBN': isbn, 'Cover_Image_Path': f'/static/images/cover_images/{filename}'})
+                    response = update(json_input, 'cover-image')
+
 
 
 
             book_result = json.loads(read(isbn_dict, 'book-isbn'))
+            print(book_result)
             note_result = read(isbn_dict, 'note')
 
-            return render_template('view_book.html', book=book_result, notes=note_result), 200
+            return render_template('view_book.html', book=book_result, notes=note_result, cover_image=book_result['Cover_Image']), 200
 
         else:
             return render_template('view_book.html'), 200
@@ -255,6 +283,29 @@ def create_routes(app): # Placeholder returns for unfinished pages
     @app.route('/dashboard', methods=['GET'])
     def dashboard_page():
         return 'WIP', 200
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     pass

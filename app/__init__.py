@@ -1,11 +1,15 @@
 from app.test_route import create_test_flask_route
 from app.main import create_routes
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, render_template, request
 
+
+UPLOAD_FOLDER = './app/static/images/cover_images'
 
 def create_app():
     app = Flask(__name__)
+
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     create_routes(app)
 

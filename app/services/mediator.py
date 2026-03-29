@@ -3,8 +3,8 @@ from app.services.validate_book_json import validate_book_from_local, validate_b
 from app.services.Book.Book import (create_book, read_book, read_all_books, read_all_books_by_title,
                                     read_all_books_by_author, update_book_summary, update_book_chapters,
                                     update_book_chapters_completed, update_book_tags, delete_book,
-                                    create_book_note, read_book_notes, update_book_note, delete_book_note,
-                                    is_note_id_in_database)
+                                    create_book_note, read_book_notes, update_book_note, update_book_cover_image,
+                                    delete_book_note, is_note_id_in_database)
 from app.services.openlibrary_api import search_books_by_title, get_work_data
 
 SUCCESS = 200
@@ -212,6 +212,10 @@ def update(json_input, update_type):
                                         json_input_converted_tags['Currently_Reading'])
             return response
 
+        elif update_type == 'cover-image':
+            json_input = json.loads(json_input)
+            response = update_book_cover_image(json_input['ISBN'], json_input['Cover_Image_Path'])
+            return response
 
     except TypeError:
         pass
