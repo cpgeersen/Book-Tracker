@@ -10,76 +10,8 @@
 </head>
 
 <body>
-  <!--This may not be correct spot.  Unable to fully test with Flask.
-  When testing just on page, the styling/dialog box only worked at the top of the body section.  -->
-  <!-- Child template inheritance placeholder for modal_isbn.html. -->
-  {% block body %}
-  {% endblock %}
 
   <div class="page-wrapper">
-
-    <!-- Sidebar filters -->
-    <aside class="filters">
-      <h2>Filter by Tag</h2>
-
-      <label><input type="checkbox"> Owned</label>
-      <label><input type="checkbox"> Favorite</label>
-      <label><input type="checkbox"> Read</label>
-      <label><input type="checkbox"> Currently Reading</label>
-
-      <fieldset>
-            <legend>Personal or Academic</legend>
-        <div class="radio-group">
-                  <label>
-                      <input type="radio" name="Personal_Or_Academic" value="any" checked>
-                      Any
-                  </label>
-                  <label>
-                      <input type="radio" name="Personal_Or_Academic" value="personal">
-                      Personal
-                  </label>
-
-                  <label>
-                      <input type="radio" name="Personal_Or_Academic" value="academic">
-                      Academic
-                  </label>
-        </div>
-      </fieldset>
-
-      <h2>Filter by Genre</h2>
-      <fieldset>
-            <legend>Fiction or Nonfiction</legend>
-        <div class="radio-group">
-                  <label>
-                      <input type="radio" name="Genre_1" value="any" checked>
-                      Any
-                  </label>
-                  <label>
-                      <input type="radio" name="Genre_1" value="fiction">
-                      Fiction
-                  </label>
-
-                  <label>
-                      <input type="radio" name="Genre_1" value="nonfiction">
-                      Nonfiction
-                  </label>
-        </div>
-      </fieldset>
-
-      <label for="genres">Choose a Genre</label>
-      <select name="genres" id="genres">
-        <option value="">--Choose an option:--</option>
-        <option value="fantasy">Fantasy</option>
-        <option value="horror">Horror</option>
-
-      </select>
-
-      <button>Apply Filters</button>
-
-      <button onclick=window.location.href='/book/local-search'>
-        View All Books
-      </button>
-    </aside>
 
     <!-- Main results area -->
     <section class="results-area">
@@ -90,7 +22,49 @@
         <a href="/">🏠 Home</a>
       </div>
 
-      <h1>Local Search</h1>
+      <!-- Title + Filter Toggle -->
+      <div class="search-header">
+        <h1>Local Search</h1>
+        <button onclick="toggleFilters()">Filters</button>
+      </div>
+
+      <!-- Collapsible Filters -->
+      <div id="filters-section" class="filters hidden">
+
+        <h2>Filter by Tag</h2>
+
+        <label><input type="checkbox"> Owned</label>
+        <label><input type="checkbox"> Favorite</label>
+        <label><input type="checkbox"> Read</label>
+        <label><input type="checkbox"> Currently Reading</label>
+
+        <fieldset>
+          <legend>Personal or Academic</legend>
+          <label><input type="radio" name="Personal_Or_Academic" value="any" checked> Any</label>
+          <label><input type="radio" name="Personal_Or_Academic" value="personal"> Personal</label>
+          <label><input type="radio" name="Personal_Or_Academic" value="academic"> Academic</label>
+        </fieldset>
+
+        <h2>Filter by Genre</h2>
+
+        <fieldset>
+          <legend>Fiction or Nonfiction</legend>
+          <label><input type="radio" name="Genre_1" value="any" checked> Any</label>
+          <label><input type="radio" name="Genre_1" value="fiction"> Fiction</label>
+          <label><input type="radio" name="Genre_1" value="nonfiction"> Nonfiction</label>
+        </fieldset>
+
+        <label for="genres">Choose a Genre</label>
+        <select name="genres" id="genres">
+          <option value="">--Choose an option:--</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="horror">Horror</option>
+        </select>
+
+        <br><br>
+
+        <button>Apply Filters</button>
+      </div>
 
       <!-- Search form -->
       <form method="GET" action="/book/local-search" class="search-form">
@@ -99,23 +73,9 @@
         <input type="text" id="search" name="search"
           value="{{ request.args.get('search', '') }}">
 
-        {% if search_type == 'isbn' %}
-          <label><input type="radio" name="search_type" value="isbn" checked required> ISBN</label>
-        {% else %}
-          <label><input type="radio" name="search_type" value="isbn" required> ISBN</label>
-        {% endif %}
-
-        {% if search_type == 'title' %}
-          <label><input type="radio" name="search_type" value="title" checked> Book Title</label>
-        {% else %}
-          <label><input type="radio" name="search_type" value="title"> Book Title</label>
-        {% endif %}
-
-        {% if search_type == 'author' %}
-          <label><input type="radio" name="search_type" value="author" checked> Author</label>
-        {% else %}
-          <label><input type="radio" name="search_type" value="author"> Author</label>
-        {% endif %}
+        <label><input type="radio" name="search_type" value="isbn"> ISBN</label>
+        <label><input type="radio" name="search_type" value="title"> Book Title</label>
+        <label><input type="radio" name="search_type" value="author"> Author</label>
 
         <button type="submit">Search</button>
       </form>
@@ -125,50 +85,44 @@
         {% for book, book_info in books.items() %}
           <div class="book-card">
 
+            <!-- Cover -->
             <div class="book-cover">
               No Cover
             </div>
 
+            <!-- Info -->
             <div class="book-info">
-              <h3>{{ book_info['Title'] }}</h3>
-              <p><strong>Author:</strong> {{ book_info['Author_First_Name_1'] }} {{ book_info['Author_Last_Name_1'] }}</p>
 
-              {% if book_info['Author_First_Name_2'] %}
-              <p><strong>Second Author:</strong> {{ book_info['Author_First_Name_2'] }} {{ book_info['Author_Last_Name_2'] }}</p>
-              {% endif %}
+              <div class="book-top">
+                <div>
+                  <h3>{{ book_info['Title'] }}</h3>
+                  <p><strong>Author:</strong> {{ book_info['Author_First_Name_1'] }} {{ book_info['Author_Last_Name_1'] }}</p>
+                </div>
 
-              <p><strong>Publisher:</strong> {{ book_info['Publisher_Name'] }}</p>
-              <p><strong>Publish Year:</strong> {{ book_info['Publish_Year'] }}</p>
-              <p><strong>ISBN:</strong> {{ book_info['ISBN'] }}</p>
-
-              <div class="tags">
-                {% if book_info['Owned'] == 'yes' %}
-                  <span>Owned</span>
-                {% endif %}
-
-                {% if book_info['Favorite'] == 'yes' %}
-                <span>Favorite</span>
-                {% endif %}
-
-                {% if book_info['Completed'] == 'yes' %}
-                <span>Completed</span>
-                {% endif %}
-
-                {% if book_info['Currently_Reading'] == 'yes' %}
-                <span>Currently Reading</span>
-                {% endif %}
-
-                {% if book_info['Personal_Or_Academic'] == 'academic' %}
-                <span>Academic</span>
-                {% else %}
-                <span>Personal</span>
-                {% endif %}
-
+                <!-- RIGHT SIDE BUTTON -->
+                <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button">
+                  View →
+                </a>
               </div>
 
-              <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button">
-                Go to Book Page →
-              </a>
+              <p><strong>Publisher:</strong> {{ book_info['Publisher_Name'] }}</p>
+              <p><strong>Year:</strong> {{ book_info['Publish_Year'] }}</p>
+
+              <!-- GENRES (NEW) -->
+              <div class="genres">
+                <span>{{ book_info['Genre_1'] }}</span>
+                {% if book_info['Genre_2'] %}<span>{{ book_info['Genre_2'] }}</span>{% endif %}
+                {% if book_info['Genre_3'] %}<span>{{ book_info['Genre_3'] }}</span>{% endif %}
+              </div>
+
+              <!-- TAGS -->
+              <div class="tags">
+                {% if book_info['Owned'] == 'yes' %}<span>Owned</span>{% endif %}
+                {% if book_info['Favorite'] == 'yes' %}<span>Favorite</span>{% endif %}
+                {% if book_info['Completed'] == 'yes' %}<span>Completed</span>{% endif %}
+                {% if book_info['Currently_Reading'] == 'yes' %}<span>Currently Reading</span>{% endif %}
+              </div>
+
             </div>
 
           </div>
@@ -181,6 +135,13 @@
     </section>
 
   </div>
+
+  <!-- JS -->
+  <script>
+    function toggleFilters() {
+      document.getElementById("filters-section").classList.toggle("hidden");
+    }
+  </script>
 
 </body>
 </html>
