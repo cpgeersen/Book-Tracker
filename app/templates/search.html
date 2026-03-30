@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <!-- Basic page metadata -->
   <meta charset="UTF-8">
   <title>Local Search</title>
+
+  <!-- External stylesheets -->
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='search.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
+
 </head>
 
 <body>
@@ -126,13 +130,21 @@
             </div>
 
           </div>
-        {% endfor %}
 
-      {% elif request.args.get('search') %}
-        <p class="no-results">No books found.</p>
-      {% endif %}
+          <!-- View button aligned right -->
+          <div class="book-actions">
+            <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button">
+              View →
+            </a>
+          </div>
 
-    </section>
+        </div>
+
+      {% endfor %}
+
+    {% elif request.args.get('search') %}
+      <p>No books found.</p>
+    {% endif %}
 
   </div>
 
