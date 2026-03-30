@@ -27,20 +27,21 @@
 
       <!-- Book header section (cover + main info) -->
       <div class="book-header">
+        <div>
+          <!-- Book cover image (dynamic or fallback) -->
+          {% if book["Cover_Image"] %}
+            <img src="{{ book['Cover_Image'] }}" class="book-cover" alt="Book Cover Image">
+          {% else %}
+            <div class="book-cover">No Cover</div>
+          {% endif %}
+          <button id="book-cover-edit-btn" onclick="editCoverImage()">Edit Book Cover Image</button>
+          <form id="book-cover-upload" class="hidden" method="POST" enctype="multipart/form-data">
+            <input type="file" name="cover-image">
+            <input type="submit" value="Upload">
+          </form>
+        </div>
 
-        <!-- Book cover image (dynamic or fallback) -->
-        {% if book["Cover_Image"] %}
-          <img src="{{ book['Cover_Image'] }}" class="book-cover" alt="Book Cover Image">
-        {% else %}
-          <div class="book-cover">No Cover</div>
-        {% endif %}
 
-
-        <button id="book-cover-edit-btn" onclick="editCoverImage()">Edit Book Cover Image</button>
-        <form id="book-cover-upload" class="hidden" method="POST" enctype="multipart/form-data">
-          <input type="file" name="cover-image">
-          <input type="submit" value="Upload">
-        </form>
 
 
         <!-- Book information display -->

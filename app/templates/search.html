@@ -125,9 +125,12 @@
         {% for book, book_info in books.items() %}
           <div class="book-card">
 
-            <div class="book-cover">
-              No Cover
-            </div>
+
+          {% if book_info["Cover_Image"] %}
+            <img src="{{ book_info['Cover_Image'] }}" class="book-cover" alt="Book Cover Image">
+          {% else %}
+            <div class="book-cover">No Cover</div>
+          {% endif %}
 
             <div class="book-info">
               <h3>{{ book_info['Title'] }}</h3>
