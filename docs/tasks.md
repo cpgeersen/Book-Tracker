@@ -98,14 +98,15 @@
 
 ## Sprint 4
 ### Theme: Business Logic Tasks
-- [ ] 2.1: Create function to use pulled information from the OpenLibrary API to add to book database (US201 and US202)
+- [x] 2.1: Create function to use pulled information from the OpenLibrary API to add to book database (US201 and US202)
 - [ ] 3.2.5 - Case: Updating a Locally added book with OL data
-- [ ] 4.3: Create export/import CSV function. (US402)
-- [ ] 4.4: Create database purge function. (US403)
+- [x] 4.3: Create export/import CSV function. (US402)
+- [x] 4.4: Create database purge function. (US403)
 - [ ] 4.11: Tag filter functionality
 - [ ] 4.12: Genre filter functionality
 - [ ] 4.13: Implement proper back button functionality based on current route
 - [ ] 4.19: Cache OpenLibrary searches with JSON
+- [ ] 4.22: Finalize OpenLibrary Functionality
 
 
 ### Theme: UI Tasks
@@ -116,22 +117,23 @@
   - [ ] 4.8.1: Fix cover image sizing to be fixed
   - [ ] 4.8.2: Fix spacing of page
   - [ ] 4.8.3: Add styling to buttons that are missing styling
-- [ ] 4.9: Add styling to individual book page pop-ups
-  - [ ] 4.9.1: Deletion Pop-up
-  - [ ] 4.9.2: Update OL Pop-up
-- [ ] 4.10: Genre Edit Frontend
+- [x] 4.9: Add styling to individual book page pop-ups
+  - [x] 4.9.1: Deletion Pop-up
+  - [x] 4.9.2: Update OL Pop-up
+- [x] 4.10: Genre Edit Frontend
 - [ ] 4.14: Fix author input spacing in add book form
 - [ ] 4.15: Add hover animations
-- [ ] 4.16: Add error modals for pages using flask extends
+- [x] 4.16: Add error modals for pages using flask extends
 - [ ] 4.17: Add go to top of page button for search frontends
-- [ ] 4.18: Create error status code frontend pages
-  - [ ] 4.18.1: Status Code 500
-  - [ ] 4.18.2: Status Code 404
+- [x] 4.18: Create error status code frontend pages
+  - [x] 4.18.1: Status Code 500
+  - [x] 4.18.2: Status Code 404
 - [ ] 4.20: Local Search Edits
   - [ ] 4.20.1: Align filters with page title rather than nav bar
   - [ ] 4.20.2: Make filters in search frontend collapsible
   - [ ] 4.20.3: For book card results, move book page button link to right-middle
   - [ ] 4.20.4: Add genres into book card
+- [ ] 4.21: Finalize OpenLibrary Search Frontend
 
 ## Sprint 5
 ### Theme: Business Logic Tasks
