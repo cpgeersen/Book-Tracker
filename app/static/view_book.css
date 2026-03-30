@@ -18,7 +18,7 @@
     gap: 2rem;
 }
 
-/* Placeholder book cover */
+/* Book cover */
 .book-cover {
     width: 160px;
     height: 220px;
@@ -33,6 +33,18 @@
 /* Generic section spacing */
 .section {
     margin-top: 2rem;
+}
+
+/* Summary */
+.summary-text{
+    min-width: 30rem;
+    max-width: 40rem;
+    max-height: 15rem;
+    overflow-y: scroll;
+    overflow-wrap: break-word;
+    white-space: pre-line;
+    white-space-collapse: preserve-breaks;
+    scrollbar-width: thin;
 }
 
 /* Genre and tag styling */
