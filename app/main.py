@@ -101,7 +101,11 @@ def create_routes(app): # Placeholder returns for unfinished pages
             book_update = dict(request.form)
             print(book_update)
 
-            if book_update.get('summary') is not None:
+            if book_update.get('update_with_ol') is not None:
+                json_input = json.dumps({'ISBN': isbn, 'Cover_Image_Update': book_update.get('update_cover'),
+                                         'Summary_Update': book_update.get('update_summary')})
+
+            elif book_update.get('summary') is not None:
                 json_input = json.dumps({'ISBN': isbn, 'Summary': book_update['summary']})
                 response = update(json_input, 'summary')
 
