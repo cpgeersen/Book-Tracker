@@ -134,6 +134,7 @@
   - [ ] 4.20.3: For book card results, move book page button link to right-middle
   - [ ] 4.20.4: Add genres into book card
 - [ ] 4.21: Finalize OpenLibrary Search Frontend
+- [ ] 4.23: Deduplicate Interface
 
 ## Sprint 5
 ### Theme: Business Logic Tasks
