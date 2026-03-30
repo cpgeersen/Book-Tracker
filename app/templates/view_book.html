@@ -30,11 +30,19 @@
       <div class="book-header">
 
         <!-- Book cover image (dynamic or fallback) -->
-        {% if book["Cover_URL"] %}
-          <img src="{{ book['Cover_URL'] }}" class="book-cover">
+        {% if book["Cover_Image"] %}
+          <img src="{{ book['Cover_Image'] }}" class="book-cover" alt="Book Cover Image">
         {% else %}
           <div class="book-cover">No Cover</div>
         {% endif %}
+
+
+        <button id="book-cover-edit-btn" onclick="editCoverImage()">Edit Book Cover Image</button>
+        <form id="book-cover-upload" class="hidden" method="POST" enctype="multipart/form-data">
+          <input type="file" name="cover-image">
+          <input type="submit" value="Upload">
+        </form>
+
 
         <!-- Book information display -->
         <div class="book-info">
@@ -165,6 +173,74 @@
         <br><br>
         <button onclick="toggleGenreEdit()">Edit Genres</button>
 
+        <!-- Genre edit section -->
+        <div id="genre-edit" class="hidden">
+          <form method="POST" id="update-genre">
+
+            <br>
+
+            <select id="genre1">
+              {% if book["Genre_1"] == 'fiction' %}
+                <option value="fiction, 1">Fiction</option>
+                <option value="nonfiction, 2">Nonfiction</option>
+              {% else %}
+                <option value="nonfiction, 2">Nonfiction</option>
+                <option value="fiction, 1">Fiction</option>
+              {% endif %}
+            </select>
+
+
+              <select id="genre2">
+                {% if book["Genre_2"] %}
+                  <option value="{{ book["Genre_2"] }}, {{ book["Genre_ID_2"] }}">{{ book["Genre_2"].title() }}</option>
+                {% else %}
+                  <option value="None">Select A Genre</option>
+                {% endif %}
+                {% for genre_id, genre in book_genres.items() %}
+                  <option name="genre_2" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                {% endfor %}
+              </select>
+
+
+              <select id="genre3">
+                {% if book["Genre_3"] %}
+                  <option value="{{ book["Genre_3"] }}, {{ book["Genre_ID_3"] }}">{{ book["Genre_3"].title() }}</option>
+                {% else %}
+                  <option value="None">Select A Genre</option>
+                {% endif %}
+                {% for genre_id, genre in book_genres.items() %}
+                  <option name="genre_3" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                {% endfor %}
+              </select>
+
+
+              <select id="genre4">
+                {% if book["Genre_4"] %}
+                  <option value="{{ book["Genre_4"] }}, {{ book["Genre_ID_4"] }}">{{ book["Genre_4"].title() }}</option>
+                {% else %}
+                  <option value="None">Select A Genre</option>
+                {% endif %}
+                {% for genre_id, genre in book_genres.items() %}
+                  <option name="genre_4" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                {% endfor %}
+              </select>
+
+
+            <input type="hidden" id="genre_1" name="genre_1" value="">
+            <input type="hidden" id="genre_2" name="genre_2" value="">
+            <input type="hidden" id="genre_3" name="genre_3" value="">
+            <input type="hidden" id="genre_4" name="genre_4" value="">
+
+            <br><br>
+
+            <!-- Save genres button -->
+            <button onclick="saveGenres()" type="submit" form="update-genre" name="update-genre">Save Genres</button>
+          </form>
+
+        </div>
+
+      </div>
+
       <!-- Toggleable reading tags section -->
       <div class="section">
         <form id="tag" method="POST">
@@ -172,19 +248,19 @@
           <h3>Tags</h3>
 
           <button onclick="changeTagValue('owned');" class="tag toggle {% if book['Owned']=='on' %}active{% endif %}"
-                  id="owned" type="button">Owned</button>
+                  id="owned" type="button" name="owned" value="{{ book["Owned"] }}">Owned</button>
           <input type="hidden" id="owned_value" name="owned" value="{{ book["Owned"] }}">
 
           <button onclick="changeTagValue('favorite');" class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}"
-                  id="favorite" type="button">Favorite</button>
+                  id='favorite' type="button" name="favorite" value="{{ book["Favorite"] }}">Favorite</button>
           <input type="hidden" id="favorite_value" name="favorite" value="{{ book["Favorite"] }}">
 
           <button onclick="changeTagValue('completed');" class="tag toggle {% if book['Completed']=='on' %}active{% endif %}"
-                  id="completed" type="button">Completed</button>
+                  id='completed' type="button" name="completed" value="{{ book["Completed"] }}">Completed</button>
           <input type="hidden" id="completed_value" name="completed" value="{{ book["Completed"] }}">
 
           <button onclick="changeTagValue('currently_reading');" class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}"
-                  id="currently_reading" type="button">Currently Reading</button>
+                  id='currently_reading' type="button" name="currently_reading" value="{{ book["Currently_Reading"] }}">Currently Reading</button>
           <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book["Currently_Reading"] }}">
 
           <br>
@@ -224,18 +300,50 @@
           <p>Do you still want to delete the book?</p>
 
           <div class="button-align">
-            <form method="POST">
-              <button class="yes-btn modal-button">Yes</button>
+
+            <form id="delete" method="POST">
+              <button class="yes-btn modal-button button-group" type="submit" form="delete" name="delete" >Yes</button>
             </form>
-            <button class="no-btn modal-button" command="close">No</button>
+            <button class="no-btn modal-button button-group" commandfor="delete-confirmation-modal" command="close" >No</button>
           </div>
         </dialog>
+
+          <button command="show-modal" commandfor="update-confirmation-modal" class="update-btn">Update with OpenLibrary Data</button>
+        <dialog id="update-confirmation-modal">
+
+          <p>Use data from the OpenLibrary API to update book record.</p>
+          <p>WARNING: Updating is destructive, cannot be reverted, and can only be done once.</p>
+          <p>Records Updated (unless otherwise specified by user):</p>
+          <ul>
+            <li>Cover Image</li>
+            <li>Summary</li>
+            <li>Publisher</li>
+            <li>Author Spelling</li>
+          </ul>
+          <p>Do you still want to update the book?</p>
+
+          <div class="button-align2">
+
+          <form id="update-with-ol" method="POST">
+
+            <label for="update-cover_image">Update Cover Image</label>
+            <input id="update-cover_image" type="checkbox" name="update_cover" checked>
+
+            <label for="update-summary">Update Summary</label>
+            <input id="update-summary" type="checkbox" name="update_summary" checked>
+
+            <button class="yes-btn modal-button" type="submit" form="update-with-ol" name="update_with_ol" >Yes</button>
+          </form>
+
+          <button class="no-btn modal-button" commandfor="update-confirmation-modal" command="close" >No</button>
+          </div>
+        </dialog>
+
+
 
       </div>
 
     </div>
-
-  </div>
 
   <!-- JavaScript behavior -->
   <script>
@@ -249,15 +357,9 @@
       });
     });
 
-    /* Enable chapter editing */
-    function editChapters() {
-      document.getElementById("chapters-display").classList.add("hidden");
-      document.getElementById("chapters-edit").classList.remove("hidden");
-    }
-
-    function saveChapters() {
-      document.getElementById("chapters-edit").classList.add("hidden");
-      document.getElementById("chapters-display").classList.remove("hidden");
+    function editCoverImage() {
+      document.getElementById("book-cover-edit-btn").classList.add("hidden");
+      document.getElementById("book-cover-upload").classList.remove("hidden");
     }
 
     /* Enable summary editing */
@@ -308,10 +410,35 @@
       document.getElementById("chapters-edit").classList.remove("hidden");
     }
 
-    /* Save chapters placeholder */
     function saveChapters() {
       document.getElementById("chapters-edit").classList.add("hidden");
       document.getElementById("chapters-display").classList.remove("hidden");
+    }
+
+    function editNote(element){
+      noteID = element.value;
+      noteContent = document.getElementById(noteID).textContent;
+      noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'visible');
+      document.getElementById('note_id').value = noteID;
+      document.getElementById('note-edit-textarea').textContent = noteContent;
+    }
+
+    /* Toggle genre edit section visibility */
+    function toggleGenreEdit() {
+      const section = document.getElementById("genre-edit");
+      section.classList.toggle("hidden");
+    }
+
+    function saveGenres(){
+      genre_1_value = document.getElementById('genre1').value;
+      genre_2_value = document.getElementById('genre2').value;
+      genre_3_value = document.getElementById('genre3').value;
+      genre_4_value = document.getElementById('genre4').value;
+
+      document.getElementById('genre_1').value = genre_1_value
+      document.getElementById('genre_2').value = genre_2_value
+      document.getElementById('genre_3').value = genre_3_value
+      document.getElementById('genre_4').value = genre_4_value
     }
 
     /* Toggle genre edit section visibility */
@@ -324,8 +451,7 @@
     const genreSelects = document.querySelectorAll('#genre-edit select');
 
     genreSelects.forEach(select => {
-      select.addEventListener('change', () => {
-
+      select.addEventListener('click', () => {
         const selectedValues = Array.from(genreSelects).map(s => s.value);
 
         genreSelects.forEach(s => {
@@ -339,6 +465,7 @@
     });
 
   </script>
+
 
 </body>
 </html>

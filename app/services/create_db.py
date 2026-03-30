@@ -33,7 +33,7 @@ def create_db():
                    Tag_ID INTEGER,
                    Chapters INTEGER,
                    Chapters_Completed INTEGER,
-                   Cover_Image BLOB,
+                   Cover_Image TEXT,
                    FOREIGN KEY (Publisher_ID) REFERENCES Publishers(Publisher_ID),
                    FOREIGN KEY (Tag_ID) REFERENCES Tags(Tag_ID)
                    )
