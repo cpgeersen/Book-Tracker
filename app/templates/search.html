@@ -17,127 +17,115 @@
 
   <div class="page-wrapper">
 
-    <!-- Navigation links -->
-    <div class="nav-buttons">
-      <a href="/dashboard">← Back</a>
-      <a href="/">🏠 Home</a>
-    </div>
+    <!-- Main results area -->
+    <section class="results-area">
 
-    <!-- Page title -->
-    <h1>Local Search</h1>
+      <!-- Navigation links -->
+      <div class="nav-buttons">
+        <a href="/dashboard">← Back</a>
+        <a href="/">🏠 Home</a>
+      </div>
 
-    <!-- Toggle button for filters -->
-    <button onclick="toggleFilters()">Filters</button>
+      <!-- Title + Filter Toggle -->
+      <div class="search-header">
+        <h1>Local Search</h1>
+        <button onclick="toggleFilters()">Filters</button>
+      </div>
 
-    <!-- Collapsible filter section -->
-    <div id="filterSection" class="hidden">
+      <!-- Collapsible Filters -->
+      <div id="filters-section" class="filters hidden">
 
-      <h2>Filter by Tag</h2>
+        <h2>Filter by Tag</h2>
 
-      <label><input type="checkbox"> Owned</label>
-      <label><input type="checkbox"> Favorite</label>
-      <label><input type="checkbox"> Read</label>
-      <label><input type="checkbox"> Currently Reading</label>
+        <label><input type="checkbox"> Owned</label>
+        <label><input type="checkbox"> Favorite</label>
+        <label><input type="checkbox"> Read</label>
+        <label><input type="checkbox"> Currently Reading</label>
 
-      <fieldset>
-        <legend>Personal or Academic</legend>
+        <fieldset>
+          <legend>Personal or Academic</legend>
+          <label><input type="radio" name="Personal_Or_Academic" value="any" checked> Any</label>
+          <label><input type="radio" name="Personal_Or_Academic" value="personal"> Personal</label>
+          <label><input type="radio" name="Personal_Or_Academic" value="academic"> Academic</label>
+        </fieldset>
 
-        <label><input type="radio" name="Personal_Or_Academic" value="any" checked> Any</label>
-        <label><input type="radio" name="Personal_Or_Academic" value="personal"> Personal</label>
-        <label><input type="radio" name="Personal_Or_Academic" value="academic"> Academic</label>
-      </fieldset>
+        <h2>Filter by Genre</h2>
 
-      <h2>Filter by Genre</h2>
+        <fieldset>
+          <legend>Fiction or Nonfiction</legend>
+          <label><input type="radio" name="Genre_1" value="any" checked> Any</label>
+          <label><input type="radio" name="Genre_1" value="fiction"> Fiction</label>
+          <label><input type="radio" name="Genre_1" value="nonfiction"> Nonfiction</label>
+        </fieldset>
 
-      <fieldset>
-        <legend>Fiction or Nonfiction</legend>
+        <label for="genres">Choose a Genre</label>
+        <select name="genres" id="genres">
+          <option value="">--Choose an option:--</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="horror">Horror</option>
+        </select>
 
-        <label><input type="radio" name="Genre_1" value="any" checked> Any</label>
-        <label><input type="radio" name="Genre_1" value="fiction"> Fiction</label>
-        <label><input type="radio" name="Genre_1" value="nonfiction"> Nonfiction</label>
-      </fieldset>
+        <br><br>
 
-      <label for="genres">Choose a Genre</label>
-      <select name="genres" id="genres">
-        <option value="">--Choose an option--</option>
-        <option value="fantasy">Fantasy</option>
-        <option value="horror">Horror</option>
-      </select>
+        <button>Apply Filters</button>
+      </div>
 
-      <br><br>
+      <!-- Search form -->
+      <form method="GET" action="/book/local-search" class="search-form">
 
-      <button>Apply Filters</button>
+        <label for="search">Search</label>
+        <input type="text" id="search" name="search"
+          value="{{ request.args.get('search', '') }}">
 
-      <button onclick="window.location.href='/book/local-search'">
-        View All Books
-      </button>
+        <label><input type="radio" name="search_type" value="isbn"> ISBN</label>
+        <label><input type="radio" name="search_type" value="title"> Book Title</label>
+        <label><input type="radio" name="search_type" value="author"> Author</label>
 
-    </div>
+        <button type="submit">Search</button>
+      </form>
 
-    <!-- Search form -->
-    <form method="GET" action="/book/local-search" class="search-form">
+      <!-- Results loop -->
+      {% if books %}
+        {% for book, book_info in books.items() %}
+          <div class="book-card">
 
-      <label for="search">Search</label>
-      <input type="text" id="search" name="search"
-        value="{{ request.args.get('search', '') }}">
+            <!-- Cover -->
+            <div class="book-cover">
+              No Cover
+            </div>
 
-      <label><input type="radio" name="search_type" value="isbn"> ISBN</label>
-      <label><input type="radio" name="search_type" value="title"> Book Title</label>
-      <label><input type="radio" name="search_type" value="author"> Author</label>
+            <!-- Info -->
+            <div class="book-info">
 
-      <button type="submit">Search</button>
+              <div class="book-top">
+                <div>
+                  <h3>{{ book_info['Title'] }}</h3>
+                  <p><strong>Author:</strong> {{ book_info['Author_First_Name_1'] }} {{ book_info['Author_Last_Name_1'] }}</p>
+                </div>
 
-    </form>
+                <!-- RIGHT SIDE BUTTON -->
+                <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button">
+                  View →
+                </a>
+              </div>
 
-    <!-- Results -->
-    {% if books %}
-      {% for book, book_info in books.items() %}
+              <p><strong>Publisher:</strong> {{ book_info['Publisher_Name'] }}</p>
+              <p><strong>Year:</strong> {{ book_info['Publish_Year'] }}</p>
 
-        <div class="book-card">
+              <!-- GENRES (NEW) -->
+              <div class="genres">
+                <span>{{ book_info['Genre_1'] }}</span>
+                {% if book_info['Genre_2'] %}<span>{{ book_info['Genre_2'] }}</span>{% endif %}
+                {% if book_info['Genre_3'] %}<span>{{ book_info['Genre_3'] }}</span>{% endif %}
+              </div>
 
-          <!-- Book cover -->
-          <div class="book-cover">
-            No Cover
-          </div>
-
-          <!-- Book info -->
-          <div class="book-info">
-
-            <h3>{{ book_info['Title'] }}</h3>
-
-            <p><strong>Author:</strong>
-              {{ book_info['Author_First_Name_1'] }}
-              {{ book_info['Author_Last_Name_1'] }}
-            </p>
-
-            <p><strong>Publisher:</strong> {{ book_info['Publisher_Name'] }}</p>
-            <p><strong>Year:</strong> {{ book_info['Publish_Year'] }}</p>
-
-            <!-- Genre display -->
-            <p>
-              <strong>Genres:</strong>
-              {{ book_info['Genre_1'] }},
-              {{ book_info['Genre_2'] }}
-            </p>
-
-            <!-- Tags -->
-            <div class="tags">
-
-              {% if book_info['Owned'] == 'yes' %}
-                <span>Owned</span>
-              {% endif %}
-
-              {% if book_info['Favorite'] == 'yes' %}
-                <span>Favorite</span>
-              {% endif %}
-
-              {% if book_info['Completed'] == 'yes' %}
-                <span>Completed</span>
-              {% endif %}
-
-              {% if book_info['Currently_Reading'] == 'yes' %}
-                <span>Currently Reading</span>
-              {% endif %}
+              <!-- TAGS -->
+              <div class="tags">
+                {% if book_info['Owned'] == 'yes' %}<span>Owned</span>{% endif %}
+                {% if book_info['Favorite'] == 'yes' %}<span>Favorite</span>{% endif %}
+                {% if book_info['Completed'] == 'yes' %}<span>Completed</span>{% endif %}
+                {% if book_info['Currently_Reading'] == 'yes' %}<span>Currently Reading</span>{% endif %}
+              </div>
 
             </div>
 
@@ -160,14 +148,11 @@
 
   </div>
 
-  <!-- JavaScript -->
+  <!-- JS -->
   <script>
-
-    /* Toggle filter visibility */
     function toggleFilters() {
-      document.getElementById("filterSection").classList.toggle("hidden");
+      document.getElementById("filters-section").classList.toggle("hidden");
     }
-
   </script>
 
 </body>
