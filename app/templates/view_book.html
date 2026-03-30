@@ -5,6 +5,8 @@
   <!-- Basic page metadata -->
   <meta charset="UTF-8">
   <title>View Book</title>
+
+  <!-- External stylesheets -->
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='view_book.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
@@ -27,10 +29,12 @@
       <!-- Book header section (cover + main info) -->
       <div class="book-header">
 
-        <!-- Fixed-size book cover -->
-        <div class="book-cover">
-          No Cover
-        </div>
+        <!-- Book cover image (dynamic or fallback) -->
+        {% if book["Cover_URL"] %}
+          <img src="{{ book['Cover_URL'] }}" class="book-cover">
+        {% else %}
+          <div class="book-cover">No Cover</div>
+        {% endif %}
 
         <!-- Book information display -->
         <div class="book-info">
@@ -58,9 +62,13 @@
           <div id="summary-display">
 
             {% if book["Summary"] %}
-              <p><strong>Summary:</strong> {{ book["Summary"] }}</p>
+              <p class="summary-text">
+                <strong>Summary:</strong> {{ book["Summary"] }}
+              </p>
             {% else %}
-              <p><strong>Summary:</strong> No summary available.</p>
+              <p class="summary-text">
+                <strong>Summary:</strong> No summary available.
+              </p>
             {% endif %}
 
             <!-- Button to enable editing summary -->
@@ -74,14 +82,13 @@
 
               <!-- Clean textarea formatting -->
               <textarea id="summary-text" name="summary">
-{{ book["Summary"] }}
+                {{ book["Summary"] }}
               </textarea>
 
               <br><br>
 
               <!-- Save summary button -->
               <button onclick="saveSummary()" type="submit">Save</button>
-
             </form>
           </div>
 
@@ -114,13 +121,9 @@
 
         <!-- Chapter edit display -->
         <div id="chapters-display">
-
           <label>Total Chapters:</label>
           <span>{{ book["Chapters"] }}</span>
-
-          <!-- Edit chapters button -->
           <button onclick="editChapters()">Edit</button>
-
         </div>
 
         <!-- Chapter edit input -->
@@ -143,6 +146,7 @@
 
         <h3>Genres</h3>
 
+        <!-- Display current genres -->
         <span class="tag">{{ book["Genre_1"].title() }}</span>
 
         {% if book["Genre_2"] %}
@@ -157,7 +161,9 @@
           <span class="tag">{{ book["Genre_4"].title() }}</span>
         {% endif %}
 
-      </div>
+        <!-- Button to enable editing genres -->
+        <br><br>
+        <button onclick="toggleGenreEdit()">Edit Genres</button>
 
       <!-- Toggleable reading tags section -->
       <div class="section">
@@ -181,11 +187,27 @@
                   id="currently_reading" type="button">Currently Reading</button>
           <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book["Currently_Reading"] }}">
 
-          <br><br>
+          <br>
 
           <button onclick="saveTags()" type="submit">Save Tags</button>
 
         </form>
+          <select id="genre1">
+            <option>Fiction</option>
+            <option>Nonfiction</option>
+          </select>
+
+          <select id="genre2"></select>
+          <select id="genre3"></select>
+          <select id="genre4"></select>
+
+          <br><br>
+
+          <!-- Save genres button -->
+          <button type="button">Save</button>
+
+        </div>
+
       </div>
 
       <!-- Actions section -->
@@ -193,6 +215,7 @@
 
         <h3>Actions</h3>
 
+        <!-- Delete book modal -->
         <button command="show-modal" commandfor="delete-confirmation-modal" class="delete-btn">Delete Book</button>
 
         <dialog id="delete-confirmation-modal">
@@ -278,6 +301,42 @@
         document.getElementById('chapters_completed_value').value++;
       }
     }
+
+    /* Enable chapter editing */
+    function editChapters() {
+      document.getElementById("chapters-display").classList.add("hidden");
+      document.getElementById("chapters-edit").classList.remove("hidden");
+    }
+
+    /* Save chapters placeholder */
+    function saveChapters() {
+      document.getElementById("chapters-edit").classList.add("hidden");
+      document.getElementById("chapters-display").classList.remove("hidden");
+    }
+
+    /* Toggle genre edit section visibility */
+    function toggleGenreEdit() {
+      const section = document.getElementById("genre-edit");
+      section.classList.toggle("hidden");
+    }
+
+    /* Prevent selecting duplicate genres across dropdowns */
+    const genreSelects = document.querySelectorAll('#genre-edit select');
+
+    genreSelects.forEach(select => {
+      select.addEventListener('change', () => {
+
+        const selectedValues = Array.from(genreSelects).map(s => s.value);
+
+        genreSelects.forEach(s => {
+          Array.from(s.options).forEach(option => {
+            option.disabled =
+              selectedValues.includes(option.value) && s.value !== option.value;
+          });
+        });
+
+      });
+    });
 
   </script>
 
