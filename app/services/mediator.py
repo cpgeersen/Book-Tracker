@@ -1,15 +1,18 @@
 import json
+
+from app.services.genres import genres_for_table
 from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend, validate_tags
 from app.services.Book.Book import (create_book, read_book, read_all_books, read_all_books_by_title,
                                     read_all_books_by_author, update_book_summary, update_book_chapters,
                                     update_book_chapters_completed, update_book_tags, delete_book,
                                     create_book_note, read_book_notes, update_book_note, update_book_cover_image,
-                                    delete_book_note, is_note_id_in_database)
+                                    delete_book_note, is_note_id_in_database, update_book_genre, create_book_genre)
 from app.services.openlibrary_api import search_books_by_title, get_work_data
 
 SUCCESS = 200
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
+BOOK_GENRES = genres_for_table()
 
 #def main(): # Test main
     #result = create(normal_data, 'book-local')
@@ -217,8 +220,31 @@ def update(json_input, update_type):
             response = update_book_cover_image(json_input['ISBN'], json_input['Cover_Image_Path'])
             return response
 
+        elif update_type == 'genres':
+            json_input = dict(json.loads(json_input))
+
+            genre_number = 1
+            while genre_number < 5:
+                print(type(json_input[f'Genre_{genre_number}_ID_Old']))
+                if json_input[f'Genre_{genre_number}_ID_Old'] is None:
+                    print('here')
+                    if json_input[f'Genre_{genre_number}_ID_New'] == 'None':
+                        print('continue')
+                        genre_number += 1
+                        continue
+                    else:
+                        print('create')
+                        create_book_genre(json_input['ISBN'], json_input[f'Genre_{genre_number}_ID_New'])
+
+
+                if json_input[f'Genre_{genre_number}_ID_New'] != json_input[f'Genre_{genre_number}_ID_Old']:
+                    update_book_genre(json_input['ISBN'], json_input[f'Genre_{genre_number}_ID_Old'],
+                                      json_input[f'Genre_{genre_number}_ID_New'])
+
+                genre_number += 1
+
     except TypeError:
-        pass
+        pass    # !!WIP TypeError!!
 
 
 # DELETE - Takes JSON as input

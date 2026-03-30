@@ -100,8 +100,31 @@ def update_read_chapters(isbn, chapters_competed):
     return json.dumps({"Success": f"Book with {isbn} updated chapters completed to {chapters_competed}."}), 200
 
 # WIP - Will Implement Later
-def update_genre(isbn, genre):
-    pass
+def update_genre(isbn, old_genre_id, new_genre_id):
+
+    isbn_presence = is_isbn_in_book_table(isbn)
+    if not isbn_presence:
+        return json.dumps({"Error": "ISBN not found"}), 400
+
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+
+    update_query = ''' UPDATE BookGenre
+                       SET Genre_ID = ?
+                       WHERE ISBN = ?
+                       AND Genre_ID = ?
+                   '''
+    criteria = (new_genre_id, isbn, old_genre_id,)
+    cursor.execute(update_query, criteria)
+    conn.commit()
+    conn.close()
+    return json.dumps({"Success": f"Book with {isbn} updated genre."}), 200
+
+
+
+
+
+
 
 def update_cover_image(isbn, cover_image_path):
     # Get a cursor and connection to database
