@@ -71,11 +71,13 @@
 
             {% if book["Summary"] %}
               <p class="summary-text">
-                <strong>Summary:</strong> {{ book["Summary"] }}
+                <strong>Summary:</strong>
+                {{ book["Summary"] }}
               </p>
             {% else %}
               <p class="summary-text">
-                <strong>Summary:</strong> No summary available.
+                <strong>Summary:</strong>
+                No summary available.
               </p>
             {% endif %}
 
@@ -87,7 +89,7 @@
           <!-- Summary edit section -->
           <div id="summary-edit" class="hidden">
             <form method="POST">
-              <textarea id="summary-text" name="summary">{{ book["Summary"] }}</textarea >
+              <textarea id="summary-text" name="summary" rows="10" cols="40">{{ book["Summary"] }}</textarea >
 
               <br><br>
 

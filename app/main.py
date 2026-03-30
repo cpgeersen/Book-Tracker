@@ -101,7 +101,13 @@ def create_routes(app): # Placeholder returns for unfinished pages
             book_update = dict(request.form)
             print(book_update)
 
-            if book_update.get('summary') is not None:
+            if book_update.get('update_with_ol') is not None:
+                json_input = json.dumps({'ISBN': isbn, 'Cover_Image_Update': book_update.get('update_cover'),
+                                         'Summary_Update': book_update.get('update_summary')})
+                response = update(json_input, 'openlibrary')
+                print(response)
+
+            elif book_update.get('summary') is not None:
                 json_input = json.dumps({'ISBN': isbn, 'Summary': book_update['summary']})
                 response = update(json_input, 'summary')
 
@@ -145,11 +151,6 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
                 genre_4 = list(book_update['genre_4'].split(','))
 
-                print(genre_1)
-                print(genre_2)
-                print(genre_3)
-                print(genre_4)
-
                 json_input = json.dumps({'ISBN': isbn,
                                          'Genre_1_New': genre_1[0].strip(), 'Genre_1_ID_New': genre_1[-1].strip(),
                                          'Genre_2_New': genre_2[0].strip(), 'Genre_2_ID_New': genre_2[-1].strip(),
@@ -160,7 +161,6 @@ def create_routes(app): # Placeholder returns for unfinished pages
                                          'Genre_3_Old': book_result.get('Genre_3'), 'Genre_3_ID_Old': book_result.get('Genre_ID_3'),
                                          'Genre_4_Old': book_result.get('Genre_4'), 'Genre_4_ID_Old': book_result.get('Genre_ID_4')
                                          })
-                print(json_input)
                 update(json_input, 'genres')
 
 
@@ -185,7 +185,6 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
 
             book_result = json.loads(read(isbn_dict, 'book-isbn'))
-            print(book_result)
             note_result = read(isbn_dict, 'note')
 
             return render_template('view_book.html', book=book_result, notes=note_result,

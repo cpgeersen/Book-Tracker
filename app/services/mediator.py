@@ -1,5 +1,5 @@
 import json
-
+import requests
 from app.services.genres import genres_for_table
 from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend, validate_tags
 from app.services.Book.Book import (create_book, read_book, read_all_books, read_all_books_by_title,
@@ -242,6 +242,43 @@ def update(json_input, update_type):
                                       json_input[f'Genre_{genre_number}_ID_New'])
 
                 genre_number += 1
+        elif update_type == 'openlibrary':
+            json_input = json.loads(json_input)
+            isbn = json_input['ISBN']
+
+            # Call openlibrary to pull information based on isbn
+            # Will call json_cache first (will implement)
+            # openlibrary_json_result = update_with_OL_data(isbn)
+            # Using mock data for now
+            openlibrary_json_result = {'Author_First_Name_1': 'J.R.R.', 'Author_Last_Name_1': 'Tolkien',
+                                       'Author_First_Name_2': '', 'Author_Last_Name_2': '',
+                                       'Author_OL_ID_1': 'OL26320A', 'Author_OL_ID_2': '',
+                                       'Publisher': 'Houghton Mifflin Company', 'Publisher_OL_ID': '',
+                                       'Publish_Year': '1977', 'Summary': 'A number-one New York Times bestseller when '
+                                                                          'it was originally published, The Silmarillion '
+                                                                          'is the core of J.R.R. Tolkien\'s imaginative '
+                                                                          'writing, a work whose origins stretch back to '
+                                                                          'a time long before The Hobbit. ',
+                                       'Cover_Image_URL': ''}
+
+            if json_input.get('Cover_Image_Update') is not None:
+                # Download cover image fron openlibrary_json_result['Cover_Image_URL']
+                # to /static/cover_image_cache and copy with cover image naming scheme
+                # cover_images folder
+
+                # Using the name from the cover_images folder, update in database
+                pass
+
+            if json_input.get('Summary_Update') is not None:
+                update_book_summary(isbn, openlibrary_json_result['Summary'])
+
+            # Call author case and publisher case function here
+
+
+
+
+
+
 
     except TypeError:
         pass    # !!WIP TypeError!!
