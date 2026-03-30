@@ -79,7 +79,11 @@
           <!-- Summary edit section -->
           <div id="summary-edit" class="hidden">
             <form method="POST">
-              <textarea id="summary-text" name="summary">{{ book["Summary"] }}</textarea>
+
+              <!-- Clean textarea formatting -->
+              <textarea id="summary-text" name="summary">
+                {{ book["Summary"] }}
+              </textarea>
 
               <br><br>
 
@@ -106,6 +110,7 @@
         <div class="chapter-controls">
           <button id="decrement-chapters" onclick="decrementChapters()">-</button>
           <button id="increment-chapters" onclick="incrementChapters()">+</button>
+
           <form id="chapters_completed" method="POST">
             <input type="hidden" id="chapters_completed_value" name="chapters_completed" value="{{ book["Chapters_Completed"] }}">
             <button type="submit" form="chapters_completed" name="chapters_completed">Save</button>
@@ -125,9 +130,9 @@
         <div id="chapters-edit" class="hidden">
           <form method="POST">
             <input type="number"
-                    id="chapters-input"
-                    name="chapters"
-                    value="{{ book["Chapters"] }}">
+                   id="chapters-input"
+                   name="chapters"
+                   value="{{ book["Chapters"] }}">
 
             <!-- Save chapters button -->
             <button onclick="saveChapters()" type="submit">Save</button>
@@ -160,11 +165,33 @@
         <br><br>
         <button onclick="toggleGenreEdit()">Edit Genres</button>
 
-        <!-- Genre edit section -->
-        <div id="genre-edit" class="hidden">
+      <!-- Toggleable reading tags section -->
+      <div class="section">
+        <form id="tag" method="POST">
+
+          <h3>Tags</h3>
+
+          <button onclick="changeTagValue('owned');" class="tag toggle {% if book['Owned']=='on' %}active{% endif %}"
+                  id="owned" type="button">Owned</button>
+          <input type="hidden" id="owned_value" name="owned" value="{{ book["Owned"] }}">
+
+          <button onclick="changeTagValue('favorite');" class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}"
+                  id="favorite" type="button">Favorite</button>
+          <input type="hidden" id="favorite_value" name="favorite" value="{{ book["Favorite"] }}">
+
+          <button onclick="changeTagValue('completed');" class="tag toggle {% if book['Completed']=='on' %}active{% endif %}"
+                  id="completed" type="button">Completed</button>
+          <input type="hidden" id="completed_value" name="completed" value="{{ book["Completed"] }}">
+
+          <button onclick="changeTagValue('currently_reading');" class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}"
+                  id="currently_reading" type="button">Currently Reading</button>
+          <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book["Currently_Reading"] }}">
 
           <br>
 
+          <button onclick="saveTags()" type="submit">Save Tags</button>
+
+        </form>
           <select id="genre1">
             <option>Fiction</option>
             <option>Nonfiction</option>
@@ -194,32 +221,85 @@
         <dialog id="delete-confirmation-modal">
           <p>Delete Book Record from Database</p>
           <p>WARNING: Deleting a book is irreversible.</p>
+          <p>Do you still want to delete the book?</p>
 
-          <form method="POST">
-            <button type="submit" name="delete">Yes</button>
-          </form>
-
-          <button command="close">No</button>
+          <div class="button-align">
+            <form method="POST">
+              <button class="yes-btn modal-button">Yes</button>
+            </form>
+            <button class="no-btn modal-button" command="close">No</button>
+          </div>
         </dialog>
 
       </div>
 
     </div>
+
   </div>
 
   <!-- JavaScript behavior -->
   <script>
 
-    /* Toggle summary edit mode */
+    /* Toggle tag active state */
+    const toggleTags = document.querySelectorAll('.toggle');
+
+    toggleTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        tag.classList.toggle('active');
+      });
+    });
+
+    /* Enable chapter editing */
+    function editChapters() {
+      document.getElementById("chapters-display").classList.add("hidden");
+      document.getElementById("chapters-edit").classList.remove("hidden");
+    }
+
+    function saveChapters() {
+      document.getElementById("chapters-edit").classList.add("hidden");
+      document.getElementById("chapters-display").classList.remove("hidden");
+    }
+
+    /* Enable summary editing */
     function editSummary() {
       document.getElementById("summary-display").classList.add("hidden");
       document.getElementById("summary-edit").classList.remove("hidden");
     }
 
-    /* Save summary placeholder */
     function saveSummary() {
       document.getElementById("summary-edit").classList.add("hidden");
       document.getElementById("summary-display").classList.remove("hidden");
+    }
+
+    /* Toggle function for tags */
+    function changeTagValue(tag_type){
+      let tag_value = document.getElementById(tag_type).value;
+
+      if (tag_value == 'on'){
+        document.getElementById(tag_type).value = 'off';
+        document.getElementById(tag_type + "_value").value = 'off';
+      } else {
+        document.getElementById(tag_type).value = 'on';
+        document.getElementById(tag_type + "_value").value = 'on';
+      }
+    }
+
+    function decrementChapters(){
+      let val = document.getElementById('chapters-completed');
+      if (val.innerText != 0){
+        val.innerText--;
+        document.getElementById('chapters_completed_value').value--;
+      }
+    }
+
+    function incrementChapters(){
+      let completed = document.getElementById('chapters-completed');
+      let total = document.getElementById('chapter-total-value');
+
+      if (Number(completed.innerText) < Number(total.innerText)){
+        completed.innerText++;
+        document.getElementById('chapters_completed_value').value++;
+      }
     }
 
     /* Enable chapter editing */
