@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- This is the beginning of the head section !-->
+<head>
+    <title> User Settings </title>
+    <meta charset="UTF-8">
+<!-- This link tag will dynamically load the theme CSS file based on the user's selection -->
+    <link id="themeStylesheet" rel="stylesheet" href="{{ url_for('static', filename='light.css') }}">
+<!-- Theme Stylesheet Placeholder  -->
+    <link id="themeStylesheet" rel="stylesheet"
+          href="{{ url_for('static', filename='dark.css' if theme_switch == '1' else 'light.css') }}">
+
+<!-- ##################THIS_IS_MY_STYLE_SECTION##################-->
+<!-- This is the beginning of the style section !-->
+    <style>
+    /* Container for image + right‑side text */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+    /* Right‑side text block */
+        .right-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    /* Align homepage link under the title */
+        .right-text h1 {
+            margin: 0;
+        }
+
+    /* This is the beginning of the form */
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-row label {
+            width: 120px;   /* fixed width so inputs line up */
+            font-weight: bold;
+        }
+
+        .form-row input {
+            flex: 1;
+        }
+
+    /* This is the beginning of the switch style */
+        .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    }
+
+    .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    }
+
+    .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+    }
+
+    .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    }
+
+    input:checked + .slider {
+    background-color: #1b1f1b;
+    }
+
+    input:checked + .slider:before {
+    transform: translateX(26px);
+    }
+    </style>
+<!-- ##################END_OF_STYLE_SECTION##################-->
+
+</head>
+
+<!-- This is the beginning of the body !-->
+<body>
+
+<!-- User_Settings_Image !-->
+<div class="header-container">
+        <img src="/workspaces/Book-Tracker/app/templates/BookTracker_Settings.png"
+             alt="User Profile Picture"
+             width="200"
+             height="200">
+
+<!-- Homepage href !-->
+        <div class="right-text">
+            <h1>User Settings</h1>
+            <h1><a href="/workspaces/Book-Tracker/app/templates/homepage_v2.html">Homepage</a></h1>
+        </div>
+    </div>
+<!-- ##################END_OF_HEADER_SECTION##################-->
+
+<!-- Body Tag Here -->
+
+<!-- ##################This is the beginning of the form################## !-->
+ <!-- I think I may have named the route incorrectly here (example "/click_Button" may need path name.)-->
+<form action="/submit_Button" method="post">
+<!-- USERNAME INPUT -->
+  <div class="form-row">
+    <label for="usr_Name">Username:</label>
+    <input type="text" id="usr_Name" name="usr_Name">
+  </div>
+
+  <!-- MISSION STATEMENT INPUT -->
+  <div class="form-row">
+    <label for="miss_Stmt">Mission Statement:</label>
+    <textarea id="miss_Stmt" name="miss_Stmt"></textarea>
+  </div>
+
+  <!-- Slider Switch -->
+  <label class="switch">
+    <input type="checkbox" id="toggleSwitch" name="theme_switch"
+       {% if theme_switch == "1" %}checked{% endif %}> 
+    <span class="slider"></span>
+  </label>
+
+   <p>Value: <span id="output">{{ '1' if theme_switch == '1' else '0' }}</span></p>
+
+<!-- This script dynamically switches the theme CSS file when the toggle switch is changed -->
+  <script>
+  const checkbox = document.getElementById("toggleSwitch");
+  const themeLink = document.getElementById("themeStylesheet");
+  const output = document.getElementById("output");
+
+  checkbox.addEventListener("change", function () {
+    if (this.checked) {
+      themeLink.href = "{{ url_for('static', filename='dark.css') }}";
+      output.textContent = "1";
+    } else {
+      themeLink.href = "{{ url_for('static', filename='light.css') }}";
+      output.textContent = "0";
+    }
+  });
+</script>
+
+<input type="submit" value="Submit">
+<button type="submit" formaction="/reset_defaults" formmethod="post"></button>
+Reset
+</button>
+theme = request.form.get("theme_switch", "0")  # "1" if checked, "0" if not
+</form>
+<!-- ##################END_OF_FORM_SECTION##################-->
+
+<br>
+<br>
+
+<!-- Create 2x3 table to dislay user profile statistics. --> 
+<!-- These are CRUD Function calls. -->
+Favorite = {{ favorite_genre }}
+Total = {{ total_books }}
+Owned = {{ owned_books }}
+Reading = {{ currently_reading }}
+Completed = {{ completed }}
+
+<table>
+    <th>Favorite Genre</th>
+    <th>Total</th>
+    <th>Owned</th>
+    <th>Reading</th>
+    <th>Completed</th>
+    <tr>
+        <td>{{ favorite_genre }}</td>
+        <td>{{ total_books }}</td>
+        <td>{{ owned_books }}</td>
+        <td>{{ currently_reading }}</td>
+        <td>{{ completed }}</td>
+
+    </tr>
+</table>
+
+<br>
+<br>
+
+<!-- Create A List to display books marked as currently reading and completed -->
+cursor.execute("""
+    SELECT Books.Title AS title
+    FROM Books
+    RIGHT JOIN Tags ON Books.TagID = Tags.TagID
+    WHERE Tags.Completed = 0;
+""")
+
+currently_reading = [ {"title": row[0]} for row in cursor.fetchall() ]
+ 
+
+<h3> Books Marked As "Currently Reading"</h3>
+<ul>
+    {% for book in currently_reading %}
+        <li>{{ book.title }}</li>
+    {% endfor %}
+</ul>
+<!-- I am still not understand how to implement the Flask Placeholder {{ completed }} -->
+cursor.execute("""
+    SELECT Books.Title AS title
+    FROM Books
+    RIGHT JOIN Tags ON Books.TagID = Tags.TagID
+    WHERE Tags.Completed = 1;
+""")
+completed = [ {"title": row[0]} for row in cursor.fetchall() ]
+
+<h3> Books Marked As "Completed"</h3>
+
+    {% for book in completed %}
+        <li>{{ book.title }}</li>
+    {% endfor %}
+</ul>
+</body>
+
+<footer style="text-align: center;">
+    <a href="/workspaces/Book-Tracker/app/templates/homepage_v2.html">Homepage</a>
+</footer>
+
+</html>
+

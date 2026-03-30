@@ -1,0 +1,27 @@
+from flask import Flask, request
+from UserManager import UserManager
+from userProfileRefactored import reset_User_Profile, update_User_Profile0
+
+app = Flask(__name__)
+
+@app.route("/submit_Button", methods=["POST"])
+def submit_button():
+    username = request.form.get("usr_Name")
+    mission = request.form.get("miss_Stmt")
+    theme_switch = request.form.get("theme_switch")
+
+    # Convert checkbox to 0 or 1
+    theme_value = 1 if theme_switch == "on" else 0
+
+    # Build the user profile dictionary
+    data = {
+        "username": username,
+        "mission_statement": mission,
+        "theme": theme_value
+    }
+
+    # Call your existing function
+    manager = UserManager()
+    manager.write_user_json(data)
+
+    return "User settings updated!"

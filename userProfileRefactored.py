@@ -1,6 +1,12 @@
 import json
 import os
 from datetime import datetime, timedelta
+# Flask Import 
+from flask import Flask, request, redirect, url_for
+from your_module import update_User_Profile
+
+app = Flask(__name__)
+
 
 #===========================================================
 # Original Author: Christopher O'Brien
@@ -41,9 +47,25 @@ def read_User_Settings():
 #------------------------------------------------
 # 4.7.3 - Update User Function
 #------------------------------------------------
+# Update Function
 def update_User_Profile():
     return UserManager.edit_user_profile()
-
+# Update Profile Route (potential problem is route name document vs whatever)
+@app.route("/submit_Button", methods=["POST"])
+def update_Profile_Route():
+    return update_User_Profile()
+#------------------------------------------------
+# 4.4 - Reset User Profile 
+#----------------------------------------------
+# reset_User_Profile Function
+def reset_User_Profile():
+    manager = UserManager()
+    manager.delete_user_profile()
+    return manager.DEFAULT_USER_PROFILE
+# reset_User_Path
+@app.route("/reset_Button", method=["POST"])
+def reset_Profile_Route():
+    return reset_User_Profile()
 #--------------------------------------------------------------
 # 4.11 - Default JSON user profile
 #--------------------------------------------------------------
@@ -59,7 +81,6 @@ class UserManager:
             "mission_statement": "",
             "theme": ""
         }
-
     # ---------------------------------------------------------
     # Write JSON file to disk
     # ---------------------------------------------------------
@@ -109,3 +130,14 @@ class UserManager:
         self.write_user_json(user)
 
         return user
+    #----------------------------------------------------------
+    # Delete user profie
+    #----------------------------------------------------------
+    def delete_user_profile(self):
+        if os.path.exists(self.json_path):
+            os.remove(self.json_path)
+            self.load_user_profile()  # Recreate default profile
+            return True
+        else:
+            self.load_user_profile()  # Ensure default profile exists
+            return False

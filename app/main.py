@@ -238,5 +238,27 @@ def create_routes(app): # Placeholder returns for unfinished pages
     def dashboard_page():
         return 'WIP', 200
 
+#------------------------------------------------------
+# Author: Christopher O'Brien
+03.30.26
+# [Y/N] APPROVED (username)
+# Description: This function works to populate the Jinja User Profile template
+#------------------------------------------------------
+    import Analytic_FunctionRefactored as AF
+
+    @app.route("/analytics")
+    def analytics():
+        cursor = get_db_cursor()  # however you obtain it
+
+        data = {
+            "favorite_genre": AF.get_favorite_genre(cursor),
+            "total_books": AF.get_total_books(cursor),
+            "owned_books": AF.get_owned_books(cursor),
+            "currently_reading": AF.get_currently_reading(cursor),
+            "completed": AF.get_completed(cursor)
+        }
+
+    return render_template("analytics.html", **data)
+
 if __name__ == '__main__':
     pass
