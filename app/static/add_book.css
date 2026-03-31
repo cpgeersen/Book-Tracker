@@ -52,7 +52,7 @@ legend {
 /* horizontal row layout */
 .row {
     display: flex;
-    gap: 1rem;
+    gap: 3rem;
 }
 
 .row div {
@@ -103,6 +103,8 @@ button {
     color: white;
     font-weight: 700;
     cursor: pointer;
+    transition-delay: 0.5s;
+    transition-timing-function: ease-in-out;
 }
 
 button:hover {
