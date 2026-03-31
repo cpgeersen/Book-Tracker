@@ -185,5 +185,36 @@
 
   </div>
 
+  <!-- Return to Top of Page Button -->
+  <button id="returnToTop" title="Return to the top of page">↑ Top of Page</button>
+
+  <script>
+    // Create global variable for ReturnToTop button.
+    const returnToTopBtn = document.getElementById("returnToTop");
+
+    // Function to display Top of Page button after scrolling 300px.
+     function showWhenScrolling() {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        returnToTopBtn.style.display = "block";
+      } else {
+        returnToTopBtn.style.display = "none";
+      }
+    }
+
+    // Function for returning to the top of the page. 
+    function upTop(){
+      window.scrollTo({
+        top:0,
+        behavior: "smooth"
+      });
+    }
+
+    // Event listeners for scrolling 300px to display button and clicking button to return to top.
+    window.addEventListener("scroll", showWhenScrolling); 
+
+    returnToTopBtn.addEventListener("click", upTop);
+
+</script>      
+
 </body>
 </html>
