@@ -321,7 +321,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
 #------------------------------------------------------
 # Author: Christopher O'Brien
-03.30.26
+# 03.30.26
 # [Y/N] APPROVED (username)
 # Description: This function works to populate the Jinja User Profile template
 #------------------------------------------------------
