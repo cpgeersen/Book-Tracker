@@ -1,0 +1,15 @@
+<!-- This is the dark theme CSS file -->
+body {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+input, textarea {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #444;
+}
+
+.switch .slider {
+    background-color: #444;
+}

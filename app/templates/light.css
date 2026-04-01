@@ -1,0 +1,15 @@
+<!-- This is the light theme CSS file -->
+body {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+input, textarea {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #ccc;
+}
+
+.switch .slider {
+    background-color: #ccc;
+}

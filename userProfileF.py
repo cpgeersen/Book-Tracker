@@ -14,6 +14,20 @@ import datetime
 # I think I need to do more work on this file 
 # to allow for for calculated fields to be generated
 #===========================================================
+/*
+#------------------------------------------
+# Link Update Function to Submit Button
+#------------------------------------------
+# from flask import Flask, request, redirect, url_for
+# from your_module import update_User_Profile
+
+# app = Flask(__name__)
+
+# @app.route("/update_profile", methods=["POST"])
+# def update_profile_route():
+#   update_User_Profile()
+#    return redirect(url_for("homepage"))  # or return JSON, or render a template
+
 
 
 class UserManager:
