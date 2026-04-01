@@ -1,13 +1,18 @@
 import json
+import requests
+from app.services.genres import genres_for_table
 from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend, validate_tags
 from app.services.Book.Book import (create_book, read_book, read_all_books, read_all_books_by_title,
                                     read_all_books_by_author, update_book_summary, update_book_chapters,
-                                    update_book_chapters_completed, update_book_tags, delete_book)
+                                    update_book_chapters_completed, update_book_tags, delete_book,
+                                    create_book_note, read_book_notes, update_book_note, update_book_cover_image,
+                                    delete_book_note, is_note_id_in_database, update_book_genre, create_book_genre)
 from app.services.openlibrary_api import search_books_by_title, get_work_data
 
 SUCCESS = 200
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
+BOOK_GENRES = genres_for_table()
 
 #def main(): # Test main
     #result = create(normal_data, 'book-local')
@@ -15,7 +20,6 @@ INTERNAL_SERVER_ERROR = 500
     #print(read_book('0061091464'))
     #print(read())
     #pass
-
 
 def complete_book_from_ol(query,):
     #searh by title
@@ -32,25 +36,56 @@ def complete_book_from_ol(query,):
     if len(docs) == 0:
         return {"error": "No search results found for the given title."}
     #testing first result
-    first_result = docs[0]
+    first_result = search_results[docs][0]
     book_title = first_result.get('title')
     first_publish_year = first_result.get('first_publish_year')    
     isbn_list = first_result.get('isbn', [])
-
+    publishers = first_result.get("publisher", [])
+    subjects = first_result.get("subject", [])
+    # Cover image
+    cover_url = None
+    if "cover_i" in first_result:
+        cover_id = first_result["cover_i"]
+        cover_url = f"https://covers.openlibrary.org/b/id/{cover_id}-L.jpg"
     # now works api 
     work_key = first_result.get('key')
+
+    #setup empty lists
     author_olids = []
+    author_names = []
+    description = None
+
     if work_key:
         # Get work data from imported function, which will include author OLIDs
         work_data = get_work_data(work_key)
         #check if work_data is a dict and contains "authors" key before trying to access it PS. ALL API CALLS IN OL ARE Dictionaries
-        if isinstance(work_data, dict) and "authors" in work_data:
-            # Loop through authors in work data and extract OLIDs
-            for author in work_data["authors"]:
-                #check if "author" key exists and is a dict, and if it contains "key" before trying to access it
-                if "author" in author and "key" in author["author"]:
-                    # If all checks pass, append the author OLID to the list
-                    author_olids.append(author["author"]["key"])
+        if isinstance(work_data, dict):
+
+            # Description
+            if "description" in work_data:
+                if isinstance(work_data["description"], dict):
+                    description = work_data["description"].get("value")
+                else:
+                    description = work_data["description"]
+
+            # subjects "GENRE"
+            if "subjects" in work_data:
+                genre = work_data["subjects"]
+
+            # Authors
+            if "authors" in work_data:
+                for author in work_data["authors"]:
+                    if "author" in author and "key" in author["author"]:
+                        olid = author["author"]["key"]
+                        author_olids.append(olid)
+
+                        # Fetch author name
+                        author_data = get_author_info_from_authorid(olid)
+                        if isinstance(author_data, dict):
+                            name = author_data.get("name")
+                            if name:
+                                author_names.append(name)
+
 
     complete_book_json = {
             "title": book_title,
@@ -73,7 +108,18 @@ def create(json_input, create_type):
         elif create_type == 'book-ol':
             return 'WIP'
         elif create_type == 'note':
-            return 'WIP'
+            json_input = json.loads(json_input)
+            if len(json_input.get('Note_Content')) > 0:
+                note_id_in_database = is_note_id_in_database(json_input)
+                if not note_id_in_database:
+                    result = create_book_note(json_input)
+                    return result
+                else:
+                    result = update_book_note(json_input)
+                    return result
+            else:
+                return json.dumps({'Error': 'Empty Note'})
+
         elif create_type == 'cover-image':
             return 'WIP'
         else:
@@ -128,6 +174,10 @@ def read(json_input=None, read_type='book-all'):
 
         elif read_type == 'book-genre':
             pass
+        elif read_type == 'note':
+            response = read_book_notes(json_input)
+            return response
+
         else:
             return 'Error: Not a valid call'
     except:
@@ -165,18 +215,93 @@ def update(json_input, update_type):
                                         json_input_converted_tags['Currently_Reading'])
             return response
 
+        elif update_type == 'cover-image':
+            json_input = json.loads(json_input)
+            response = update_book_cover_image(json_input['ISBN'], json_input['Cover_Image_Path'])
+            return response
+
+        elif update_type == 'genres':
+            json_input = dict(json.loads(json_input))
+
+            genre_number = 1
+            while genre_number < 5:
+                print(type(json_input[f'Genre_{genre_number}_ID_Old']))
+                if json_input[f'Genre_{genre_number}_ID_Old'] is None:
+                    print('here')
+                    if json_input[f'Genre_{genre_number}_ID_New'] == 'None':
+                        print('continue')
+                        genre_number += 1
+                        continue
+                    else:
+                        print('create')
+                        create_book_genre(json_input['ISBN'], json_input[f'Genre_{genre_number}_ID_New'])
+
+
+                if json_input[f'Genre_{genre_number}_ID_New'] != json_input[f'Genre_{genre_number}_ID_Old']:
+                    update_book_genre(json_input['ISBN'], json_input[f'Genre_{genre_number}_ID_Old'],
+                                      json_input[f'Genre_{genre_number}_ID_New'])
+
+                genre_number += 1
+        elif update_type == 'openlibrary':
+            json_input = json.loads(json_input)
+            isbn = json_input['ISBN']
+
+            # Call openlibrary to pull information based on isbn
+            # Will call json_cache first (will implement)
+            # openlibrary_json_result = update_with_OL_data(isbn)
+            # Using mock data for now
+            openlibrary_json_result = {'Author_First_Name_1': 'J.R.R.', 'Author_Last_Name_1': 'Tolkien',
+                                       'Author_First_Name_2': '', 'Author_Last_Name_2': '',
+                                       'Author_OL_ID_1': 'OL26320A', 'Author_OL_ID_2': '',
+                                       'Publisher': 'Houghton Mifflin Company', 'Publisher_OL_ID': '',
+                                       'Publish_Year': '1977', 'Summary': 'A number-one New York Times bestseller when '
+                                                                          'it was originally published, The Silmarillion '
+                                                                          'is the core of J.R.R. Tolkien\'s imaginative '
+                                                                          'writing, a work whose origins stretch back to '
+                                                                          'a time long before The Hobbit. ',
+                                       'Cover_Image_URL': ''}
+
+            if json_input.get('Cover_Image_Update') is not None:
+                # Download cover image fron openlibrary_json_result['Cover_Image_URL']
+                # to /static/cover_image_cache and copy with cover image naming scheme
+                # cover_images folder
+
+                # Using the name from the cover_images folder, update in database
+                pass
+
+            if json_input.get('Summary_Update') is not None:
+                update_book_summary(isbn, openlibrary_json_result['Summary'])
+
+            # Call author case and publisher case function here
+
+
+
+
+
+
 
     except TypeError:
-        pass
+        pass    # !!WIP TypeError!!
 
 
 # DELETE - Takes JSON as input
-def delete(json_input):
-    json_input = json.loads(json_input)
-    response = delete_book(json_input['ISBN'])
-    return response
+def delete(json_input, update_type):
+    if update_type == 'book':
+        json_input = json.loads(json_input)
+        response = delete_book(json_input['ISBN'])
 
+        note_ids = read_book_notes(json_input)
+        for value in note_ids.values():
+            rep = delete_book_note(value)
 
+        return response
+
+    elif update_type == 'note':
+        json_input = json.loads(json_input)
+        response = delete_book_note(json_input)
+        return response
+    else:
+        return 'Error: Not a valid call'
 
 
 

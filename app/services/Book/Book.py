@@ -1,15 +1,19 @@
-from app.services.Book.BookCreate import create_book_record
+from app.services.Book.BookCreate import create_book_record, create_book_genre_frontend
 from app.services.Book.BookRead import (read_full_book_record, get_all_book_isbn, read_full_book_by_title,
                                         read_full_book_by_author)
-from app.services.Book.BookUpdate import update_summary, update_chapters, update_read_chapters, update_tags
+from app.services.Book.BookUpdate import (update_summary, update_chapters, update_read_chapters,
+                                          update_tags, update_cover_image, update_genre)
 from app.services.Book.BookDelete import delete_book_record
-from app.services.Book.BookNotes import create_note, read_note, update_note, delete_note
+from app.services.Book.BookNotes import create_note, read_note, update_note, delete_note, is_note_id_in_note_table
 from app.services.Book.BookPredicate import is_isbn_in_book_table
 import json
 
 
 def create_book(json):
     return create_book_record(json)
+
+def create_book_genre(isbn, genre_id):
+    return create_book_genre_frontend(isbn, genre_id)
 
 def read_book(isbn):
     try:
@@ -47,6 +51,12 @@ def update_book_chapters_completed(isbn, chapters_completed):
 def update_book_tags(tag_id, owned, favorite, completed, currently_reading):
     return update_tags(tag_id, owned, favorite, completed, currently_reading)
 
+def update_book_cover_image(isbn, cover_image_path):
+    return update_cover_image(isbn, cover_image_path)
+
+def update_book_genre(isbn, old_genre_id, new_genre_id):
+    return update_genre(isbn, old_genre_id, new_genre_id)
+
 def delete_book(isbn):
     return delete_book_record(isbn)
 
@@ -62,7 +72,8 @@ def update_book_note(json_input):
 def delete_book_note(json_input):
     return delete_note(json_input)
 
-
+def is_note_id_in_database(json_input):
+    return is_note_id_in_note_table(json_input)
 
 
 

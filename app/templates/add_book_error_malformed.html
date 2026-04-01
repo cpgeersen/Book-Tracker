@@ -1,0 +1,12 @@
+<!-- Modal for attempting malformed data entry for add_book.html -->
+{% extends "add_book.html" %}
+ 
+{% block body %}
+    <dialog open>
+        <p>Incorrect information entered.</p>
+        <p>Verify info and try again.</p>
+        <form method="dialog">
+            <button class="modal-button">Close</button>
+        </form>
+    </dialog>
+{% endblock %}

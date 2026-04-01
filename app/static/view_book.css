@@ -1,0 +1,170 @@
+/* Main layout wrapper */
+.page-wrapper {
+    max-width: 900px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+}
+
+/* Book container card */
+.book-container {
+    background-color: #111827;
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+/* Layout for cover + book info */
+.book-header {
+    display: flex;
+    gap: 2rem;
+}
+
+/* Book cover */
+.book-cover {
+    width: 160px;
+    height: 220px;
+    background-color: #374151;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+}
+
+/* Generic section spacing */
+.section {
+    margin-top: 2rem;
+}
+
+/* Summary */
+.summary-text{
+    min-width: 30rem;
+    max-width: 40rem;
+    max-height: 15rem;
+    overflow-y: scroll;
+    overflow-wrap: break-word;
+    white-space: pre-line;
+    white-space-collapse: preserve-breaks;
+    scrollbar-width: thin;
+}
+
+/* Genre and tag styling */
+.tag {
+    background-color: #374151;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* Active tag state */
+.tag.active {
+    background-color: #6366f1;
+}
+
+/* Input field styling */
+    input[type="number"] {
+    padding: 0.4rem;
+    border-radius: 6px;
+    border: none;
+    background-color: #1f2933;
+    color: #e5e7eb;
+}
+
+/* Notes textarea styling */
+textarea {
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    background-color: #1f2933;
+    color: #e5e7eb;
+    padding: 0.6rem;
+}
+
+/* Individual note card styling */
+.note-card {
+    background-color: #1f2933;
+    padding: 0.6rem;
+    border-radius: 6px;
+    margin: 0.6rem;
+    margin-bottom: 0;
+    height: 100px;
+    width: 200px;
+    display: grid;
+}
+
+/* Hidden edit sections */
+.hidden {
+    display: none;
+}
+
+#notes {
+    border-radius: 8px;
+    display: flex;
+    height: 500px;
+    justify-content: space-around;
+}
+
+#note-edit-textarea{
+    font-size: 15px;
+    resize: none;
+    width: 100%;
+
+    white-space-collapse: preserve-breaks;
+    white-space: pre-wrap;
+}
+
+#note-select{
+    height: 400px;
+    width: 250px;
+    max-height: 400px;
+    border: solid;
+    border-radius: 8px;
+    display: flex;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: grid;
+    padding-bottom: 0.6rem;
+    scrollbar-width: thin;
+}
+
+.note-text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: auto;
+    max-height: 40px;
+    margin: 0;
+    white-space-collapse: preserve-breaks;
+}
+
+
+.note-card-button{
+    bottom: 0;
+    position: relative;
+    height: 30px;
+    align-self: center;
+    align-items: center;
+}
+
+.note-text-id{
+    padding: 0;
+    margin: 0;
+    font-size: 10px;
+}
+
+
+.note-edit-btn{
+    margin-bottom: 10px;
+}
+
+#note-edit-delete{
+    visibility: hidden;
+}
+
+#note-add{
+    height: 30px;
+    width: 100%;
+    cursor: pointer;
+}

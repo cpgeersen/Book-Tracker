@@ -1,0 +1,13 @@
+<!-- Modal indicating Book Doesn't Exist for Local Search page -->
+ {% extends "search.html" %}
+
+ {% block body %}
+    <dialog open>
+        <p>This book does not exist.</p>
+
+        <form method="dialog">
+            <button class="modal-button">Close</button>
+        </form>
+        
+     </dialog>
+{% endblock %}
