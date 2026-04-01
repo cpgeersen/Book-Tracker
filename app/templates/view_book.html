@@ -437,15 +437,17 @@
 
     function editNote(element){
       noteID = element.value;
-      noteContent = document.getElementById(noteID).textContent;
+      noteContent = document.getElementById(noteID).innerText;
       noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'visible');
       document.getElementById('note_id').value = noteID;
-      document.getElementById('note-edit-textarea').textContent = noteContent;
+      document.getElementById('note-edit-textarea').value = noteContent;
+      document.getElementById('note-edit-textarea').innerText = noteContent;
     }
 
     function addNote(element){
       noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'hidden');
       document.getElementById('note_id').value = '';
+      document.getElementById('note-edit-textarea').value = '';
       document.getElementById('note-edit-textarea').textContent = '';
     }
 
