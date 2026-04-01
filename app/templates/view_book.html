@@ -37,8 +37,11 @@
           <button id="book-cover-edit-btn" onclick="editCoverImage()">Edit Book Cover Image</button>
           <form id="book-cover-upload" class="hidden" method="POST" enctype="multipart/form-data">
             <input type="file" name="cover-image">
-            <input type="submit" value="Upload">
+            <button type="submit" name="cover-image" value="update">Upload</button>
+            <input type="submit" name="cover-image" value="delete">
+
           </form>
+          <button id="book-cover-edit-btn-cancel" class="hidden" onclick="editCoverImage()">Cancel</button>
         </div>
 
 
@@ -94,7 +97,7 @@
               <br><br>
 
               <!-- Save summary button -->
-              <button onclick="saveSummary()" type="submit">Save</button>
+              <button onclick="editSummary()" type="submit">Save</button>
             </form>
           </div>
 
@@ -377,19 +380,15 @@
     });
 
     function editCoverImage() {
-      document.getElementById("book-cover-edit-btn").classList.add("hidden");
-      document.getElementById("book-cover-upload").classList.remove("hidden");
+      document.getElementById("book-cover-edit-btn").classList.toggle("hidden");
+      document.getElementById("book-cover-edit-btn-cancel").classList.toggle("hidden");
+      document.getElementById("book-cover-upload").classList.toggle("hidden");
     }
 
     /* Enable summary editing */
     function editSummary() {
-      document.getElementById("summary-display").classList.add("hidden");
-      document.getElementById("summary-edit").classList.remove("hidden");
-    }
-
-    function saveSummary() {
-      document.getElementById("summary-edit").classList.add("hidden");
-      document.getElementById("summary-display").classList.remove("hidden");
+      document.getElementById("summary-display").classList.toggle("hidden");
+      document.getElementById("summary-edit").classList.toggle("hidden");
     }
 
     /* Toggle function for tags */
@@ -437,15 +436,17 @@
 
     function editNote(element){
       noteID = element.value;
-      noteContent = document.getElementById(noteID).textContent;
+      noteContent = document.getElementById(noteID).innerText;
       noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'visible');
       document.getElementById('note_id').value = noteID;
-      document.getElementById('note-edit-textarea').textContent = noteContent;
+      document.getElementById('note-edit-textarea').value = noteContent;
+      document.getElementById('note-edit-textarea').innerText = noteContent;
     }
 
     function addNote(element){
       noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'hidden');
       document.getElementById('note_id').value = '';
+      document.getElementById('note-edit-textarea').value = '';
       document.getElementById('note-edit-textarea').textContent = '';
     }
 
