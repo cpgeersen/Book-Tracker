@@ -129,7 +129,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
                 response = update(json_input, 'chapters-completed')
 
             elif book_update.get('delete') is not None:
-                json_input = json.dumps({'ISBN': isbn})
+                json_input = json.dumps({'ISBN': isbn, 'Cover_Image_Path': book_result['Cover_Image']})
                 response = delete(json_input, 'book')
                 return redirect('/book/local-search') # !!WIP!! give pop-up for success
 
@@ -164,22 +164,32 @@ def create_routes(app): # Placeholder returns for unfinished pages
                 update(json_input, 'genres')
 
 
-            elif request.files is not None:
+            elif book_update.get('cover-image') is not None:
                 file = request.files['cover-image']
 
+                # Gets the file extension for the image type
+                file_extension = file.content_type.split('/')[-1]
+
+                # Generates the file name and appends the file extension
+                filename = isbn + '_' + 'cover_image' + '.' + file_extension
+
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], Path(filename))
+
+                if book_update.get('cover-image') == 'delete':
+                    json_input = json.dumps({'ISBN': isbn, 'Cover_Image_Path': book_result['Cover_Image']})
+                    response = delete(json_input, 'cover-image')
+                    file.filename = ''
+
+                # When a cover image is deleted or there was no cover image to begin with
                 if file.filename == '':
+                    book_result = json.loads(read(isbn_dict, 'book-isbn'))
+                    note_result = read(isbn_dict, 'note')
                     return render_template('view_book.html', book=book_result,
                                            notes=note_result, book_genres=BOOK_GENRES_SORTED), 200
 
                 if file and allowed_file(file.filename):
-                    # Gets the file extension for the image type
-                    file_extension = file.content_type.split('/')[-1]
-
-                    # Generates the file name and appends the file extension
-                    filename = isbn + '_' + 'cover_image' + '.' + file_extension
-
                     # Saves the file to the images folder
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], Path(filename)))
+                    file.save(file_path)
                     json_input = json.dumps({'ISBN': isbn, 'Cover_Image_Path': f'/static/images/cover_images/{filename}'})
                     response = update(json_input, 'cover-image')
 

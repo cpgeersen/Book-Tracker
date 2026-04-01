@@ -1,4 +1,5 @@
 import json
+
 import requests
 from app.services.genres import genres_for_table
 from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend, validate_tags
@@ -6,7 +7,8 @@ from app.services.Book.Book import (create_book, read_book, read_all_books, read
                                     read_all_books_by_author, update_book_summary, update_book_chapters,
                                     update_book_chapters_completed, update_book_tags, delete_book,
                                     create_book_note, read_book_notes, update_book_note, update_book_cover_image,
-                                    delete_book_note, is_note_id_in_database, update_book_genre, create_book_genre)
+                                    delete_book_note, is_note_id_in_database, update_book_genre, create_book_genre,
+                                    delete_book_cover_image)
 from app.services.openlibrary_api import search_books_by_title, get_work_data
 
 SUCCESS = 200
@@ -274,32 +276,33 @@ def update(json_input, update_type):
 
             # Call author case and publisher case function here
 
-
-
-
-
-
-
     except TypeError:
         pass    # !!WIP TypeError!!
 
 
 # DELETE - Takes JSON as input
-def delete(json_input, update_type):
-    if update_type == 'book':
+def delete(json_input, delete_type):
+    if delete_type == 'book':
         json_input = json.loads(json_input)
-        response = delete_book(json_input['ISBN'])
+        delete_book_cover_image(json_input['ISBN'], json_input['Cover_Image_Path'])
+        delete_book(json_input['ISBN'])
 
         note_ids = read_book_notes(json_input)
         for value in note_ids.values():
             rep = delete_book_note(value)
 
-        return response
+        return json.dumps({'Success': 'Book Deleted'})
 
-    elif update_type == 'note':
+    elif delete_type == 'note':
         json_input = json.loads(json_input)
         response = delete_book_note(json_input)
         return response
+
+    elif delete_type == 'cover-image':
+        json_input = json.loads(json_input)
+        response = delete_book_cover_image(json_input['ISBN'], json_input['Cover_Image_Path'])
+        return response
+
     else:
         return 'Error: Not a valid call'
 

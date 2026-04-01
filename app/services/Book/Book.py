@@ -1,3 +1,6 @@
+import os
+import json
+
 from app.services.Book.BookCreate import create_book_record, create_book_genre_frontend
 from app.services.Book.BookRead import (read_full_book_record, get_all_book_isbn, read_full_book_by_title,
                                         read_full_book_by_author)
@@ -6,7 +9,7 @@ from app.services.Book.BookUpdate import (update_summary, update_chapters, updat
 from app.services.Book.BookDelete import delete_book_record
 from app.services.Book.BookNotes import create_note, read_note, update_note, delete_note, is_note_id_in_note_table
 from app.services.Book.BookPredicate import is_isbn_in_book_table
-import json
+
 
 
 def create_book(json):
@@ -71,6 +74,17 @@ def update_book_note(json_input):
 
 def delete_book_note(json_input):
     return delete_note(json_input)
+
+def delete_book_cover_image(isbn, cover_image_path):
+
+    update_book_cover_image(isbn, cover_image_path='')
+
+    try:
+        os.remove(f'./app{cover_image_path}')
+        return json.dumps({'Success': 'Cover image deleted'}), 200
+    except OSError:
+        # File does not exist
+        return json.dumps({'Error': 'File does not exist'}), 200
 
 def is_note_id_in_database(json_input):
     return is_note_id_in_note_table(json_input)
