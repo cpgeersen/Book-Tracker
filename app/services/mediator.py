@@ -363,6 +363,9 @@ def read(json_input=None, read_type='book-all'):
             response = read_book_notes(json_input)
             return response
 
+        elif read_type == 'filter':
+            pass
+
         else:
             return 'Error: Not a valid call'
     except:

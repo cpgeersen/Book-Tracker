@@ -20,27 +20,32 @@
 
     <!-- Sidebar filters -->
     <aside class="filters">
-      <h2>Filter by Tag</h2>
 
-      <label><input type="checkbox"> Owned</label>
-      <label><input type="checkbox"> Favorite</label>
-      <label><input type="checkbox"> Read</label>
-      <label><input type="checkbox"> Currently Reading</label>
+      <form method="GET" action="/book/local-search">
+        <h2>Filter by Tag</h2>
+
+      <label><input type="checkbox" name="owned" id="owned-filter"> Owned</label>
+      <label><input type="checkbox" name="favorite" id="favorite-filter"> Favorite</label>
+      <label><input type="checkbox" name="read" id="read-filter"> Read</label>
+      <label><input type="checkbox" name="currently-reading" id="currently-reading-filter"> Currently Reading</label>
 
       <fieldset>
             <legend>Personal or Academic</legend>
         <div class="radio-group">
                   <label>
-                      <input type="radio" name="Personal_Or_Academic" value="any" checked>
+                      <input type="radio" id="personal-or-academic-filter-any"
+                             name="Personal_Or_Academic" value="any" checked>
                       Any
                   </label>
                   <label>
-                      <input type="radio" name="Personal_Or_Academic" value="personal">
+                      <input type="radio" id="personal-or-academic-filter-personal"
+                             name="Personal_Or_Academic" value="personal">
                       Personal
                   </label>
 
                   <label>
-                      <input type="radio" name="Personal_Or_Academic" value="academic">
+                      <input type="radio" id="personal-or-academic-filter-academic"
+                             name="Personal_Or_Academic" value="academic">
                       Academic
                   </label>
         </div>
@@ -51,16 +56,19 @@
             <legend>Fiction or Nonfiction</legend>
         <div class="radio-group">
                   <label>
-                      <input type="radio" name="Genre_1" value="any" checked>
+                      <input type="radio" id="genre-1-filter-any"
+                             name="Genre_1" value="any" checked>
                       Any
                   </label>
                   <label>
-                      <input type="radio" name="Genre_1" value="fiction">
+                      <input type="radio" id="genre-1-filter-fiction"
+                             name="Genre_1" value="fiction">
                       Fiction
                   </label>
 
                   <label>
-                      <input type="radio" name="Genre_1" value="nonfiction">
+                      <input type="radio" id="genre-1-filter-nonfiction"
+                             name="Genre_1" value="nonfiction">
                       Nonfiction
                   </label>
         </div>
@@ -68,17 +76,21 @@
 
       <label for="genres">Choose a Genre</label>
       <select name="genres" id="genres">
-        <option value="">--Choose an option:--</option>
-        <option value="fantasy">Fantasy</option>
-        <option value="horror">Horror</option>
-
+        <option value="None">--Choose an option:--</option>
+        {% for genre_id, genre in book_genres.items() %}
+          <option name="genre" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+        {% endfor %}
       </select>
 
-      <button class="transition_css">Apply Filters</button>
+      <button form="search-form" onclick="checkboxFilterValues()" class="transition_css">
+          Apply Filters
+      </button>
 
       <button onclick=window.location.href='/book/local-search' class="transition_css">
         View All Books
       </button>
+      </form>
+
     </aside>
 
     <!-- Main results area -->
@@ -93,16 +105,25 @@
       <h1>Local Search</h1>
 
       <!-- Search form -->
-      <form method="GET" action="/book/local-search" class="search-form">
+      <form method="GET" action="/book/local-search" id="search-form" class="search-form">
+
+        <!-- Hidden Fields for Filters -->
+        <input type="hidden" id="owned-filter-value" name="owned" value="">
+        <input type="hidden" id="favorite-filter-value" name="favorite" value="">
+        <input type="hidden" id="read-filter-value" name="read" value="">
+        <input type="hidden" id="currently-reading-filter-value" name="currently-reading" value="">
+        <input type="hidden" id="personal-or-academic-filter-value" name="personal-or-academic" value="any">
+        <input type="hidden" id="genre-1-filter-value" name="genre-1" value="any">
+        <input type="hidden" id="genre-filter-value" name="genre" value="">
 
         <label for="search">Search</label>
         <input type="text" id="search" name="search"
           value="{{ request.args.get('search', '') }}">
 
         {% if search_type == 'isbn' %}
-          <label><input type="radio" name="search_type" value="isbn" checked required> ISBN</label>
+          <label><input type="radio" name="search_type" value="isbn" checked > ISBN</label>
         {% else %}
-          <label><input type="radio" name="search_type" value="isbn" required> ISBN</label>
+          <label><input type="radio" name="search_type" value="isbn" > ISBN</label>
         {% endif %}
 
         {% if search_type == 'title' %}
@@ -117,7 +138,9 @@
           <label><input type="radio" name="search_type" value="author"> Author</label>
         {% endif %}
 
-        <button type="submit" class="transition_css">Search</button>
+        <button type="submit" onclick="getFilterValues()" class="transition_css">
+            Search
+        </button>
       </form>
 
       <!-- Results loop -->
@@ -214,7 +237,43 @@
 
     returnToTopBtn.addEventListener("click", upTop);
 
-</script>      
+
+    // Functions for toggling values for filters
+    // Function that builds the checkbox input values
+    function checkboxFilterValues(){
+      checkTagFilter("owned-filter", "owned-filter-value");
+      checkTagFilter("favorite-filter", "favorite-filter-value");
+      checkTagFilter("read-filter", "read-filter-value");
+      checkTagFilter("currently-reading-filter", "currently-reading-filter-value");
+    }
+
+    // Get checkbox values for input fields
+    function checkTagFilter(filterType, filterValue){
+      let checkValue = document.getElementById(filterType).checked;
+      document.getElementById(filterValue).value = checkValue;
+    }
+
+    // Event listener for radio buttons to change field value
+    function radioButtonFilters(filterType, filterValue){
+      let checkValue = document.getElementById(filterType);
+
+      checkValue.addEventListener("change", (event) => {
+        let checkValue = document.getElementById(filterType).value;
+        document.getElementById(filterValue).value = checkValue;
+      });
+
+    }
+    // Personal or Academic filter radio button values
+    radioButtonFilters("personal-or-academic-filter-any", "personal-or-academic-filter-value");
+    radioButtonFilters("personal-or-academic-filter-personal", "personal-or-academic-filter-value");
+    radioButtonFilters("personal-or-academic-filter-academic", "personal-or-academic-filter-value");
+    // Genre-1 (Fiction or Nonfiction) filter radio button values
+    radioButtonFilters("genre-1-filter-any", "genre-1-filter-value");
+    radioButtonFilters("genre-1-filter-fiction", "genre-1-filter-value");
+    radioButtonFilters("genre-1-filter-nonfiction", "genre-1-filter-value");
+    radioButtonFilters("genres", "genre-filter-value");
+
+</script>
 
 </body>
 </html>
