@@ -74,9 +74,9 @@
 
       </select>
 
-      <button>Apply Filters</button>
+      <button class="transition_css">Apply Filters</button>
 
-      <button onclick=window.location.href='/book/local-search'>
+      <button onclick=window.location.href='/book/local-search' class="transition_css">
         View All Books
       </button>
     </aside>
@@ -117,7 +117,7 @@
           <label><input type="radio" name="search_type" value="author"> Author</label>
         {% endif %}
 
-        <button type="submit">Search</button>
+        <button type="submit" class="transition_css">Search</button>
       </form>
 
       <!-- Results loop -->
@@ -169,7 +169,7 @@
 
               </div>
 
-              <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button">
+              <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button transition_css">
                 Go to Book Page →
               </a>
             </div>
@@ -186,7 +186,7 @@
   </div>
 
   <!-- Return to Top of Page Button -->
-  <button id="returnToTop" title="Return to the top of page">↑ Top of Page</button>
+  <button id="returnToTop" title="Return to the top of page" class="transition_css">↑ Top of Page</button>
 
   <script>
     // Create global variable for ReturnToTop button.

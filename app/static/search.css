@@ -81,8 +81,6 @@ input[type="radio"] {
     color: white;
     font-weight: 600;
     cursor: pointer;
-    transition-delay: 0.5s;
-    transition-timing-function: ease-in-out;
 }
 
 .search-form button:hover {
@@ -146,8 +144,6 @@ input[type="radio"] {
     border-radius: 8px;
     color: white;
     font-size: 0.85rem;
-    transition-delay: 0.5s;
-    transition-timing-function: ease-in-out;
 }
 
 .view-button:hover {
@@ -163,23 +159,26 @@ input[type="radio"] {
 }
 
 /* Styling for Return to Top button */
-    #returnToTop {
-        display: none;
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 99;
-        background-color: #6366f1;
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-        transition-delay: 0.5s;
-        transition-timing-function: ease-in-out;
-    }
+#returnToTop {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    background-color: #6366f1;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
 
-    #returnToTop:hover {
-        background-color: #4f46e5;
-    }
+#returnToTop:hover {
+    background-color: #4f46e5;
+}
+
+/* Transition formatting */
+.transition_css {
+      transition: background-color 0.3s ease-in-out;
+}    

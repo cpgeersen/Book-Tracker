@@ -103,8 +103,6 @@ button {
     color: white;
     font-weight: 700;
     cursor: pointer;
-    transition-delay: 0.5s;
-    transition-timing-function: ease-in-out;
 }
 
 button:hover {
@@ -123,4 +121,9 @@ button:hover {
     color: #9fbaff;
     cursor: pointer;
     font-weight: 600;
+}
+
+/* Transition formatting */
+.transition_css {
+      transition: background-color 0.3s ease-in-out;
 }
