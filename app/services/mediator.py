@@ -347,6 +347,11 @@ def read(json_input=None, read_type='book-all'):
             json_output = {}
             book_result_number = 1
             for book in all_books_by_author:
+                # Accounts for a scenario where all author books are deleted
+                # and the author is still in the database and can cause an empty
+                # entry to show in the search frontend
+                if book.get('Error') is not None:
+                    continue
                 json_output[f'Book_Result_{book_result_number}'] = book
                 book_result_number += 1
 
