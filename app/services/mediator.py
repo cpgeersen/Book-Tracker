@@ -22,83 +22,261 @@ BOOK_GENRES = genres_for_table()
     #print(read_book('0061091464'))
     #print(read())
     #pass
+def complete_book_from_isbn_ol(isbn):
+    ol_data = search_books_by_isbn(isbn)
 
-def complete_book_from_ol(query,):
-    #searh by title
-    search_results = search_books_by_title(query=query)
-    #search fails
-    if "error" in search_results:
-        return search_results
-    #search succeeds, return search results for user to select from
-    docs = search_results['docs']
-    if 'docs' not in search_results:
-        return {"error": "No search results found for the given title."}
-        #create_book(json) #should we handle 3.2.2 like this ?
-    
-    if len(docs) == 0:
-        return {"error": "No search results found for the given title."}
-    #testing first result
-    first_result = search_results[docs][0]
-    book_title = first_result.get('title')
-    first_publish_year = first_result.get('first_publish_year')    
-    isbn_list = first_result.get('isbn', [])
-    publishers = first_result.get("publisher", [])
-    subjects = first_result.get("subject", [])
-    # Cover image
-    cover_url = None
-    if "cover_i" in first_result:
-        cover_id = first_result["cover_i"]
-        cover_url = f"https://covers.openlibrary.org/b/id/{cover_id}-L.jpg"
-    # now works api 
-    work_key = first_result.get('key')
+    if "error" in ol_data:
+        return {"error": "ISBN not present in OpenLibrary, please use another ISBN or search via Title"}
 
-    #setup empty lists
-    author_olids = []
-    author_names = []
-    description = None
+    publish_year = ol_data.get("publish_date")
+
+    publishers = ol_data.get("publishers", [])
+    publisher = publishers[0] if publishers else None
+
+    isbn_list = []
+    if "isbn_10" in ol_data:
+        isbn_list.extend(ol_data["isbn_10"])
+    if "isbn_13" in ol_data:
+        isbn_list.extend(ol_data["isbn_13"])
+
+    cover_image_url = None
+    if "covers" in ol_data and isinstance(ol_data["covers"], list) and len(ol_data["covers"]) > 0:
+        cover_id = ol_data["covers"][0]
+        cover_image_url = f"https://covers.openlibrary.org/b/id/{cover_id}-L.jpg"
+
+    work_key = None
+    if "works" in ol_data and isinstance(ol_data["works"], list) and len(ol_data["works"]) > 0:
+        if "key" in ol_data["works"][0]:
+            work_key = ol_data["works"][0]["key"]
+
+    author_1 = None
+    author_1_olid = None
+    author_2 = None
+    author_2_olid = None
+    publisher_olid = None
+    summary = None
 
     if work_key:
-        # Get work data from imported function, which will include author OLIDs
         work_data = get_work_data(work_key)
-        #check if work_data is a dict and contains "authors" key before trying to access it PS. ALL API CALLS IN OL ARE Dictionaries
+
         if isinstance(work_data, dict):
 
-            # Description
             if "description" in work_data:
                 if isinstance(work_data["description"], dict):
-                    description = work_data["description"].get("value")
+                    summary = work_data["description"].get("value")
                 else:
-                    description = work_data["description"]
+                    summary = work_data["description"]
 
-            # subjects "GENRE"
-            if "subjects" in work_data:
-                genre = work_data["subjects"]
+            if "publishers" in work_data:
+                for pub in work_data["publishers"]:
+                    if isinstance(pub, dict) and "key" in pub:
+                        publisher_olid = pub["key"]
+                        break
 
-            # Authors
             if "authors" in work_data:
-                for author in work_data["authors"]:
-                    if "author" in author and "key" in author["author"]:
-                        olid = author["author"]["key"]
-                        author_olids.append(olid)
+                authors = work_data["authors"]
 
-                        # Fetch author name
-                        author_data = get_author_info_from_authorid(olid)
-                        if isinstance(author_data, dict):
-                            name = author_data.get("name")
-                            if name:
-                                author_names.append(name)
+                if len(authors) >= 1:
+                    a1 = authors[0]
+                    if "author" in a1 and "key" in a1["author"]:
+                        author_1_olid = a1["author"]["key"]
+                        a1_data = get_author_info_from_authorid(author_1_olid)
+                        if isinstance(a1_data, dict):
+                            author_1 = a1_data.get("name")
 
+                if len(authors) >= 2:
+                    a2 = authors[1]
+                    if "author" in a2 and "key" in a2["author"]:
+                        author_2_olid = a2["author"]["key"]
+                        a2_data = get_author_info_from_authorid(author_2_olid)
+                        if isinstance(a2_data, dict):
+                            author_2 = a2_data.get("name")
 
-    complete_book_json = {
-            "title": book_title,
-            "publish_year": first_publish_year,
-            "isbn_list": isbn_list,
-            "work_key": work_key,
-            "author_olids": author_olids,
-            "first_publish_year": first_publish_year
+    return {
+        "Author_1": author_1,
+        "Author_1_OLID": author_1_olid,
+        "Author_2": author_2,
+        "Author_2_OLID": author_2_olid,
+        "Publisher": publisher,
+        "Publisher_OLID": publisher_olid,
+        "Summary": summary,
+        "Publish_Year": publish_year,
+        "Cover_Image_URL": cover_image_url
+    }
+def complete_books_from_title_ol(query, limit=5):
+    search_results = search_books_by_title(query=query, limit=limit)
+
+    if "error" in search_results:
+        return search_results
+
+    if "docs" not in search_results or len(search_results["docs"]) == 0:
+        return {"error": "No search results found for the given title."}
+
+    docs = search_results["docs"]
+    final_results = {}
+
+    for index, result in enumerate(docs, start=1):
+        title = result.get("title")
+        publish_year = result.get("first_publish_year")
+
+        isbn_list = result.get("isbn", [])
+        isbn = isbn_list[0] if isbn_list else None
+
+        publishers = result.get("publisher", [])
+        publisher = publishers[0] if publishers else None
+
+        cover_image_url = None
+        if "cover_i" in result:
+            cover_id = result["cover_i"]
+            cover_image_url = f"https://covers.openlibrary.org/b/id/{cover_id}-L.jpg"
+
+        work_key = result.get("key")
+
+        author_1 = None
+        author_1_olid = None
+        author_2 = None
+        author_2_olid = None
+        publisher_olid = None
+        summary = None
+
+        if work_key:
+            work_data = get_work_data(work_key)
+
+            if isinstance(work_data, dict):
+
+                if "description" in work_data:
+                    if isinstance(work_data["description"], dict):
+                        summary = work_data["description"].get("value")
+                    else:
+                        summary = work_data["description"]
+
+                if "publishers" in work_data:
+                    for pub in work_data["publishers"]:
+                        if isinstance(pub, dict) and "key" in pub:
+                            publisher_olid = pub["key"]
+                            break
+
+                if "authors" in work_data:
+                    authors = work_data["authors"]
+
+                    if len(authors) >= 1:
+                        a1 = authors[0]
+                        if "author" in a1 and "key" in a1["author"]:
+                            author_1_olid = a1["author"]["key"]
+                            a1_data = get_author_info_from_authorid(author_1_olid)
+                            if isinstance(a1_data, dict):
+                                author_1 = a1_data.get("name")
+
+                    if len(authors) >= 2:
+                        a2 = authors[1]
+                        if "author" in a2 and "key" in a2["author"]:
+                            author_2_olid = a2["author"]["key"]
+                            a2_data = get_author_info_from_authorid(author_2_olid)
+                            if isinstance(a2_data, dict):
+                                author_2 = a2_data.get("name")
+
+        final_results[f"Book_Result_{index}"] = {
+            "Title": title,
+            "Publish_Year": publish_year,
+            "ISBN": isbn,
+            "Publisher": publisher,
+            "Publisher_OLID": publisher_olid,
+            "Author_1": author_1,
+            "Author_1_OLID": author_1_olid,
+            "Author_2": author_2,
+            "Author_2_OLID": author_2_olid,
+            "Summary": summary,
+            "Cover_Image_URL": cover_image_url
         }
-    return complete_book_json
 
+    return final_results
+def complete_books_from_author_ol(first_name, last_name, limit=5):
+    search_results = search_books_by_author(first_name, last_name, limit=limit)
+
+    if "error" in search_results:
+        return search_results
+
+    if "docs" not in search_results or len(search_results["docs"]) == 0:
+        return {"error": "No search results found for the given author."}
+
+    docs = search_results["docs"]
+    final_results = {}
+
+    for index, result in enumerate(docs, start=1):
+        title = result.get("title")
+        publish_year = result.get("first_publish_year")
+
+        isbn_list = result.get("isbn", [])
+        isbn = isbn_list[0] if isbn_list else None
+
+        publishers = result.get("publisher", [])
+        publisher = publishers[0] if publishers else None
+
+        cover_image_url = None
+        if "cover_i" in result:
+            cover_id = result["cover_i"]
+            cover_image_url = f"https://covers.openlibrary.org/b/id/{cover_id}-L.jpg"
+
+        work_key = result.get("key")
+
+        author_1 = None
+        author_1_olid = None
+        author_2 = None
+        author_2_olid = None
+        publisher_olid = None
+        summary = None
+
+        if work_key:
+            work_data = get_work_data(work_key)
+
+            if isinstance(work_data, dict):
+
+                if "description" in work_data:
+                    if isinstance(work_data["description"], dict):
+                        summary = work_data["description"].get("value")
+                    else:
+                        summary = work_data["description"]
+
+                if "publishers" in work_data:
+                    for pub in work_data["publishers"]:
+                        if isinstance(pub, dict) and "key" in pub:
+                            publisher_olid = pub["key"]
+                            break
+
+                if "authors" in work_data:
+                    authors = work_data["authors"]
+
+                    if len(authors) >= 1:
+                        a1 = authors[0]
+                        if "author" in a1 and "key" in a1["author"]:
+                            author_1_olid = a1["author"]["key"]
+                            a1_data = get_author_info_from_authorid(author_1_olid)
+                            if isinstance(a1_data, dict):
+                                author_1 = a1_data.get("name")
+
+                    if len(authors) >= 2:
+                        a2 = authors[1]
+                        if "author" in a2 and "key" in a2["author"]:
+                            author_2_olid = a2["author"]["key"]
+                            a2_data = get_author_info_from_authorid(author_2_olid)
+                            if isinstance(a2_data, dict):
+                                author_2 = a2_data.get("name")
+
+        final_results[f"Book_Result_{index}"] = {
+            "Title": title,
+            "Publish_Year": publish_year,
+            "ISBN": isbn,
+            "Publisher": publisher,
+            "Publisher_OLID": publisher_olid,
+            "Author_1": author_1,
+            "Author_1_OLID": author_1_olid,
+            "Author_2": author_2,
+            "Author_2_OLID": author_2_olid,
+            "Summary": summary,
+            "Cover_Image_URL": cover_image_url
+        }
+
+    return final_results
 # POST - Takes JSON as input
 def create(json_input, create_type):
     try:
