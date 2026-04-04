@@ -8,10 +8,11 @@ from app.services.Book.Book import (create_book, read_book, read_all_books, read
                                     update_book_chapters_completed, update_book_tags, delete_book,
                                     create_book_note, read_book_notes, update_book_note, update_book_cover_image,
                                     delete_book_note, is_note_id_in_database, update_book_genre, create_book_genre,
-                                    delete_book_cover_image)
+                                    delete_book_cover_image, is_in_book_table)
 from app.services.openlibrary_api import search_books_by_title, get_work_data
 
 SUCCESS = 200
+FOUND = 302
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 BOOK_GENRES = genres_for_table()
@@ -281,6 +282,8 @@ def complete_books_from_author_ol(first_name, last_name, limit=5):
 def create(json_input, create_type):
     try:
         if create_type == 'book-local':
+            if not is_in_book_table(json_input['ISBN']):
+                json.dumps({'Error': 'Book already in database'}), FOUND
             json_input = validate_book_from_local(json_input)
             result = create_book(json_input)
             return result
