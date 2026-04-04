@@ -31,7 +31,7 @@ def allowed_file(filename):
 # Create the Database
 #create_db()
 #create_sample_books()
-#create_many_records(100)
+create_many_records(100)
 
 
 def create_routes(app): # Placeholder returns for unfinished pages
@@ -208,7 +208,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
     def local_search_page():
         search_type = request.args.get('search_type')
         filter_type = dict(request.args)
-        print(filter_type)
+        #print(filter_type)
 
         if search_type == 'isbn':
             isbn = request.args.get('search', 'isbn')
@@ -279,7 +279,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
                                        search_type='author', book_genres=BOOK_GENRES_SORTED), 200
         else:
             try:
-                book_result = read()
+                book_result = read(json_filters=filter_type)
                 return render_template('search.html', books=book_result,
                                        book_genres=BOOK_GENRES_SORTED), 200
             except TypeError: # When there are not books

@@ -9,6 +9,7 @@ from app.services.Book.Book import (create_book, read_book, read_all_books, read
                                     create_book_note, read_book_notes, update_book_note, update_book_cover_image,
                                     delete_book_note, is_note_id_in_database, update_book_genre, create_book_genre,
                                     delete_book_cover_image, is_in_book_table)
+from app.services.filter_search_results import filter_results
 from app.services.openlibrary_api import search_books_by_title, get_work_data
 
 SUCCESS = 200
@@ -313,10 +314,13 @@ def create(json_input, create_type):
         return error, BAD_REQUEST
 
 # GET - Takes JSON as input
-def read(json_input=None, read_type='book-all'):
+def read(json_input=None, json_filters=None, read_type='book-all'):
     try:
         if read_type == 'book-all':
             result = read_all_books()
+
+            #filtered_results = filter_results(json_filters, result)
+
             return result
 
         elif read_type == 'book-isbn':
