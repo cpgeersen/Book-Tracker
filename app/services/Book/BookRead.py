@@ -597,7 +597,7 @@ def read_isbn_by_author(author_last_name, author_first_name=None):
     if len(criteria) == 2:
         last_name = criteria[0]
         first_name = criteria[1]
-        read_query = f"SELECT B.ISBN FROM BookAuthor AS B JOIN Authors as A ON A.Author_ID = B.Author_ID WHERE A.Author_Last_Name = ? AND A.Author_First_Name = ?"
+        read_query = f"SELECT B.ISBN FROM BookAuthor AS B JOIN Authors as A ON A.Author_ID = B.Author_ID WHERE A.Author_Last_Name LIKE ? AND A.Author_First_Name LIKE ?"
         cursor.execute(read_query, (last_name, first_name))
         result = cursor.fetchall()
         conn.close()
@@ -605,7 +605,7 @@ def read_isbn_by_author(author_last_name, author_first_name=None):
     # Returns results when author's last name provided as search criteria.
     else:
         last_name = criteria[0]
-        read_query = f"SELECT B.ISBN FROM BookAuthor AS B JOIN Authors as A ON A.Author_ID = B.Author_ID WHERE A.Author_Last_Name = ?"
+        read_query = f"SELECT B.ISBN FROM BookAuthor AS B JOIN Authors as A ON A.Author_ID = B.Author_ID WHERE A.Author_Last_Name LIKE ?"
         cursor.execute(read_query, (last_name,))
         result = cursor.fetchall()
         conn.close()

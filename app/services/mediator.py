@@ -283,6 +283,7 @@ def complete_books_from_author_ol(first_name, last_name, limit=5):
 def create(json_input, create_type):
     try:
         if create_type == 'book-local':
+            # !!WIP!! Note: This fix my break, look out in future
             if not is_in_book_table(json_input['ISBN']):
                 json.dumps({'Error': 'Book already in database'}), FOUND
             json_input = validate_book_from_local(json_input)
@@ -314,13 +315,15 @@ def create(json_input, create_type):
         return error, BAD_REQUEST
 
 # GET - Takes JSON as input
-def read(json_input=None, json_filters=None, read_type='book-all'):
+def read(json_input=None, read_type='book-all', filter_json=None):
     try:
         if read_type == 'book-all':
+
             result = read_all_books()
 
-            #filtered_results = filter_results(json_filters, result)
-
+            if len(filter_json) != 0 or filter_json is None:
+                result = filter_results(filter_json, result)
+            #print(result)
             return result
 
         elif read_type == 'book-isbn':

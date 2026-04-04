@@ -31,7 +31,7 @@ def allowed_file(filename):
 # Create the Database
 #create_db()
 #create_sample_books()
-create_many_records(100)
+#create_many_records(100)
 
 
 def create_routes(app): # Placeholder returns for unfinished pages
@@ -214,14 +214,15 @@ def create_routes(app): # Placeholder returns for unfinished pages
             isbn = request.args.get('search', 'isbn')
 
             if len(isbn) == 0:
-                book_result = read()
+                book_result = read(filter_json=filter_type)
                 return render_template('search.html', books=book_result,
                                        search_type='isbn', book_genres=BOOK_GENRES_SORTED), 200
 
             # Create a dict with the isbn, makes it possible to reuse mediator functions
             isbn_dict = {"ISBN": isbn}
             try:
-                book_result = json.loads(read(isbn_dict, 'book-isbn'))
+                #!!WIP!! may need a separate read since this uses other syntax, verify
+                book_result = json.loads(read(isbn_dict, 'book-isbn', filter_json=filter_type))
 
                 book_result = json.dumps({"Book_Result_1" : book_result})
                 book_result = json.loads(book_result)
@@ -240,12 +241,12 @@ def create_routes(app): # Placeholder returns for unfinished pages
             title = request.args.get('search', 'title')
 
             if len(title) == 0:
-                book_result = read()
+                book_result = read(filter_json=filter_type)
                 return render_template('search.html', books=book_result,
                                        search_type='title', book_genres=BOOK_GENRES_SORTED), 200
 
             title_json = {'Title': title.strip()}
-            book_result = json.loads(read(title_json, 'book-title'))
+            book_result = json.loads(read(title_json, 'book-title', filter_json=filter_type))
 
             if dict(book_result).get('Error') == 'Title not found':
                 return render_template('search.html', books={},
@@ -259,7 +260,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
             author_name_list = author_name.split(' ')
 
             if len(author_name) == 0:
-                book_result = read()
+                book_result = read(filter_json=filter_type)
                 return render_template('search.html', books=book_result,
                                        search_type='author', book_genres=BOOK_GENRES_SORTED), 200
 
@@ -279,7 +280,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
                                        search_type='author', book_genres=BOOK_GENRES_SORTED), 200
         else:
             try:
-                book_result = read(json_filters=filter_type)
+                book_result = read(filter_json=filter_type)
                 return render_template('search.html', books=book_result,
                                        book_genres=BOOK_GENRES_SORTED), 200
             except TypeError: # When there are not books

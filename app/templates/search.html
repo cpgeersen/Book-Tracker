@@ -26,7 +26,7 @@
 
       <label><input type="checkbox" name="owned" id="owned-filter"> Owned</label>
       <label><input type="checkbox" name="favorite" id="favorite-filter"> Favorite</label>
-      <label><input type="checkbox" name="read" id="read-filter"> Read</label>
+      <label><input type="checkbox" name="completed" id="completed-filter"> Completed</label>
       <label><input type="checkbox" name="currently-reading" id="currently-reading-filter"> Currently Reading</label>
 
       <fieldset>
@@ -110,7 +110,7 @@
         <!-- Hidden Fields for Filters -->
         <input type="hidden" id="owned-filter-value" name="owned" value="">
         <input type="hidden" id="favorite-filter-value" name="favorite" value="">
-        <input type="hidden" id="read-filter-value" name="read" value="">
+        <input type="hidden" id="completed-filter-value" name="completed" value="">
         <input type="hidden" id="currently-reading-filter-value" name="currently-reading" value="">
         <input type="hidden" id="personal-or-academic-filter-value" name="personal-or-academic" value="any">
         <input type="hidden" id="genre-1-filter-value" name="genre-1" value="any">
@@ -243,7 +243,7 @@
     function checkboxFilterValues(){
       checkTagFilter("owned-filter", "owned-filter-value");
       checkTagFilter("favorite-filter", "favorite-filter-value");
-      checkTagFilter("read-filter", "read-filter-value");
+      checkTagFilter("completed-filter", "completed-filter-value");
       checkTagFilter("currently-reading-filter", "currently-reading-filter-value");
     }
 
