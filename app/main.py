@@ -264,9 +264,9 @@ def create_routes(app): # Placeholder returns for unfinished pages
                                        search_type='author', book_genres=BOOK_GENRES_SORTED), 200
 
             match len(author_name_list):
-                case 1:author_name_json = {'Author_Last_Name': author_name_list[0].strip().capitalize()}
-                case 2: author_name_json = {'Author_Last_Name': author_name_list[1].strip().capitalize(),
-                                            'Author_First_Name': author_name_list[0].strip().capitalize()}
+                case 1:author_name_json = {'Author_Last_Name': author_name_list[0].strip()}
+                case 2: author_name_json = {'Author_Last_Name': author_name_list[1].strip(),
+                                            'Author_First_Name': author_name_list[0].strip()}
                 case _: return 'Not valid' # Add error pop up here
 
             book_result = json.loads(read(author_name_json, 'book-author'))
