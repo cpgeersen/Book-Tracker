@@ -13,7 +13,7 @@
 
 ### TRELLO BOARD
 
-![Sprint 4 Trello Board]()
+![Sprint 4 Trello Board](https://github.com/cpgeersen/Book-Tracker/blob/main/images/sprint-status-update-images/sprint_4_week_2_backlog.png)
  
 ### STATUS UPDATE DETAILS
 Tasks Scheduled for this week:
