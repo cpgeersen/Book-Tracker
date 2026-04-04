@@ -46,4 +46,16 @@
     /* Add shadow detail around table header section. */
     th{
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      cursor: pointer;      
+    }
+
+    /* Adds hover effect for table header cells. */
+    th:hover {
+      background-color: #4f46e5
+    }
+
+    /* Transition formatting */
+    .transition_css {
+      transition: background-color 0.3s ease-in-out;
     }
