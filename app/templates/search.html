@@ -24,30 +24,68 @@
       <form method="GET" action="/book/local-search">
         <h2>Filter by Tag</h2>
 
-      <label><input type="checkbox" name="owned" id="owned-filter"> Owned</label>
-      <label><input type="checkbox" name="favorite" id="favorite-filter"> Favorite</label>
-      <label><input type="checkbox" name="completed" id="completed-filter"> Completed</label>
-      <label><input type="checkbox" name="currently-reading" id="currently-reading-filter"> Currently Reading</label>
+        <!-- Filter persistence on reload and submission of form -->
+        <!-- based on checking filter_json -->
+
+        <label><input type="checkbox" name="owned" id="owned-filter"
+                      {% if filter_json.get('owned') == 'true' %}
+                        checked
+                      {% endif %}
+        > Owned
+        </label>
+
+        <label><input type="checkbox" name="favorite" id="favorite-filter"
+                      {% if filter_json.get('favorite') == 'true' %}
+                        checked
+                      {% endif %}
+
+        > Favorite
+        </label>
+
+        <label><input type="checkbox" name="completed" id="completed-filter"
+                      {% if filter_json.get('completed') == 'true' %}
+                        checked
+                      {% endif %}
+        > Completed
+        </label>
+
+      <label><input type="checkbox" name="currently-reading" id="currently-reading-filter"
+                    {% if filter_json.get('currently-reading') == 'true' %}
+                      checked
+                    {% endif %}
+      > Currently Reading
+      </label>
 
       <fieldset>
             <legend>Personal or Academic</legend>
         <div class="radio-group">
-                  <label>
-                      <input type="radio" id="personal-or-academic-filter-any"
-                             name="personal_or_academic" value="any" checked>
-                      Any
-                  </label>
-                  <label>
-                      <input type="radio" id="personal-or-academic-filter-personal"
-                             name="personal_or_academic" value="personal">
-                      Personal
-                  </label>
+          <!-- Filter persistence on reload and submission of form -->
+          <!-- based on checking filter_json -->
+          <label>
+            <input type="radio" id="personal-or-academic-filter-any"
+                   name="personal_or_academic" value="any" checked>
+            Any
+          </label>
 
-                  <label>
-                      <input type="radio" id="personal-or-academic-filter-academic"
-                             name="personal_or_academic" value="academic">
-                      Academic
-                  </label>
+          <label>
+            <input type="radio" id="personal-or-academic-filter-personal"
+                    name="personal_or_academic" value="personal"
+                      {% if filter_json.get('personal-or-academic') == 'personal' %}
+                        checked
+                      {% endif %}
+            >
+            Personal
+          </label>
+
+          <label>
+            <input type="radio" id="personal-or-academic-filter-academic"
+                   name="personal_or_academic" value="academic"
+                    {% if filter_json.get('personal-or-academic') == 'academic' %}
+                      checked
+                    {% endif %}
+            >
+            Academic
+          </label>
         </div>
       </fieldset>
 
@@ -55,6 +93,8 @@
       <fieldset>
             <legend>Fiction or Nonfiction</legend>
         <div class="radio-group">
+          <!-- Filter persistence on reload and submission of form -->
+          <!-- based on checking filter_json -->
                   <label>
                       <input type="radio" id="genre-1-filter-any"
                              name="Genre_1" value="any" checked>
@@ -62,13 +102,21 @@
                   </label>
                   <label>
                       <input type="radio" id="genre-1-filter-fiction"
-                             name="Genre_1" value="fiction">
+                             name="Genre_1" value="fiction"
+                             {% if filter_json.get('genre-1') == 'fiction' %}
+                                checked
+                             {% endif %}
+                      >
                       Fiction
                   </label>
 
                   <label>
                       <input type="radio" id="genre-1-filter-nonfiction"
-                             name="Genre_1" value="nonfiction">
+                             name="Genre_1" value="nonfiction"
+                             {% if filter_json.get('genre-1') == 'nonfiction' %}
+                                checked
+                             {% endif %}
+                      >
                       Nonfiction
                   </label>
         </div>
@@ -76,7 +124,20 @@
 
       <label for="genres">Choose a Genre</label>
       <select name="genres" id="genres">
-        <option value="None">--Choose an option:--</option>
+        <!-- Filter persistence on reload and submission of form -->
+        <!-- based on checking filter_json -->
+        <!-- Hackish way of implementing for genre, could be improved -->
+        <!-- Unfortunately very fragile -->
+        {% if filter_json.get('genre') != None %}
+          {% if filter_json.get('genre').split(',')[0] in book_genres.values() %}
+            <option value="{{ filter_json.get('genre') }}">{{ filter_json.get('genre').split(',')[0].title() }}</option>
+          {% else %}
+            <option value="None">--Choose an option:--</option>
+        {% endif %}
+        {% else %}
+          <option value="None">--Choose an option:--</option>
+        {% endif %}
+
         {% for genre_id, genre in book_genres.items() %}
           <option name="genre" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
         {% endfor %}
@@ -108,13 +169,69 @@
       <form method="GET" action="/book/local-search" id="search-form" class="search-form">
 
         <!-- Hidden Fields for Filters -->
-        <input type="hidden" id="owned-filter-value" name="owned" value="">
-        <input type="hidden" id="favorite-filter-value" name="favorite" value="">
-        <input type="hidden" id="completed-filter-value" name="completed" value="">
-        <input type="hidden" id="currently-reading-filter-value" name="currently-reading" value="">
-        <input type="hidden" id="personal-or-academic-filter-value" name="personal-or-academic" value="any">
-        <input type="hidden" id="genre-1-filter-value" name="genre-1" value="any">
-        <input type="hidden" id="genre-filter-value" name="genre" value="">
+        <!-- Filter persistence on reload and submission of form -->
+        <!-- based on checking filter_json -->
+        <input type="hidden" id="owned-filter-value" name="owned"
+               {% if filter_json.get('owned') == 'true' %}
+                  value="true"
+               {% else %}
+                  value=""
+               {% endif %}
+        >
+
+        <input type="hidden" id="favorite-filter-value" name="favorite"
+               {% if filter_json.get('favorite') == 'true' %}
+                  value="true"
+               {% else %}
+                  value=""
+               {% endif %}
+        >
+
+        <input type="hidden" id="completed-filter-value" name="completed"
+               {% if filter_json.get('completed') == 'true' %}
+                  value="true"
+               {% else %}
+                  value=""
+               {% endif %}
+        >
+
+        <input type="hidden" id="currently-reading-filter-value" name="currently-reading"
+               {% if filter_json.get('currently-reading') == 'true' %}
+                  value="true"
+               {% else %}
+                  value=""
+               {% endif %}
+        >
+
+        <input type="hidden" id="personal-or-academic-filter-value" name="personal-or-academic"
+               {% if filter_json.get('personal-or-academic') == 'personal' %}
+                  value="personal"
+               {% elif filter_json.get('personal-or-academic') == 'academic' %}
+                  value="academic"
+               {% else %}
+                  value="any"
+               {% endif %}
+        >
+
+        <input type="hidden" id="genre-1-filter-value" name="genre-1"
+               {% if filter_json.get('genre-1') == 'fiction' %}
+                  value="fiction"
+               {% elif filter_json.get('genre-1') == 'nonfiction' %}
+                  value="nonfiction"
+               {% else %}
+                  value="any"
+               {% endif %}
+        >
+
+
+        <input type="hidden" id="genre-filter-value" name="genre"
+               {% if filter_json.get('genre') != None %}
+                  value="{{ filter_json.get('genre') }}"
+               {% else %}
+                  value=""
+               {% endif %}
+        >
+
         <input type="hidden" id="filtered" name="filtered" value="false">
 
         <label for="search">Search</label>
@@ -247,18 +364,37 @@
       checkTagFilter("completed-filter", "completed-filter-value");
       checkTagFilter("currently-reading-filter", "currently-reading-filter-value");
 
+      // Required if the user reloads the page and event listener is never used
+      // on submission
+      checkRadioFilters("personal-or-academic-filter-value");
+      checkRadioFilters("genre-1-filter-value");
     }
 
     // Get checkbox values for input fields
     function checkTagFilter(filterType, filterValue){
       let checkValue = document.getElementById(filterType).checked;
-      console.log(checkValue)
 
+      // needed for when the tag filters make filtered true
       if (checkValue === true){
         document.getElementById('filtered').value = 'true';
       }
 
       document.getElementById(filterValue).value = checkValue;
+    }
+
+    // Toggles filter values for radio button based inputs
+    function checkRadioFilters(filterValue){
+      let filteredValue = document.getElementById('filtered').value;
+      if (filteredValue !== 'true'){
+        let filter_val = document.getElementById(filterValue).value;
+
+        // Toggles filter value if not any
+        if (filter_val !== 'any'){
+          document.getElementById('filtered').value = 'true';
+        } else {
+          document.getElementById('filtered').value = 'false';
+        }
+      }
     }
 
     // Event listener for radio buttons to change field value

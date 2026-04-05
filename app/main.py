@@ -208,15 +208,15 @@ def create_routes(app): # Placeholder returns for unfinished pages
     def local_search_page():
         search_type = request.args.get('search_type')
         filter_type = dict(request.args)
-        #print(filter_type)
+        print(filter_type)
 
         if search_type == 'isbn':
             isbn = request.args.get('search', 'isbn')
 
             if len(isbn) == 0:
                 book_result = read(filter_json=filter_type)
-                return render_template('search.html', books=book_result,
-                                       search_type='isbn', book_genres=BOOK_GENRES_SORTED), 200
+                return render_template('search.html', books=book_result, search_type='isbn',
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
 
             # Create a dict with the isbn, makes it possible to reuse mediator functions
             isbn_dict = {"ISBN": isbn}
@@ -232,32 +232,32 @@ def create_routes(app): # Placeholder returns for unfinished pages
                     book_result = json.loads(book_result)
 
                 if book_result == '':
-                    return render_template('search.html', books={},
-                                           search_type='isbn', book_genres=BOOK_GENRES_SORTED), 200
+                    return render_template('search.html', books={}, search_type='isbn',
+                                           book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
 
-                return render_template('search.html', books=book_result,
-                                       search_type='isbn', book_genres=BOOK_GENRES_SORTED), 200
+                return render_template('search.html', books=book_result, search_type='isbn',
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
             except TypeError:   # When there is no book with ISBN match
-                return render_template('search.html', books={},
-                                       search_type='isbn', book_genres=BOOK_GENRES_SORTED), 200
+                return render_template('search.html', books={}, search_type='isbn',
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
 
         elif search_type == 'title':
             title = request.args.get('search', 'title')
 
             if len(title) == 0:
                 book_result = read(filter_json=filter_type)
-                return render_template('search.html', books=book_result,
-                                       search_type='title', book_genres=BOOK_GENRES_SORTED), 200
+                return render_template('search.html', books=book_result, search_type='title',
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
 
             title_json = {'Title': title.strip()}
             book_result = json.loads(read(title_json, 'book-title', filter_json=filter_type))
 
             if dict(book_result).get('Error') == 'Title not found':
-                return render_template('search.html', books={},
-                                       search_type='title', book_genres=BOOK_GENRES_SORTED), 200
+                return render_template('search.html', books={},search_type='title',
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
             else:
-                return render_template('search.html', books=book_result,
-                                       search_type='title', book_genres=BOOK_GENRES_SORTED), 200
+                return render_template('search.html', books=book_result, search_type='title',
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
 
         elif search_type == 'author':
             author_name = request.args.get('search', 'author')
@@ -265,8 +265,8 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
             if len(author_name) == 0:
                 book_result = read(filter_json=filter_type)
-                return render_template('search.html', books=book_result,
-                                       search_type='author', book_genres=BOOK_GENRES_SORTED), 200
+                return render_template('search.html', books=book_result, search_type='author',
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
 
             match len(author_name_list):
                 case 1:author_name_json = {'Author_Last_Name': author_name_list[0].strip()}
@@ -277,19 +277,19 @@ def create_routes(app): # Placeholder returns for unfinished pages
             book_result = json.loads(read(author_name_json, 'book-author', filter_json=filter_type))
 
             if dict(book_result).get('Error') == 'Author not found':
-                return render_template('search.html', books={},
-                                       search_type='author', book_genres=BOOK_GENRES_SORTED), 200
+                return render_template('search.html', books={}, search_type='author',
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
             else:
-                return render_template('search.html', books=book_result,
-                                       search_type='author', book_genres=BOOK_GENRES_SORTED), 200
+                return render_template('search.html', books=book_result, search_type='author',
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
         else:
             try:
                 book_result = read(filter_json=filter_type)
                 return render_template('search.html', books=book_result,
-                                       book_genres=BOOK_GENRES_SORTED), 200
-            except TypeError: # When there are not books
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+            except TypeError: # When there are no books
                 return render_template('search.html', books={},
-                                       book_genres=BOOK_GENRES_SORTED), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
 
 
 

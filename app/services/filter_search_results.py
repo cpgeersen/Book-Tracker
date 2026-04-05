@@ -3,7 +3,6 @@ import json
 def filter_results(filter_json, json_result):
     # JSON from frontend filters
     filter_json_dict = dict(filter_json)
-    print(filter_json_dict)
 
     # Boolean filters
     filter_owned = filter_json_dict.get('owned')
