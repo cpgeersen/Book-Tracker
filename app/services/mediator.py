@@ -9,7 +9,7 @@ from app.services.Book.Book import (create_book, read_book, read_all_books, read
                                     create_book_note, read_book_notes, update_book_note, update_book_cover_image,
                                     delete_book_note, is_note_id_in_database, update_book_genre, create_book_genre,
                                     delete_book_cover_image, is_in_book_table)
-from app.services.filter_search_results import filter_results
+from app.services.filter_search_results import filter_results, filter_results_isbn
 from app.services.openlibrary_api import search_books_by_title, get_work_data, search_books_by_isbn, \
     get_author_info_from_authorid, search_books_by_author
 
@@ -316,10 +316,11 @@ def read(json_input=None, read_type='book-all', filter_json=None):
 
             result = read_all_books()
 
-            if len(filter_json) != 0 or filter_json is None:
+            if filter_json.get('filtered', 'false') == 'false':
+                return result
+            elif len(filter_json) != 0 or filter_json is not None:
                 result = filter_results(filter_json, result)
-            #print(result)
-            return result
+                return result
 
         elif read_type == 'book-isbn':
             # First get the book record via ISBN
@@ -327,6 +328,17 @@ def read(json_input=None, read_type='book-all', filter_json=None):
             # Then convert to frontend syntax for tags
             converted_result = validate_book_for_frontend(result)
             return converted_result
+
+        elif read_type == 'book-isbn-filtered':
+            # First get the book record via ISBN
+            result = read_book(json_input['ISBN'])
+
+            if filter_json.get('filtered', 'false') == 'false':
+                return result
+            elif len(filter_json) != 0 or filter_json is not None:
+                result = json.loads(result)
+                result = json.dumps(filter_results_isbn(filter_json, result))
+                return result
 
         elif read_type == 'book-title':
             all_books_by_title = json.loads(read_all_books_by_title(json_input['Title']))

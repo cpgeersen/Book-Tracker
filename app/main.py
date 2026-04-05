@@ -222,10 +222,14 @@ def create_routes(app): # Placeholder returns for unfinished pages
             isbn_dict = {"ISBN": isbn}
             try:
                 #!!WIP!! may need a separate read since this uses other syntax, verify
-                book_result = json.loads(read(isbn_dict, 'book-isbn', filter_json=filter_type))
+                book_result = json.loads(read(isbn_dict, 'book-isbn-filtered', filter_json=filter_type))
 
-                book_result = json.dumps({"Book_Result_1" : book_result})
-                book_result = json.loads(book_result)
+                # When the book does not exist
+                if book_result.get('Error') is not None or len(book_result) == 0:
+                    book_result = ''
+                else:
+                    book_result = json.dumps({"Book_Result_1" : book_result})
+                    book_result = json.loads(book_result)
 
                 if book_result == '':
                     return render_template('search.html', books={},

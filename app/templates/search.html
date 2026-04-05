@@ -34,18 +34,18 @@
         <div class="radio-group">
                   <label>
                       <input type="radio" id="personal-or-academic-filter-any"
-                             name="Personal_Or_Academic" value="any" checked>
+                             name="personal_or_academic" value="any" checked>
                       Any
                   </label>
                   <label>
                       <input type="radio" id="personal-or-academic-filter-personal"
-                             name="Personal_Or_Academic" value="personal">
+                             name="personal_or_academic" value="personal">
                       Personal
                   </label>
 
                   <label>
                       <input type="radio" id="personal-or-academic-filter-academic"
-                             name="Personal_Or_Academic" value="academic">
+                             name="personal_or_academic" value="academic">
                       Academic
                   </label>
         </div>
@@ -115,6 +115,7 @@
         <input type="hidden" id="personal-or-academic-filter-value" name="personal-or-academic" value="any">
         <input type="hidden" id="genre-1-filter-value" name="genre-1" value="any">
         <input type="hidden" id="genre-filter-value" name="genre" value="">
+        <input type="hidden" id="filtered" name="filtered" value="false">
 
         <label for="search">Search</label>
         <input type="text" id="search" name="search"
@@ -138,7 +139,7 @@
           <label><input type="radio" name="search_type" value="author"> Author</label>
         {% endif %}
 
-        <button type="submit" onclick="getFilterValues()" class="transition_css">
+        <button type="submit" onclick="checkboxFilterValues()" class="transition_css">
             Search
         </button>
       </form>
@@ -245,11 +246,18 @@
       checkTagFilter("favorite-filter", "favorite-filter-value");
       checkTagFilter("completed-filter", "completed-filter-value");
       checkTagFilter("currently-reading-filter", "currently-reading-filter-value");
+
     }
 
     // Get checkbox values for input fields
     function checkTagFilter(filterType, filterValue){
       let checkValue = document.getElementById(filterType).checked;
+      console.log(checkValue)
+
+      if (checkValue === true){
+        document.getElementById('filtered').value = 'true';
+      }
+
       document.getElementById(filterValue).value = checkValue;
     }
 
@@ -260,6 +268,13 @@
       checkValue.addEventListener("change", (event) => {
         let checkValue = document.getElementById(filterType).value;
         document.getElementById(filterValue).value = checkValue;
+
+        let filter_val = document.getElementById(filterValue).value;
+        if (filter_val !== 'any'){
+          document.getElementById('filtered').value = 'true';
+        } else {
+          document.getElementById('filtered').value = 'false';
+        }
       });
 
     }
