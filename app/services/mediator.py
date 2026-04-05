@@ -10,7 +10,8 @@ from app.services.Book.Book import (create_book, read_book, read_all_books, read
                                     delete_book_note, is_note_id_in_database, update_book_genre, create_book_genre,
                                     delete_book_cover_image, is_in_book_table)
 from app.services.filter_search_results import filter_results
-from app.services.openlibrary_api import search_books_by_title, get_work_data
+from app.services.openlibrary_api import search_books_by_title, get_work_data, search_books_by_isbn, \
+    get_author_info_from_authorid, search_books_by_author
 
 SUCCESS = 200
 FOUND = 302
@@ -18,12 +19,6 @@ BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 BOOK_GENRES = genres_for_table()
 
-#def main(): # Test main
-    #result = create(normal_data, 'book-local')
-    #print(result)
-    #print(read_book('0061091464'))
-    #print(read())
-    #pass
 def complete_book_from_isbn_ol(isbn):
     ol_data = search_books_by_isbn(isbn)
 
