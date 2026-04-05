@@ -376,7 +376,11 @@ def read(json_input=None, read_type='book-all', filter_json=None):
                 json_output[f'Book_Result_{book_result_number}'] = book
                 book_result_number += 1
 
-            return json.dumps(json_output)
+            if filter_json.get('filtered', 'false') == 'false':
+                return json.dumps(json_output)
+            elif len(filter_json) != 0 or filter_json is not None:
+                result = json.dumps(filter_results(filter_json, json_output))
+                return result
 
         elif read_type == 'book-genre':
             pass

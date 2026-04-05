@@ -274,7 +274,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
                                             'Author_First_Name': author_name_list[0].strip()}
                 case _: return 'Not valid' # Add error pop up here
 
-            book_result = json.loads(read(author_name_json, 'book-author'))
+            book_result = json.loads(read(author_name_json, 'book-author', filter_json=filter_type))
 
             if dict(book_result).get('Error') == 'Author not found':
                 return render_template('search.html', books={},
