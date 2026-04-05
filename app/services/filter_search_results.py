@@ -1,6 +1,5 @@
 import json
 
-
 def filter_results(filter_json, json_result):
     # JSON from frontend filters
     filter_json_dict = dict(filter_json)
@@ -19,7 +18,6 @@ def filter_results(filter_json, json_result):
 
 
     json_result_dict = dict(json_result)
-
 
     for key, value in json_result_dict.copy().items():
 
@@ -43,23 +41,16 @@ def filter_results(filter_json, json_result):
                 json_result_dict.pop(key)
                 continue
 
-
-        # These three break view all books need to fix
-        genre_num = 2
+        genre_num = 1
         if filter_genre != '':
             while genre_num < 5:
+                genre_num += 1
                 genre_value = value.get(f'Genre_{genre_num}')
-
                 if genre_value == filter_genre:
                     break
-
-                if genre_value is None:
-                    json_result_dict.pop(key)
-                    break
-                elif genre_value != filter_genre:
-                    json_result_dict.pop(key)
-                    break
-                genre_num += 1
+            else:
+                json_result_dict.pop(key)
+                continue
 
         if filter_genre_1 != 'any':
             if value.get('Genre_1') != filter_genre_1:
@@ -115,21 +106,17 @@ def filter_results_isbn(filter_json, json_result):
 
 
     # These three break view all books need to fix
-    genre_num = 2
+    genre_num = 1
     if filter_genre != '':
         while genre_num < 5:
+            genre_num += 1
             genre_value = json_result_dict.get(f'Genre_{genre_num}')
-
             if genre_value == filter_genre:
                 break
+        else:
+            json_result_dict = {}
+            return json_result_dict
 
-            if genre_value is None:
-                json_result_dict = {}
-                return json_result_dict
-            elif genre_value != filter_genre:
-                json_result_dict = {}
-                return json_result_dict
-            genre_num += 1
 
     if filter_genre_1 != 'any':
         if json_result_dict.get('Genre_1') != filter_genre_1:
