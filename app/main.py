@@ -1,4 +1,4 @@
-from flask import request, render_template, jsonify, redirect, url_for
+from flask import request, render_template, jsonify, redirect, url_for, send_from_directory
 from app.services.mediator import create, read, update, delete
 #from app.services.openlibrary_api import search_books # temporary markout until added
 from app.routes.test import test_bp
@@ -219,6 +219,10 @@ def create_routes(app): # Placeholder returns for unfinished pages
     def homepage():
         return render_template('homepage.html')
 
+    @app.route('/template-assets/<path:filename>', methods=['GET'])
+    def template_asset(filename):
+        return send_from_directory(app.template_folder, filename)
+
     @app.route('/search', methods=['GET'])
     def search_page():
         return render_template('search.html')
@@ -240,25 +244,13 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
 #------------------------------------------------------
 # Author: Christopher O'Brien
-03.30.26
+# 03.30.26
 # [Y/N] APPROVED (username)
 # Description: This function works to populate the Jinja User Profile template
 #------------------------------------------------------
-    import Analytic_FunctionRefactored as AF
-
     @app.route("/analytics")
     def analytics():
-        cursor = get_db_cursor()  # however you obtain it
-
-        data = {
-            "favorite_genre": AF.get_favorite_genre(cursor),
-            "total_books": AF.get_total_books(cursor),
-            "owned_books": AF.get_owned_books(cursor),
-            "currently_reading": AF.get_currently_reading(cursor),
-            "completed": AF.get_completed(cursor)
-        }
-
-    return render_template("analytics.html", **data)
+        return 'WIP', 200
 
 if __name__ == '__main__':
     pass

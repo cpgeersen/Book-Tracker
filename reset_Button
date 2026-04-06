@@ -1,19 +1,11 @@
 from flask import Flask, request
 from UserManager import UserManager
-from userProfileRefactored import reset_User_Profile, update_User_Profile0
+from userProfileRefactored import reset_User_Profile
 
 @app.route("/reset_defaults", methods=["POST"])
 def reset_defaults():
-    # Load your default settings
-    defaults = {
-        "username": "DefaultUser",
-        "mission_statement": "My mission is...",
-        "theme": 0
-    }
-
     # Write them to your JSON file
-    manager = UserManager()
-    manager.write_user_json(defaults)
+    reset_User_Profile()
 
     # Redirect back to the settings page. 
     return redirect("/user_Profile")

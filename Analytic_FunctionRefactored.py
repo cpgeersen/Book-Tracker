@@ -1,7 +1,6 @@
 import sqlite3
 import json
 import os
-from datetime import datetime, timedelta
 
 #==========================================================
 # Original Author: Christopher O'Brien
@@ -126,3 +125,66 @@ def most_read_genre(cursor):
     except sqlite3.Error as e:
         print(f"Database connection error: {e}")
         return None
+
+#---------------------------------------------------------
+# Alt - Route for Jinja Template Stats Experiment
+#---------------------------------------------------------
+@app.route('/user_Profile_Refactor')
+def profile_page():
+   total_books = total_books()
+   owned_books = total_owned_books()
+   currently_reading = total_current_books()
+   completed = total_completed_books()
+   favorite_genre = most_read_genre()
+
+   return render_template(
+   'user_Profile_Refactor.html',
+   total_books=total_books,
+   owned_books = owned_books, 
+   currently_reading = currently_reading,
+   completed=completed,
+   favorite_genre=favorite_genre
+   )
+   
+#---------------------------------------------------------
+# List of completed books
+#---------------------------------------------------------
+def show_completed():
+    cursor.execute("""
+        SELECT Books.Title AS title
+        FROM Books
+        RIGHT JOIN Tags ON Books.TagID = Tags.TagID
+        WHERE Tags.Completed = 1;
+    """)
+
+    completed = [ {"title": row[0]} for row in cursor.fetchall() ]
+
+    html = "<h3>Books Marked As Completed</h3><ul>"
+
+    for book in completed:
+        html += f"<li>{book['title']}</li>"
+
+    html += "</ul>"
+
+    return html
+#----------------------------------------------------------
+# This function html list for currently reading tagged books.
+#----------------------------------------------------------
+def show_currently_reading():
+    cursor.execute("""
+        SELECT Books.Title AS title
+        FROM Books
+        RIGHT JOIN Tags ON Books.TagID = Tags.TagID
+        WHERE Tags.Currently_Reading = 1;
+    """)
+
+    currently_reading = [ {"title": row[0]} for row in cursor.fetchall() ]
+
+    html = "<h3>Books Marked As Currently Reading</h3><ul>"
+
+    for book in currently_reading:
+        html += f"<li>{book['title']}</li>"
+
+    html += "</ul>"
+
+    return html

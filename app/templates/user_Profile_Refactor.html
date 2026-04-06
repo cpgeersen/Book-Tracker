@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- DISPLAY THE USER DATA !-->
+<head>
+    <title> User Profile </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='user_profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dark.css' if theme_switch == '1' else 'light.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}"/>
+    <link id="themeStylesheet" rel="stylesheet" href="{{ url_for('static', filename='homepage.css') }}"/>
+</head>
+
+<!-- ###THIS IS THE BEGINNING OF THE USER PROFILE STATISTICS SECTION### -->
+<body>
+  <div class="header-container">
+    <div class="right-text">
+            <h1>User Settings</h1>
+            <h1><a href="/workspaces/Book-Tracker/app/templates/homepage_v2.html">Homepage</a></h1>
+    </div>
+    <img src="{{ url_for('static', filename='images/BookTracker_Settings.png') }}" alt="User Profile Picture"
+                    alt="User Profile Picture"
+                    width="200"
+                    height="200"
+                    class="header-image">
+    </div>  
+
+    <!-- BEGINNING OF USER STATISTICS SECTION -->
+    <div class="user-statistics-container">
+
+    <!-- Jinja Route #1 in Analytic_FunctionRefactored.py -->
+
+    <table>
+        <tr>
+            <th>Total</th>
+            <th>Owned</th>
+            <th>Reading</th>
+            <th>Completed</th>
+            <th>Favorite Genre</th>
+        </tr>
+        <tr>
+            <td>{{ total_books }}</td>
+            <td>{{ owned_books }}</td>
+            <td>{{ currently_reading }}</td>
+            <td>{{ completed }}</td>
+            <td>{{ favorite_genre }}</td>
+        </tr>
+    </table>
+
+    <!-- Jinja Route #2 in userProfileRefactored.py -->
+    <ul>
+        <lable>Username</lable>
+        <li>{{ username }}</li>
+        <lable>Mission Statement</lable>
+        <li>{{ mission_statement }}</li>
+        <lable>View:</lable>
+        <li>{{ theme }}</li>
+    </ul>
+
+    </div>
+    <!-- END OF USER STATISTICS SECTION -->
+
+<br>
+<br>
+<br>
+
+    <!-- BEGINNING OF USER_BOOK_LISTS_SECTION -->
+    <div class="book-lists-container">
+
+        <!-- I WANT THIS CONTAINER LIST TO BE ON THE LEFT-->
+        <div class="left">{{ show_currently_reading()|safe }}</div>
+        <!-- I WANT THIS CONTAINER LIST TO BE ON THE RIGHT-->
+        <div class="right">{{ show_completed()|safe }}</div>
+        <!-- The safe label tells Jinja to render the HTML content as-is -->
+
+    </div>
+</main>
+</body>
+
+<footer style="text-align: center;">
+    <a href="/workspaces/Book-Tracker/app/templates/homepage_v2.html">Homepage</a>
+</footer>
+
+</html>
+
