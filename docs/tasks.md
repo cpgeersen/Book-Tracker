@@ -99,14 +99,14 @@
 ## Sprint 4
 ### Theme: Business Logic Tasks
 - [x] 2.1: Create function to use pulled information from the OpenLibrary API to add to book database (US201 and US202)
-- [ ] 3.2.5 - Case: Updating a Locally added book with OL data
+- [x] 3.2.5 - Case: Updating a Locally added book with OL data
 - [x] 4.3: Create export/import CSV function. (US402)
 - [x] 4.4: Create database purge function. (US403)
-- [ ] 4.11: Tag filter functionality
-- [ ] 4.12: Genre filter functionality
+- [x] 4.11: Tag filter functionality
+- [x] 4.12: Genre filter functionality
 - [ ] 4.13: Implement proper back button functionality based on current route
-- [ ] 4.19: Cache OpenLibrary searches with JSON
-- [ ] 4.22: Finalize OpenLibrary Functionality
+- [x] 4.19: Cache OpenLibrary searches with JSON
+- [x] 4.22: Finalize OpenLibrary Functionality
 
 
 ### Theme: UI Tasks
@@ -121,10 +121,10 @@
   - [x] 4.9.1: Deletion Pop-up
   - [x] 4.9.2: Update OL Pop-up
 - [x] 4.10: Genre Edit Frontend
-- [ ] 4.14: Fix author input spacing in add book form
-- [ ] 4.15: Add hover animations
+- [x] 4.14: Fix author input spacing in add book form
+- [x] 4.15: Add hover animations
 - [x] 4.16: Add error modals for pages using flask extends
-- [ ] 4.17: Add go to top of page button for search frontends
+- [x] 4.17: Add go to top of page button for search frontends
 - [x] 4.18: Create error status code frontend pages
   - [x] 4.18.1: Status Code 500
   - [x] 4.18.2: Status Code 404
@@ -133,24 +133,38 @@
   - [ ] 4.20.2: Make filters in search frontend collapsible
   - [ ] 4.20.3: For book card results, move book page button link to right-middle
   - [ ] 4.20.4: Add genres into book card
-- [ ] 4.21: Finalize OpenLibrary Search Frontend
-- [ ] 4.23: Deduplicate Interface
+- [x] 4.21: Finalize OpenLibrary Search Frontend
+- [x] 4.23: Deduplicate Interface
 
 ## Sprint 5
 ### Theme: Business Logic Tasks
 - [ ] 4.5: Using existing database functionality, transition to using Flask's idiomatic way of using SQLite
+- [ ] 5.5: Real book sample data for mocking
+- [ ] 5.6: Purge function for cover images when database purged
+- [ ] 5.7: Reset user settings to defaults (default username and theme)
+- [ ] 5.9: Pagination
+- [ ] 5.14: Integrate OL backend with OL frontend
 
 ### Theme: UI Tasks
-- 5.4: Better UI scaling for larger screen resolutions
-- - [ ] 5.5: Move CSS to static flask folder
+- [ ] 5.4: Better UI scaling for larger screen resolutions
+- [ ] 5.8: Style buttons that are missing styling
+- [ ] 5.11: Style select elements
+- [ ] 5.12: Chapters progress bar
+- [ ] 5.13: Limit Cover Image size
+- [ ] 5.15: Help modal
+- [ ] 5.16: Delete cache frontend in settings
+
 
 ### Theme: Float
 (Push any tasks here as needed)
 
 ### Theme: QA/QC
-- 5.1: User can download 1.0 release and use application on supported hardware. (US601)
-- 5.2: Make sure implementation of API follows documentation. (US602)
-- 5.3: Make sure color and contrast ADA standards for the UI are followed. (US603)
+- [ ] 5.1: User can download 1.0 release and use application on supported hardware. (US601)
+- [ ] 5.2: Make sure implementation of API follows documentation. (US602)
+- [ ] 5.3: Make sure color and contrast ADA standards for the UI are followed. (US603)
+- [ ] 5.10: Try to break app, with reasonable user interactions
+- [ ] 5.12: Everyone start looking at code
+- [ ] 5.17: Usability testing
 
 
 

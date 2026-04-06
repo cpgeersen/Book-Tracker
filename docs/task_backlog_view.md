@@ -48,36 +48,57 @@
 |        | 4.7     | Correct User Settings                                        | Chris                          | 3/7/26  | 3/14/26 | Low      | Completed   | Yes                |
 |        | 4.8     | Refactor Analytics Functions                                 | Chris                          | 3/7/26  | 3/14/26 | Low      | Completed   | Yes                |
 | 4      | 2.1     | Use Pulled data from API                                     | Nicholas                       | 3/21/26 | 3/28/26 | High     | Completed   | Yes                |
-|        | 3.2.5   | Updating a Locally added book with OL data                   | Nicholas                       | 3/21/26 | 4/4/26  | High     | In-Progress | Yes                |
-|        | 4.2     | Create theme change function                                 |                                | 3/28/26 | 4/4/26  | Low      | Not Started | Yes                |
+|        | 3.2.5   | Updating a Locally added book with OL data                   | Nicholas                       | 3/21/26 | 4/4/26  | High     | Completed   | Yes                |
+|        | 4.2     | Create theme change function                                 |                                | 3/28/26 | 4/4/26  | Low      | In-Progress | Yes                |
 |        | 4.3     | Create export/import CSV function                            | Joseph                         | 3/21/26 | 3/28/26 | Medium   | Completed   | Yes                |
 |        | 4.4     | Create database purge function                               | Joseph                         | 3/21/26 | 3/28/26 | Medium   | Completed   | Yes                |
 |        | 4.5     | Create analytics frontend                                    | Chris                          | 3/21/26 | 3/28/26 | Medium   | In-Progress | Yes                |
 |        | 4.6     | Create user settings frontend                                | Chris                          | 3/21/26 | 3/28/26 | Medium   | In-Progress | Yes                |
-|        | 4.8     | Individual book page edits                                   | Mireliz                        | 3/21/26 | 3/28/26 | High     | In-Progress | Yes                |
-|        | 4.8.1   | Fix cover image sizing to be fixed                           | Mireliz                        | 3/21/26 | 3/28/26 | High     | In-Progress | Yes                |
-|        | 4.8.2   | Fix spacing of page                                          | Mireliz                        | 3/21/26 | 3/28/26 | High     | In-Progress | Yes                |
-|        | 4.8.3   | Add styling to buttons that are missing styling              | Mireliz                        | 3/21/26 | 3/28/26 | High     | In-Progress | Yes                |
+|        | 4.8     | Individual book page edits                                   | Mireliz                        | 3/21/26 | 3/28/26 | High     | Completed   | Yes                |
+|        | 4.8.1   | Fix cover image sizing to be fixed                           | Mireliz                        | 3/21/26 | 3/28/26 | High     | Completed   | Yes                |
+|        | 4.8.2   | Fix spacing of page                                          | Mireliz                        | 3/21/26 | 3/28/26 | High     | Completed   | Yes                |
+|        | 4.8.3   | Add styling to buttons that are missing styling              | Mireliz                        | 3/21/26 | 3/28/26 | High     | Completed   | Yes                |
 |        | 4.9     | Add styling to individual book page pop-ups                  | Holly                          | 3/21/26 | 3/28/26 | Medium   | Completed   | Yes                |
 |        | 4.9.1   | Deletion Pop-up                                              | Holly                          | 3/21/26 | 3/28/26 | Medium   | Completed   | Yes                |
 |        | 4.9.2   | Update OL Pop-up                                             | Holly                          | 3/21/26 | 3/28/26 | Medium   | Completed   | Yes                |
-|        | 4.10    | Genre Edit Frontend                                          | Mireliz                        | 3/21/26 | 3/28/26 | High     | In-Progress | Yes                |
-|        | 4.11    | Tag filter functionality                                     | Collin                         | 3/21/26 | 4/04/26 | High     | In-Progress | Yes                |
-|        | 4.12    | Genre filter functionality                                   | Collin                         | 3/21/26 | 4/04/26 | High     | In-Progress | Yes                |
-|        | 4.13    | Implement proper back button functionality                   | Collin                         | 3/21/26 | 4/04/26 | High     | In-Progress | Yes                |
-|        | 4.14    | Fix author input spacing in add book form                    | Mireliz                        | 3/28/26 | 4/3/26  | Low      | Not Started | Yes                |
-|        | 4.15    | Add hover animations                                         | Mireliz                        | 3/28/26 | 4/3/26  | Low      | Not Started | Yes                |
+|        | 4.10    | Genre Edit Frontend                                          | Mireliz                        | 3/21/26 | 3/28/26 | High     | Completed   | Yes                |
+|        | 4.11    | Tag filter functionality                                     | Collin                         | 3/21/26 | 4/04/26 | High     | Completed   | Yes                |
+|        | 4.12    | Genre filter functionality                                   | Collin                         | 3/21/26 | 4/04/26 | High     | Completed   | Yes                |
+|        | 4.13    | Implement proper back button functionality                   | Collin                         | 3/21/26 | 4/04/26 | High     | Completed   | Yes                |
+|        | 4.14    | Fix author input spacing in add book form                    | Mireliz                        | 3/28/26 | 4/3/26  | Low      | Completed   | Yes                |
+|        | 4.15    | Add hover animations                                         | Mireliz                        | 3/28/26 | 4/3/26  | Low      | Completed   | Yes                |
 |        | 4.16    | Add error modals for pages using flask extends               | Holly                          | 3/21/26 | 3/28/26 | High     | Completed   | Yes                |
-|        | 4.17    | Add go to top of page button for search frontends            | Mireliz                        | 3/28/26 | 4/3/26  | Low      | Not Started | Yes                |
+|        | 4.17    | Add go to top of page button for search frontends            | Mireliz                        | 3/28/26 | 4/3/26  | Low      | Completed   | Yes                |
 |        | 4.18    | Create error status code frontend pages                      | Holly                          | 3/21/26 | 3/28/26 | Medium   | Completed   | Yes                |
 |        | 4.18.1  | Status Code 500                                              | Holly                          | 3/21/26 | 3/28/26 | Medium   | Completed   | Yes                |
 |        | 4.18.2  | Status Code 404                                              | Holly                          | 3/21/26 | 3/28/26 | Medium   | Completed   | Yes                |
-|        | 4.19    | Cache OpenLibrary searches with JSON                         | Joseph                         | 3/28/26 | 4/4/26  | High     | Not Started | Yes                |
-|        | 4.20    | Local Search Edits                                           | Mireliz                        | 3/28/26 | 4/3/26  | Low      | Not Started | Yes                |
-|        | 4.20.1  | Align filters with page title rather than nav bar            | Mireliz                        | 3/28/26 | 4/3/26  | Medium   | Not Started | Yes                |
-|        | 4.20.2  | Make filters in search frontend collapsible                  | Mireliz                        | 3/28/26 | 4/3/26  | Medium   | Not Started | Yes                |
-|        | 4.20.3  | Move book page button link to right-middle                   | Mireliz                        | 3/28/26 | 4/3/26  | Medium   | Not Started | Yes                |
-|        | 4.20.4  | Add genres into book card                                    | Mireliz                        | 3/28/26 | 4/3/26  | Medium   | Not Started | Yes                |
-| 5      | 5.1     | User can download release 1.0                                |                                | 4/4/26  | 4/17/26 | High     | Not Started | Yes                |
-|        | 5.2     | Validate API in accordance with documentation                |                                | 4/4/26  | 4/17/26 | High     | Not Started | Yes                |
-|        | 5.3     | Verify ADA color and contrast standards followed             |                                | 4/4/26  | 4/17/26 | High     | Not Started | Yes                |
+|        | 4.19    | Cache OpenLibrary searches with JSON                         | Joseph                         | 3/28/26 | 4/4/26  | High     | Completed   | Yes                |
+|        | 4.20    | Local Search Edits                                           | Mireliz                        | 3/28/26 | 4/3/26  | Low      | Completed   | Yes                |
+|        | 4.20.1  | Align filters with page title rather than nav bar            | Mireliz                        | 3/28/26 | 4/3/26  | Medium   | Completed   | Yes                |
+|        | 4.20.2  | Make filters in search frontend collapsible                  | Mireliz                        | 3/28/26 | 4/3/26  | Medium   | Completed   | Yes                |
+|        | 4.20.3  | Move book page button link to right-middle                   | Mireliz                        | 3/28/26 | 4/3/26  | Medium   | Completed   | Yes                |
+|        | 4.20.4  | Add genres into book card                                    | Mireliz                        | 3/28/26 | 4/3/26  | Medium   | Completed   | Yes                |
+|        | 4.21    | Finalize OpenLibrary Search Frontend                         | Mireliz                        | 3/28/26 | 4/3/26  | High     | Completed   | Yes                |
+|        | 4.22    | Finalize OpenLibrary Functionality                           | Nicholas                       | 3/28/26 | 4/3/26  | High     | Completed   | Yes                |
+|        | 4.23    | Deduplicate Interface                                        | Mireliz                        | 3/28/26 | 4/3/26  | High     | Completed   | Yes                |
+| 5      | 5.1     | User can download release 1.0                                | Collin                         | 4/12/26 | 4/18/26 | High     | Not Started | Yes                |
+|        | 5.2     | Validate API in accordance with documentation                | Nicholas                       | 4/12/26 | 4/18/26 | High     | Not Started | Yes                |
+|        | 5.3     | Verify ADA color and contrast standards followed             | Holly                          | 4/12/26 | 4/18/26 | High     | Not Started | Yes                |
+|        | 5.4     | Better UI scaling for larger screen resolutions              | Mireliz                        | 4/4/26  | 4/11/26 | High     | Not Started | Yes                |
+|        | 5.5     | Real book sample data for mocking                            | Everyone                       | 4/4/26  | 4/11/26 | High     | Not Started | Yes                |
+|        | 5.6     | Purge function for cover images when database purged         | Joseph                         | 4/4/26  | 4/11/26 | Medium   | Not Started | Yes                |
+|        | 5.7     | Reset user settings to defaults                              | Chris                          | 4/4/26  | 4/11/26 | High     | Not Started | Yes                |
+|        | 5.8     | Style buttons that are missing styling                       | Holly                          | 4/4/26  | 4/11/26 | High     | Not Started | Yes                |
+|        | 5.9     | Pagination                                                   | Collin and Nicholas            | 4/11/26 | 4/18/26 | Low      | Not Started | Yes                |
+|        | 5.10    | Try to break app, with reasonable user interactions          | Everyone                       | 4/11/26 | 4/18/26 | High     | Not Started | Yes                |
+|        | 5.11    | Style select elements                                        | Holly                          | 4/4/26  | 4/11/26 | High     | Not Started | Yes                |
+|        | 5.12    | Chapters progress bar                                        | Holly                          | 4/4/26  | 4/11/26 | Medium   | Not Started | Yes                |
+|        | 5.13    | Limit Cover Image size                                       | Mireliz                        | 4/4/26  | 4/11/26 | High     | Not Started | Yes                |
+|        | 5.14    | Integrate OL backend with OL frontend                        | Collin and Nicholas            | 4/4/26  | 4/11/26 | High     | Not Started | Yes                |
+|        | 5.15    | Help modal                                                   | Holly                          | 4/11/26 | 4/18/26 | Low      | Not Started | Yes                |
+|        | 5.16    | Delete cache frontend in settings                            |                                | 4/11/26 | 4/18/26 | High     | Not Started | Yes                |
+|        | 5.17    | Usability testing                                            | Everyone                       | 4/4/26  | 4/11/26 | High     | Not Started | Yes                |
+
+
+
+
