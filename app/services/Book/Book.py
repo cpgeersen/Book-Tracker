@@ -86,6 +86,9 @@ def delete_book_cover_image(isbn, cover_image_path):
         # File does not exist
         return json.dumps({'Error': 'File does not exist'}), 200
 
+def is_in_book_table(isbn):
+    return is_isbn_in_book_table(isbn)
+
 def is_note_id_in_database(json_input):
     return is_note_id_in_note_table(json_input)
 

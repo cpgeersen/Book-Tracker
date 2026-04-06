@@ -8,20 +8,17 @@ from app.services.Book.Book import (create_book, read_book, read_all_books, read
                                     update_book_chapters_completed, update_book_tags, delete_book,
                                     create_book_note, read_book_notes, update_book_note, update_book_cover_image,
                                     delete_book_note, is_note_id_in_database, update_book_genre, create_book_genre,
-                                    delete_book_cover_image)
-from app.services.openlibrary_api import search_books_by_title, get_work_data
+                                    delete_book_cover_image, is_in_book_table)
+from app.services.filter_search_results import filter_results, filter_results_isbn
+from app.services.openlibrary_api import search_books_by_title, get_work_data, search_books_by_isbn, \
+    get_author_info_from_authorid, search_books_by_author
 
 SUCCESS = 200
+FOUND = 302
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 BOOK_GENRES = genres_for_table()
 
-#def main(): # Test main
-    #result = create(normal_data, 'book-local')
-    #print(result)
-    #print(read_book('0061091464'))
-    #print(read())
-    #pass
 def complete_book_from_isbn_ol(isbn):
     ol_data = search_books_by_isbn(isbn)
 
@@ -281,6 +278,9 @@ def complete_books_from_author_ol(first_name, last_name, limit=5):
 def create(json_input, create_type):
     try:
         if create_type == 'book-local':
+            # !!WIP!! Note: This fix my break, look out in future
+            if not is_in_book_table(json_input['ISBN']):
+                json.dumps({'Error': 'Book already in database'}), FOUND
             json_input = validate_book_from_local(json_input)
             result = create_book(json_input)
             return result
@@ -310,11 +310,18 @@ def create(json_input, create_type):
         return error, BAD_REQUEST
 
 # GET - Takes JSON as input
-def read(json_input=None, read_type='book-all'):
+def read(json_input=None, read_type='book-all', filter_json=None):
     try:
         if read_type == 'book-all':
-            result = read_all_books()
-            return result
+
+            # Sort results ascending by title
+            result = sort_results_by_title(read_all_books())
+
+            if filter_json.get('filtered', 'false') == 'false':
+                return result
+            elif len(filter_json) != 0 or filter_json is not None:
+                result = filter_results(filter_json, result)
+                return result
 
         elif read_type == 'book-isbn':
             # First get the book record via ISBN
@@ -322,6 +329,17 @@ def read(json_input=None, read_type='book-all'):
             # Then convert to frontend syntax for tags
             converted_result = validate_book_for_frontend(result)
             return converted_result
+
+        elif read_type == 'book-isbn-filtered':
+            # First get the book record via ISBN
+            result = read_book(json_input['ISBN'])
+
+            if filter_json.get('filtered', 'false') == 'false':
+                return result
+            elif len(filter_json) != 0 or filter_json is not None:
+                result = json.loads(result)
+                result = json.dumps(filter_results_isbn(filter_json, result))
+                return result
 
         elif read_type == 'book-title':
             all_books_by_title = json.loads(read_all_books_by_title(json_input['Title']))
@@ -335,7 +353,14 @@ def read(json_input=None, read_type='book-all'):
                 json_output[f'Book_Result_{book_result_number}'] = book
                 book_result_number += 1
 
-            return json.dumps(json_output)
+            # Sort results ascending by title
+            json_output = sort_results_by_title(json_output)
+
+            if filter_json.get('filtered', 'false') == 'false':
+                return json.dumps(json_output)
+            elif len(filter_json) != 0 or filter_json is not None:
+                result = json.dumps(filter_results(filter_json, json_output))
+                return result
 
         elif read_type == 'book-author':
             all_books_by_author = json.loads(read_all_books_by_author(json_input['Author_Last_Name'],
@@ -347,13 +372,23 @@ def read(json_input=None, read_type='book-all'):
             json_output = {}
             book_result_number = 1
             for book in all_books_by_author:
+                # Accounts for a scenario where all author books are deleted
+                # and the author is still in the database and can cause an empty
+                # entry to show in the search frontend
+                if book.get('Error') is not None:
+                    continue
                 json_output[f'Book_Result_{book_result_number}'] = book
                 book_result_number += 1
 
-            return json.dumps(json_output)
+            # Sort results ascending by title
+            json_output = sort_results_by_title(json_output)
 
-        elif read_type == 'book-genre':
-            pass
+            if filter_json.get('filtered', 'false') == 'false':
+                return json.dumps(json_output)
+            elif len(filter_json) != 0 or filter_json is not None:
+                result = json.dumps(filter_results(filter_json, json_output))
+                return result
+
         elif read_type == 'note':
             response = read_book_notes(json_input)
             return response
@@ -485,30 +520,9 @@ def delete(json_input, delete_type):
         return 'Error: Not a valid call'
 
 
-
-normal_data = {"ISBN": "0061091464",
-               "Title": "The Thief of Always",
-               "Publish_Year": "1993",
-               "Summary": "After a mysterious stranger promises to end"
-                          " his boredom with a trip to the magical Holiday"
-                          " House, ten-year-old Harvey learns that his fun"
-                          " has a high price.",
-               "Chapters": "24",
-               "Chapters_Completed": "24",
-               "Cover_Image": "",
-               "Author_First_Name_1": "Clive",
-               "Author_Last_Name_1": "Barker",
-               "Author_First_Name_2": "",
-               "Author_Last_Name_2": "",
-               "Publisher_Name": "HarperCollins",
-               "Owned": "yes",
-               "Favorite": "yes",
-               "Completed": "yes",
-               "Currently_Reading": "no",
-               "Personal_Or_Academic": "personal",
-               "Genre_1": "fiction",
-               "Genre_2": "horror",
-               "Genre_3": "fantasy"}
+def sort_results_by_title(result):
+    result = dict(sorted(result.items(), key=lambda kv: kv[1]['Title']))
+    return result
 
 
 
