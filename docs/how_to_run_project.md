@@ -3,7 +3,7 @@
 Assumptions:
 - User knows basic command line
 - User is using Windows
-- User has python installed
+- User has at least python version 3.14 installed
 - User has git installed
 
 ### Step 1: Download Project Source
@@ -20,7 +20,8 @@ Outcome: Project source is now downloaded
 Outcome: User now has a python virtual environment active
 
 ### Step 3: Download Requirements using pip
-1. While virtual environment is active, run `py -m pip install -r requirements.txt`
+1. While virtual environment is active, run `py -m pip install -r requirements.txt` 
+or `pip install -r requirements.txt` (sometimes one works while the other does not)
 
 Outcome: All requirements are downloaded per requirements.txt to .venv and are tied to the virtual environment
 
