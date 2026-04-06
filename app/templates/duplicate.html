@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic page metadata -->
+  <meta charset="UTF-8">
+  <title>Duplicate Books</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
+</head>
+
+<body>
+
+<main class="container">
+
+  <h1>Duplicate Books</h1>
+
+  {% for (title, first, last), book_list in grouped_books.items() %}
+
+    <!-- Result block -->
+    <div class="result-block">
+
+      <!-- Title + Author -->
+      <h2>{{ title }}</h2>
+      <p>{{ first }} {{ last }}</p>
+
+      <!-- Cards -->
+      <div class="book-group">
+
+        {% for book in book_list %}
+          <div class="book-card">
+
+            <p><strong>ISBN:</strong> {{ book['ISBN'] }}</p>
+
+            <!-- Actions -->
+            <div class="card-actions">
+
+              <a href="/book/isbn/{{ book['ISBN'] }}" class="view-button">
+                View →
+              </a>
+
+              <form method="POST">
+                <input type="hidden" name="delete_isbn" value="{{ book['ISBN'] }}">
+                <button class="transition_css">Delete</button>
+              </form>
+
+            </div>
+
+          </div>
+        {% endfor %}
+
+      </div>
+
+    </div>
+
+  {% endfor %}
+
+</main>
+
+<!-- Page-specific styling -->
+<style>
+
+  /* Result block spacing */
+  .result-block {
+    margin-bottom: 40px;
+  }
+
+  /* Book group layout */
+  .book-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  /* Individual book card */
+  .book-card {
+    background-color: #111827;
+    padding: 15px;
+    border-radius: 10px;
+    min-width: 220px;
+  }
+
+  /* Card actions */
+  .card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  /* View button */
+  .view-button {
+    text-decoration: none;
+    color: #6366f1;
+    font-weight: bold;
+  }
+
+</style>
+
+</body>
+</html>
