@@ -314,7 +314,8 @@ def read(json_input=None, read_type='book-all', filter_json=None):
     try:
         if read_type == 'book-all':
 
-            result = read_all_books()
+            # Sort results ascending by title
+            result = sort_results_by_title(read_all_books())
 
             if filter_json.get('filtered', 'false') == 'false':
                 return result
@@ -352,6 +353,9 @@ def read(json_input=None, read_type='book-all', filter_json=None):
                 json_output[f'Book_Result_{book_result_number}'] = book
                 book_result_number += 1
 
+            # Sort results ascending by title
+            json_output = sort_results_by_title(json_output)
+
             if filter_json.get('filtered', 'false') == 'false':
                 return json.dumps(json_output)
             elif len(filter_json) != 0 or filter_json is not None:
@@ -376,20 +380,18 @@ def read(json_input=None, read_type='book-all', filter_json=None):
                 json_output[f'Book_Result_{book_result_number}'] = book
                 book_result_number += 1
 
+            # Sort results ascending by title
+            json_output = sort_results_by_title(json_output)
+
             if filter_json.get('filtered', 'false') == 'false':
                 return json.dumps(json_output)
             elif len(filter_json) != 0 or filter_json is not None:
                 result = json.dumps(filter_results(filter_json, json_output))
                 return result
 
-        elif read_type == 'book-genre':
-            pass
         elif read_type == 'note':
             response = read_book_notes(json_input)
             return response
-
-        elif read_type == 'filter':
-            pass
 
         else:
             return 'Error: Not a valid call'
@@ -518,30 +520,9 @@ def delete(json_input, delete_type):
         return 'Error: Not a valid call'
 
 
-
-normal_data = {"ISBN": "0061091464",
-               "Title": "The Thief of Always",
-               "Publish_Year": "1993",
-               "Summary": "After a mysterious stranger promises to end"
-                          " his boredom with a trip to the magical Holiday"
-                          " House, ten-year-old Harvey learns that his fun"
-                          " has a high price.",
-               "Chapters": "24",
-               "Chapters_Completed": "24",
-               "Cover_Image": "",
-               "Author_First_Name_1": "Clive",
-               "Author_Last_Name_1": "Barker",
-               "Author_First_Name_2": "",
-               "Author_Last_Name_2": "",
-               "Publisher_Name": "HarperCollins",
-               "Owned": "yes",
-               "Favorite": "yes",
-               "Completed": "yes",
-               "Currently_Reading": "no",
-               "Personal_Or_Academic": "personal",
-               "Genre_1": "fiction",
-               "Genre_2": "horror",
-               "Genre_3": "fantasy"}
+def sort_results_by_title(result):
+    result = dict(sorted(result.items(), key=lambda kv: kv[1]['Title']))
+    return result
 
 
 

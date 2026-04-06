@@ -215,6 +215,7 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
             if len(isbn) == 0:
                 book_result = read(filter_json=filter_type)
+
                 return render_template('search.html', books=book_result, search_type='isbn',
                                        book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
 
