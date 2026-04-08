@@ -57,6 +57,8 @@ def update_book_tags(tag_id, owned, favorite, completed, currently_reading):
 def update_book_cover_image(isbn, cover_image_path):
     return update_cover_image(isbn, cover_image_path)
 
+
+
 def update_book_genre(isbn, old_genre_id, new_genre_id):
     return update_genre(isbn, old_genre_id, new_genre_id)
 

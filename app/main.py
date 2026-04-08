@@ -9,6 +9,7 @@ import json
 from app.services.genres import genres_for_table
 from app.services.create_example_records import create_sample_books
 from app.services.create_many_records import create_many_records
+from app.services.openlibrary_search_cache import create_cache
 
 
 SUCCESS = 200
@@ -32,6 +33,9 @@ def allowed_file(filename):
 #create_db()
 #create_sample_books()
 #create_many_records(100)
+
+# Create OpenLibrary Search Cache
+create_cache()
 
 
 def create_routes(app): # Placeholder returns for unfinished pages
@@ -335,9 +339,9 @@ def create_routes(app): # Placeholder returns for unfinished pages
         return render_template('search.html')
 
     # WIP
-    @app.route('/add-openlibrary', methods=['GET'])
-    def add_openlibrary_page():
-        return 'WIP', 200
+    @app.route('/add-openlibrary', methods=['POST', 'GET'])
+    def openlibrary_search():
+        return render_template('openlibrary_search.html'), 200
 
     # WIP
     @app.route('/settings', methods=['GET'])

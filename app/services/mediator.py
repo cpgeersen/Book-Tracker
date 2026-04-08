@@ -1,4 +1,5 @@
 import json
+import os
 
 import requests
 from app.services.genres import genres_for_table
@@ -12,6 +13,8 @@ from app.services.Book.Book import (create_book, read_book, read_all_books, read
 from app.services.filter_search_results import filter_results, filter_results_isbn
 from app.services.openlibrary_api import search_books_by_title, get_work_data, search_books_by_isbn, \
     get_author_info_from_authorid, search_books_by_author
+from app.services.openlibrary_search_cache import cache
+from app.services.validate_json.validate_openlibrary_json import validate_isbn_search
 
 SUCCESS = 200
 FOUND = 302
@@ -461,31 +464,49 @@ def update(json_input, update_type):
             json_input = json.loads(json_input)
             isbn = json_input['ISBN']
 
-            # Call openlibrary to pull information based on isbn
-            # Will call json_cache first (will implement)
-            # openlibrary_json_result = update_with_OL_data(isbn)
-            # Using mock data for now
-            openlibrary_json_result = {'Author_First_Name_1': 'J.R.R.', 'Author_Last_Name_1': 'Tolkien',
-                                       'Author_First_Name_2': '', 'Author_Last_Name_2': '',
-                                       'Author_OL_ID_1': 'OL26320A', 'Author_OL_ID_2': '',
-                                       'Publisher': 'Houghton Mifflin Company', 'Publisher_OL_ID': '',
-                                       'Publish_Year': '1977', 'Summary': 'A number-one New York Times bestseller when '
-                                                                          'it was originally published, The Silmarillion '
-                                                                          'is the core of J.R.R. Tolkien\'s imaginative '
-                                                                          'writing, a work whose origins stretch back to '
-                                                                          'a time long before The Hobbit. ',
-                                       'Cover_Image_URL': ''}
+
+
+            # First see if book information is in cache
+            cache_response = cache(isbn)
+
+            #Creates a new cache record when none exist
+            if cache_response is None:
+                print('should not run')
+                # Pull OpenLibrary Data for ISBN
+                ol_response = complete_book_from_isbn_ol(isbn)
+
+                # Validate the data and put into an easier form
+                validated_ol_response = validate_isbn_search(ol_response)
+
+                # Add validated json to the cache
+                cache_response = cache(isbn, validated_ol_response)
+
+            # Update author names and publisher information
+            
+
 
             if json_input.get('Cover_Image_Update') is not None:
-                # Download cover image fron openlibrary_json_result['Cover_Image_URL']
-                # to /static/cover_image_cache and copy with cover image naming scheme
-                # cover_images folder
+                # Download cover image from cache_response['Cover_Image_URL']
+                # to /static/cover_images
+                image_url = cache_response['Cover_Image_URL']
+                image_data = requests.get(image_url).content
 
-                # Using the name from the cover_images folder, update in database
-                pass
+                # Use cover image naming, uses jpg since OL stores cover images this way
+                file_name = isbn + '_' + 'cover_image.jpg'
+                file_path = os.path.join('app', 'static', 'images', 'cover_images', file_name)
 
+                # Write the images to the correct path
+                with open(file_path, 'wb') as image:
+                    image.write(image_data)
+
+                # Update cover image file path in database
+                update_book_cover_image(isbn, f'/static/images/cover_images/{file_name}')
+
+
+            # Update book summary if requested
             if json_input.get('Summary_Update') is not None:
-                update_book_summary(isbn, openlibrary_json_result['Summary'])
+                update_book_summary(isbn, cache_response['Summary'])
+
 
             # Call author case and publisher case function here
 
