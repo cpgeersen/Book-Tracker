@@ -63,7 +63,8 @@ def create_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Publishers (
                    Publisher_ID INTEGER PRIMARY KEY,
-                   Publisher_Name TEXT NOT NULL
+                   Publisher_Name TEXT NOT NULL,
+                   OpenLibrary_ID TEXT
                    )''')
 
     # Next create the BookNotes Bridging Table

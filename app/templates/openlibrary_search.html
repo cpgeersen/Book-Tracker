@@ -1,124 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Basic page metadata -->
-  <meta charset="UTF-8">
-  <title>OpenLibrary Search</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
+    <!-- Basic page metadata -->
+    <meta charset="UTF-8">
+    <title>OpenLibrary Search</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='search.css') }}"/>
 </head>
 
 <body>
 
-<main class="container">
+<main class="container page-wrapper">
+    <section class="results-area">
 
-  <h1>OpenLibrary Search</h1>
+        <!-- Navigation links -->
+        <div class="nav-buttons">
+            <a href="/dashboard">← Back</a>
+            <a href="/">🏠 Home</a>
+        </div>
 
-  <!-- Search form -->
-  <form method="GET" action="/openlibrary-search" class="search-form">
+        <h1 id="page-title">OpenLibrary Search</h1>
 
-    <label for="search">Search</label>
-    <input type="text"
-           id="search"
-           name="search"
-           placeholder="Search books..."
-           value="{{ request.args.get('search', '') }}">
+        <!-- Search form -->
+        <form method="GET" action="/openlibrary-search" class="search-form">
 
-    <button type="submit" class="transition_css">Search</button>
+            <label for="search">Search</label>
+            <input type="text"
+                   id="search"
+                   name="search"
+                   placeholder="Search books..."
+                   value="{{ request.args.get('search', '') }}">
 
-  </form>
+            <button type="submit" class="transition_css">Search</button>
 
-  <!-- Results section -->
-  {% if books %}
+        </form>
 
-    <!-- Loop through OpenLibrary results -->
-    {% for book in books %}
+        <!-- Results section -->
+        {% if books %}
 
-      <div class="book-card">
+        <!-- Loop through OpenLibrary results -->
+        {% for book in books %}
 
-        <!-- Cover image -->
-        <div class="book-cover">
+        <div class="book-card">
 
-          {% if book.cover_url %}
-            <img src="{{ book.cover_url }}" alt="Cover">
-          {% else %}
-            No Cover
-          {% endif %}
+            <!-- Cover image -->
+            <div class="book-cover">
+
+                {% if book.cover_url %}
+                <img src="{{ book.cover_url }}" alt="Cover">
+                {% else %}
+                No Cover
+                {% endif %}
+
+            </div>
+
+            <!-- Book information -->
+            <div class="book-info">
+
+                <h3>{{ book.title }}</h3>
+
+                <p>
+                    <strong>Author:</strong>
+                    {{ book.author }}
+                </p>
+
+                <p>
+                    <strong>ISBN:</strong>
+                    {{ book.isbn }}
+                </p>
+
+                <p>
+                    <strong>Publisher:</strong>
+                    {{ book.publisher }}
+                </p>
+
+                <p>
+                    <strong>Publish Year:</strong>
+                    {{ book.publish_year }}
+                </p>
+
+            </div>
 
         </div>
 
-        <!-- Book information -->
-        <div class="book-info">
+        {% endfor %}
 
-          <h3>{{ book.title }}</h3>
-
-          <p>
-            <strong>Author:</strong>
-            {{ book.author }}
-          </p>
-
-          <p>
-            <strong>ISBN:</strong>
-            {{ book.isbn }}
-          </p>
-
-          <p>
-            <strong>Publisher:</strong>
-            {{ book.publisher }}
-          </p>
-
-          <p>
-            <strong>Publish Year:</strong>
-            {{ book.publish_year }}
-          </p>
-
-        </div>
-
-      </div>
-
-    {% endfor %}
-
-  <!-- No results message -->
-  {% elif request.args.get('search') %}
-    <p>No books found.</p>
-  {% endif %}
-
+        <!-- No results message -->
+        {% elif request.args.get('search') %}
+        <p>No books found.</p>
+        {% endif %}
+    </section>
 </main>
+
 
 <!-- Page-specific styling -->
 <style>
 
-  /* Book card layout */
-  .book-card {
-    display: flex;
-    gap: 20px;
-    background-color: #111827;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 20px;
-  }
+    #search {
+        width: 80%;
+    }
 
-  /* Cover image */
-  .book-cover {
-    width: 120px;
-    height: 180px;
-    background-color: #1e293b;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    overflow: hidden;
-  }
+    #page-title{
+        margin-right: auto;
+        margin-left: auto;
+        width: 50%;
+    }
 
-  .book-cover img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+    .search-form {
+        width: 50%;
+        margin-right: auto;
+        margin-left: auto;
+    }
 
-  /* Book info spacing */
-  .book-info p {
-    margin: 6px 0;
-  }
+    .nav-buttons{
+        margin-right: auto;
+        margin-left: auto;
+        width: 50%;
+    }
+
+
+    /* Book card layout */
+    .book-card {
+        display: flex;
+        gap: 20px;
+        background-color: #111827;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+
+    /* Cover image */
+    .book-cover {
+        width: 120px;
+        height: 180px;
+        background-color: #1e293b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .book-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Book info spacing */
+    .book-info p {
+        margin: 6px 0;
+    }
 
 </style>
 
