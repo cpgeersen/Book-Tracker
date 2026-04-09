@@ -117,8 +117,20 @@
 
         <!-- Chapter increment / decrement buttons -->
         <div class="chapter-controls">
-          <button id="decrement-chapters" onclick="decrementChapters()">-</button>
-          <button id="increment-chapters" onclick="incrementChapters()">+</button>
+
+          <!-- Contains increment/decrement buttons with progress bar. -->
+          <div class="progress-section">
+            <button id="decrement-chapters" onclick="decrementChapters()">-</button>
+
+              <!-- Groups progress bar and percentage text overlay together -->
+              <div class="progress-bar-container">
+                <progress id="book_progress" value={{ book["Chapters_Completed"] }} max={{ book["Chapters"] }}></progress>
+                <!-- Allows percentage to overlay progress bar. -->
+                <div class="progress-bar-text" id="progressText"></div>
+              </div>
+
+            <button id="increment-chapters" onclick="incrementChapters()">+</button>
+          </div>
 
           <form id="chapters_completed" method="POST">
             <input type="hidden" id="chapters_completed_value" name="chapters_completed" value="{{ book["Chapters_Completed"] }}">
@@ -404,12 +416,30 @@
       }
     }
 
+    // Calculates percentage and displays it on progress bar in overlay.
+    function updatePercentageDisplay() {
+      const progress = document.getElementById('book_progress');
+      const progressText = document.getElementById('progressText');
+
+      const chaptersCompleted = Number(document.getElementById('chapters-completed').innerText);
+      const totalBookChapters = Number(document.getElementById('chapter-total-value').innerText);
+
+      const percentRead = totalBookChapters === 0 ? 0 : Math.round((chaptersCompleted / totalBookChapters) * 100);
+
+      progress.value = chaptersCompleted;
+
+      progressText.textContent = `${percentRead}%`;
+    }
+
     function decrementChapters(){
       chaptersCompletedValue = document.getElementById('chapters-completed').innerText
 
       if (chaptersCompletedValue != 0){
         document.getElementById('chapters_completed_value').value--;
         document.getElementById('chapters-completed').innerText--;
+
+        // Calls function to update progress bar percentage while decrementing.
+        updatePercentageDisplay();
       }
     }
 
@@ -420,6 +450,9 @@
       if (chaptersCompletedValue < Number(chapterTotalValue)){
         document.getElementById('chapters_completed_value').value++;
         document.getElementById('chapters-completed').innerText++;
+
+        // Calls function to update progress bar percentage while incrementing.
+        updatePercentageDisplay();
       }
     }
 
@@ -485,8 +518,12 @@
       });
     });
 
-  </script>
+    // Makes percentage appear after the page reloads when Chapters Save button pressed.
+    window.onload = function() {
+      updatePercentageDisplay();
+    }
 
+  </script>
 
 </body>
 </html>
