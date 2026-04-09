@@ -146,7 +146,23 @@ def update_cover_image(isbn, cover_image_path):
 
 
 
+def update_publisher_id(isbn, publisher_id):
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
 
+    isbn_presence = is_isbn_in_book_table(isbn)
+    if not isbn_presence:
+        return json.dumps({"Error": "ISBN not found"}), 400
+
+    publisher_id_update = ''' UPDATE Books
+                             SET Publisher_ID = ?
+                             WHERE ISBN = ? 
+                         '''
+    cursor.execute(publisher_id_update, (publisher_id, isbn))
+    conn.commit()
+    conn.close()
+
+    return json.dumps({"Success": f"Book with {isbn} updated publisher to {publisher_id}."}), 200
 
 
 
