@@ -29,6 +29,24 @@ def is_isbn_in_book_table(isbn):
     else:
         return True
 
+def is_publisher_name_in_publisher_table(publisher_name):
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+
+    # Query if the ISBN is in Book Table
+    update_query = "SELECT * FROM Publishers WHERE Publisher_Name = ?"
+    criteria = (publisher_name,)
+    cursor.execute(update_query, criteria)
+    result = cursor.fetchall()
+
+    conn.close()
+
+    # Return False when there is no ISBN that matches
+    if len(result) == 0:
+        return False
+    else:
+        return True
+
 def is_tag_id_in_tag_table(tag_id):
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()

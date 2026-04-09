@@ -1,6 +1,7 @@
 import sqlite3
 import json
-from app.services.Book.BookPredicate import is_tag_id_in_tag_table, is_isbn_in_book_table
+from app.services.Book.BookPredicate import is_tag_id_in_tag_table, is_isbn_in_book_table, \
+    is_publisher_name_in_publisher_table
 
 SUCCESS = 200
 BAD_REQUEST = 400
@@ -144,6 +145,24 @@ def update_cover_image(isbn, cover_image_path):
 
     return json.dumps({"Success": f"Book with {isbn} updated cover image."}), 200
 
+def update_publisher_year(isbn, publisher_year):
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+
+    isbn_presence = is_isbn_in_book_table(isbn)
+    if not isbn_presence:
+        return json.dumps({"Error": "ISBN not found"}), 400
+
+    publisher_id_update = ''' UPDATE Books
+                              SET Publish_Year = ?
+                              WHERE ISBN = ? 
+                          '''
+    cursor.execute(publisher_id_update, (publisher_year, isbn,))
+    conn.commit()
+    conn.close()
+
+    return json.dumps({"Success": f"Book with {isbn} updated publish year to {publisher_year}."}), 200
+
 
 
 def update_publisher_id(isbn, publisher_id):
@@ -163,8 +182,6 @@ def update_publisher_id(isbn, publisher_id):
     conn.close()
 
     return json.dumps({"Success": f"Book with {isbn} updated publisher to {publisher_id}."}), 200
-
-
 
 
 

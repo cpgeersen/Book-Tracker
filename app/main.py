@@ -111,6 +111,9 @@ def create_routes(app): # Placeholder returns for unfinished pages
                 response = update(json_input, 'openlibrary')
                 print(response)
 
+                return render_template('view_book_ol_update_modal.html', book=book_result, notes=note_result,
+                                       book_genres=BOOK_GENRES_SORTED, updated_records=response), 200
+
             elif book_update.get('summary') is not None:
                 json_input = json.dumps({'ISBN': isbn, 'Summary': book_update['summary']})
                 response = update(json_input, 'summary')
