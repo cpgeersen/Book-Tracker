@@ -108,7 +108,8 @@ def create_routes(app): # Placeholder returns for unfinished pages
                 json_input = json.dumps({'ISBN': isbn, 'Cover_Image_Update': book_update.get('update_cover'),
                                          'Summary_Update': book_update.get('update_summary')})
                 response = update(json_input, 'openlibrary')
-                print(response)
+
+                book_result = json.loads(read(isbn_dict, 'book-isbn'))
 
                 return render_template('view_book_ol_update_modal.html', book=book_result, notes=note_result,
                                        book_genres=BOOK_GENRES_SORTED, updated_records=response), 200
