@@ -4,121 +4,18 @@
 
   <!-- Basic page metadata -->
   <meta charset="UTF-8">
-  <title>Book Entry</title>
+  <title>View Book</title>
 
-  <style>
-
-    /* Global page styling */
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background-color: #0f172a;
-      color: #e5e7eb;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* Main layout wrapper */
-    .page-wrapper {
-      max-width: 900px;
-      margin: 3rem auto;
-      padding: 0 1rem;
-    }
-
-    /* Navigation links (Back + Home) */
-    .nav-buttons {
-      margin-bottom: 1rem;
-    }
-
-    .nav-buttons a {
-      text-decoration: none;
-      color: #6366f1;
-      font-weight: 600;
-      margin-right: 1rem;
-    }
-
-    /* Book container card */
-    .book-container {
-      background-color: #111827;
-      padding: 2rem;
-      border-radius: 12px;
-    }
-
-    /* Layout for cover + book info */
-    .book-header {
-      display: flex;
-      gap: 2rem;
-    }
-
-    /* Placeholder book cover */
-    .book-cover {
-      width: 160px;
-      height: 220px;
-      background-color: #374151;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #9ca3af;
-    }
-
-    /* Generic section spacing */
-    .section {
-      margin-top: 2rem;
-    }
-
-    /* Genre and tag styling */
-    .tag {
-      background-color: #374151;
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      margin-right: 0.4rem;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    /* Active tag state */
-    .tag.active {
-      background-color: #6366f1;
-    }
-
-    /* Input field styling */
-    input[type="number"] {
-      padding: 0.4rem;
-      border-radius: 6px;
-      border: none;
-      background-color: #1f2933;
-      color: #e5e7eb;
-    }
-
-    /* Notes textarea styling */
-    textarea {
-      width: 100%;
-      border-radius: 8px;
-      border: none;
-      background-color: #1f2933;
-      color: #e5e7eb;
-      padding: 0.6rem;
-    }
-
-    /* Individual note card styling */
-    .note-card {
-      background-color: #1f2933;
-      padding: 0.6rem;
-      border-radius: 6px;
-      margin-top: 0.6rem;
-    }
-
-    /* Hidden edit sections */
-    .hidden {
-      display: none;
-    }
-
-  </style>
+  <!-- External stylesheets -->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='view_book.css') }}"/>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
 </head>
 
 <body>
+
+  {% block body %}
+  {% endblock %}
 
   <div class="page-wrapper">
 
@@ -133,11 +30,25 @@
 
       <!-- Book header section (cover + main info) -->
       <div class="book-header">
+        <div>
+          <!-- Book cover image (dynamic or fallback) -->
+          {% if book["Cover_Image"] %}
+            <img src="{{ book['Cover_Image'] }}" class="book-cover" alt="Book Cover Image">
+          {% else %}
+            <div class="book-cover">No Cover</div>
+          {% endif %}
+          <button id="book-cover-edit-btn" onclick="editCoverImage()">Edit Book Cover Image</button>
+          <form id="book-cover-upload" class="hidden" method="POST" enctype="multipart/form-data">
+            <input type="file" name="cover-image">
+            <button type="submit" name="cover-image" value="update">Upload</button>
+            <input type="submit" name="cover-image" value="delete">
 
-        <!-- Placeholder book cover -->
-        <div class="book-cover">
-          No Cover
+          </form>
+          <button id="book-cover-edit-btn-cancel" class="hidden" onclick="editCoverImage()">Cancel</button>
         </div>
+
+
+
 
         <!-- Book information display -->
         <div class="book-info">
@@ -165,9 +76,15 @@
           <div id="summary-display">
 
             {% if book["Summary"] %}
-              <p><strong>Summary:</strong> {{ book["Summary"] }}</p>
+              <p class="summary-text">
+                <strong>Summary:</strong>
+                {{ book["Summary"] }}
+              </p>
             {% else %}
-              <p><strong>Summary:</strong> No summary available.</p>
+              <p class="summary-text">
+                <strong>Summary:</strong>
+                No summary available.
+              </p>
             {% endif %}
 
             <!-- Button to enable editing summary -->
@@ -178,16 +95,13 @@
           <!-- Summary edit section -->
           <div id="summary-edit" class="hidden">
             <form method="POST">
-              <textarea id="summary-text" name="summary">{{ book["Summary"] }}</textarea >
+              <textarea id="summary-text" name="summary" rows="10" cols="40">{{ book["Summary"] }}</textarea >
 
               <br><br>
 
               <!-- Save summary button -->
-              <button onclick="saveSummary()" type="submit">Save</button>
+              <button onclick="editSummary()" type="submit">Save</button>
             </form>
-
-
-
           </div>
 
         </div>
@@ -206,8 +120,21 @@
 
         <!-- Chapter increment / decrement buttons -->
         <div class="chapter-controls">
-          <button id="decrement-chapters" onclick="decrementChapters()">-</button>
-          <button id="increment-chapters" onclick="incrementChapters()">+</button>
+
+          <!-- Contains increment/decrement buttons with progress bar. -->
+          <div class="progress-section">
+            <button id="decrement-chapters" onclick="decrementChapters()">-</button>
+
+              <!-- Groups progress bar and percentage text overlay together -->
+              <div class="progress-bar-container">
+                <progress id="book_progress" value={{ book["Chapters_Completed"] }} max={{ book["Chapters"] }}></progress>
+                <!-- Allows percentage to overlay progress bar. -->
+                <div class="progress-bar-text" id="progressText"></div>
+              </div>
+
+            <button id="increment-chapters" onclick="incrementChapters()">+</button>
+          </div>
+
           <form id="chapters_completed" method="POST">
             <input type="hidden" id="chapters_completed_value" name="chapters_completed" value="{{ book["Chapters_Completed"] }}">
             <button type="submit" form="chapters_completed" name="chapters_completed">Save</button>
@@ -218,22 +145,18 @@
 
         <!-- Chapter edit display -->
         <div id="chapters-display">
-
           <label>Total Chapters:</label>
           <span>{{ book["Chapters"] }}</span>
-
-          <!-- Edit chapters button -->
           <button onclick="editChapters()">Edit</button>
-
         </div>
 
         <!-- Chapter edit input -->
         <div id="chapters-edit" class="hidden">
           <form method="POST">
             <input type="number"
-                    id="chapters-input"
-                    name="chapters"
-                    value="{{ book["Chapters"] }}">
+                   id="chapters-input"
+                   name="chapters"
+                   value="{{ book["Chapters"] }}">
 
             <!-- Save chapters button -->
             <button onclick="saveChapters()" type="submit">Save</button>
@@ -247,10 +170,9 @@
 
         <h3>Genres</h3>
 
-        <!-- Primary genre -->
+        <!-- Display current genres -->
         <span class="tag">{{ book["Genre_1"].title() }}</span>
 
-        <!-- Optional additional genres -->
         {% if book["Genre_2"] %}
           <span class="tag">{{ book["Genre_2"].title() }}</span>
         {% endif %}
@@ -263,32 +185,98 @@
           <span class="tag">{{ book["Genre_4"].title() }}</span>
         {% endif %}
 
+        <!-- Button to enable editing genres -->
+        <br><br>
+        <button onclick="toggleGenreEdit()">Edit Genres</button>
+
+        <!-- Genre edit section -->
+        <div id="genre-edit" class="hidden">
+          <form method="POST" id="update-genre">
+
+            <br>
+
+            <select id="genre1">
+              {% if book["Genre_1"] == 'fiction' %}
+                <option value="fiction, 1">Fiction</option>
+                <option value="nonfiction, 2">Nonfiction</option>
+              {% else %}
+                <option value="nonfiction, 2">Nonfiction</option>
+                <option value="fiction, 1">Fiction</option>
+              {% endif %}
+            </select>
+
+
+              <select id="genre2">
+                {% if book["Genre_2"] %}
+                  <option value="{{ book["Genre_2"] }}, {{ book["Genre_ID_2"] }}">{{ book["Genre_2"].title() }}</option>
+                {% else %}
+                  <option value="None">Select A Genre</option>
+                {% endif %}
+                {% for genre_id, genre in book_genres.items() %}
+                  <option name="genre_2" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                {% endfor %}
+              </select>
+
+
+              <select id="genre3">
+                {% if book["Genre_3"] %}
+                  <option value="{{ book["Genre_3"] }}, {{ book["Genre_ID_3"] }}">{{ book["Genre_3"].title() }}</option>
+                {% else %}
+                  <option value="None">Select A Genre</option>
+                {% endif %}
+                {% for genre_id, genre in book_genres.items() %}
+                  <option name="genre_3" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                {% endfor %}
+              </select>
+
+
+              <select id="genre4">
+                {% if book["Genre_4"] %}
+                  <option value="{{ book["Genre_4"] }}, {{ book["Genre_ID_4"] }}">{{ book["Genre_4"].title() }}</option>
+                {% else %}
+                  <option value="None">Select A Genre</option>
+                {% endif %}
+                {% for genre_id, genre in book_genres.items() %}
+                  <option name="genre_4" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                {% endfor %}
+              </select>
+
+
+            <input type="hidden" id="genre_1" name="genre_1" value="">
+            <input type="hidden" id="genre_2" name="genre_2" value="">
+            <input type="hidden" id="genre_3" name="genre_3" value="">
+            <input type="hidden" id="genre_4" name="genre_4" value="">
+
+            <br><br>
+
+            <!-- Save genres button -->
+            <button onclick="saveGenres()" type="submit" form="update-genre" name="update-genre">Save Genres</button>
+          </form>
+
+        </div>
+
       </div>
 
       <!-- Toggleable reading tags section -->
       <div class="section">
         <form id="tag" method="POST">
+
           <h3>Tags</h3>
 
-          <!-- Toggleable tags -->
-          <button onclick="changeTagValue('owned'); " class="tag toggle {% if book['Owned']=='on' %}active{% endif %}"
-                  id="owned" type="button"
-                  name="owned" value="{{ book["Owned"] }}">Owned</button>
+          <button onclick="changeTagValue('owned');" class="tag toggle {% if book['Owned']=='on' %}active{% endif %}"
+                  id="owned" type="button" name="owned" value="{{ book["Owned"] }}">Owned</button>
           <input type="hidden" id="owned_value" name="owned" value="{{ book["Owned"] }}">
 
-          <button onclick="changeTagValue('favorite'); " class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}"
-                  id='favorite' type="button"
-                  name="favorite" value="{{ book["Favorite"] }}">Favorite</button>
+          <button onclick="changeTagValue('favorite');" class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}"
+                  id='favorite' type="button" name="favorite" value="{{ book["Favorite"] }}">Favorite</button>
           <input type="hidden" id="favorite_value" name="favorite" value="{{ book["Favorite"] }}">
 
-          <button onclick="changeTagValue('completed'); " class="tag toggle {% if book['Completed']=='on' %}active{% endif %}"
-                  id='completed' type="button"
-                  name="completed" value="{{ book["Completed"] }}">Completed</button>
+          <button onclick="changeTagValue('completed');" class="tag toggle {% if book['Completed']=='on' %}active{% endif %}"
+                  id='completed' type="button" name="completed" value="{{ book["Completed"] }}">Completed</button>
           <input type="hidden" id="completed_value" name="completed" value="{{ book["Completed"] }}">
 
-          <button onclick="changeTagValue('currently_reading'); " class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}"
-                  id='currently_reading' type="button"
-                  name="currently_reading" value="{{ book["Currently_Reading"] }}">Currently Reading</button>
+          <button onclick="changeTagValue('currently_reading');" class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}"
+                  id='currently_reading' type="button" name="currently_reading" value="{{ book["Currently_Reading"] }}">Currently Reading</button>
           <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book["Currently_Reading"] }}">
 
           <br><br>
@@ -300,31 +288,38 @@
 
       <!-- Notes section -->
       <div class="section">
-
         <h3>Notes</h3>
-        <label for="note-select">Select a note to view or edit:</label>
-        <select id="note-select" name="notes">
-          <option value="test_note_1">Note 1</option>
-          <option value="test_note_2">Note 2</option>
-        </select>
 
-        <!-- Note input -->
-        <textarea rows="4" placeholder="Write a note about this book..."></textarea>
+        <div id="notes" class="collapsible">
 
-        <br><br>
+          <div id="notes-left">
+            <div id="note-select">
+              {% if notes %}
+                {% for note_id, note_content in notes.items() %}
+                  <div class="note-card">
+                    <p class="note-text-id">Note ID: {{ note_content['Note_ID'] }}</p>
+                    <p class="note-text" id="{{ note_content['Note_ID'] }}">{{ note_content['Note_Content'] }}</p>
+                    <button onclick="editNote(this)" class="note-card-button" value="{{ note_content['Note_ID'] }}">
+                      View/Edit Note</button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+            <button id="note-add" onclick="addNote(this)">Add New Note</button>
+          </div>
 
-        <!-- Save note button -->
-        <button>Save Note</button>
+          <div id="notes-right">
+            <form id="note-edit" method="POST">
+              <button class="note-edit-btn" type="submit" form="note-edit">Save Note</button>
+              <button class="note-edit-btn" id="note-edit-delete" type="submit" form="note-edit"
+                      name="note-delete">Delete Note</button>
+              <input type="hidden" id="note_id" name="note_id" value="">
+              <textarea required name="note-edit" id="note-edit-textarea" rows="22" cols="40"
+                        placeholder="Write a note about this book..."></textarea>
+            </form>
 
-        <!-- Example notes -->
-        <div class="note-card">
-          Example note: Remember key themes in chapter 2.
+          </div>
         </div>
-
-        <div class="note-card">
-          Example note: Important quote on page 45.
-        </div>
-
       </div>
 
       <!-- Actions section -->
@@ -341,13 +336,16 @@
           <p>WARNING: Deleting a book is irreversible.</p>
           <p>Do you still want to delete the book?</p>
 
-          <form id="delete" method="POST">
-            <button class="yes-btn" type="submit" form="delete" name="delete" >Yes</button>
-          </form>
-          <button class="no-btn" commandfor="delete-confirmation-modal" command="close" >No</button>
+          <div class="button-align">
+
+            <form id="delete" method="POST">
+              <button class="yes-btn modal-button button-group" type="submit" form="delete" name="delete" >Yes</button>
+            </form>
+            <button class="no-btn modal-button button-group" commandfor="delete-confirmation-modal" command="close" >No</button>
+          </div>
         </dialog>
 
-        <button command="show-modal" commandfor="update-confirmation-modal" class="update-btn">Update with OpenLibrary Data</button>
+          <button command="show-modal" commandfor="update-confirmation-modal" class="update-btn">Update with OpenLibrary Data</button>
         <dialog id="update-confirmation-modal">
 
           <p>Use data from the OpenLibrary API to update book record.</p>
@@ -361,6 +359,8 @@
           </ul>
           <p>Do you still want to update the book?</p>
 
+          <div class="button-align2">
+
           <form id="update-with-ol" method="POST">
 
             <label for="update-cover_image">Update Cover Image</label>
@@ -369,11 +369,13 @@
             <label for="update-summary">Update Summary</label>
             <input id="update-summary" type="checkbox" name="update_summary" checked>
 
-            <button class="yes-btn" type="submit" form="update-with-ol" name="update_with_ol" >Yes</button>
+            <button class="yes-btn modal-button" type="submit" form="update-with-ol" name="update_with_ol" >Yes</button>
           </form>
 
-          <button class="no-btn" commandfor="update-confirmation-modal" command="close" >No</button>
+          <button class="no-btn modal-button" commandfor="update-confirmation-modal" command="close" >No</button>
+          </div>
         </dialog>
+
 
 
       </div>
@@ -393,39 +395,21 @@
       });
     });
 
-    /* Enable chapter editing */
-    function editChapters() {
-      document.getElementById("chapters-display").classList.add("hidden");
-      document.getElementById("chapters-edit").classList.remove("hidden");
-    }
-
-    /* Save chapters placeholder */
-    function saveChapters() {
-      document.getElementById("chapters-edit").classList.add("hidden");
-      document.getElementById("chapters-display").classList.remove("hidden");
+    function editCoverImage() {
+      document.getElementById("book-cover-edit-btn").classList.toggle("hidden");
+      document.getElementById("book-cover-edit-btn-cancel").classList.toggle("hidden");
+      document.getElementById("book-cover-upload").classList.toggle("hidden");
     }
 
     /* Enable summary editing */
     function editSummary() {
-      document.getElementById("summary-display").classList.add("hidden");
-      document.getElementById("summary-edit").classList.remove("hidden");
-    }
-
-    /* Save summary placeholder */
-    function saveSummary() {
-      document.getElementById("summary-edit").classList.add("hidden");
-      document.getElementById("summary-display").classList.remove("hidden");
-    }
-
-    /* Save tag changes placeholder */
-    function saveTags() {
-      // alert("Tags saved (backend integration coming next).");
-
+      document.getElementById("summary-display").classList.toggle("hidden");
+      document.getElementById("summary-edit").classList.toggle("hidden");
     }
 
     /* Toggle function for tags */
     function changeTagValue(tag_type){
-      tag_value = document.getElementById(tag_type).value;
+      let tag_value = document.getElementById(tag_type).value;
 
       if (tag_value == 'on'){
         document.getElementById(tag_type).value = 'off'
@@ -436,24 +420,111 @@
       }
     }
 
+    // Calculates percentage and displays it on progress bar in overlay.
+    function updatePercentageDisplay() {
+      const progress = document.getElementById('book_progress');
+      const progressText = document.getElementById('progressText');
+
+      const chaptersCompleted = Number(document.getElementById('chapters-completed').innerText);
+      const totalBookChapters = Number(document.getElementById('chapter-total-value').innerText);
+
+      const percentRead = totalBookChapters === 0 ? 0 : Math.round((chaptersCompleted / totalBookChapters) * 100);
+
+      progress.value = chaptersCompleted;
+
+      progressText.textContent = `${percentRead}%`;
+    }
+
     function decrementChapters(){
       chaptersCompletedValue = document.getElementById('chapters-completed').innerText
 
       if (chaptersCompletedValue != 0){
         document.getElementById('chapters_completed_value').value--;
         document.getElementById('chapters-completed').innerText--;
+
+        // Calls function to update progress bar percentage while decrementing.
+        updatePercentageDisplay();
       }
     }
 
     function incrementChapters(){
       chaptersCompletedValue = document.getElementById('chapters-completed').innerText
       chapterTotalValue = document.getElementById('chapter-total-value').innerText
-      console.log(chapterTotalValue);
 
       if (chaptersCompletedValue < Number(chapterTotalValue)){
         document.getElementById('chapters_completed_value').value++;
         document.getElementById('chapters-completed').innerText++;
+
+        // Calls function to update progress bar percentage while incrementing.
+        updatePercentageDisplay();
       }
+    }
+
+    /* Enable chapter editing */
+    function editChapters() {
+      document.getElementById("chapters-display").classList.add("hidden");
+      document.getElementById("chapters-edit").classList.remove("hidden");
+    }
+
+    function saveChapters() {
+      document.getElementById("chapters-edit").classList.add("hidden");
+      document.getElementById("chapters-display").classList.remove("hidden");
+    }
+
+    function editNote(element){
+      noteID = element.value;
+      noteContent = document.getElementById(noteID).innerText;
+      noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'visible');
+      document.getElementById('note_id').value = noteID;
+      document.getElementById('note-edit-textarea').value = noteContent;
+      document.getElementById('note-edit-textarea').innerText = noteContent;
+    }
+
+    function addNote(element){
+      noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'hidden');
+      document.getElementById('note_id').value = '';
+      document.getElementById('note-edit-textarea').value = '';
+      document.getElementById('note-edit-textarea').textContent = '';
+    }
+
+    function saveGenres(){
+      genre_1_value = document.getElementById('genre1').value;
+      genre_2_value = document.getElementById('genre2').value;
+      genre_3_value = document.getElementById('genre3').value;
+      genre_4_value = document.getElementById('genre4').value;
+
+      document.getElementById('genre_1').value = genre_1_value
+      document.getElementById('genre_2').value = genre_2_value
+      document.getElementById('genre_3').value = genre_3_value
+      document.getElementById('genre_4').value = genre_4_value
+    }
+
+    /* Toggle genre edit section visibility */
+    function toggleGenreEdit() {
+      const section = document.getElementById("genre-edit");
+      section.classList.toggle("hidden");
+    }
+
+    /* Prevent selecting duplicate genres across dropdowns */
+    const genreSelects = document.querySelectorAll('#genre-edit select');
+
+    genreSelects.forEach(select => {
+      select.addEventListener('click', () => {
+        const selectedValues = Array.from(genreSelects).map(s => s.value);
+
+        genreSelects.forEach(s => {
+          Array.from(s.options).forEach(option => {
+            option.disabled =
+              selectedValues.includes(option.value) && s.value !== option.value;
+          });
+        });
+
+      });
+    });
+
+    // Makes percentage appear after the page reloads when Chapters Save button pressed.
+    window.onload = function() {
+      updatePercentageDisplay();
     }
 
   </script>

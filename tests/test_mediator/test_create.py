@@ -37,21 +37,6 @@ def test_create_failure_key_error():
     response = create({}, create_type='book-local')
     assert response[1] == 400
 
-#def test_create_failure_type_error():
-#    response = create(1, create_type='book-local')
-#   assert response[1] == 400
-
-def test_create_book_ol_success():
-    response = create(book, create_type='book-ol')
-    assert response == 'WIP'
-
-def test_create_note_success():
-    response = create(book, create_type='note')
-    assert response == 'WIP'
-
-def test_create_cover_image_success():
-    response = create(book, create_type='cover-image')
-    assert response == 'WIP'
 
 
 

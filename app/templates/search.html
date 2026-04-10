@@ -4,220 +4,88 @@
   <!-- Basic page metadata -->
   <meta charset="UTF-8">
   <title>Local Search</title>
-
-  <style>
-
-    /* Global page styling */
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background-color: #0f172a;
-      color: #e5e7eb;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* Main layout wrapper (sidebar + results) */
-    .page-wrapper {
-      display: flex;
-      max-width: 1200px;
-      margin: 3rem auto;
-      gap: 2rem;
-      padding: 0 1rem;
-    }
-
-    /* Sidebar filter section */
-    .filters {
-      width: 260px;
-      background-color: #111827;
-      padding: 1.5rem;
-      border-radius: 12px;
-      height: fit-content;
-    }
-
-    .filters h2 {
-      margin-top: 0;
-    }
-
-    .filters label {
-      display: block;
-      margin: 0.6rem 0;
-      font-size: 0.9rem;
-    }
-
-    .filters button {
-      width: 100%;
-      margin-top: 0.8rem;
-      padding: 0.6rem;
-      border-radius: 8px;
-      border: none;
-      background-color: #6366f1;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .filters button:hover {
-      background-color: #4f46e5;
-    }
-
-    /* Results section */
-    .results-area {
-      flex: 1;
-      background-color: #111827;
-      padding: 2rem;
-      border-radius: 12px;
-    }
-
-    /* Top navigation buttons */
-    .nav-buttons {
-      margin-bottom: 1rem;
-    }
-
-    .nav-buttons a {
-      text-decoration: none;
-      color: #6366f1;
-      font-weight: 600;
-      margin-right: 1rem;
-    }
-
-    /* Search form styling */
-    .search-form label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: 600;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 0.6rem;
-      border-radius: 8px;
-      border: none;
-      background-color: #1f2933;
-      color: #e5e7eb;
-    }
-
-    input[type="radio"] {
-      margin-right: 0.4rem;
-    }
-
-    .search-form button {
-      margin-top: 1rem;
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
-      border: none;
-      background-color: #6366f1;
-      color: white;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .search-form button:hover {
-      background-color: #4f46e5;
-    }
-
-    /* Book result card layout */
-    .book-card {
-      display: flex;
-      background-color: #1f2933;
-      margin-top: 1.5rem;
-      padding: 1rem;
-      border-radius: 10px;
-      gap: 1rem;
-      align-items: flex-start;
-    }
-
-    /* Placeholder cover block */
-    .book-cover {
-      width: 120px;
-      height: 170px;
-      background-color: #374151;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      color: #9ca3af;
-    }
-
-    /* Book info text */
-    .book-info h3 {
-      margin: 0 0 0.5rem 0;
-    }
-
-    .book-info p {
-      margin: 0.3rem 0;
-      font-size: 0.9rem;
-    }
-
-    /* Tag badges */
-    .tags {
-      margin-top: 0.6rem;
-    }
-
-    .tags span {
-      background-color: #374151;
-      padding: 0.3rem 0.6rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      margin-right: 0.4rem;
-    }
-
-    /* Button inside card */
-    .view-button {
-      display: inline-block;
-      margin-top: 0.8rem;
-      text-decoration: none;
-      background-color: #6366f1;
-      padding: 0.5rem 0.8rem;
-      border-radius: 8px;
-      color: white;
-      font-size: 0.85rem;
-    }
-
-    .view-button:hover {
-      background-color: #4f46e5;
-    }
-
-    /* No results message */
-    .no-results {
-      margin-top: 2rem;
-      text-align: center;
-      font-weight: 600;
-      color: #9fbaff;
-    }
-
-  </style>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='search.css') }}"/>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
 </head>
 
 <body>
+  <!--This may not be correct spot.  Unable to fully test with Flask.
+  When testing just on page, the styling/dialog box only worked at the top of the body section.  -->
+  <!-- Child template inheritance placeholder for modal_isbn.html. -->
+  {% block body %}
+  {% endblock %}
 
   <div class="page-wrapper">
 
     <!-- Sidebar filters -->
     <aside class="filters">
-      <h2>Filter by Tag</h2>
 
-      <label><input type="checkbox"> Owned</label>
-      <label><input type="checkbox"> Favorite</label>
-      <label><input type="checkbox"> Read</label>
-      <label><input type="checkbox"> Currently Reading</label>
+      <form method="GET" action="/book/local-search">
+        <h2>Filter by Tag</h2>
+
+        <!-- Filter persistence on reload and submission of form -->
+        <!-- based on checking filter_json -->
+
+        <label><input type="checkbox" name="owned" id="owned-filter"
+                      {% if filter_json.get('owned') == 'true' %}
+                        checked
+                      {% endif %}
+        > Owned
+        </label>
+
+        <label><input type="checkbox" name="favorite" id="favorite-filter"
+                      {% if filter_json.get('favorite') == 'true' %}
+                        checked
+                      {% endif %}
+
+        > Favorite
+        </label>
+
+        <label><input type="checkbox" name="completed" id="completed-filter"
+                      {% if filter_json.get('completed') == 'true' %}
+                        checked
+                      {% endif %}
+        > Completed
+        </label>
+
+      <label><input type="checkbox" name="currently-reading" id="currently-reading-filter"
+                    {% if filter_json.get('currently-reading') == 'true' %}
+                      checked
+                    {% endif %}
+      > Currently Reading
+      </label>
 
       <fieldset>
             <legend>Personal or Academic</legend>
         <div class="radio-group">
-                  <label>
-                      <input type="radio" name="Personal_Or_Academic" value="any" checked>
-                      Any
-                  </label>
-                  <label>
-                      <input type="radio" name="Personal_Or_Academic" value="personal">
-                      Personal
-                  </label>
+          <!-- Filter persistence on reload and submission of form -->
+          <!-- based on checking filter_json -->
+          <label>
+            <input type="radio" id="personal-or-academic-filter-any"
+                   name="personal_or_academic" value="any" checked>
+            Any
+          </label>
 
-                  <label>
-                      <input type="radio" name="Personal_Or_Academic" value="academic">
-                      Academic
-                  </label>
+          <label>
+            <input type="radio" id="personal-or-academic-filter-personal"
+                    name="personal_or_academic" value="personal"
+                      {% if filter_json.get('personal-or-academic') == 'personal' %}
+                        checked
+                      {% endif %}
+            >
+            Personal
+          </label>
+
+          <label>
+            <input type="radio" id="personal-or-academic-filter-academic"
+                   name="personal_or_academic" value="academic"
+                    {% if filter_json.get('personal-or-academic') == 'academic' %}
+                      checked
+                    {% endif %}
+            >
+            Academic
+          </label>
         </div>
       </fieldset>
 
@@ -225,17 +93,30 @@
       <fieldset>
             <legend>Fiction or Nonfiction</legend>
         <div class="radio-group">
+          <!-- Filter persistence on reload and submission of form -->
+          <!-- based on checking filter_json -->
                   <label>
-                      <input type="radio" name="Genre_1" value="any" checked>
+                      <input type="radio" id="genre-1-filter-any"
+                             name="Genre_1" value="any" checked>
                       Any
                   </label>
                   <label>
-                      <input type="radio" name="Genre_1" value="fiction">
+                      <input type="radio" id="genre-1-filter-fiction"
+                             name="Genre_1" value="fiction"
+                             {% if filter_json.get('genre-1') == 'fiction' %}
+                                checked
+                             {% endif %}
+                      >
                       Fiction
                   </label>
 
                   <label>
-                      <input type="radio" name="Genre_1" value="nonfiction">
+                      <input type="radio" id="genre-1-filter-nonfiction"
+                             name="Genre_1" value="nonfiction"
+                             {% if filter_json.get('genre-1') == 'nonfiction' %}
+                                checked
+                             {% endif %}
+                      >
                       Nonfiction
                   </label>
         </div>
@@ -243,17 +124,34 @@
 
       <label for="genres">Choose a Genre</label>
       <select name="genres" id="genres">
-        <option value="">--Choose an option:--</option>
-        <option value="fantasy">Fantasy</option>
-        <option value="horror">Horror</option>
+        <!-- Filter persistence on reload and submission of form -->
+        <!-- based on checking filter_json -->
+        <!-- Hackish way of implementing for genre, could be improved -->
+        <!-- Unfortunately very fragile -->
+        {% if filter_json.get('genre') != None %}
+          {% if filter_json.get('genre').split(',')[0] in book_genres.values() %}
+            <option value="{{ filter_json.get('genre') }}">{{ filter_json.get('genre').split(',')[0].title() }}</option>
+          {% else %}
+            <option value="None">--Choose an option:--</option>
+        {% endif %}
+        {% else %}
+          <option value="None">--Choose an option:--</option>
+        {% endif %}
 
+        {% for genre_id, genre in book_genres.items() %}
+          <option name="genre" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+        {% endfor %}
       </select>
 
-      <button>Apply Filters</button>
-
-      <button onclick=window.location.href='/book/local-search'>
-        View All Books
+      <button form="search-form" onclick="checkboxFilterValues()" class="transition_css">
+          Apply Filters
       </button>
+
+      <button onclick=window.location.href='/book/local-search' class="transition_css">
+        View All Books / Clear Filters
+      </button>
+      </form>
+
     </aside>
 
     <!-- Main results area -->
@@ -268,16 +166,82 @@
       <h1>Local Search</h1>
 
       <!-- Search form -->
-      <form method="GET" action="/book/local-search" class="search-form">
+      <form method="GET" action="/book/local-search" id="search-form" class="search-form">
+
+        <!-- Hidden Fields for Filters -->
+        <!-- Filter persistence on reload and submission of form -->
+        <!-- based on checking filter_json -->
+        <input type="hidden" id="owned-filter-value" name="owned"
+               {% if filter_json.get('owned') == 'true' %}
+                  value="true"
+               {% else %}
+                  value=""
+               {% endif %}
+        >
+
+        <input type="hidden" id="favorite-filter-value" name="favorite"
+               {% if filter_json.get('favorite') == 'true' %}
+                  value="true"
+               {% else %}
+                  value=""
+               {% endif %}
+        >
+
+        <input type="hidden" id="completed-filter-value" name="completed"
+               {% if filter_json.get('completed') == 'true' %}
+                  value="true"
+               {% else %}
+                  value=""
+               {% endif %}
+        >
+
+        <input type="hidden" id="currently-reading-filter-value" name="currently-reading"
+               {% if filter_json.get('currently-reading') == 'true' %}
+                  value="true"
+               {% else %}
+                  value=""
+               {% endif %}
+        >
+
+        <input type="hidden" id="personal-or-academic-filter-value" name="personal-or-academic"
+               {% if filter_json.get('personal-or-academic') == 'personal' %}
+                  value="personal"
+               {% elif filter_json.get('personal-or-academic') == 'academic' %}
+                  value="academic"
+               {% else %}
+                  value="any"
+               {% endif %}
+        >
+
+        <input type="hidden" id="genre-1-filter-value" name="genre-1"
+               {% if filter_json.get('genre-1') == 'fiction' %}
+                  value="fiction"
+               {% elif filter_json.get('genre-1') == 'nonfiction' %}
+                  value="nonfiction"
+               {% else %}
+                  value="any"
+               {% endif %}
+        >
+
+
+        <input type="hidden" id="genre-filter-value" name="genre"
+               {% if filter_json.get('genre') != None %}
+                  value="{{ filter_json.get('genre') }}"
+               {% else %}
+                  value=""
+               {% endif %}
+        >
+
+        <input type="hidden" id="filtered" name="filtered" value="false">
 
         <label for="search">Search</label>
         <input type="text" id="search" name="search"
           value="{{ request.args.get('search', '') }}">
 
         {% if search_type == 'isbn' %}
-          <label><input type="radio" name="search_type" value="isbn" checked required> ISBN</label>
+          <label><input type="radio" name="search_type" value="isbn" checked > ISBN</label>
         {% else %}
-          <label><input type="radio" name="search_type" value="isbn" required> ISBN</label>
+          <label><input type="radio" name="search_type" value="isbn" > ISBN</label>
         {% endif %}
 
         {% if search_type == 'title' %}
@@ -292,7 +256,9 @@
           <label><input type="radio" name="search_type" value="author"> Author</label>
         {% endif %}
 
-        <button type="submit">Search</button>
+        <button type="submit" onclick="checkboxFilterValues()" class="transition_css">
+            Search
+        </button>
       </form>
 
       <!-- Results loop -->
@@ -300,9 +266,12 @@
         {% for book, book_info in books.items() %}
           <div class="book-card">
 
-            <div class="book-cover">
-              No Cover
-            </div>
+
+          {% if book_info["Cover_Image"] %}
+            <img src="{{ book_info['Cover_Image'] }}" class="book-cover" alt="Book Cover Image">
+          {% else %}
+            <div class="book-cover">No Cover</div>
+          {% endif %}
 
             <div class="book-info">
               <h3>{{ book_info['Title'] }}</h3>
@@ -341,7 +310,7 @@
 
               </div>
 
-              <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button">
+              <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button transition_css">
                 Go to Book Page →
               </a>
             </div>
@@ -356,6 +325,106 @@
     </section>
 
   </div>
+
+  <!-- Return to Top of Page Button -->
+  <button id="returnToTop" title="Return to the top of page" class="transition_css">↑ Top of Page</button>
+
+  <script>
+    // Create global variable for ReturnToTop button.
+    const returnToTopBtn = document.getElementById("returnToTop");
+
+    // Function to display Top of Page button after scrolling 300px.
+     function showWhenScrolling() {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        returnToTopBtn.style.display = "block";
+      } else {
+        returnToTopBtn.style.display = "none";
+      }
+    }
+
+    // Function for returning to the top of the page. 
+    function upTop(){
+      window.scrollTo({
+        top:0,
+        behavior: "smooth"
+      });
+    }
+
+    // Event listeners for scrolling 300px to display button and clicking button to return to top.
+    window.addEventListener("scroll", showWhenScrolling); 
+
+    returnToTopBtn.addEventListener("click", upTop);
+
+
+    // Functions for toggling values for filters
+    // Function that builds the checkbox input values
+    function checkboxFilterValues(){
+      checkTagFilter("owned-filter", "owned-filter-value");
+      checkTagFilter("favorite-filter", "favorite-filter-value");
+      checkTagFilter("completed-filter", "completed-filter-value");
+      checkTagFilter("currently-reading-filter", "currently-reading-filter-value");
+
+      // Required if the user reloads the page and event listener is never used
+      // on submission
+      checkRadioFilters("personal-or-academic-filter-value");
+      checkRadioFilters("genre-1-filter-value");
+    }
+
+    // Get checkbox values for input fields
+    function checkTagFilter(filterType, filterValue){
+      let checkValue = document.getElementById(filterType).checked;
+
+      // needed for when the tag filters make filtered true
+      if (checkValue === true){
+        document.getElementById('filtered').value = 'true';
+      }
+
+      document.getElementById(filterValue).value = checkValue;
+    }
+
+    // Toggles filter values for radio button based inputs
+    function checkRadioFilters(filterValue){
+      let filteredValue = document.getElementById('filtered').value;
+      if (filteredValue !== 'true'){
+        let filter_val = document.getElementById(filterValue).value;
+
+        // Toggles filter value if not any
+        if (filter_val !== 'any'){
+          document.getElementById('filtered').value = 'true';
+        } else {
+          document.getElementById('filtered').value = 'false';
+        }
+      }
+    }
+
+    // Event listener for radio buttons to change field value
+    function radioButtonFilters(filterType, filterValue){
+      let checkValue = document.getElementById(filterType);
+
+      checkValue.addEventListener("change", (event) => {
+        let checkValue = document.getElementById(filterType).value;
+        document.getElementById(filterValue).value = checkValue;
+
+        let filter_val = document.getElementById(filterValue).value;
+        if (filter_val !== 'any'){
+          document.getElementById('filtered').value = 'true';
+        } else {
+          document.getElementById('filtered').value = 'false';
+        }
+      });
+
+    }
+    // Personal or Academic filter radio button values
+    radioButtonFilters("personal-or-academic-filter-any", "personal-or-academic-filter-value");
+    radioButtonFilters("personal-or-academic-filter-personal", "personal-or-academic-filter-value");
+    radioButtonFilters("personal-or-academic-filter-academic", "personal-or-academic-filter-value");
+    // Genre-1 (Fiction or Nonfiction) filter radio button values
+    radioButtonFilters("genre-1-filter-any", "genre-1-filter-value");
+    radioButtonFilters("genre-1-filter-fiction", "genre-1-filter-value");
+    radioButtonFilters("genre-1-filter-nonfiction", "genre-1-filter-value");
+    radioButtonFilters("genres", "genre-filter-value");
+
+</script>
 
 </body>
 </html>

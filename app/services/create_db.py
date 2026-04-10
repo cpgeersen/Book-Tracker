@@ -33,7 +33,7 @@ def create_db():
                    Tag_ID INTEGER,
                    Chapters INTEGER,
                    Chapters_Completed INTEGER,
-                   Cover_Image BLOB,
+                   Cover_Image TEXT,
                    FOREIGN KEY (Publisher_ID) REFERENCES Publishers(Publisher_ID),
                    FOREIGN KEY (Tag_ID) REFERENCES Tags(Tag_ID)
                    )
@@ -63,7 +63,8 @@ def create_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Publishers (
                    Publisher_ID INTEGER PRIMARY KEY,
-                   Publisher_Name TEXT NOT NULL
+                   Publisher_Name TEXT NOT NULL,
+                   OpenLibrary_ID TEXT
                    )''')
 
     # Next create the BookNotes Bridging Table
@@ -80,7 +81,7 @@ def create_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Notes (
                    Note_ID INTEGER PRIMARY KEY,
-                   Note BLOB NOT NULL
+                   Note TEXT NOT NULL
                    )''')
 
     # Next create the Tags Table

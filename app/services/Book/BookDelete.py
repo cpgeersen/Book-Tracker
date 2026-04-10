@@ -1,6 +1,6 @@
 import sqlite3
 import json
-from app.services.Book.BookRead import read_full_book_record
+from app.services.Book.BookRead import read_full_book_record, read_author_id_from_name
 
 SUCCESS = 200
 BAD_REQUEST = 400
@@ -54,6 +54,29 @@ def delete_book_record(isbn):
 
     return f'Success: Book with {isbn} deleted.', SUCCESS
 
+def delete_book_author_table_record(isbn, author_first_name, author_last_name):
+
+    # Get the author_id if it exists
+    author_id = read_author_id_from_name(author_first_name, author_last_name)
+
+    # When no author_id exists, error out
+    if author_id == '':
+        return 'Error: Author_ID not present', BAD_REQUEST
+
+    # Get a cursor and connection to the database
+    cursor, conn = connect_to_database()
+
+    query = f''' DELETE FROM BookAuthor
+                 WHERE ISBN = ?
+                 AND Author_ID = ?
+            '''
+    criteria = (isbn, author_id['Author_ID'],)
+    cursor.execute(query, criteria)
+    conn.commit()
+    result = cursor.fetchall()
+    conn.close()
+
+    return f'Success: BookAuthor record with {isbn} and {author_id} deleted.', SUCCESS
 
 if __name__ == '__main__':
     pass

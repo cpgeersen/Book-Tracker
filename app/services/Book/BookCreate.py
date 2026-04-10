@@ -136,6 +136,21 @@ def create_book_genre_table_record(isbn, genre_id):
         conn.close()
         return True
 
+
+def create_book_genre_frontend(isbn, genre_id):
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+
+    insert_book_genre = ''' INSERT INTO BookGenre(ISBN, Genre_ID)
+                                   VALUES(?, ?)
+                               '''
+    criteria = (isbn, genre_id,)
+    cursor.execute(insert_book_genre, criteria)
+    conn.commit()
+    conn.close()
+    return True
+
+
 def create_book(isbn, title, publish_year, publisher_id, summary, tag_id,
                 chapters, chapters_completed, cover_image):
     # Get a cursor and connection to database

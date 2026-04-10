@@ -1,0 +1,41 @@
+<!-- Modal to tell user what was updated -->
+{% extends "view_book.html" %}
+
+{% block body %}
+    <dialog open>
+        <h3>Records Updated with OpenLibrary Data:</h3>
+        {% if updated_records["Updated"] == "False" %}
+            <p>---No records updated---</p>
+        {% else %}
+            <ul>
+                {% if updated_records["Summary"] %}
+                    <li>Summary was updated</li>
+                {% endif %}
+
+                {% if updated_records["Publish_Year"] %}
+                    <li>Publish year was updated</li>
+                {% endif %}
+
+                {% if updated_records["Cover_Image"] %}
+                    <li>Cover image was updated</li>
+                {% endif %}
+
+                {% if updated_records["Publisher"] %}
+                    <li>Publisher was updated</li>
+                {% endif %}
+
+                {% if updated_records["Author_1"] %}
+                    <li>Primary author was updated</li>
+                {% endif %}
+
+                {% if updated_records["Author_2"] %}
+                    <li>Secondary author was updated</li>
+                {% endif %}
+            </ul>
+        {% endif %}
+        <form method="dialog">
+            <button class="modal-button">Close</button>
+        </form>
+    </dialog>
+{% endblock %}
+

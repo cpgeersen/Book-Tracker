@@ -33,7 +33,7 @@ def create_note(json_input):
     )
     note_id = cursor.lastrowid
     cursor.execute(
-        "INSERT INTO BookNotes (ISBN, NoteID) VALUES (?,?)",
+        "INSERT INTO BookNotes (ISBN, Note_ID) VALUES (?,?)",
         (isbn, note_id)
     )
 
@@ -52,9 +52,9 @@ def read_note(json_input):
 
     isbn = json_input['ISBN']
     read_query = """
-        SELECT N.NoteID, N.Note
+        SELECT N.Note_ID, N.Note
         FROM Notes AS N
-        JOIN BookNotes AS B ON N.NoteID = B.NoteID
+        JOIN BookNotes AS B ON N.Note_ID = B.Note_ID
         WHERE B.ISBN = ?
     """
 
@@ -63,9 +63,11 @@ def read_note(json_input):
     conn.close()
 
     notes = {}
-
+    note_number = 1
     for note_id, note_content in rows:
-        notes[str(note_id)] = note_content
+        notes[f'Note_{note_number}'] = {'Note_ID': note_id,
+                                        'Note_Content': note_content}
+        note_number += 1
 
     return notes
 
@@ -81,7 +83,7 @@ def update_note(json_input):
     update_query = """
         UPDATE Notes
         SET Note = ?
-        WHERE NoteID = ?
+        WHERE Note_ID = ?
     """
 
     cursor.execute(update_query, (note_content, note_id))
@@ -98,12 +100,12 @@ def delete_note(json_input):
     note_id = json_input['Note_ID']
 
     cursor.execute(
-        "DELETE FROM BookNotes WHERE NoteID = ?",
+        "DELETE FROM BookNotes WHERE Note_ID = ?",
         (note_id,)
     )
 
     cursor.execute(
-        "DELETE FROM Notes WHERE NoteID = ?",
+        "DELETE FROM Notes WHERE Note_ID = ?",
         (note_id,)
     )
 
@@ -112,7 +114,25 @@ def delete_note(json_input):
 
     return {"status": "success"}
 
+def is_note_id_in_note_table(json_input):
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
 
+    note_id = json_input['Note_ID']
+
+    # Query if the Tag_ID is in Tags Table
+    read_query = "SELECT * FROM Notes WHERE Note_ID = ?"
+    criteria = (note_id,)
+    cursor.execute(read_query, criteria)
+    result = cursor.fetchall()
+
+    conn.close()
+
+    # Return False when there is no Tag_ID that matches
+    if len(result) == 0:
+        return False
+    else:
+        return True
 
 
 

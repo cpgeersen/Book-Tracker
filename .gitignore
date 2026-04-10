@@ -27,3 +27,8 @@ venv.bak/
 # SQLite
 *.sqlite
 *.db
+
+# Images
+*.png
+*.jpeg
+*.jpg

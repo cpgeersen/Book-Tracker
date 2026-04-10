@@ -1,15 +1,26 @@
-from app.services.Book.BookCreate import create_book_record
-from app.services.Book.BookRead import (read_full_book_record, get_all_book_isbn, read_full_book_by_title,
-                                        read_full_book_by_author)
-from app.services.Book.BookUpdate import update_summary, update_chapters, update_read_chapters, update_tags
-from app.services.Book.BookDelete import delete_book_record
-from app.services.Book.BookNotes import create_note, read_note, update_note, delete_note
-from app.services.Book.BookPredicate import is_isbn_in_book_table
+import os
 import json
+
+from app.services.Book.BookCreate import create_book_record, create_book_genre_frontend, create_publisher
+from app.services.Book.BookRead import (read_full_book_record, get_all_book_isbn, read_full_book_by_title,
+                                        read_full_book_by_author, read_publisher_id)
+from app.services.Book.BookUpdate import (update_summary, update_chapters, update_read_chapters,
+                                          update_tags, update_cover_image, update_genre, update_publisher_id,
+                                          update_publisher_year)
+from app.services.Book.BookDelete import delete_book_record, delete_book_author_table_record
+from app.services.Book.BookNotes import create_note, read_note, update_note, delete_note, is_note_id_in_note_table
+from app.services.Book.BookPredicate import is_isbn_in_book_table, is_publisher_name_in_publisher_table
+
 
 
 def create_book(json):
     return create_book_record(json)
+
+def create_book_genre(isbn, genre_id):
+    return create_book_genre_frontend(isbn, genre_id)
+
+def create_new_publisher(publisher_name):
+    return create_publisher(publisher_name)
 
 def read_book(isbn):
     try:
@@ -35,6 +46,9 @@ def read_all_books_by_title(title):
 def read_all_books_by_author(author_last_name, author_first_name=None):
     return read_full_book_by_author(author_last_name, author_first_name)
 
+def read_publisher_id_by_name(publisher_name):
+    return read_publisher_id(publisher_name)
+
 def update_book_summary(isbn, summary):
     return update_summary(isbn, summary)
 
@@ -46,6 +60,18 @@ def update_book_chapters_completed(isbn, chapters_completed):
 
 def update_book_tags(tag_id, owned, favorite, completed, currently_reading):
     return update_tags(tag_id, owned, favorite, completed, currently_reading)
+
+def update_book_cover_image(isbn, cover_image_path):
+    return update_cover_image(isbn, cover_image_path)
+
+def update_book_publisher_id(isbn, publisher_id):
+    return update_publisher_id(isbn, publisher_id)
+
+def update_book_genre(isbn, old_genre_id, new_genre_id):
+    return update_genre(isbn, old_genre_id, new_genre_id)
+
+def update_book_publisher_year(isbn, publisher_year):
+    return update_publisher_year(isbn, publisher_year)
 
 def delete_book(isbn):
     return delete_book_record(isbn)
@@ -62,10 +88,28 @@ def update_book_note(json_input):
 def delete_book_note(json_input):
     return delete_note(json_input)
 
+def delete_book_cover_image(isbn, cover_image_path):
 
+    update_book_cover_image(isbn, cover_image_path='')
 
+    try:
+        os.remove(f'./app{cover_image_path}')
+        return json.dumps({'Success': 'Cover image deleted'}), 200
+    except OSError:
+        # File does not exist
+        return json.dumps({'Error': 'File does not exist'}), 200
 
+def delete_book_author_record(isbn, author_first_name, author_last_name):
+    return delete_book_author_table_record(isbn, author_first_name, author_last_name)
 
+def is_in_book_table(isbn):
+    return is_isbn_in_book_table(isbn)
+
+def is_note_id_in_database(json_input):
+    return is_note_id_in_note_table(json_input)
+
+def is_publisher_in_database(publisher_name):
+    return is_publisher_name_in_publisher_table(publisher_name)
 
 
 
