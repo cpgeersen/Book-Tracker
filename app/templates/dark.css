@@ -1,6 +1,6 @@
-<!-- This is the dark theme CSS file -->
+/* This is the dark theme CSS file */
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI"
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI";
     background-color: #121212;
     color: #ffffff;
 }

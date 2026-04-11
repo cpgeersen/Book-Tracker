@@ -22,7 +22,7 @@
     <!-- Navigation buttons -->
     <div class="nav-buttons">
       <a href="/book/add-local">← Back</a>
-      <a href="/">Home</a>
+      <a href="/">🏠 Home</a>
     </div>
 
     <!-- Main book container -->
@@ -37,14 +37,17 @@
           {% else %}
             <div class="book-cover">No Cover</div>
           {% endif %}
-          <button id="book-cover-edit-btn" onclick="editCoverImage()">Edit Book Cover Image</button>
+          <button id="book-cover-edit-btn" onclick="editCoverImage()" class="small-button transition_css">Edit Book Cover Image</button>
           <form id="book-cover-upload" class="hidden" method="POST" enctype="multipart/form-data">
-            <input type="file" name="cover-image">
-            <button type="submit" name="cover-image" value="update">Upload</button>
-            <input type="submit" name="cover-image" value="delete">
+            <label for="cover-image" class="file-button transition_css">📁 Choose File</label>
+            <input type="file" id="cover-image" name="cover-image">
+            <button type="submit" name="cover-image" value="update" class="small-button transition_css">Upload</button>
+            <!-- <input type="submit" name="cover-image" value="delete"> -->
+            <button type="submit" name="cover-image" value="delete" class="small-button transition_css">Delete</button>
 
           </form>
-          <button id="book-cover-edit-btn-cancel" class="hidden" onclick="editCoverImage()">Cancel</button>
+          <br>
+          <button id="book-cover-edit-btn-cancel" class="hidden small-button transition_css" onclick="editCoverImage()">Cancel</button>
         </div>
 
 
@@ -88,7 +91,7 @@
             {% endif %}
 
             <!-- Button to enable editing summary -->
-            <button onclick="editSummary()">Edit Summary</button>
+            <button onclick="editSummary()" class="style-button transition_css">Edit Summary</button>
 
           </div>
 
@@ -100,7 +103,7 @@
               <br><br>
 
               <!-- Save summary button -->
-              <button onclick="editSummary()" type="submit">Save</button>
+              <button onclick="editSummary()" type="submit" class="style-button transition_css">Save</button>
             </form>
           </div>
 
@@ -123,7 +126,7 @@
 
           <!-- Contains increment/decrement buttons with progress bar. -->
           <div class="progress-section">
-            <button id="decrement-chapters" onclick="decrementChapters()">-</button>
+            <button id="decrement-chapters" onclick="decrementChapters()" class="small-button transition_css">-</button>
 
               <!-- Groups progress bar and percentage text overlay together -->
               <div class="progress-bar-container">
@@ -132,12 +135,12 @@
                 <div class="progress-bar-text" id="progressText"></div>
               </div>
 
-            <button id="increment-chapters" onclick="incrementChapters()">+</button>
+            <button id="increment-chapters" onclick="incrementChapters()" class="small-button transition_css">+</button>
           </div>
 
           <form id="chapters_completed" method="POST">
             <input type="hidden" id="chapters_completed_value" name="chapters_completed" value="{{ book["Chapters_Completed"] }}">
-            <button type="submit" form="chapters_completed" name="chapters_completed">Save</button>
+            <button type="submit" form="chapters_completed" name="chapters_completed" class="style-button transition_css">Save</button>
           </form>
         </div>
 
@@ -147,7 +150,7 @@
         <div id="chapters-display">
           <label>Total Chapters:</label>
           <span>{{ book["Chapters"] }}</span>
-          <button onclick="editChapters()">Edit</button>
+          <button onclick="editChapters()" class="style-button transition_css">Edit</button>
         </div>
 
         <!-- Chapter edit input -->
@@ -159,7 +162,7 @@
                    value="{{ book["Chapters"] }}">
 
             <!-- Save chapters button -->
-            <button onclick="saveChapters()" type="submit">Save</button>
+            <button onclick="saveChapters()" type="submit" class="style-button transition_css">Save</button>
           </form>
         </div>
 
@@ -171,23 +174,23 @@
         <h3>Genres</h3>
 
         <!-- Display current genres -->
-        <span class="tag">{{ book["Genre_1"].title() }}</span>
+        <span class="genre-tag">{{ book["Genre_1"].title() }}</span>
 
         {% if book["Genre_2"] %}
-          <span class="tag">{{ book["Genre_2"].title() }}</span>
+          <span class="genre-tag">{{ book["Genre_2"].title() }}</span>
         {% endif %}
 
         {% if book["Genre_3"] %}
-          <span class="tag">{{ book["Genre_3"].title() }}</span>
+          <span class="genre-tag">{{ book["Genre_3"].title() }}</span>
         {% endif %}
 
         {% if book["Genre_4"] %}
-          <span class="tag">{{ book["Genre_4"].title() }}</span>
+          <span class="genre-tag">{{ book["Genre_4"].title() }}</span>
         {% endif %}
 
         <!-- Button to enable editing genres -->
         <br><br>
-        <button onclick="toggleGenreEdit()">Edit Genres</button>
+        <button onclick="toggleGenreEdit()" class="style-button transition_css">Edit Genres</button>
 
         <!-- Genre edit section -->
         <div id="genre-edit" class="hidden">
@@ -195,7 +198,7 @@
 
             <br>
 
-            <select id="genre1">
+            <select id="genre1" class="select-genre">
               {% if book["Genre_1"] == 'fiction' %}
                 <option value="fiction, 1">Fiction</option>
                 <option value="nonfiction, 2">Nonfiction</option>
@@ -206,7 +209,7 @@
             </select>
 
 
-              <select id="genre2">
+              <select id="genre2" class="select-genre">
                 {% if book["Genre_2"] %}
                   <option value="{{ book["Genre_2"] }}, {{ book["Genre_ID_2"] }}">{{ book["Genre_2"].title() }}</option>
                 {% else %}
@@ -218,7 +221,7 @@
               </select>
 
 
-              <select id="genre3">
+              <select id="genre3" class="select-genre">
                 {% if book["Genre_3"] %}
                   <option value="{{ book["Genre_3"] }}, {{ book["Genre_ID_3"] }}">{{ book["Genre_3"].title() }}</option>
                 {% else %}
@@ -230,7 +233,7 @@
               </select>
 
 
-              <select id="genre4">
+              <select id="genre4" class="select-genre">
                 {% if book["Genre_4"] %}
                   <option value="{{ book["Genre_4"] }}, {{ book["Genre_ID_4"] }}">{{ book["Genre_4"].title() }}</option>
                 {% else %}
@@ -250,7 +253,7 @@
             <br><br>
 
             <!-- Save genres button -->
-            <button onclick="saveGenres()" type="submit" form="update-genre" name="update-genre">Save Genres</button>
+            <button onclick="saveGenres()" type="submit" form="update-genre" name="update-genre" class="style-button transition_css">Save Genres</button>
           </form>
 
         </div>
@@ -282,7 +285,7 @@
           <br><br>
 
           <!-- Save tag changes button -->
-          <button onclick="saveTags()" type="submit" form="tag" name="tag">Save Tags</button>
+          <button onclick="saveTags()" type="submit" form="tag" name="tag" class="style-button transition_css">Save Tags</button>
         </form>
       </div>
 
@@ -299,19 +302,19 @@
                   <div class="note-card">
                     <p class="note-text-id">Note ID: {{ note_content['Note_ID'] }}</p>
                     <p class="note-text" id="{{ note_content['Note_ID'] }}">{{ note_content['Note_Content'] }}</p>
-                    <button onclick="editNote(this)" class="note-card-button" value="{{ note_content['Note_ID'] }}">
+                    <button onclick="editNote(this)" class="note-card-button transition_css" value="{{ note_content['Note_ID'] }}">
                       View/Edit Note</button>
                   </div>
                 {% endfor %}
               {% endif %}
             </div>
-            <button id="note-add" onclick="addNote(this)">Add New Note</button>
+            <button id="note-add" onclick="addNote(this)" class="style-button transition_css">Add New Note</button>
           </div>
 
           <div id="notes-right">
             <form id="note-edit" method="POST">
-              <button class="note-edit-btn" type="submit" form="note-edit">Save Note</button>
-              <button class="note-edit-btn" id="note-edit-delete" type="submit" form="note-edit"
+              <button class="note-edit-btn transition_css" type="submit" form="note-edit">Save Note</button>
+              <button class="note-edit-btn transition_css" id="note-edit-delete" type="submit" form="note-edit"
                       name="note-delete">Delete Note</button>
               <input type="hidden" id="note_id" name="note_id" value="">
               <textarea required name="note-edit" id="note-edit-textarea" rows="22" cols="40"
@@ -328,7 +331,7 @@
         <h3>Actions</h3>
 
         <!-- Action buttons -->
-        <button command="show-modal" commandfor="delete-confirmation-modal" class="delete-btn">Delete Book</button>
+        <button command="show-modal" commandfor="delete-confirmation-modal" class="delete-btn style-button transition_css">Delete Book</button>
 
         <dialog id="delete-confirmation-modal">
 
@@ -345,7 +348,7 @@
           </div>
         </dialog>
 
-          <button command="show-modal" commandfor="update-confirmation-modal" class="update-btn">Update with OpenLibrary Data</button>
+          <button command="show-modal" commandfor="update-confirmation-modal" class="update-btn style-button transition_css">Update with OpenLibrary Data</button>
         <dialog id="update-confirmation-modal">
 
           <p>Use data from the OpenLibrary API to update book record.</p>

@@ -61,8 +61,26 @@
 
 /* Active tag state */
 .tag.active {
-    background-color: #6366f1;
+    /* background-color: #6366f1; */
+    background-color: #4346f1;
 }
+
+.tag:hover {
+    background-color: #4f46e5;
+}
+
+.genre-tag {
+    background-color: #374151;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    border: none;
+    color: white;
+}
+
+
+
 
 /* Input field styling */
     input[type="number"] {
@@ -146,6 +164,18 @@ textarea {
     height: 30px;
     align-self: center;
     align-items: center;
+    border: none;
+    background-color: #6366f1;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+.note-card-button:hover {
+    background-color: #4f46e5;
 }
 
 .note-text-id{
@@ -157,6 +187,19 @@ textarea {
 
 .note-edit-btn{
     margin-bottom: 10px;
+    background-color: #6366f1;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.note-edit-btn:hover {
+    background-color: #4f46e5;
 }
 
 #note-edit-delete{
@@ -223,4 +266,90 @@ progress::-moz-progress-bar {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.style-button {
+    margin-top: 1rem;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: none;
+    background-color: #6366f1;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.style-button:hover {
+    background-color: #4f46e5;
+}
+
+.transition_css {
+      transition: background-color 0.3s ease-in-out;
+}    
+
+/* Checkbox styling */
+input[type="checkbox"] {
+    accent-color: #4f46e5;
+}
+
+input[type="checkbox"]:hover {
+    outline: 2px solid #4f46e5;
+    cursor: pointer;
+}
+
+.small-button {
+    background-color: #6366f1;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.small-button:hover {
+    background-color: #4f46e5;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.file-button {
+    display: inline-block;
+    background-color: #6366f1;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.file-button:hover {
+    background-color: #4f46e5;
+}
+
+/* Genre option styling */
+.select-genre {
+    margin-top: 1rem;
+    /* padding: 0.6rem 1rem;
+    border-radius: 8px; */
+    border: none;
+    background-color: #6366f1;
+    color: white;
+    font-weight: 600;
+
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+}
+
+.select-genre:hover {
+    background-color: #4f46e5;
 }
