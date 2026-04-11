@@ -1,0 +1,54 @@
+  /* Result block spacing */
+  .result-block {
+    margin-bottom: 40px;
+  }
+
+  /* Book group layout */
+  .book-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  /* Individual book card */
+  .book-card {
+    background-color: #111827;
+    padding: 15px;
+    border-radius: 10px;
+    min-width: 220px;
+  }
+
+  /* Card actions */
+  .card-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  /* View button */
+  .view-button {
+    text-decoration: none;
+    color: #6366f1;
+    font-weight: bold;
+  }
+
+  .view-button:hover {
+    color: #4f46e5;
+  }
+
+  .delete-btn {
+    background-color: #6366f1;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.delete-btn:hover {
+    background-color: #4f46e5;
+}

@@ -10,8 +10,7 @@
 </head>
 
 <body>
-  <!--This may not be correct spot.  Unable to fully test with Flask.
-  When testing just on page, the styling/dialog box only worked at the top of the body section.  -->
+
   <!-- Child template inheritance placeholder for modal_isbn.html. -->
   {% block body %}
   {% endblock %}
@@ -123,7 +122,7 @@
       </fieldset>
 
       <label for="genres">Choose a Genre</label>
-      <select name="genres" id="genres">
+      <select name="genres" id="genres" class="select-genre transition_css">
         <!-- Filter persistence on reload and submission of form -->
         <!-- based on checking filter_json -->
         <!-- Hackish way of implementing for genre, could be improved -->
