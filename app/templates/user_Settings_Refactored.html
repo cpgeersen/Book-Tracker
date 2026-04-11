@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- USER SETTINGS INPUT !-->
+<head>
+    <title> User Settings </title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='user_profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dark.css' if theme_switch == '1' else 'light.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}"/>
+    <link id="themeStylesheet" rel="stylesheet" href="{{ url_for('static', filename='homepage.css') }}"/> 
+</head>
+
+<!-- This is the beginning of the body !-->
+<body>
+<div class="header-container">
+    <div class="right-text">
+            <h1>User Settings</h1>
+            <h1><a href="/workspaces/Book-Tracker/app/templates/homepage_v2.html">Homepage</a></h1>
+    </div>
+    <img src="/workspaces/Book-Tracker/app/templates/BookTracker_Settings.png"
+                    alt="User Profile Picture"
+                    width="200"
+                    height="200"
+                    class="header-image">
+</div>
+        
+    <h1>User Settings</h1>
+
+<!-- I think I may have named the route incorrectly here (example "/click_Button" may need path name.)-->
+
+    <form action="/submit_Button" method="post">
+        <fieldset>
+            <!-- USERNAME INPUT -->
+            <legend>Username</legend>
+            <div class="form-row">
+                <label for="usr_Name">Username:</label>
+                <input type="text" id="usr_Name" name="usr_Name" value="{{ username }}">
+            </div>
+        </fieldset>
+        <fieldset>
+            <!-- MISSION STATEMENT INPUT -->
+            <legend>Mission Statement</legend>
+            <div class="form-row">
+                <label for="miss_Stmt">Mission Statement:</label>
+                <textarea id="miss_Stmt" name="miss_Stmt" placeholder="Write your mission statement here...">{{ mission_statement }}</textarea>
+            </div>
+        </fieldset>
+        <fieldset>
+            <!-- Light/Dark Theme Switch -->
+            <legend>Light/Dark Theme</legend>
+            <label class="switch">
+                <input type="checkbox" id="toggleSwitch" name="theme_switch"
+                    {% if theme_switch == "1" %}checked{% endif %}> 
+                <span class="slider"></span>
+            </label>
+            <p>Value: <span id="output">{{ '1' if theme_switch == '1' else '0' }}</span></p>
+        </fieldset>
+        <!-- This script dynamically switches the theme CSS file when the toggle switch is changed (JS)-->
+        <input type="submit" value="Submit">
+
+        <button type="submit" formaction="/reset_Button" formmethod="post">
+            Reset
+        </button>
+
+    </form>
+        <script>
+            const checkbox = document.getElementById("toggleSwitch");
+            const themeLink = document.getElementById("themeStylesheet");
+            const output = document.getElementById("output");
+
+            checkbox.addEventListener("change", function () {
+                if (this.checked) {
+                themeLink.href = "{{ url_for('static', filename='dark.css') }}";
+                output.textContent = "1";
+                } else {
+                themeLink.href = "{{ url_for('static', filename='light.css') }}";
+                output.textContent = "0";
+                }
+            });
+        </script>
+</body>
+<!-- ##################END_OF_FORM_SECTION##################-->

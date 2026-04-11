@@ -1,6 +1,6 @@
 from flask import Flask, request
 from UserManager import UserManager
-from userProfileRefactored import reset_User_Profile, update_User_Profile0
+from userProfileRefactored import update_User_Profile
 
 app = Flask(__name__)
 
@@ -12,16 +12,18 @@ def submit_button():
 
     # Convert checkbox to 0 or 1
     theme_value = 1 if theme_switch == "on" else 0
+    # I am not sure why the data dictionary isn't built and fed to the function.
 
-    # Build the user profile dictionary
+    # {Alternative may be to use the Jinja Placeholders. 
+    # Build the user profile dictionary}
+    
     data = {
         "username": username,
         "mission_statement": mission,
         "theme": theme_value
     }
-
+    
     # Call your existing function
-    manager = UserManager()
-    manager.write_user_json(data)
+    update_User_Profile(data)
 
-    return "User settings updated!"
+    return data

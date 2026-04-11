@@ -2,8 +2,7 @@ import json
 import os
 from datetime import datetime, timedelta
 # Flask Import 
-from flask import Flask, request, redirect, url_for
-from your_module import update_User_Profile
+from flask import Flask, request, redirect, url_for, render_template
 
 app = Flask(__name__)
 
@@ -19,51 +18,61 @@ app = Flask(__name__)
 # I think I need to do more work on this file 
 # to allow for for calculated fields to be generated
 #===========================================================
-
+# The JSON path defined in !init statement!
 #----------------------------------------------------------
-# 4.7.1 - User Setting Storage
+# 4.7.1 - User Setting Storage (Unused)
+# Definition: I am unsure of what exactly the purpose of this function is.
 #---------------------------------------------------------
-def user_Setting_Storage(data):
+def user_Setting_Storage():
     manager = UserManager()
-
-    # Try to read the JSON file
-    existing = manager.read_user_json()
-
-    # If the file exists → return its contents
-    if existing is not None:
-        return existing
-
-    # If the file does NOT exist → write the input data
-    manager.write_user_json(data)
-
-    # Return the newly written data
+    data = manager.load_user_profile()
     return data
 
 #------------------------------------------------
-# 4.7.2 - Read User Settings
+# 4.7.2 - Read User Settings (Unused)
 #------------------------------------------------
 def read_User_Settings():
-    return UserManager.read_user_json()
+    manager = UserManager()
+    return manager.read_user_json()
 #------------------------------------------------
 # 4.7.3 - Update User Function
 #------------------------------------------------
-# Update Function
-def update_User_Profile():
-    return UserManager.edit_user_profile()
-# Update Profile Route (potential problem is route name document vs whatever)
-@app.route("/submit_Button", methods=["POST"])
-def update_Profile_Route():
-    return update_User_Profile()
+
+# I removed the first iteration of the pathway.
+#----------------------------------------------
+# User Profile Jinja Template Route
+#----------------------------------------------
+@app.route('/user_Profile_Refactor') # When the page loads.
+def user_profile_page():
+    if True:
+        return "terminal print statement!"
+        
+    data = user_Setting_Storage(data)
+
+    username = data["username"]
+    mission_statement = data["mission_statement"]
+    theme = data["theme"]
+#this should render the Jinja
+    return render_template(
+        'user_Profile_Refactor.html',
+        username=data["username"],
+        mission_statement=data["mission_statement"],
+        theme=data["theme"]
+    ) 
+
 #------------------------------------------------
-# 4.4 - Reset User Profile 
+# 4.4 - Reset User Profile (This is ok now)
 #----------------------------------------------
 # reset_User_Profile Function
+# This function should return a dict object 
+# that I can continue to use as values.
 def reset_User_Profile():
     manager = UserManager()
     manager.delete_user_profile()
+    manager.write_user_json(manager.DEFAULT_USER_PROFILE.copy())
     return manager.DEFAULT_USER_PROFILE
 # reset_User_Path
-@app.route("/reset_Button", method=["POST"])
+@app.route("/reset_Button", methods=["POST"])
 def reset_Profile_Route():
     return reset_User_Profile()
 #--------------------------------------------------------------
@@ -82,7 +91,7 @@ class UserManager:
             "theme": ""
         }
     # ---------------------------------------------------------
-    # Write JSON file to disk
+    # Write new file.
     # ---------------------------------------------------------
     def write_user_json(self, data):
         if not isinstance(data, dict):
@@ -96,19 +105,22 @@ class UserManager:
             return True
             
     # ---------------------------------------------------------
-    # Load user profile (JSON → default)
+    # Load user profile (CREATES DEFAULT IF NO)
     # ---------------------------------------------------------
     def load_user_profile(self):
         # Case 1: JSON exists → load it
         if os.path.exists(self.json_path):
-            return self.read_user_json()
-
+            with open(self.json_path, "r") as f:
+                data = json.load(f)
+            return data
         # Case 2: JSON missing → create default
-        self.write_user_json(self.DEFAULT_USER_PROFILE.copy())
-        return self.DEFAULT_USER_PROFILE.copy()
+        else:
+            self.write_user_json(self.DEFAULT_USER_PROFILE.copy())
+            data = self.DEFAULT_USER_PROFILE.copy()
+            return data
 
     # ---------------------------------------------------------
-    # Read JSON file into memory
+    # Read JSON file into memory ("NONE" IF NO FILE EXISTS)
     # ---------------------------------------------------------
     def read_user_json(self):
         if not os.path.exists(self.json_path):
@@ -123,7 +135,7 @@ class UserManager:
         user = self.read_user_json() or self.DEFAULT_USER_PROFILE.copy()
 
         # Ensure all expected keys exist
-        for key, default_value in self.DEFAULT_USER_PROFILE.items():
+        for key, default_value in self.user.items():
             user.setdefault(key, default_value)
 
         # Rewrite JSON with normalized data
@@ -141,3 +153,6 @@ class UserManager:
         else:
             self.load_user_profile()  # Ensure default profile exists
             return False
+
+
+    

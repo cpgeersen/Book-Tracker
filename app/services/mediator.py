@@ -311,7 +311,7 @@ def create(json_input, create_type):
             return 'WIP'
         else:
             return 'Error: Not a valid call'
-    except TypeError, ValueError, AttributeError:
+    except (TypeError, ValueError, AttributeError):
         return f'Error: Invalid Entry, could not parse. Try again.', BAD_REQUEST
     except KeyError as error: # If any required keys are missing from JSON
         return error, BAD_REQUEST

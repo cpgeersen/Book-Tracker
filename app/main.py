@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
-
-from flask import request, render_template, jsonify, redirect, url_for
+from flask import request, render_template, jsonify, redirect, url_for, send_from_directory
 from app.services.mediator import create, read, update, delete
 #from app.services.openlibrary_api import search_books # temporary markout until added
 from app.routes.test import test_bp
@@ -337,6 +336,10 @@ def create_routes(app): # Placeholder returns for unfinished pages
     def homepage():
         return render_template('homepage.html')
 
+    @app.route('/template-assets/<path:filename>', methods=['GET'])
+    def template_asset(filename):
+        return send_from_directory(app.template_folder, filename)
+
     @app.route('/search', methods=['GET'])
     def search_page():
         return render_template('search.html')
@@ -362,6 +365,9 @@ def create_routes(app): # Placeholder returns for unfinished pages
 # [Y/N] APPROVED (username)
 # Description: This function works to populate the Jinja User Profile template
 #------------------------------------------------------
+    @app.route("/analytics")
+    def analytics():
+        return 'WIP', 200
     #import Analytic_FunctionRefactored as AF
 
     #@app.route("/analytics")
