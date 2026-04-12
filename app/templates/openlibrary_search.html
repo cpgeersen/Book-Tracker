@@ -112,7 +112,7 @@
                 <form id="{{ book_info['ISBN'] }}" class="add-book-form" method="POST">
 
                     <button form="{{ book_info['ISBN'] }}" class="add-book view-button transition_css"
-                            type="submit">Add</button>
+                            type="submit">Add Book</button>
 
                     <input type="hidden" id="book-isbn" name="ISBN" value="{{ book_info['ISBN'] }}">
                     <input type="hidden" id="book-title" name="Title" value="{{ book_info['Title'] }}">
@@ -230,12 +230,15 @@
     }
 
     .book-add{
-        margin: auto 50px auto auto;
+        margin: auto 30px auto auto;
     }
 
     .view-button{
         border: 0;
         cursor: pointer;
+        width: 80px;
+        height: min-content;
+        text-align: center;
     }
 
     /* Hidden edit sections */
