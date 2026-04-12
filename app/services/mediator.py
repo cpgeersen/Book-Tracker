@@ -371,6 +371,10 @@ def create(json_input, create_type):
 
             result = create_book(json_input)
 
+            # When the book exists, do not create the cover image again
+            if result[1] == 302:
+                return result
+
             # Download cover image from cache_response['Cover_Image_URL']
             # to /static/cover_images
             image_data = requests.get(image_url).content
