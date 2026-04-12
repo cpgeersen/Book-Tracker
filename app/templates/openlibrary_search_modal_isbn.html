@@ -1,0 +1,13 @@
+<!-- Modal to tell user what was updated -->
+{% extends "openlibrary_search.html" %}
+
+{% block body %}
+    <dialog open>
+        <h3>Input Error:</h3>
+            <p>ISBN must be 10 or 13 integers</p>
+
+        <form method="dialog">
+            <button class="modal-button">Close</button>
+        </form>
+    </dialog>
+{% endblock %}

@@ -356,10 +356,10 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
                 if len(isbn) == 0:
                     return render_template('openlibrary_search.html'), 200
-                elif len(isbn) != 10 and len(isbn) != 13:
-                    # !!WIP!! give modal error here
-                    print('not correct')
-                    return render_template('openlibrary_search.html'), 200
+                elif len(isbn) != 10 and len(isbn) != 13 or not str(isbn).isnumeric():
+                    # Tell user that isbn must be either 10 or 13 integers
+                    return render_template('openlibrary_search_modal_isbn.html'), 200
+
 
                 isbn_dict = {"ISBN": isbn}
                 response = read(isbn_dict, 'ol-book-isbn')
