@@ -1,0 +1,34 @@
+import os
+
+def purge_cover_images():
+    try:
+        cover_image_folder = os.path.join("app", "static", "images", "cover_images")
+
+        # If folder does not exist, nothing to delete
+        if not os.path.exists(cover_image_folder):
+            return {
+                "status": "success",
+                "message": "Cover image folder does not exist. No files deleted."
+            }
+
+        deleted_count = 0
+
+        # Loop through all files in cover image folder
+        for file_name in os.listdir(cover_image_folder):
+            file_path = os.path.join(cover_image_folder, file_name)
+
+            # Only delete files, not subfolders
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+                deleted_count += 1
+
+        return {
+            "status": "success",
+            "message": f"{deleted_count} cover image file(s) deleted."
+        }
+
+    except Exception as error:
+        return {
+            "status": "failure",
+            "message": str(error)
+        }
