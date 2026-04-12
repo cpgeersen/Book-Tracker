@@ -31,7 +31,7 @@ def validate_isbn_search(json_input, isbn=None):
 
     return json_output
 
-def validate_title_search(json_input):
+def validate_search_for_cache(json_input):
     json_output = {}
 
     for book, book_info in json_input.items():

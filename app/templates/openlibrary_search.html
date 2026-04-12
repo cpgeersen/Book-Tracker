@@ -64,8 +64,9 @@
             <!-- Cover image -->
             <div class="book-cover">
 
+                <!-- Pulls the cover image from the OpenLibrary -->
                 {% if book_info['Cover_Image_URL'] %}
-                <img src="" alt="Cover">
+                    <img src="{{ book_info['Cover_Image_URL'] }}" alt="Cover">
                 {% else %}
                 No Cover
                 {% endif %}
@@ -106,9 +107,13 @@
 
             </div>
             <div class="book-add">
-                <form class="add-book-form" method="POST">
-                    <button id="add-book" class="view-button transition_css"
-                            type="submit" onclick="addBook()">Add</button>
+                <!-- Form used to create the new book record -->
+                <!-- Uses hidden fields pulled from data provided by flask since it has been pulled already -->
+                <form id="{{ book_info['ISBN'] }}" class="add-book-form" method="POST">
+
+                    <button form="{{ book_info['ISBN'] }}" class="add-book view-button transition_css"
+                            type="submit">Add</button>
+
                     <input type="hidden" id="book-isbn" name="ISBN" value="{{ book_info['ISBN'] }}">
                     <input type="hidden" id="book-title" name="Title" value="{{ book_info['Title'] }}">
                     <input type="hidden" id="book-author_first_name_1" name="Author_First_Name_1" value="{{ book_info['Author_First_Name_1'] }}">
@@ -124,8 +129,21 @@
                     <input type="hidden" id="book-cover-image" name="Cover_Image_URL" value="{{ book_info.get('Cover_Image_URL') }}">
                 </form>
 
-                <a href="/book/isbn/{{ book_info['ISBN'] }}" id="view-book"
-                   class="view-button transition_css hidden">Go to Book Page →</a>
+                <!-- Loading text to show user that book is being added -->
+                <!-- This prevents user from clicking on the book link before it is ready -->
+                <p id="book-load-{{ book_info['ISBN'] }}" class="hidden">Loading...</p>
+
+                <!-- When the book has been newly created, determined in below JS fetch request script -->
+                <a href="/book/isbn/{{ book_info['ISBN'] }}" id="book-view-{{ book_info['ISBN'] }}"
+                   class="view-button transition_css hidden">
+                    New Book Page →
+                </a>
+
+                <!-- When the book is in database already, determined in below JS fetch request script -->
+                <a href="/book/isbn/{{ book_info['ISBN'] }}" id="book-in-database-{{ book_info['ISBN'] }}"
+                   class="view-button transition_css hidden">
+                    Book in Database →
+                </a>
             </div>
 
         </div>
@@ -228,27 +246,47 @@
 </style>
 <script>
 
-    function addBook(){
-        let add_book = document.getElementById('add-book');
+    // Adds an event listener to each submit button to hide them.
+    let add_book = document.querySelectorAll('.add-book');
+    add_book.forEach(button =>
+        button.addEventListener('click', () => {
+            button.classList.toggle("hidden");
+        }));
 
 
-        add_book.classList.toggle("hidden");
-        document.getElementById('view-book').classList.toggle("hidden");
+    function displayBookLink(data, form){
+        let isbn = form.id
 
+        // First remove the loading text
+        document.getElementById("book-load-" + isbn).classList.toggle("hidden");
 
-
+        // When the book is all ready present in the database
+        if (data['status'] === 302){
+            document.getElementById("book-in-database-" + isbn).classList.toggle("hidden");
+        } else {
+            document.getElementById("book-view-" + isbn).classList.toggle("hidden");
+        }
     }
 
     let add_book_form = document.querySelectorAll('.add-book-form');
-
+    // Adds an event listener to every book card
     add_book_form.forEach(form =>
         form.addEventListener('submit', function(event) {
+            // Displays loading... until data is ready
+            let isbn = form.id
+            document.getElementById("book-load-" + isbn).classList.toggle("hidden");
+
+            // This prevents the page from auto-reloading on submission
             event.preventDefault();
-            console.log('POSTED!!!!');
+
+            // Get the form data and send to flask to create book record
             const form_data = new FormData(form);
             fetch('/add-openlibrary', {
                 method: 'POST',
                 body: form_data,
+                // Wait until the data is ready before displaying link
+            }).then(data => {
+                displayBookLink(data, form);
             })
         }));
 

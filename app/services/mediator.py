@@ -18,9 +18,9 @@ from app.services.Book.Book import (create_book, read_book, read_all_books, read
                                     update_book_title)
 from app.services.filter_search_results import filter_results, filter_results_isbn
 from app.services.openlibrary_api import search_books_by_title, get_work_data, search_books_by_isbn, \
-    get_author_info_from_authorid, search_books_by_author, get_book_info_from_title
+    get_author_info_from_authorid, search_books_by_author, get_book_info_from_cover_key
 from app.services.openlibrary_search_cache import cache
-from app.services.validate_json.validate_openlibrary_json import validate_isbn_search, validate_title_search
+from app.services.validate_json.validate_openlibrary_json import validate_isbn_search, validate_search_for_cache
 
 from app.services.openlibrary_data_resolution.resolve_author import resolve_author_olid
 
@@ -137,7 +137,7 @@ def complete_books_from_title_ol(query, limit=5):
             continue
 
         # Get book information about on result cover edition key
-        cover_edition_result = get_book_info_from_title(cover_edition_key)
+        cover_edition_result = get_book_info_from_cover_key(cover_edition_key)
 
         title = cover_edition_result.get("title")
         if title is None:
@@ -245,14 +245,42 @@ def complete_books_from_author_ol(first_name, last_name, limit=5):
     final_results = {}
 
     for index, result in enumerate(docs, start=1):
-        title = result.get("title")
+        cover_edition_key = result.get('cover_edition_key')
+
+        # When there is no cover edition key, iterate to the next
+        # result since it is not usable without one
+        if cover_edition_key is None:
+            continue
+
+        # Get book information about on result cover edition key
+        cover_edition_result = get_book_info_from_cover_key(cover_edition_key)
+
+        title = cover_edition_result.get("title")
+        if title is None:
+            continue
+
+        # Not sure if we should have first year or publish year of this edition
         publish_year = result.get("first_publish_year")
+        if publish_year is None:
+            continue
 
-        isbn_list = result.get("isbn", [])
-        isbn = isbn_list[0] if isbn_list else None
+        isbn = cover_edition_result.get('isbn_13')
+        if isbn is not None:
+            isbn = isbn[0]
+        else:
+            # Try to get an ISBN 10 number if ISBN 13 not available
+            isbn = cover_edition_result.get('isbn_10')
+            if isbn is not None:
+                isbn = isbn[0]
+            else:
+                continue
 
-        publishers = result.get("publisher", [])
-        publisher = publishers[0] if publishers else None
+
+        publisher = cover_edition_result.get('publishers')
+        if publisher is not None:
+            publisher = publisher[0]
+        else:
+            continue
 
         cover_image_url = None
         if "cover_i" in result:
@@ -502,7 +530,7 @@ def read(json_input=None, read_type='book-all', filter_json=None):
                 ol_response = complete_books_from_title_ol(title)
 
                 # Validate the data and put into an easier form
-                validated_ol_response = validate_title_search(ol_response)
+                validated_ol_response = validate_search_for_cache(ol_response)
 
                 # Add validated json to the cache
                 cache_response = cache(title, validated_ol_response)
@@ -510,7 +538,36 @@ def read(json_input=None, read_type='book-all', filter_json=None):
             return cache_response
 
         elif read_type == 'ol-book-author':
-            pass
+            author_name = str(json_input.get('Author_Name')).strip().lower()
+
+            # Since we stripped the string, lacking a space means there is lack of either
+            # first or last name
+            if ' ' not in author_name:
+                return {'Error': 'Author must have a first and last name.'}
+
+            # Get the first and last portions of the author name
+            author_first_name = author_name.split(' ')[0]
+            author_last_name = author_name.split(' ')[-1]
+
+            # First check if the search for author is in the cache
+            cache_response = cache(author_name)
+
+            if cache_response is None:
+                print('Calling OpenLibrary API')
+
+                # Pull OpenLibrary data for title
+                ol_response = complete_books_from_author_ol(author_first_name, author_last_name)
+
+                # Validate the data and put into an easier form
+                validated_ol_response = validate_search_for_cache(ol_response)
+
+                # Add validated json to the cache
+                cache_response = cache(author_name, validated_ol_response)
+
+            return cache_response
+
+
+
 
         else:
             return 'Error: Not a valid call'

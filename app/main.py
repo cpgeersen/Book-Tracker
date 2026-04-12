@@ -364,45 +364,57 @@ def create_routes(app): # Placeholder returns for unfinished pages
                 isbn_dict = {"ISBN": isbn}
                 response = read(isbn_dict, 'ol-book-isbn')
 
-                print(response)
-
-                return render_template('openlibrary_search.html', books=response), 200
+                return render_template('openlibrary_search.html', books=response,
+                                       search_type='isbn'), 200
 
             elif search_type == 'title':
                 title = request.args.get('search', 'title')
 
+                # If the search is empty or is too generic based on block_list, reload page
                 block_list = ['the', 'a', 'be', 'that', 'of', 'this', 'and', 'by']
                 if len(title) == 0 or title in block_list:
                     return render_template('openlibrary_search.html'), 200
 
                 title_dict = {"Title": title}
                 response = read(title_dict, 'ol-book-title')
-                print(response)
 
-                return render_template('openlibrary_search.html', books=response), 200
+                return render_template('openlibrary_search.html', books=response,
+                                       search_type='title'), 200
 
             elif search_type == 'author':
                 author = request.args.get('search', 'author')
 
+                # If the search is empty, reload page
                 if len(author) == 0:
                     return render_template('openlibrary_search.html'), 200
 
-                print(author)
+                author_dict = {'Author_Name': author}
+                response = read(author_dict, 'ol-book-author')
 
-                return render_template('openlibrary_search.html'), 200
+                return render_template('openlibrary_search.html', books=response,
+                                       search_type='author'), 200
 
             else:
                 return render_template('openlibrary_search.html'), 200
         elif request.method == 'POST':
+            # !! NOTICE !!
+            # This is the only flask route method that uses fetch on the frontend
+            # Fetch was required to prevent reload on book creation
+
+            # Form received from a JS fetch request here
             add_book = dict(request.form)
-            print(add_book)
 
+            # Try and make a book here
             response = create(add_book, 'book-ol')
-            print(response)
-            # need to return success of creation to link button
 
-            # Add modal when user tries to add a book already present
-            return '', 204 # No Content !!WIP!!
+            # If the book is already present, send to the fetch request
+            if response[1] == 302:
+                return 'Error: Book all ready in database', 302
+
+            # Otherwise the request was successful
+            # It cannot be any other status codes since information being used
+            # to create book is from the prevalidated cache
+            return '', 204 # No Content (book present)
 
         else:
             # !!WIP!! Add error handling here

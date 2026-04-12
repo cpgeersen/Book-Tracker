@@ -71,7 +71,7 @@ def search_books_by_title(query, limit=5):
         return {"error": f"Failed to retrieve data: {err}"}
 
 
-def get_book_info_from_title(cover_edition_key):
+def get_book_info_from_cover_key(cover_edition_key):
     try:
         response = requests.get(f"{BASE_URL}/books/{cover_edition_key}.json", timeout=10)
         response.raise_for_status()
