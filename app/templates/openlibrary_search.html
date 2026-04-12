@@ -22,7 +22,7 @@
         <h1 id="page-title">OpenLibrary Search</h1>
 
         <!-- Search form -->
-        <form method="GET" action="/openlibrary-search" class="search-form">
+        <form method="GET" action="/add-openlibrary" class="search-form">
 
             <label for="search">Search</label>
             <input type="text"
@@ -57,15 +57,15 @@
         {% if books %}
 
         <!-- Loop through OpenLibrary results -->
-        {% for book in books %}
+        {% for book, book_info in books.items() %}
 
         <div class="book-card">
 
             <!-- Cover image -->
             <div class="book-cover">
 
-                {% if book.cover_url %}
-                <img src="{{ book.cover_url }}" alt="Cover">
+                {% if book_info['Cover_Image_URL'] %}
+                <img src="" alt="Cover">
                 {% else %}
                 No Cover
                 {% endif %}
@@ -75,28 +75,57 @@
             <!-- Book information -->
             <div class="book-info">
 
-                <h3>{{ book.title }}</h3>
+                <h3>{{ book_info['Title'] }}</h3>
 
                 <p>
                     <strong>Author:</strong>
-                    {{ book.author }}
+                    {{ book_info['Author_First_Name_1'] }} {{ book_info['Author_Last_Name_1'] }}
                 </p>
+
+                {% if book_info['Author_First_Name_2'] %}
+                    <p>
+                        <strong>Second Author:</strong>
+                        {{ book_info['Author_First_Name_2'] }} {{ book_info['Author_Last_Name_2'] }}
+                    </p>
+                {% endif %}
 
                 <p>
                     <strong>ISBN:</strong>
-                    {{ book.isbn }}
+                    {{ book_info['ISBN'] }}
                 </p>
 
                 <p>
                     <strong>Publisher:</strong>
-                    {{ book.publisher }}
+                    {{ book_info['Publisher_Name'] }}
                 </p>
 
                 <p>
                     <strong>Publish Year:</strong>
-                    {{ book.publish_year }}
+                    {{ book_info['Publish_Year'] }}
                 </p>
 
+            </div>
+            <div class="book-add">
+                <form class="add-book-form" method="POST">
+                    <button id="add-book" class="view-button transition_css"
+                            type="submit" onclick="addBook()">Add</button>
+                    <input type="hidden" id="book-isbn" name="ISBN" value="{{ book_info['ISBN'] }}">
+                    <input type="hidden" id="book-title" name="Title" value="{{ book_info['Title'] }}">
+                    <input type="hidden" id="book-author_first_name_1" name="Author_First_Name_1" value="{{ book_info['Author_First_Name_1'] }}">
+                    <input type="hidden" id="book-author_last_name_1" name="Author_Last_Name_1" value="{{ book_info['Author_Last_Name_1'] }}">
+                    <input type="hidden" id="book-author_1_olid" name="Title" value="{{ book_info['Author_1_OLID'] }}">
+                    <input type="hidden" id="book-author_first_name_2" name="Author_First_Name_2" value="{{ book_info.get('Author_First_Name_2') }}">
+                    <input type="hidden" id="book-author_last_name_2" name="Author_Last_Name_2" value="{{ book_info.get('Author_Last_Name_2') }}">
+                    <input type="hidden" id="book-author_2_olid" name="Title" value="{{ book_info['Author_2_OLID'] }}">
+                    <input type="hidden" id="book-publisher-name" name="Publisher_Name" value="{{ book_info['Publisher_Name'] }}">
+                    <input type="hidden" id="book-publisher-olid" name="Publisher_OLID" value="{{ book_info.get('Publisher_OLID') }}">
+                    <input type="hidden" id="book-publish-year" name="Publish_Year" value="{{ book_info['Publish_Year'] }}">
+                    <input type="hidden" id="book-summary" name="Summary" value="{{ book_info.get('Summary') }}">
+                    <input type="hidden" id="book-cover-image" name="Cover_Image_URL" value="{{ book_info.get('Cover_Image_URL') }}">
+                </form>
+
+                <a href="/book/isbn/{{ book_info['ISBN'] }}" id="view-book"
+                   class="view-button transition_css hidden">Go to Book Page →</a>
             </div>
 
         </div>
@@ -109,13 +138,12 @@
         {% endif %}
     </section>
 </main>
-
-
+</body>
 <!-- Page-specific styling -->
 <style>
 
     #search {
-        width: 80%;
+        width: 100%;
     }
 
     #page-title{
@@ -140,12 +168,17 @@
     /* Book card layout */
     .book-card {
         display: flex;
-        gap: 20px;
-        background-color: #111827;
-        padding: 15px;
+        background-color: #1f2933;
         border-radius: 10px;
-        margin-top: 20px;
+        margin-top: 1.5rem;
+        padding: 1rem;
+        gap: 1rem;
+        align-items: flex-start;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
     }
+
 
     /* Cover image */
     .book-cover {
@@ -166,11 +199,58 @@
     }
 
     /* Book info spacing */
+    .book-info{
+        align-items: center;
+        margin-bottom: auto;
+        margin-top: auto;
+        max-width: 50%;
+        word-break: break-word;
+    }
+
     .book-info p {
         margin: 6px 0;
     }
 
-</style>
+    .book-add{
+        margin: auto 50px auto auto;
+    }
 
-</body>
+    .view-button{
+        border: 0;
+        cursor: pointer;
+    }
+
+    /* Hidden edit sections */
+    .hidden {
+        display: none;
+    }
+
+</style>
+<script>
+
+    function addBook(){
+        let add_book = document.getElementById('add-book');
+
+
+        add_book.classList.toggle("hidden");
+        document.getElementById('view-book').classList.toggle("hidden");
+
+
+
+    }
+
+    let add_book_form = document.querySelectorAll('.add-book-form');
+
+    add_book_form.forEach(form =>
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            console.log('POSTED!!!!');
+            const form_data = new FormData(form);
+            fetch('/add-openlibrary', {
+                method: 'POST',
+                body: form_data,
+            })
+        }));
+
+</script>
 </html>

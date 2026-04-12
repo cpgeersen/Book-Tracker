@@ -8,6 +8,10 @@
             <p>---No records updated---</p>
         {% else %}
             <ul>
+                {% if updated_records["Title"] %}
+                    <li>Title was updated</li>
+                {% endif %}
+
                 {% if updated_records["Summary"] %}
                     <li>Summary was updated</li>
                 {% endif %}

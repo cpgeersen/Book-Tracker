@@ -348,7 +348,65 @@ def create_routes(app): # Placeholder returns for unfinished pages
     # WIP
     @app.route('/add-openlibrary', methods=['POST', 'GET'])
     def openlibrary_search():
-        return render_template('openlibrary_search.html'), 200
+        if request.method == 'GET':
+            search_type = request.args.get('search_type')
+
+            if search_type == 'isbn':
+                isbn = request.args.get('search', 'isbn')
+
+                if len(isbn) == 0:
+                    return render_template('openlibrary_search.html'), 200
+                elif len(isbn) != 10 and len(isbn) != 13:
+                    # !!WIP!! give modal error here
+                    print('not correct')
+                    return render_template('openlibrary_search.html'), 200
+
+                isbn_dict = {"ISBN": isbn}
+                response = read(isbn_dict, 'ol-book-isbn')
+
+                print(response)
+
+                return render_template('openlibrary_search.html', books=response), 200
+
+            elif search_type == 'title':
+                title = request.args.get('search', 'title')
+
+                block_list = ['the', 'a', 'be', 'that', 'of', 'this', 'and', 'by']
+                if len(title) == 0 or title in block_list:
+                    return render_template('openlibrary_search.html'), 200
+
+                title_dict = {"Title": title}
+                response = read(title_dict, 'ol-book-title')
+                print(response)
+
+                return render_template('openlibrary_search.html', books=response), 200
+
+            elif search_type == 'author':
+                author = request.args.get('search', 'author')
+
+                if len(author) == 0:
+                    return render_template('openlibrary_search.html'), 200
+
+                print(author)
+
+                return render_template('openlibrary_search.html'), 200
+
+            else:
+                return render_template('openlibrary_search.html'), 200
+        elif request.method == 'POST':
+            add_book = dict(request.form)
+            print(add_book)
+
+            response = create(add_book, 'book-ol')
+            print(response)
+            # need to return success of creation to link button
+
+            # Add modal when user tries to add a book already present
+            return '', 204 # No Content !!WIP!!
+
+        else:
+            # !!WIP!! Add error handling here
+            return render_template('openlibrary_search.html'), 200
 
     # WIP
     @app.route('/settings', methods=['GET'])
