@@ -112,87 +112,38 @@ input[type="radio"] {
 }
 
 /* Book info text */
-.book-info-wrapper{
-    display: flex;
-    width: 102%;
-}
-
-.book-info-wrapper a{
-    margin: auto 10px auto auto;
-}
-
-.book-info-author-and-publisher{
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 250px;
-}
-
 .book-info h3 {
-    background-color: #374151;
-    border-radius: 6px;
     margin: 0 0 0.5rem 0;
-    padding: 0.3rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 620px;
 }
 
 .book-info p {
-    font-size: 0.9rem;
     margin: 0.3rem 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 230px;
+    font-size: 0.9rem;
 }
 
 /* Tag badges */
 .tags {
-    align-content: space-between;
-    height: 60px;
-    width: 250px;
+    margin-top: 0.6rem;
 }
 
 .tags span {
     background-color: #374151;
-    border-radius: 6px;
-    display: inline-block;
-    font-size: 0.75rem;
-    margin-left: 0.4rem;
-    margin-top: 0.4rem;
     padding: 0.3rem 0.6rem;
-}
-
-/* Tag badges */
-.genres {
-    align-content: space-between;
-    height: 80px;
-    width: 250px;
-}
-
-.genres span {
-    background-color: #374151;
     border-radius: 6px;
-    display: inline-block;
     font-size: 0.75rem;
     margin-right: 0.4rem;
-    margin-left: 0.4rem;
-    margin-top: 0.4rem;
-    padding: 0.3rem 0.6rem;
 }
 
 /* Button inside card */
 .view-button {
+    display: inline-block;
+    margin-top: 0.8rem;
+    text-decoration: none;
     background-color: #6366f1;
+    padding: 0.5rem 0.8rem;
     border-radius: 8px;
     color: white;
     font-size: 0.85rem;
-    height: fit-content;
-    padding: 0.5rem 0.8rem;
-    text-decoration: none;
-    width: fit-content;
 }
 
 .view-button:hover {
