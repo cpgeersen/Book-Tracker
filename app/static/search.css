@@ -1,14 +1,15 @@
 /* Main layout wrapper (sidebar + results) */
 .page-wrapper {
-    display: flex;
-    max-width: 1200px;
-    margin: 3rem auto;
-    gap: 2rem;
-    padding: 0 1rem;
+      display: flex;
+      max-width: 1400px;
+      margin: 0 auto;
+      gap: 30px;
+      padding: 20px;
 }
 
 /* Sidebar filter section */
 .filters {
+    min-width: 250px;
     width: 260px;
     background-color: #111827;
     padding: 1.5rem;
@@ -96,6 +97,7 @@ input[type="radio"] {
     border-radius: 10px;
     gap: 1rem;
     align-items: flex-start;
+    flex-wrap: wrap;
 }
 
 /* Placeholder cover block */
@@ -125,7 +127,7 @@ input[type="radio"] {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    width: 250px;
+    width: 300px;
 }
 
 .book-info h3 {
@@ -136,7 +138,7 @@ input[type="radio"] {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 620px;
+    width: 800px;
 }
 
 .book-info p {
@@ -145,14 +147,14 @@ input[type="radio"] {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 230px;
+    width: 280px;
 }
 
 /* Tag badges */
 .tags {
     align-content: space-between;
     height: 60px;
-    width: 250px;
+    width: 350px;
 }
 
 .tags span {
@@ -169,7 +171,7 @@ input[type="radio"] {
 .genres {
     align-content: space-between;
     height: 80px;
-    width: 250px;
+    width: 350px;
 }
 
 .genres span {
