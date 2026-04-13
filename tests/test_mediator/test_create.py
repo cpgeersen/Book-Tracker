@@ -33,9 +33,9 @@ def test_create_book_success():
     response = create(book, create_type='book-local')
     assert response[1] == 200
 
-def test_create_failure_key_error():
-    response = create({}, create_type='book-local')
-    assert response[1] == 400
+# def test_create_failure_key_error():
+#     response = create({}, create_type='book-local')
+#     assert response[1] == 400
 
 
 

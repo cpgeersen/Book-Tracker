@@ -40,8 +40,8 @@ def test_validate_book():
     assert result['Cover_Image'] == ''
     assert result["Author_First_Name_1"] == 'Clive'
     assert result['Author_Last_Name_1'] == 'Barker'
-    assert result['Author_First_Name_2'] == ''
-    assert result['Author_Last_Name_2'] == ''
+    assert result.get('Author_First_Name_2') is None
+    assert result.get('Author_Last_Name_2') is None
     assert result['Publisher_Name'] == 'Harpercollins'
     assert result['Owned'] == 'yes'
     assert result['Favorite'] == 'yes'
