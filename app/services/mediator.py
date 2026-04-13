@@ -349,10 +349,10 @@ def complete_books_from_author_ol(first_name, last_name, limit=5):
     return final_results
 # POST - Takes JSON as input
 def create(json_input, create_type):
-    isbn = json_input['ISBN']
-
     try:
         if create_type == 'book-local':
+            isbn = json_input['ISBN']
+
             # !!WIP!! Note: This fix my break, look out in future
             if not is_in_book_table(isbn):
                 json.dumps({'Error': 'Book already in database'}), FOUND
@@ -361,6 +361,8 @@ def create(json_input, create_type):
             return result
 
         elif create_type == 'book-ol':
+            isbn = json_input['ISBN']
+
             if not is_in_book_table(isbn):
                 json.dumps({'Error': 'Book already in database'}), FOUND
 
