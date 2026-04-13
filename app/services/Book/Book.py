@@ -6,7 +6,7 @@ from app.services.Book.BookRead import (read_full_book_record, get_all_book_isbn
                                         read_full_book_by_author, read_publisher_id)
 from app.services.Book.BookUpdate import (update_summary, update_chapters, update_read_chapters,
                                           update_tags, update_cover_image, update_genre, update_publisher_id,
-                                          update_publisher_year)
+                                          update_publisher_year, update_book_title_record)
 from app.services.Book.BookDelete import delete_book_record, delete_book_author_table_record
 from app.services.Book.BookNotes import create_note, read_note, update_note, delete_note, is_note_id_in_note_table
 from app.services.Book.BookPredicate import is_isbn_in_book_table, is_publisher_name_in_publisher_table
@@ -48,6 +48,9 @@ def read_all_books_by_author(author_last_name, author_first_name=None):
 
 def read_publisher_id_by_name(publisher_name):
     return read_publisher_id(publisher_name)
+
+def update_book_title(isbn, title):
+    return update_book_title_record(isbn, title)
 
 def update_book_summary(isbn, summary):
     return update_summary(isbn, summary)

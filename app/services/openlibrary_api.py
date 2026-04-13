@@ -70,6 +70,16 @@ def search_books_by_title(query, limit=5):
     except requests.RequestException as err:
         return {"error": f"Failed to retrieve data: {err}"}
 
+
+def get_book_info_from_cover_key(cover_edition_key):
+    try:
+        response = requests.get(f"{BASE_URL}/books/{cover_edition_key}.json", timeout=10)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as err:
+        return {"error": f"Failed to retrieve data: {err}"}
+
+
 # helper function to get work data (e.g. description) using the work key from the initial search result
 def get_work_data(work_key):
     try:

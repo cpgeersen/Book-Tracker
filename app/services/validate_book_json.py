@@ -30,11 +30,11 @@ def validate_book(json_input):
 
     isbn = str(json_input.get('ISBN', ''))
     title = json_input.get('Title', '')
-    if isbn == '':
+    if isbn == '' or isbn == 'None' or isbn is None:
         raise KeyError('Error: Book must have an ISBN.')
     if len(isbn) != 10 and len(isbn) != 13:
         return ValueError('Error: Book must have a valid ISBN (10 or 13 integers).')
-    if title == '':
+    if title == '' or title == 'None' or title is None:
         raise KeyError('Error: Book must have a title.')
 
     chapters = json_input.get('Chapters', '0')
@@ -57,14 +57,28 @@ def validate_author(json_input):
 
     author_first_name_1 = json_input.get('Author_First_Name_1', '')
     author_last_name_1 = json_input.get('Author_Last_Name_1', '')
-    if author_first_name_1 == '' or author_last_name_1 == '':
+
+    if (author_first_name_1 == '' or author_first_name_1 == 'None' or
+        author_first_name_1 is None):
+        raise KeyError('Error: Book must have an author.')
+    if (author_last_name_1 == '' or author_last_name_1 == 'None' or
+        author_last_name_1 is None):
         raise KeyError('Error: Book must have an author.')
 
     json_output.update({'Author_First_Name_1': author_first_name_1.strip()})
     json_output.update({'Author_Last_Name_1': author_last_name_1.strip()})
 
+
+
     author_first_name_2 = json_input.get('Author_First_Name_2', '')
     author_last_name_2 = json_input.get('Author_Last_Name_2', '')
+
+    if (author_first_name_2 == '' or author_first_name_2 == 'None' or
+        author_first_name_2 is None):
+        return json_output
+    if (author_last_name_2 == '' or author_last_name_2 == 'None' or
+        author_last_name_2 is None):
+        return json_output
 
     json_output.update({'Author_First_Name_2': author_first_name_2.strip()})
     json_output.update({'Author_Last_Name_2': author_last_name_2.strip()})
@@ -77,9 +91,9 @@ def validate_publisher(json_input):
 
     publisher_name = json_input.get('Publisher_Name', '')
     publisher_year = json_input.get('Publish_Year', '')
-    if publisher_name == '':
+    if publisher_name == '' or publisher_name == 'None' or publisher_name is None:
         raise KeyError('Error: Book must have a publisher.')
-    elif publisher_year == '':
+    if publisher_year == '' or publisher_year == 'None' or publisher_year is None:
         raise KeyError('Error: Book must have a publish year.')
 
     json_output.update({'Publisher_Name': publisher_name.strip().title()})

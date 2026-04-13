@@ -1,7 +1,10 @@
 import json
 import os
+from textwrap import indent
 
 import requests
+
+from app.services.Mediator.mediator_helpers import is_author_info_none, is_book_info_none, is_none
 from app.services.genres import genres_for_table
 from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend, validate_tags
 from app.services.Book.Book import (create_book, read_book, read_all_books, read_all_books_by_title,
@@ -11,12 +14,13 @@ from app.services.Book.Book import (create_book, read_book, read_all_books, read
                                     delete_book_note, is_note_id_in_database, update_book_genre, create_book_genre,
                                     delete_book_cover_image, is_in_book_table, delete_book_author_record,
                                     is_publisher_in_database, read_publisher_id_by_name,
-                                    update_book_publisher_id, create_new_publisher, update_book_publisher_year)
+                                    update_book_publisher_id, create_new_publisher, update_book_publisher_year,
+                                    update_book_title)
 from app.services.filter_search_results import filter_results, filter_results_isbn
 from app.services.openlibrary_api import search_books_by_title, get_work_data, search_books_by_isbn, \
-    get_author_info_from_authorid, search_books_by_author
+    get_author_info_from_authorid, search_books_by_author, get_book_info_from_cover_key
 from app.services.openlibrary_search_cache import cache
-from app.services.validate_json.validate_openlibrary_json import validate_isbn_search
+from app.services.validate_json.validate_openlibrary_json import validate_isbn_search, validate_search_for_cache
 
 from app.services.openlibrary_data_resolution.resolve_author import resolve_author_olid
 
@@ -59,11 +63,14 @@ def complete_book_from_isbn_ol(isbn):
     author_2_olid = None
     publisher_olid = None
     summary = None
+    title = None
 
     if work_key:
         work_data = get_work_data(work_key)
 
         if isinstance(work_data, dict):
+
+            title = work_data.get("title")
 
             if "description" in work_data:
                 if isinstance(work_data["description"], dict):
@@ -97,6 +104,7 @@ def complete_book_from_isbn_ol(isbn):
                             author_2 = a2_data.get("name")
 
     return {
+        "Title": title,
         "Author_1": author_1,
         "Author_1_OLID": author_1_olid,
         "Author_2": author_2,
@@ -107,6 +115,7 @@ def complete_book_from_isbn_ol(isbn):
         "Publish_Year": publish_year,
         "Cover_Image_URL": cover_image_url
     }
+
 def complete_books_from_title_ol(query, limit=5):
     search_results = search_books_by_title(query=query, limit=limit)
 
@@ -120,14 +129,42 @@ def complete_books_from_title_ol(query, limit=5):
     final_results = {}
 
     for index, result in enumerate(docs, start=1):
-        title = result.get("title")
+        cover_edition_key = result.get('cover_edition_key')
+
+        # When there is no cover edition key, iterate to the next
+        # result since it is not usable without one
+        if cover_edition_key is None:
+            continue
+
+        # Get book information about on result cover edition key
+        cover_edition_result = get_book_info_from_cover_key(cover_edition_key)
+
+        title = cover_edition_result.get("title")
+        if title is None:
+            continue
+
+        # Not sure if we should have first year or publish year of this edition
         publish_year = result.get("first_publish_year")
+        if publish_year is None:
+            continue
 
-        isbn_list = result.get("isbn", [])
-        isbn = isbn_list[0] if isbn_list else None
+        isbn = cover_edition_result.get('isbn_13')
+        if isbn is not None:
+            isbn = isbn[0]
+        else:
+            # Try to get an ISBN 10 number if ISBN 13 not available
+            isbn = cover_edition_result.get('isbn_10')
+            if isbn is not None:
+                isbn = isbn[0]
+            else:
+                continue
 
-        publishers = result.get("publisher", [])
-        publisher = publishers[0] if publishers else None
+
+        publisher = cover_edition_result.get('publishers')
+        if publisher is not None:
+            publisher = publisher[0]
+        else:
+            continue
 
         cover_image_url = None
         if "cover_i" in result:
@@ -194,6 +231,7 @@ def complete_books_from_title_ol(query, limit=5):
         }
 
     return final_results
+
 def complete_books_from_author_ol(first_name, last_name, limit=5):
     search_results = search_books_by_author(first_name, last_name, limit=limit)
 
@@ -207,14 +245,42 @@ def complete_books_from_author_ol(first_name, last_name, limit=5):
     final_results = {}
 
     for index, result in enumerate(docs, start=1):
-        title = result.get("title")
+        cover_edition_key = result.get('cover_edition_key')
+
+        # When there is no cover edition key, iterate to the next
+        # result since it is not usable without one
+        if cover_edition_key is None:
+            continue
+
+        # Get book information about on result cover edition key
+        cover_edition_result = get_book_info_from_cover_key(cover_edition_key)
+
+        title = cover_edition_result.get("title")
+        if title is None:
+            continue
+
+        # Not sure if we should have first year or publish year of this edition
         publish_year = result.get("first_publish_year")
+        if publish_year is None:
+            continue
 
-        isbn_list = result.get("isbn", [])
-        isbn = isbn_list[0] if isbn_list else None
+        isbn = cover_edition_result.get('isbn_13')
+        if isbn is not None:
+            isbn = isbn[0]
+        else:
+            # Try to get an ISBN 10 number if ISBN 13 not available
+            isbn = cover_edition_result.get('isbn_10')
+            if isbn is not None:
+                isbn = isbn[0]
+            else:
+                continue
 
-        publishers = result.get("publisher", [])
-        publisher = publishers[0] if publishers else None
+
+        publisher = cover_edition_result.get('publishers')
+        if publisher is not None:
+            publisher = publisher[0]
+        else:
+            continue
 
         cover_image_url = None
         if "cover_i" in result:
@@ -283,17 +349,51 @@ def complete_books_from_author_ol(first_name, last_name, limit=5):
     return final_results
 # POST - Takes JSON as input
 def create(json_input, create_type):
+    isbn = json_input['ISBN']
+
     try:
         if create_type == 'book-local':
             # !!WIP!! Note: This fix my break, look out in future
-            if not is_in_book_table(json_input['ISBN']):
+            if not is_in_book_table(isbn):
                 json.dumps({'Error': 'Book already in database'}), FOUND
             json_input = validate_book_from_local(json_input)
             result = create_book(json_input)
             return result
 
         elif create_type == 'book-ol':
+            if not is_in_book_table(isbn):
+                json.dumps({'Error': 'Book already in database'}), FOUND
+
+            # Get URL before validating json
+            image_url = json_input['Cover_Image_URL']
+
+            json_input = validate_book_from_local(json_input)
+
+            result = create_book(json_input)
+
+            # When the book exists, do not create the cover image again
+            if result[1] == 302:
+                return result
+
+            # Download cover image from cache_response['Cover_Image_URL']
+            # to /static/cover_images
+            image_data = requests.get(image_url).content
+
+            # Use cover image naming, uses jpg since OL stores cover images this way
+            file_name = isbn + '_' + 'cover_image.jpg'
+            file_path = os.path.join('app', 'static', 'images', 'cover_images', file_name)
+
+            # Write the images to the correct path
+            with open(file_path, 'wb') as image:
+                image.write(image_data)
+
+            # Update cover image file path in database
+            update_book_cover_image(isbn, f'/static/images/cover_images/{file_name}')
+
+            return result
+            # !!WIP!! Error here
             return 'WIP'
+
         elif create_type == 'note':
             json_input = json.loads(json_input)
             if len(json_input.get('Note_Content')) > 0:
@@ -306,9 +406,6 @@ def create(json_input, create_type):
                     return result
             else:
                 return json.dumps({'Error': 'Empty Note'})
-
-        elif create_type == 'cover-image':
-            return 'WIP'
         else:
             return 'Error: Not a valid call'
     except (TypeError, ValueError, AttributeError):
@@ -400,6 +497,82 @@ def read(json_input=None, read_type='book-all', filter_json=None):
             response = read_book_notes(json_input)
             return response
 
+        elif read_type == 'ol-book-isbn':
+            isbn = json_input['ISBN']
+
+            # First check if the search is in the cache
+            cache_response = cache(isbn)
+
+            if cache_response is None:
+                print('Calling OpenLibrary API')
+
+                # Pull OpenLibrary Data for ISBN
+                ol_response = complete_book_from_isbn_ol(isbn)
+
+                # Validate the data and put into an easier form
+                validated_ol_response = validate_isbn_search(ol_response)
+
+                # Add validated json to the cache
+                cache_response = cache(isbn, validated_ol_response)
+
+            cache_response.update({'ISBN': isbn})
+
+            json_output = {'Book_Result_1': cache_response}
+
+            return  json_output
+
+        elif read_type == 'ol-book-title':
+            title = str(json_input['Title']).strip().lower()
+
+            # First check if the search title is in the cache
+            cache_response = cache(title)
+
+            if cache_response is None:
+                print('Calling OpenLibrary API')
+
+                # Pull OpenLibrary data for title
+                ol_response = complete_books_from_title_ol(title)
+
+                # Validate the data and put into an easier form
+                validated_ol_response = validate_search_for_cache(ol_response)
+
+                # Add validated json to the cache
+                cache_response = cache(title, validated_ol_response)
+
+            return cache_response
+
+        elif read_type == 'ol-book-author':
+            author_name = str(json_input.get('Author_Name')).strip().lower()
+
+            # Since we stripped the string, lacking a space means there is lack of either
+            # first or last name
+            if ' ' not in author_name:
+                return {'Error': 'Author must have a first and last name.'}
+
+            # Get the first and last portions of the author name
+            author_first_name = author_name.split(' ')[0]
+            author_last_name = author_name.split(' ')[-1]
+
+            # First check if the search for author is in the cache
+            cache_response = cache(author_name)
+
+            if cache_response is None:
+                print('Calling OpenLibrary API')
+
+                # Pull OpenLibrary data for title
+                ol_response = complete_books_from_author_ol(author_first_name, author_last_name)
+
+                # Validate the data and put into an easier form
+                validated_ol_response = validate_search_for_cache(ol_response)
+
+                # Add validated json to the cache
+                cache_response = cache(author_name, validated_ol_response)
+
+            return cache_response
+
+
+
+
         else:
             return 'Error: Not a valid call'
     except:
@@ -483,7 +656,7 @@ def update(json_input, update_type):
                 ol_response = complete_book_from_isbn_ol(isbn)
 
                 # Validate the data and put into an easier form
-                validated_ol_response = validate_isbn_search(ol_response)
+                validated_ol_response = validate_isbn_search(ol_response, isbn)
 
                 # Add validated json to the cache
                 cache_response = cache(isbn, validated_ol_response)
@@ -507,54 +680,59 @@ def update(json_input, update_type):
                 update_book_cover_image(isbn, f'/static/images/cover_images/{file_name}')
                 is_cover_image_updated = True
 
+            # Update book title if not correct
+            old_title = old_json_data.get('Title')
+            cache_title = cache_response.get('Title')
+            is_title_update = False
+
+            if not is_book_info_none(cache_title, old_title):
+                update_book_title(isbn, cache_title)
+                is_title_update = True
+
             # Update book summary if requested
             old_summary = old_json_data.get('Summary')
             cache_summary = cache_response.get('Summary')
             is_summary_updated = False
 
-            if (json_input.get('Summary_Update') is not None and
-                old_summary != cache_summary):
+            if not is_book_info_none(old_summary, cache_summary):
                 update_book_summary(isbn, cache_summary)
                 is_summary_updated = True
-
-            # Update book publish year if possible
-            old_publisher_year = old_json_data.get('Publish_Year')
-            cache_publish_year = cache_response.get('Publish_Year')
-            is_publish_year_updated = False
-
-            if (cache_response.get('Publish_Year') is not None and
-                old_publisher_year != cache_publish_year):
-                update_book_publisher_year(isbn, cache_publish_year)
-                is_publish_year_updated = True
-
 
             # Update author names
             cache_author_1_olid = cache_response.get('Author_1_OLID')
             is_author_1_updated = False
 
-            if cache_author_1_olid is not None:
+            if not is_author_info_none(cache_author_1_olid):
                 is_author_1_updated = resolve_author_olid(old_json_data, cache_response, author_num='1')
 
             # When there is a second author
             cache_author_2_olid = cache_response.get('Author_2_OLID')
             is_author_2_updated = False
 
-            if cache_author_2_olid is not None:
+            if not is_author_info_none(cache_author_2_olid):
                 is_author_2_updated = resolve_author_olid(old_json_data, cache_response, author_num='2')
 
             # There is a second author, but there should not be one
-            elif old_json_data.get('Author_First_Name_2') is not None:
+            elif not is_none(old_json_data.get('Author_First_Name_2')):
                 delete_book_author_record(old_json_data.get('ISBN'),
                                           old_json_data.get('Author_First_Name_2'),
                                           old_json_data.get('Author_Last_Name_2'))
 
+            # Update book publish year if possible
+            old_publisher_year = old_json_data.get('Publish_Year')
+            cache_publish_year = cache_response.get('Publish_Year')
+            is_publish_year_updated = False
+
+            if not is_book_info_none(cache_publish_year, old_publisher_year):
+                update_book_publisher_year(isbn, cache_publish_year)
+                is_publish_year_updated = True
 
             # Update publisher information
             cache_publisher_name = cache_response.get('Publisher_Name')
             old_publisher_name = old_json_data.get('Publisher_Name')
             is_publisher_updated = False
 
-            if cache_publisher_name is not None and cache_publisher_name != old_publisher_name:
+            if not is_book_info_none(cache_publisher_name, old_publisher_name):
                 # Check if the new publisher already in the database
                 is_publisher_present = is_publisher_in_database(cache_publisher_name)
 
@@ -570,6 +748,10 @@ def update(json_input, update_type):
 
             # Builds dict for updated items
             updated_records = {'Updated': 'False'}
+            if is_title_update:
+                updated_records['Title'] = 'Updated'
+                updated_records['Updated'] = 'True'
+
             if is_summary_updated:
                 updated_records['Summary'] = 'Updated'
                 updated_records['Updated'] = 'True'
