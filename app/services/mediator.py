@@ -7,15 +7,7 @@ import requests
 from app.services.Mediator.mediator_helpers import is_author_info_none, is_book_info_none, is_none
 from app.services.genres import genres_for_table
 from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend, validate_tags
-from app.services.Book.Book import (create_book, read_book, read_all_books, read_all_books_by_title,
-                                    read_all_books_by_author, update_book_summary, update_book_chapters,
-                                    update_book_chapters_completed, update_book_tags, delete_book,
-                                    create_book_note, read_book_notes, update_book_note, update_book_cover_image,
-                                    delete_book_note, is_note_id_in_database, update_book_genre, create_book_genre,
-                                    delete_book_cover_image, is_in_book_table, delete_book_author_record,
-                                    is_publisher_in_database, read_publisher_id_by_name,
-                                    update_book_publisher_id, create_new_publisher, update_book_publisher_year,
-                                    update_book_title)
+from app.services.Book.Book import *
 from app.services.filter_search_results import filter_results, filter_results_isbn
 from app.services.openlibrary_api import search_books_by_title, get_work_data, search_books_by_isbn, \
     get_author_info_from_authorid, search_books_by_author, get_book_info_from_cover_key
