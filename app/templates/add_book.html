@@ -4,20 +4,43 @@
     <!-- Basic page metadata -->
     <meta charset="UTF-8">
     <title>Add Book</title>
+
+    <!-- External stylesheets -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='add_book.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
+
+    <style>
+      /* Improve layout scaling for larger screens */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Responsive row layout */
+      .row {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .row > div {
+        flex: 1;
+        min-width: 250px;
+      }
+    </style>
 </head>
 
 <body>
 
-  <!-- Child template inheritance placeholder for modal_present.html and modal_malformed.html. -->
+  <!-- Child template inheritance placeholder -->
   {% block body %}
   {% endblock %}
 
 <main class="container">
 
-      <!-- Navigation link -->
+    <!-- Navigation link -->
     <div class="nav-buttons">
         <a href="/">🏠 Home</a>
     </div>
@@ -68,16 +91,11 @@
             </div>
         </fieldset>
 
-        <!-- ISBN + Publisher row -->
+        <!-- ISBN + Publisher -->
         <div class="row">
             <div>
-                <label for="ISBN">ISBN (10 or 13)</label>
-                <input type="text"
-                       id="ISBN"
-                       name="ISBN"
-                       pattern="[0-9]{10}|[0-9]{13}"
-                       inputmode="numeric"
-                       required>
+                <label for="ISBN">ISBN</label>
+                <input type="text" id="ISBN" name="ISBN" required>
             </div>
 
             <div>
@@ -86,78 +104,38 @@
             </div>
         </div>
 
-        <!-- Year + Chapters row -->
+        <!-- Year + Chapters -->
         <div class="row">
             <div>
                 <label for="Publish_Year">Year Published</label>
-                <input type="text"
-                       id="Publish_Year"
-                       name="Publish_Year"
-                       pattern="[0-9]+"
-                       inputmode="numeric"
-                       required>
+                <input type="text" id="Publish_Year" name="Publish_Year" required>
             </div>
 
             <div>
                 <label for="Chapters">Chapters</label>
-                <input type="text"
-                       id="Chapters"
-                       name="Chapters"
-                       pattern="[0-9]+"
-                       inputmode="numeric">
+                <input type="text" id="Chapters" name="Chapters">
             </div>
         </div>
 
-        <!-- Fiction / Non-Fiction -->
+        <!-- Genre -->
         <fieldset>
             <legend>Fiction or Non-Fiction</legend>
 
-            <div class="radio-group">
-                <label>
-                    <input type="radio" name="Genre_1" value="fiction" checked>
-                    Fiction
-                </label>
-
-                <label>
-                    <input type="radio" name="Genre_1" value="nonfiction">
-                    Non-Fiction
-                </label>
-            </div>
+            <label><input type="radio" name="Genre_1" value="fiction" checked> Fiction</label>
+            <label><input type="radio" name="Genre_1" value="nonfiction"> Non-Fiction</label>
         </fieldset>
 
-        <!-- Tags -->
-        <fieldset>
-            <legend>Tags</legend>
-
-            <div class="tags-grid">
-                <label><input type="checkbox" name="Owned">Owned</label>
-                <label><input type="checkbox" name="Favorite">Favorite</label>
-                <label><input type="checkbox" name="Completed">Completed</label>
-                <label><input type="checkbox" name="Currently_Reading">Currently Reading</label>
-            </div>
-
-            <fieldset>
-                <legend>Reading Type</legend>
-
-                <div class="radio-group">
-                    <label><input type="radio" name="Personal_Or_Academic" value="personal" checked>Personal</label>
-                    <label><input type="radio" name="Personal_Or_Academic" value="academic">Academic</label>
-                </div>
-
-            </fieldset>
-        </fieldset>
-
+        <!-- Submit -->
         <button type="submit" class="transition_css">Add Book</button>
 
     </form>
 </main>
 
-
 <script>
-    function toggleAuthor() {
-      const section = document.getElementById("secondaryAuthor")
-      section.classList.toggle("hidden")
-    }
+function toggleAuthor() {
+  document.getElementById("secondaryAuthor").classList.toggle("hidden");
+}
 </script>
+
 </body>
 </html>
