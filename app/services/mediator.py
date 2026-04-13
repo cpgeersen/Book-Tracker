@@ -1,7 +1,5 @@
 import json
 import os
-from textwrap import indent
-
 import requests
 
 from app.services.Mediator.mediator_helpers import is_author_info_none, is_book_info_none, is_none
