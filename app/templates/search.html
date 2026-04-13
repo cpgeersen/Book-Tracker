@@ -273,45 +273,64 @@
           {% endif %}
 
             <div class="book-info">
-              <h3>{{ book_info['Title'] }}</h3>
-              <p><strong>Author:</strong> {{ book_info['Author_First_Name_1'] }} {{ book_info['Author_Last_Name_1'] }}</p>
+                <h3>{{ book_info['Title'] }}</h3>
+              <div class="book-info-wrapper">
+                  <div class="book-info-author-and-publisher">
 
-              {% if book_info['Author_First_Name_2'] %}
-              <p><strong>Second Author:</strong> {{ book_info['Author_First_Name_2'] }} {{ book_info['Author_Last_Name_2'] }}</p>
-              {% endif %}
+                <p><strong>Author:</strong> {{ book_info['Author_First_Name_1'] }} {{ book_info['Author_Last_Name_1'] }}</p>
 
-              <p><strong>Publisher:</strong> {{ book_info['Publisher_Name'] }}</p>
-              <p><strong>Publish Year:</strong> {{ book_info['Publish_Year'] }}</p>
-              <p><strong>ISBN:</strong> {{ book_info['ISBN'] }}</p>
-
-              <div class="tags">
-                {% if book_info['Owned'] == 'yes' %}
-                  <span>Owned</span>
+                {% if book_info['Author_First_Name_2'] %}
+                <p><strong>2nd Author:</strong> {{ book_info['Author_First_Name_2'] }} {{ book_info['Author_Last_Name_2'] }}</p>
                 {% endif %}
 
-                {% if book_info['Favorite'] == 'yes' %}
-                <span>Favorite</span>
-                {% endif %}
-
-                {% if book_info['Completed'] == 'yes' %}
-                <span>Completed</span>
-                {% endif %}
-
-                {% if book_info['Currently_Reading'] == 'yes' %}
-                <span>Currently Reading</span>
-                {% endif %}
-
-                {% if book_info['Personal_Or_Academic'] == 'academic' %}
-                <span>Academic</span>
-                {% else %}
-                <span>Personal</span>
-                {% endif %}
-
+                <p><strong>Publisher:</strong> {{ book_info['Publisher_Name'] }}</p>
+                <p><strong>Publish Year:</strong> {{ book_info['Publish_Year'] }}</p>
+                <p><strong>ISBN:</strong> {{ book_info['ISBN'] }}</p>
               </div>
 
-              <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button transition_css">
-                Go to Book Page →
+              <div class="book-info-genre-and-tags">
+
+                <div class="genres">
+                  <span>{{ book_info['Genre_1'].title() }}</span>
+                  {% if book_info['Genre_2'] %}<span>{{ book_info['Genre_2'].title() }}</span>{% endif %}
+                  {% if book_info['Genre_3'] %}<span>{{ book_info['Genre_3'].title() }}</span>{% endif %}
+                  {% if book_info['Genre_4'] %}<span>{{ book_info['Genre_4'].title() }}</span>{% endif %}
+                </div>
+
+                <div class="tags">
+                  {% if book_info['Owned'] == 'yes' %}
+                    <span>Owned</span>
+                  {% endif %}
+
+                  {% if book_info['Favorite'] == 'yes' %}
+                  <span>Favorite</span>
+                  {% endif %}
+
+                  {% if book_info['Completed'] == 'yes' %}
+                  <span>Completed</span>
+                  {% endif %}
+
+                  {% if book_info['Currently_Reading'] == 'yes' %}
+                  <span>Currently Reading</span>
+                  {% endif %}
+
+                  {% if book_info['Personal_Or_Academic'] == 'academic' %}
+                  <span>Academic</span>
+                  {% else %}
+                  <span>Personal</span>
+                  {% endif %}
+                </div>
+              </div>
+                  <a href="/book/isbn/{{ book_info['ISBN'] }}" class="view-button transition_css">
+                View Book →
               </a>
+              </div>
+
+
+
+
+
+
             </div>
 
           </div>
@@ -341,7 +360,7 @@
       }
     }
 
-    // Function for returning to the top of the page. 
+    // Function for returning to the top of the page.
     function upTop(){
       window.scrollTo({
         top:0,
@@ -350,7 +369,7 @@
     }
 
     // Event listeners for scrolling 300px to display button and clicking button to return to top.
-    window.addEventListener("scroll", showWhenScrolling); 
+    window.addEventListener("scroll", showWhenScrolling);
 
     returnToTopBtn.addEventListener("click", upTop);
 
