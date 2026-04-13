@@ -2,6 +2,7 @@ import json
 import os
 import requests
 
+from app.services.Mediator.mediator_delete import mediator_delete
 from app.services.Mediator.mediator_helpers import is_author_info_none, is_book_info_none, is_none
 from app.services.genres import genres_for_table
 from app.services.validate_book_json import validate_book_from_local, validate_book_for_frontend, validate_tags
@@ -682,11 +683,10 @@ def update(json_input, update_type):
                 is_title_update = True
 
             # Update book summary if requested
-            old_summary = old_json_data.get('Summary')
             cache_summary = cache_response.get('Summary')
             is_summary_updated = False
 
-            if not is_book_info_none(old_summary, cache_summary):
+            if json_input['Summary_Update'] is not None:
                 update_book_summary(isbn, cache_summary)
                 is_summary_updated = True
 
@@ -781,29 +781,7 @@ def update(json_input, update_type):
 
 # DELETE - Takes JSON as input
 def delete(json_input, delete_type):
-    if delete_type == 'book':
-        json_input = json.loads(json_input)
-        delete_book_cover_image(json_input['ISBN'], json_input['Cover_Image_Path'])
-        delete_book(json_input['ISBN'])
-
-        note_ids = read_book_notes(json_input)
-        for value in note_ids.values():
-            rep = delete_book_note(value)
-
-        return json.dumps({'Success': 'Book Deleted'})
-
-    elif delete_type == 'note':
-        json_input = json.loads(json_input)
-        response = delete_book_note(json_input)
-        return response
-
-    elif delete_type == 'cover-image':
-        json_input = json.loads(json_input)
-        response = delete_book_cover_image(json_input['ISBN'], json_input['Cover_Image_Path'])
-        return response
-
-    else:
-        return 'Error: Not a valid call'
+    mediator_delete(json_input, delete_type)
 
 
 def sort_results_by_title(result):
