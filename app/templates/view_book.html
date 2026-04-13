@@ -190,7 +190,7 @@
 
         <!-- Button to enable editing genres -->
         <br><br>
-        <button onclick="toggleGenreEdit()" class="style-button transition_css">Edit Genres</button>
+        <button id="edit-genres-button" onclick="toggleGenreEdit()" class="style-button transition_css">Edit Genres</button>
 
         <!-- Genre edit section -->
         <div id="genre-edit" class="hidden">
@@ -505,6 +505,15 @@
     /* Toggle genre edit section visibility */
     function toggleGenreEdit() {
       const section = document.getElementById("genre-edit");
+      let editBtn = document.getElementById('edit-genres-button')
+
+      if(editBtn.textContent === 'Edit Genres'){
+        editBtn.textContent = 'Cancel Edit';
+      } else {
+        editBtn.textContent = 'Edit Genres';
+      }
+
+
       section.classList.toggle("hidden");
     }
 
