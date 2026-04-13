@@ -12,10 +12,12 @@
 
 <!-- This is the beginning of the body !-->
 <body>
+
+<!-- MOD -->
 <div class="header-container">
     <div class="right-text">
             <h1>User Settings</h1>
-            <h1><a href="/workspaces/Book-Tracker/app/templates/homepage_v2.html">Homepage</a></h1>
+            <h1><a href="/workspaces/Book-Tracker/app/templates/homepage_v2.html">🏠 Home</a></h1>
     </div>
     <img src="/workspaces/Book-Tracker/app/templates/BookTracker_Settings.png"
                     alt="User Profile Picture"
@@ -23,30 +25,32 @@
                     height="200"
                     class="header-image">
 </div>
-        
-    <h1>User Settings</h1>
-
+<!-- MOD^ -->  
 <!-- I think I may have named the route incorrectly here (example "/click_Button" may need path name.)-->
-
-    <form action="/submit_Button" method="post">
+    <h1>User Settings</h1>
+    <form id="User Settings">
+    <form action="/submit_Button" method="post"> <!-- Holly Changed to "<input type = "text" id="Username" name="Username" required> -->
         <fieldset>
             <!-- USERNAME INPUT -->
-            <legend>Username</legend>
+            <legend>Theme Setting</legend>
             <div class="form-row">
                 <label for="usr_Name">Username:</label>
                 <input type="text" id="usr_Name" name="usr_Name" value="{{ username }}">
             </div>
         </fieldset>
         <fieldset>
-            <!-- MISSION STATEMENT INPUT -->
-            <legend>Mission Statement</legend>
+            <!-- About_Me -->
+            <legend>About_Me</legend>
             <div class="form-row">
-                <label for="miss_Stmt">Mission Statement:</label>
-                <textarea id="miss_Stmt" name="miss_Stmt" placeholder="Write your mission statement here...">{{ mission_statement }}</textarea>
+                <label for="abt_Me">About Me:</label>
+                <textarea id="abt_Me" name="abt_Me" placeholder="Write your mission statement here...">{{ mission_statement }}</textarea>
             </div>
         </fieldset>
+        <!-- Switch -->
         <fieldset>
             <!-- Light/Dark Theme Switch -->
+            <!-- MOD (attempted switch to radio input) challenged "Jinja Input" type -->
+            <!-- I personally vote for the radio switch.  No time -->
             <legend>Light/Dark Theme</legend>
             <label class="switch">
                 <input type="checkbox" id="toggleSwitch" name="theme_switch"
@@ -58,8 +62,8 @@
         <!-- This script dynamically switches the theme CSS file when the toggle switch is changed (JS)-->
         <input type="submit" value="Submit">
 
-        <button type="submit" formaction="/reset_Button" formmethod="post">
-            Reset
+        <button type="submit" formaction="/submit_Button" formmethod="post">
+            submit
         </button>
 
     </form>
