@@ -23,21 +23,6 @@ BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 
 
-# Book Genres for frontend
-BOOK_GENRES = genres_for_table()
-del BOOK_GENRES[1]
-del BOOK_GENRES[2]
-# Sorted by Alphabetic Order
-BOOK_GENRES_SORTED = dict(sorted(BOOK_GENRES.items(), key=lambda kv: kv[1]))
-
-
-# Small helper function for what files are allowed for cover images
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-UPLOAD_FOLDER = './app/static/images/cover_images'
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 # Functions for mocking
 #create_sample_books()
 #create_many_records(100)
@@ -50,14 +35,10 @@ def create_routes(app):
 
     # Register Blueprints Used for Testing
     app.register_blueprint(test_bp)
-    #app.register_blueprint(pages_bp)
-
-
-
-
 
     # Pages
     # Logic Found in Routes
+    # ./app/routes
     add_local_book_route(app)
     individual_book_route(app)
     local_search_route(app)
