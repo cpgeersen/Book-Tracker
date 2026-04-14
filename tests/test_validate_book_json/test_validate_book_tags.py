@@ -1,5 +1,7 @@
-from app.services.validate_book_json import validate_tags, validate_book_for_frontend
+
 import json
+
+from app.services.validate_json.validate_book_json import validate_tags, validate_book_for_frontend
 
 backend_tags = {"Owned": "yes",
                 "Favorite": "yes",

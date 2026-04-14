@@ -1,7 +1,6 @@
-import pytest
-import sqlite3
+
 from app.services.Book.Book import create_book, delete_book
-from app.services.Book.BookDelete import delete_book_record, connect_to_database
+from app.services.Book.BookDelete import delete_book_record
 
 normal_data = {"ISBN": "0061091464",
                "Title": "The Thief of Always",

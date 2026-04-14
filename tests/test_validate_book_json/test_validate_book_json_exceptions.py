@@ -1,6 +1,6 @@
 import pytest
 
-from app.services.validate_book_json import validate_book, validate_author, validate_publisher
+from app.services.validate_json.validate_book_json import validate_book, validate_author, validate_publisher
 
 empty_data = {}
 

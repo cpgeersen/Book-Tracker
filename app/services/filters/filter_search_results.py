@@ -1,5 +1,6 @@
 import json
 
+
 def filter_results(filter_json, json_result):
     # JSON from frontend filters
     filter_json_dict = dict(filter_json)
@@ -14,7 +15,6 @@ def filter_results(filter_json, json_result):
     filter_personal_or_academic = filter_json_dict.get('personal-or-academic', 'any')
     filter_genre_1 = filter_json_dict.get('genre-1', 'any')
     filter_genre = str(filter_json_dict.get('genre', '')).split(',')[0]
-
 
     json_result_dict = dict(json_result)
 
@@ -61,8 +61,8 @@ def filter_results(filter_json, json_result):
                 json_result_dict.pop(key)
                 continue
 
-
     return json_result_dict
+
 
 # Will refactor duplicated logic
 def filter_results_isbn(filter_json, json_result):
@@ -81,7 +81,6 @@ def filter_results_isbn(filter_json, json_result):
     filter_genre = str(filter_json_dict.get('genre', '')).split(',')[0]
 
     json_result_dict = dict(json_result)
-
 
     if filter_currently_reading == 'true':
         if json_result_dict.get('Currently_Reading') != 'yes':
@@ -103,7 +102,6 @@ def filter_results_isbn(filter_json, json_result):
             json_result_dict = {}
             return json_result_dict
 
-
     # These three break view all books need to fix
     genre_num = 1
     if filter_genre != '':
@@ -116,7 +114,6 @@ def filter_results_isbn(filter_json, json_result):
             json_result_dict = {}
             return json_result_dict
 
-
     if filter_genre_1 != 'any':
         if json_result_dict.get('Genre_1') != filter_genre_1:
             json_result_dict = {}
@@ -127,14 +124,7 @@ def filter_results_isbn(filter_json, json_result):
             json_result_dict = {}
             return json_result_dict
 
-
     return json_result_dict
-
-
-
-
-if __name__ == '__main__':
-    pass
 
 
 if __name__ == '__main__':

@@ -1,5 +1,7 @@
-from app.services.validate_book_json import validate_book_from_local
+
 import json
+
+from app.services.validate_json.validate_book_json import validate_book_from_local
 
 normal_data = {"ISBN": "0061091464",
                "Title": "The Thief of Always",

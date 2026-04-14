@@ -2,12 +2,15 @@ import datetime
 from datetime import datetime, timedelta
 import requests
 import json
-#from app.services.create_complete_book import is_isbn_in_book_table
-#from app.services.Book.Book import read_book, is_isbn_present
+
+# from app.services.create_complete_book import is_isbn_in_book_table
+# from app.services.Book.Book import read_book, is_isbn_present
 
 BASE_URL = "https://openlibrary.org"
 last_search_time = None
 Title_search_cooldown = timedelta(seconds=1.5)
+
+
 def is_search_allowed():
     global last_search_time
     now = datetime.now()
@@ -16,7 +19,9 @@ def is_search_allowed():
         return True
     else:
         return False
-#search books by author OLID (author ID in OpenLibrary)
+
+
+# search books by author OLID (author ID in OpenLibrary)
 def search_books_by_authorid(author_id, limit=5):
     params = {
         "author": author_id,
@@ -28,7 +33,9 @@ def search_books_by_authorid(author_id, limit=5):
         return response.json()
     except requests.RequestException as err:
         return {"error": f"Failed to retrieve data: {err}"}
-#search books by author name (first name and last name)
+
+
+# search books by author name (first name and last name)
 def search_books_by_author(first_name, last_name, limit=5):
     params = {
         "author": f"{first_name} {last_name}",
@@ -40,7 +47,9 @@ def search_books_by_author(first_name, last_name, limit=5):
         return response.json()
     except requests.RequestException as err:
         return {"error": f"Failed to retrieve data: {err}"}
-#search books by ISBN
+
+
+# search books by ISBN
 def search_books_by_isbn(isbn):
     try:
         response = requests.get(f"{BASE_URL}/isbn/{isbn}.json", timeout=10)
@@ -50,12 +59,14 @@ def search_books_by_isbn(isbn):
         return {
             "error": f"Failed to retrieve data: {err}"
         }
-#search books by title
+
+
+# search books by title
 def search_books_by_title(query, limit=5):
-    #function to make sure search input is valid (not empty, not too short, not too long, and doesn't contain obvious garbage patterns)
+    # function to make sure search input is valid (not empty, not too short, not too long, and doesn't contain obvious garbage patterns)
     if is_invalid_title_input(query):
         return {"error": "Invalid search input. Please enter a real book title."}
-    #function to make sure user is not searching too quickly, to prevent hitting API rate limits
+    # function to make sure user is not searching too quickly, to prevent hitting API rate limits
     if not is_search_allowed():
         return {"error": "You are searching too quickly. Please wait a moment."}
 
@@ -89,6 +100,8 @@ def get_work_data(work_key):
         return response.json()
     except Exception as err:
         return {"error": f"Failed to retrieve work data: {err}"}
+
+
 # helper function to get author info using the author OLID (author ID in OpenLibrary)
 def get_author_info_from_authorid(author_olid):
     try:
@@ -97,6 +110,8 @@ def get_author_info_from_authorid(author_olid):
         return response.json()
     except requests.RequestException as err:
         return {"error": f"Failed to retrieve author info: {err}"}
+
+
 # helper function to check if author OLID is already in database, if so return it
 def get_books_from_author_ol(first_name, last_name):
     author_OLID = author_OLID_in_database(first_name, last_name)
@@ -104,11 +119,10 @@ def get_books_from_author_ol(first_name, last_name):
         return search_books_by_authorid(author_OLID)
     else:
         return search_books_by_author(first_name, last_name)
-        
 
 
 # OL = OpenLibrary
-#get book data from isbn
+# get book data from isbn
 def get_book_data_from_isbn_OL(isbn):
     try:
         # First call if the ISBN is already in database
@@ -153,7 +167,7 @@ def get_book_data_from_isbn_OL(isbn):
                     if "author" in a and "key" in a["author"]:
                         work_author_olids.append(a["author"]["key"])
 
-        #Get information from ol response to return in json later
+        # Get information from ol response to return in json later
         title = ol_data.get("title")
         publish_year = ol_data.get("publish_date")
         authors_olids = [a.get("key") for a in ol_data.get("authors", []) if "key" in a]
@@ -170,22 +184,22 @@ def get_book_data_from_isbn_OL(isbn):
             "isbn_list": isbn_list,
             "work_key": work_key
         }
-    
+
+
 def is_invalid_title_input(query):
     """Return True if the title is empty, too short, too long, or obvious garbage."""
     has_letter_or_number = False
 
     if not query:
         return True
-    #stripping leading/trailing whitespace for more accurate checks
+    # stripping leading/trailing whitespace for more accurate checks
     cleaned_title = query.strip()
-    
+
     if len(cleaned_title) < 1:
         return True
-    #IF title is all numbers and only 1 digit, it's likely not a valid title (e.g. "1", "2", etc.) Did this to allow it to still search for  1984 etc.
+    # IF title is all numbers and only 1 digit, it's likely not a valid title (e.g. "1", "2", etc.) Did this to allow it to still search for  1984 etc.
     if cleaned_title.isdigit() and len(cleaned_title) == 1:
         return True
-
 
     if len(cleaned_title) > 80:
         return True
@@ -197,9 +211,8 @@ def is_invalid_title_input(query):
     if not has_bad_data:
         return True
 
-
-
     return False
+
 
 if __name__ == "__main__":
     user_title = input("Enter a book title to search: ").strip()
