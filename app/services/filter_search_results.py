@@ -131,11 +131,5 @@ def filter_results_isbn(filter_json, json_result):
     return json_result_dict
 
 
-
-
-if __name__ == '__main__':
-    pass
-
-
 if __name__ == '__main__':
     pass
