@@ -35,6 +35,19 @@
     color: #9ca3af;
 }
 
+#book-cover-buttons{
+    width: 160px;
+    margin-bottom: 0.4rem;
+}
+
+#book-cover-edit-btn{
+    margin-top: 0.4rem;
+}
+
+#book-cover-buttons form>*{
+    margin-top: 0.4rem;
+}
+
 /* Formats book info section */
 .book-info {
     flex: 1;

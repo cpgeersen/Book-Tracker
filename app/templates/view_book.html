@@ -37,17 +37,20 @@
           {% else %}
             <div class="book-cover">No Cover</div>
           {% endif %}
-          <button id="book-cover-edit-btn" onclick="editCoverImage()" class="small-button transition_css">Edit Book Cover Image</button>
-          <form id="book-cover-upload" class="hidden" method="POST" enctype="multipart/form-data">
-            <label for="cover-image" class="file-button transition_css">📁 Choose File</label>
-            <input type="file" id="cover-image" name="cover-image">
-            <button type="submit" name="cover-image" value="update" class="small-button transition_css">Upload</button>
+          <div id="book-cover-buttons">
+            <button id="book-cover-edit-btn" onclick="editCoverImage()" class="small-button transition_css">Edit Cover Image</button>
+            <form id="book-cover-upload" class="hidden" method="POST" enctype="multipart/form-data">
+              <label for="cover-image" class="file-button transition_css">📁 Choose File</label>
+              <input type="file" id="cover-image" name="cover-image">
+              <button type="submit" name="cover-image" value="update" class="small-button transition_css">Upload</button>
             <!-- <input type="submit" name="cover-image" value="delete"> -->
-            <button type="submit" name="cover-image" value="delete" class="small-button transition_css">Delete</button>
+              <button type="submit" name="cover-image" value="delete" class="small-button transition_css">Delete</button>
 
-          </form>
-          <br>
-          <button id="book-cover-edit-btn-cancel" class="hidden small-button transition_css" onclick="editCoverImage()">Cancel</button>
+            </form>
+            <br>
+            <button id="book-cover-edit-btn-cancel" class="hidden small-button transition_css" onclick="editCoverImage()">Cancel</button>
+          </div>
+
         </div>
 
 
