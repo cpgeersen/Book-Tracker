@@ -1,48 +1,51 @@
 import os
+import json
 from pathlib import Path
 from flask import request, render_template, jsonify, redirect, url_for, send_from_directory
+
+from app.routes.add_local_book_route import add_local_book_route
+from app.services.OpenLibrary.openlibrary_search_cache import create_cache
 from app.services.mediator import create, read, update, delete
-#from app.services.openlibrary_api import search_books # temporary markout until added
 from app.routes.test import test_bp
-import json
 from app.services.genres import genres_for_table
 from app.services.mocking.create_example_records import create_sample_books
 from app.services.mocking.create_many_records import create_many_records
-from app.services.openlibrary_search_cache import create_cache
 
 
+
+# Status Codes
 SUCCESS = 200
 FOUND = 302
 BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-UPLOAD_FOLDER = './app/static/images/cover_images'
+
+# Book Genres for frontend
 BOOK_GENRES = genres_for_table()
 del BOOK_GENRES[1]
 del BOOK_GENRES[2]
+# Sorted by Alphabetic Order
 BOOK_GENRES_SORTED = dict(sorted(BOOK_GENRES.items(), key=lambda kv: kv[1]))
 
 
+# Small helper function for what files are allowed for cover images
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+UPLOAD_FOLDER = './app/static/images/cover_images'
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Create the Database
-#create_db()
+# Functions for mocking
 #create_sample_books()
 #create_many_records(100)
 
 # Create OpenLibrary Search Cache
 create_cache()
 
+# Main Route Creation for the App
+def create_routes(app):
 
-def create_routes(app): # Placeholder returns for unfinished pages
-
-
-
-
-    # Register Blueprints
+    # Register Blueprints Used for Testing
     app.register_blueprint(test_bp)
     #app.register_blueprint(pages_bp)
 
@@ -51,30 +54,8 @@ def create_routes(app): # Placeholder returns for unfinished pages
 
 
     # Pages
-    @app.route('/book/add-local', methods=['POST', 'GET'])
-    def add_book_page():
-        if request.method == 'POST':
-            try:
-                # First get the form information
-                book_form_json = dict(request.form)
+    add_local_book_route(app)
 
-                # Next send to mediator for validation and creation
-                book_response = create(book_form_json, 'book-local')
-
-                # Read the result back to populate the individual page
-                book_result = json.loads(read(book_form_json, 'book-isbn'))
-
-                if book_response[1] == SUCCESS:
-                    return redirect(url_for('individual_book_page', isbn=book_result['ISBN']))
-                elif book_response[1] == FOUND:
-                    return render_template('add_book_error_present.html'), FOUND
-                elif book_response[1] == BAD_REQUEST:
-                    return render_template('add_book_error_malformed.html'), BAD_REQUEST
-            except TypeError as error:
-                return render_template('add_book_error_malformed.html'), BAD_REQUEST
-
-
-        return render_template('add_book.html')
 
     @app.route('/book/isbn/<isbn>', methods=['GET', 'POST'])
     def individual_book_page(isbn):
