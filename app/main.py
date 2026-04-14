@@ -6,8 +6,8 @@ from app.services.mediator import create, read, update, delete
 from app.routes.test import test_bp
 import json
 from app.services.genres import genres_for_table
-from app.services.create_example_records import create_sample_books
-from app.services.create_many_records import create_many_records
+from app.services.mocking.create_example_records import create_sample_books
+from app.services.mocking.create_many_records import create_many_records
 from app.services.openlibrary_search_cache import create_cache
 
 
