@@ -30,9 +30,6 @@ def validate_book_for_frontend(json_input):
         elif genre_4 in genre_1_list:
             json_input['Genre_1'] = genre_4
             json_input['Genre_4'] = genre_1
-        else:
-            # This should not be possible given the protections in place for book creation
-            return json.dumps({'Error': 'Book does not have a genre with fiction or nonfiction.'})
 
     return json.dumps(json_input)
 
