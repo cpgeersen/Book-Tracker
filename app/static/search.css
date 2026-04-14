@@ -37,8 +37,6 @@
     color: white;
     font-weight: 600;
     cursor: pointer;
-    transition-delay: 0.5s;
-    transition-timing-function: ease-in-out;
 }
 
 .filters button:hover {
@@ -71,6 +69,8 @@ input[type="text"] {
 
 input[type="radio"] {
     margin-right: 0.4rem;
+    cursor: pointer;
+    accent-color: #4f46e5;
 }
 
 .search-form button {
@@ -231,7 +231,7 @@ input[type="radio"] {
 
 /* Transition formatting */
 .transition_css {
-      transition: background-color 0.3s ease-in-out;
+      transition: background-color 0.2s ease-in-out;
 }
 
 /* Genre option styling */
@@ -243,23 +243,20 @@ input[type="radio"] {
     background-color: #6366f1;
     color: white;
     font-weight: 600;
-}
-
-.select-genre:hover {
-    background-color: #4f46e5;
-}
-
-/* Radio button styling */
-input[type="radio"] {
-    accent-color: #4f46e5;
+    cursor: pointer;
 }
 
 /* Checkbox styling */
 input[type="checkbox"] {
     accent-color: #4f46e5;
+    cursor: pointer;
 }
 
 input[type="checkbox"]:hover {
     outline: 2px solid #4f46e5;
+    
+}
+
+.cursor {
     cursor: pointer;
 }

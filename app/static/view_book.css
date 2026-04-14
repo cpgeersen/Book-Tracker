@@ -35,6 +35,7 @@
     color: #9ca3af;
 }
 
+/* Formats book info section */
 .book-info {
     flex: 1;
     min-width: 300px;
@@ -71,14 +72,15 @@
 
 /* Active tag state */
 .tag.active {
-    /* background-color: #6366f1; */
     background-color: #4346f1;
 }
 
+/* Hover styling for tag selection */
 .tag:hover {
     background-color: #4f46e5;
 }
 
+/* Styles genres */
 .genre-tag {
     background-color: #374151;
     padding: 0.4rem 0.8rem;
@@ -88,9 +90,6 @@
     border: none;
     color: white;
 }
-
-
-
 
 /* Input field styling */
     input[type="number"] {
@@ -128,6 +127,7 @@ textarea {
     display: none;
 }
 
+/* Style display of notes section */
 #notes {
     border-radius: 8px;
     display: flex;
@@ -135,6 +135,7 @@ textarea {
     justify-content: space-around;
 }
 
+/* Styles the text area to enter/edit a note */
 #note-edit-textarea{
     font-size: 15px;
     resize: none;
@@ -144,6 +145,7 @@ textarea {
     white-space: pre-wrap;
 }
 
+/* Styles the Notes section */
 #note-select{
     height: 400px;
     width: 250px;
@@ -158,6 +160,7 @@ textarea {
     scrollbar-width: thin;
 }
 
+/* Style for displaying note */
 .note-text{
     overflow: hidden;
     text-overflow: ellipsis;
@@ -167,7 +170,7 @@ textarea {
     white-space-collapse: preserve-breaks;
 }
 
-
+/* Styling for note card View/Edit button */
 .note-card-button{
     bottom: 0;
     position: relative;
@@ -184,17 +187,19 @@ textarea {
     font-size: 0.8rem;
 }
 
+/* Hover styling for note card View/Edit button */
 .note-card-button:hover {
     background-color: #4f46e5;
 }
 
+/* Formatting for note ID */
 .note-text-id{
     padding: 0;
     margin: 0;
     font-size: 10px;
 }
 
-
+/* Styling for Edit/Delete button */
 .note-edit-btn{
     margin-bottom: 10px;
     background-color: #6366f1;
@@ -208,14 +213,17 @@ textarea {
     font-weight: 600;
 }
 
+/* Hover styling for Edit/Delete buttn */
 .note-edit-btn:hover {
     background-color: #4f46e5;
 }
 
+/* Hide Edit/Delete button when no notes available */
 #note-edit-delete{
     visibility: hidden;
 }
 
+/* Styling for Add New Note button */
 #note-add{
     height: 30px;
     width: 100%;
@@ -229,7 +237,7 @@ progress {
     appearance: none;
     border: none;
     border-radius: 10px;
-     background-color: #eee;
+    background-color: #eee;
     overflow: hidden;
 }
 
@@ -239,19 +247,19 @@ progress::-webkit-progress-bar {
   border-radius: 10px;
 }
 
-/* Create color gradient for progress bar */
+/* Creates color gradient for progress bar */
 progress::-webkit-progress-value {
-  background: linear-gradient(90deg, #c6e2c1, #5de054, #277102);
+  background: linear-gradient(90deg, #c6e2c1, #5de054);
   border-radius: 10px;
 }
 
 /* Progress bar gradient for Firefox */
 progress::-moz-progress-bar {
-  background: linear-gradient(90deg, #c6e2c1, #5de054, #277102);
+  background: linear-gradient(90deg, #c6e2c1, #5de054);
   border-radius: 10px;
 }
 
-/* Overlay text */
+/* Overlay text  for progress bar*/
 .progress-bar-text {
     position: absolute;
     top: 0;
@@ -278,6 +286,7 @@ progress::-moz-progress-bar {
     gap: 10px;
 }
 
+/* Main styling for large buttons */
 .style-button {
     margin-top: 1rem;
     padding: 0.6rem 1rem;
@@ -289,12 +298,14 @@ progress::-moz-progress-bar {
     cursor: pointer;
 }
 
+/* Hover styling for large buttons */
 .style-button:hover {
     background-color: #4f46e5;
 }
 
+/* Adds smooth transition animation for hover styling */
 .transition_css {
-      transition: background-color 0.3s ease-in-out;
+      transition: background-color 0.2s ease-in-out;
 }    
 
 /* Checkbox styling */
@@ -302,11 +313,13 @@ input[type="checkbox"] {
     accent-color: #4f46e5;
 }
 
+/* Hover styling for checkboxes */
 input[type="checkbox"]:hover {
     outline: 2px solid #4f46e5;
     cursor: pointer;
 }
 
+/* Main styling for smaller buttons */
 .small-button {
     background-color: #6366f1;
     padding: 0.4rem 0.8rem;
@@ -319,14 +332,17 @@ input[type="checkbox"]:hover {
     font-weight: 600;
 }
 
+/* Hover styling for smaller buttons */
 .small-button:hover {
     background-color: #4f46e5;
 }
 
+/* Disables native display choose file for custom styling */
 input[type="file"] {
     display: none;
 }
 
+/* Styling for file button */
 .file-button {
     display: inline-block;
     background-color: #6366f1;
@@ -340,6 +356,7 @@ input[type="file"] {
     font-weight: 600;
 }
 
+/* Hover styling for file button */
 .file-button:hover {
     background-color: #4f46e5;
 }
@@ -347,19 +364,18 @@ input[type="file"] {
 /* Genre option styling */
 .select-genre {
     margin-top: 1rem;
-    /* padding: 0.6rem 1rem;
-    border-radius: 8px; */
     border: none;
     background-color: #6366f1;
     color: white;
     font-weight: 600;
-
     padding: 0.4rem 0.8rem;
     border-radius: 6px;
     font-size: 0.8rem;
     margin-right: 0.4rem;
+    cursor: pointer;
 }
 
-.select-genre:hover {
-    background-color: #4f46e5;
+/* Adds hand pointer cursor to checkbox items */
+.cursor {
+    cursor: pointer;
 }

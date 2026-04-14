@@ -37,21 +37,21 @@
                    value="{{ request.args.get('search', '') }}">
 
             {% if search_type == 'isbn' %}
-                <label><input type="radio" name="search_type" value="isbn" checked > ISBN</label>
+                <label class="cursor"><input type="radio" name="search_type" value="isbn" checked > ISBN</label>
             {% else %}
-                <label><input type="radio" name="search_type" value="isbn" > ISBN</label>
+                <label class="cursor"><input type="radio" name="search_type" value="isbn" > ISBN</label>
             {% endif %}
 
             {% if search_type == 'title' %}
-                <label><input type="radio" name="search_type" value="title" checked> Book Title</label>
+                <label class="cursor"><input type="radio" name="search_type" value="title" checked> Book Title</label>
             {% else %}
-                <label><input type="radio" name="search_type" value="title"> Book Title</label>
+                <label class="cursor"><input type="radio" name="search_type" value="title"> Book Title</label>
             {% endif %}
 
             {% if search_type == 'author' %}
-                <label><input type="radio" name="search_type" value="author" checked> Author</label>
+                <label class="cursor"><input type="radio" name="search_type" value="author" checked> Author</label>
             {% else %}
-                <label><input type="radio" name="search_type" value="author"> Author</label>
+                <label class="cursor"><input type="radio" name="search_type" value="author"> Author</label>
             {% endif %}
 
             <button type="submit" class="transition_css">Search</button>
