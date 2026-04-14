@@ -5,6 +5,7 @@ from flask import request, render_template, jsonify, redirect, url_for, send_fro
 
 from app.routes.add_local_book_route import add_local_book_route
 from app.routes.individual_book_route import individual_book_route
+from app.routes.local_search_route import local_search_route
 from app.services.OpenLibrary.openlibrary_search_cache import create_cache
 from app.services.mediator import create, read, update, delete
 from app.routes.test import test_bp
@@ -58,130 +59,8 @@ def create_routes(app):
     # Logic Found in Routes
     add_local_book_route(app)
     individual_book_route(app)
+    local_search_route(app)
 
-
-
-    @app.route('/book/local-search', methods=['GET'])
-    def local_search_page():
-        search_type = request.args.get('search_type')
-        filter_type = dict(request.args)
-        print(filter_type)
-
-        if search_type == 'isbn':
-            isbn = request.args.get('search', 'isbn')
-
-            if len(isbn) == 0:
-                book_result = read(filter_json=filter_type)
-
-                return render_template('search.html', books=book_result, search_type='isbn',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-
-            # Create a dict with the isbn, makes it possible to reuse mediator functions
-            isbn_dict = {"ISBN": isbn}
-            try:
-                #!!WIP!! may need a separate read since this uses other syntax, verify
-                book_result = json.loads(read(isbn_dict, 'book-isbn-filtered', filter_json=filter_type))
-
-                # When the book does not exist
-                if book_result.get('Error') is not None or len(book_result) == 0:
-                    book_result = ''
-                else:
-                    book_result = json.dumps({"Book_Result_1" : book_result})
-                    book_result = json.loads(book_result)
-
-                if book_result == '':
-                    return render_template('search.html', books={}, search_type='isbn',
-                                           book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-
-                return render_template('search.html', books=book_result, search_type='isbn',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-            except TypeError:   # When there is no book with ISBN match
-                return render_template('search.html', books={}, search_type='isbn',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-
-        elif search_type == 'title':
-            title = request.args.get('search', 'title')
-
-            if len(title) == 0:
-                book_result = read(filter_json=filter_type)
-                return render_template('search.html', books=book_result, search_type='title',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-
-            title_json = {'Title': title.strip()}
-            book_result = json.loads(read(title_json, 'book-title', filter_json=filter_type))
-
-            if dict(book_result).get('Error') == 'Title not found':
-                return render_template('search.html', books={},search_type='title',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-            else:
-                return render_template('search.html', books=book_result, search_type='title',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-
-        elif search_type == 'author':
-            author_name = request.args.get('search', 'author')
-            author_name_list = author_name.split(' ')
-
-            if len(author_name) == 0:
-                book_result = read(filter_json=filter_type)
-                return render_template('search.html', books=book_result, search_type='author',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-
-            match len(author_name_list):
-                case 1:author_name_json = {'Author_Last_Name': author_name_list[0].strip()}
-                case 2: author_name_json = {'Author_Last_Name': author_name_list[1].strip(),
-                                            'Author_First_Name': author_name_list[0].strip()}
-                case _: return 'Not valid' # Add error pop up here
-
-            book_result = json.loads(read(author_name_json, 'book-author', filter_json=filter_type))
-
-            if dict(book_result).get('Error') == 'Author not found':
-                return render_template('search.html', books={}, search_type='author',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-            else:
-                return render_template('search.html', books=book_result, search_type='author',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-        else:
-            try:
-                book_result = read(filter_json=filter_type)
-                return render_template('search.html', books=book_result,
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-            except TypeError: # When there are no books
-                return render_template('search.html', books={},
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
-
-
-
-    @app.route('/openlibrary-search')
-    #def openlibrary_search_page():
-        #return 'OpenLibrary Search will be here', 200
-
-    # this is all for testing purposes and will be changed to fit the frontend
-    def openlibrary_search_page():
-        # Read ?search=... from the URL
-        query = request.args.get('search', '').strip()
-        if not query:
-            return jsonify(error='Missing query. Use /openlibrary-search?search=harry+potter'), 400
-
-        # Call OpenLibrary service
-        search_result = search_books(query)
-
-        # If API/service fails, return upstream-style error
-        if 'error' in search_result:
-            return jsonify(search_result), 502
-
-        # Keep only a few useful fields for the client
-        docs = search_result.get('docs', [])
-        trimmed_results = []
-        for doc in docs[:5]:
-            trimmed_results.append({
-                'title': doc.get('title'),
-                'author_name': doc.get('author_name', []),
-                'first_publish_year': doc.get('first_publish_year'),
-                'edition_count': doc.get('edition_count'),
-            })
-
-        # Return compact JSON payload
-        return jsonify(query=query, num_found=search_result.get('numFound', 0), results=trimmed_results), 200
 
     @app.route('/', methods=['GET'])
     def homepage():
