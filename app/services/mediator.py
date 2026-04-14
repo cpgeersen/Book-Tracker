@@ -705,7 +705,7 @@ def update(json_input, update_type):
                 is_author_2_updated = resolve_author_olid(old_json_data, cache_response, author_num='2')
 
             # There is a second author, but there should not be one
-            elif not is_none(old_json_data.get('Author_First_Name_2')):
+            elif old_json_data.get('Author_First_Name_2') is not None:
                 delete_book_author_record(old_json_data.get('ISBN'),
                                           old_json_data.get('Author_First_Name_2'),
                                           old_json_data.get('Author_Last_Name_2'))
