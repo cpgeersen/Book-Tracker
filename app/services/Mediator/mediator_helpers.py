@@ -24,3 +24,7 @@ def is_book_info_none(new_book_info, old_book_info):
     else:
         return False
 
+
+def sort_results_by_title(result):
+    result = dict(sorted(result.items(), key=lambda kv: kv[1]['Title']))
+    return result
