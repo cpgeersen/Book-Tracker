@@ -113,6 +113,16 @@
     color: #e5e7eb;
 }
 
+/* Personal or Academic Tag styles */
+#personal-or-academic{
+    margin-top: 0.8rem;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+#personal-or-academic span{
+    margin-right: 0.4rem;
+}
+
 /* Notes textarea styling */
 textarea {
     width: 100%;

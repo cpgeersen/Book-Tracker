@@ -331,7 +331,24 @@
                   id='currently_reading' type="button" name="currently_reading" value="{{ book['Currently_Reading'] }}">Currently Reading</button>
           <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book['Currently_Reading'] }}">
 
-          <br><br>
+          <br>
+
+          <!-- Toggles for Personal and Academic Tags -->
+          <div id="personal-or-academic">
+            <button onclick="changePersonalTag()" class="tag {% if book['Personal_Or_Academic']=='personal' %}active{% endif %}"
+                  id='personal' type="button" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">Personal</button>
+
+            <span>or</span>
+
+            <button onclick="changeAcademicTag()" class="tag {% if book['Personal_Or_Academic']=='academic' %}active{% endif %}"
+                  id='academic' type="button" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">Academic</button>
+
+            <input type="hidden" id="personal_or_academic_value" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">
+
+          </div>
+
+
+
 
           <!-- Save tag changes button -->
           <button onclick="saveTags()" type="submit" form="tag" name="tag" class="style-button transition_css">Save Tags</button>
@@ -469,6 +486,29 @@
       } else {
         document.getElementById(tag_type).value = 'on'
         document.getElementById(tag_type + "_value").value = 'on';
+      }
+    }
+
+    // Toggles the Personal and Academic Tags
+    function changePersonalTag(){
+      let personal_value = document.getElementById('personal').classList;
+      let academic_value = document.getElementById('academic').classList;
+
+      if(!personal_value.contains('active')){
+        academic_value.toggle('active');
+        personal_value.toggle('active');
+        document.getElementById('personal_or_academic_value').value = 'personal';
+      }
+    }
+
+    function changeAcademicTag(){
+      let personal_value = document.getElementById('personal').classList;
+      let academic_value = document.getElementById('academic').classList;
+
+      if(!academic_value.contains('active')){
+        personal_value.toggle('active');
+        academic_value.toggle('active');
+        document.getElementById('personal_or_academic_value').value = 'academic';
       }
     }
 
