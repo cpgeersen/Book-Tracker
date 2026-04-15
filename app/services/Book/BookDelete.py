@@ -78,5 +78,26 @@ def delete_book_author_table_record(isbn, author_first_name, author_last_name):
 
     return f'Success: BookAuthor record with {isbn} and {author_id} deleted.', SUCCESS
 
+def delete_book_genre(isbn, genre_id):
+    # Get a cursor and connection to the database
+    cursor, conn = connect_to_database()
+    try:
+        query = f''' DELETE FROM BookGenre
+                             WHERE ISBN = ?
+                             AND Genre_ID = ?
+                        '''
+        criteria = (isbn, genre_id)
+        cursor.execute(query, criteria)
+        conn.commit()
+        result = cursor.fetchall()
+        conn.close()
+
+        return f'Success: BookGenre record with {isbn} and {genre_id} deleted.', SUCCESS
+
+    except:
+        conn.close()
+        return f'Error: Book with {isbn} does not have genre with id {genre_id}', BAD_REQUEST
+
+
 if __name__ == '__main__':
     pass

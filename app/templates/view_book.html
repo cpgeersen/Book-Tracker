@@ -133,7 +133,8 @@
 
               <!-- Groups progress bar and percentage text overlay together -->
               <div class="progress-bar-container">
-                <progress id="book_progress" value={{ book["Chapters_Completed"] }} max={{ book["Chapters"] }}></progress>
+                <!-- Odd behavior but ignore the warnings here, changing it make it not work -->
+                <progress id="book_progress" value={{ book['Chapters_Completed'] }} max={{ book["Chapters"] }}></progress>
                 <!-- Allows percentage to overlay progress bar. -->
                 <div class="progress-bar-text" id="progressText"></div>
               </div>
@@ -142,7 +143,7 @@
           </div>
 
           <form id="chapters_completed" method="POST">
-            <input type="hidden" id="chapters_completed_value" name="chapters_completed" value="{{ book["Chapters_Completed"] }}">
+            <input type="hidden" id="chapters_completed_value" name="chapters_completed" value="{{ book['Chapters_Completed'] }}">
             <button type="submit" form="chapters_completed" name="chapters_completed" class="style-button transition_css">Save</button>
           </form>
         </div>
@@ -163,7 +164,7 @@
                    id="chapters-input"
                    name="chapters"
                    min="0"
-                   value="{{ book["Chapters"] }}">
+                   value="{{ book['Chapters'] }}">
 
             <!-- Save chapters button -->
             <button onclick="saveChapters()" type="submit" class="style-button transition_css">Save</button>
@@ -174,33 +175,64 @@
 
       <!-- Genres section -->
       <div class="section">
-
         <h3>Genres</h3>
+        <div id="section-genres">
 
-        <!-- Display current genres -->
-        <span class="genre-tag">{{ book["Genre_1"].title() }}</span>
+          <!-- Display current genres -->
+          <span class="genre-tag">{{ book["Genre_1"].title() }}</span>
 
-        {% if book["Genre_2"] %}
-          <span class="genre-tag">{{ book["Genre_2"].title() }}</span>
-        {% endif %}
+          {% if book["Genre_2"] %}
+            <span class="genre-tag">{{ book["Genre_2"].title() }}</span>
+          {% endif %}
 
-        {% if book["Genre_3"] %}
-          <span class="genre-tag">{{ book["Genre_3"].title() }}</span>
-        {% endif %}
+          {% if book["Genre_3"] %}
+            <span class="genre-tag">{{ book["Genre_3"].title() }}</span>
+          {% endif %}
 
-        {% if book["Genre_4"] %}
-          <span class="genre-tag">{{ book["Genre_4"].title() }}</span>
-        {% endif %}
+          {% if book["Genre_4"] %}
+            <span class="genre-tag">{{ book["Genre_4"].title() }}</span>
+          {% endif %}
+        </div>
 
-        <!-- Button to enable editing genres -->
-        <br><br>
-        <button id="edit-genres-button" onclick="toggleGenreEdit()" class="style-button transition_css">Edit Genres</button>
+        <!-- Genre Delete Section -->
+        <div id="delete-genre-div" class="hidden">
+          <form method="POST" id="delete-genre">
+            <label>Select:</label>
+
+            {% if book['Genre_ID_2'] %}
+              <button onclick="changeTagValue('delete-genre-2');" class="tag toggle"
+                  id="delete-genre-2" type="button" name="delete-genre-2" value="{{ book.get('Genre_ID_2') }}">
+                  {{ book["Genre_2"].title() }}
+              </button>
+              <input type="hidden" id="delete-genre-2_value" name="Genre_2" value="off">
+              <input type="hidden" id="delete-genre-id-2_value" name="Genre_ID_2" value="{{ book.get('Genre_ID_2') }}">
+            {% endif %}
+
+            {% if book['Genre_ID_3'] %}
+              <button onclick="changeTagValue('delete-genre-3');" class="tag toggle"
+                  id="delete-genre-3" type="button" name="delete-genre-3" value="{{ book.get('Genre_ID_3') }}">
+                  {{ book["Genre_3"].title() }}
+              </button>
+              <input type="hidden" id="delete-genre-3_value" name="Genre_3" value="off">
+              <input type="hidden" id="delete-genre-id-3_value" name="Genre_ID_3" value="{{ book.get('Genre_ID_3') }}">
+            {% endif %}
+
+            {% if book['Genre_ID_4'] %}
+              <button onclick="changeTagValue('delete-genre-4');" class="tag toggle"
+                  id="delete-genre-4" type="button" name="delete-genre-4" value="{{ book.get('Genre_ID_4') }}">
+                  {{ book["Genre_4"].title() }}
+              </button>
+              <input type="hidden" id="delete-genre-4_value" name="Genre_4" value="off">
+              <input type="hidden" id="delete-genre-id-4_value" name="Genre_ID_4" value="{{ book.get('Genre_ID_4') }}">
+            {% endif %}
+          </form>
+        </div>
+
 
         <!-- Genre edit section -->
         <div id="genre-edit" class="hidden">
           <form method="POST" id="update-genre">
 
-            <br>
 
             <select id="genre1" class="select-genre">
               {% if book["Genre_1"] == 'fiction' %}
@@ -215,7 +247,7 @@
 
               <select id="genre2" class="select-genre">
                 {% if book["Genre_2"] %}
-                  <option value="{{ book["Genre_2"] }}, {{ book["Genre_ID_2"] }}">{{ book["Genre_2"].title() }}</option>
+                  <option value="{{ book['Genre_2'] }}, {{ book['Genre_ID_2'] }}">{{ book["Genre_2"].title() }}</option>
                 {% else %}
                   <option value="None">Select A Genre</option>
                 {% endif %}
@@ -227,7 +259,7 @@
 
               <select id="genre3" class="select-genre">
                 {% if book["Genre_3"] %}
-                  <option value="{{ book["Genre_3"] }}, {{ book["Genre_ID_3"] }}">{{ book["Genre_3"].title() }}</option>
+                  <option value="{{ book['Genre_3'] }}, {{ book['Genre_ID_3'] }}">{{ book["Genre_3"].title() }}</option>
                 {% else %}
                   <option value="None">Select A Genre</option>
                 {% endif %}
@@ -239,7 +271,7 @@
 
               <select id="genre4" class="select-genre">
                 {% if book["Genre_4"] %}
-                  <option value="{{ book["Genre_4"] }}, {{ book["Genre_ID_4"] }}">{{ book["Genre_4"].title() }}</option>
+                  <option value="{{ book['Genre_4'] }}, {{ book['Genre_ID_4'] }}">{{ book["Genre_4"].title() }}</option>
                 {% else %}
                   <option value="None">Select A Genre</option>
                 {% endif %}
@@ -254,12 +286,21 @@
             <input type="hidden" id="genre_3" name="genre_3" value="">
             <input type="hidden" id="genre_4" name="genre_4" value="">
 
-            <br><br>
-
-            <!-- Save genres button -->
-            <button onclick="saveGenres()" type="submit" form="update-genre" name="update-genre" class="style-button transition_css">Save Genres</button>
           </form>
 
+        </div>
+
+        <div id="genre-buttons">
+          <!-- Update genres buttons -->
+          <button id="update-genre-button" onclick="saveGenres()" type="submit" form="update-genre" name="update-genre" class="style-button transition_css hidden">Save Genres</button>
+          <button id="edit-genres-button" onclick="toggleGenreEdit()" class="style-button transition_css">Edit Genres</button>
+
+          <!-- Delete genres buttons -->
+          <button id="delete-genre-button" value="yes" type="submit" form="delete-genre"
+                name="delete-genre" class="style-button transition_css hidden">
+            Confirm Delete
+          </button>
+          <button id="delete-genres-button" onclick="toggleGenreDelete()" class="style-button transition_css">Delete Genres</button>
         </div>
 
       </div>
@@ -271,20 +312,20 @@
           <h3>Tags</h3>
 
           <button onclick="changeTagValue('owned');" class="tag toggle {% if book['Owned']=='on' %}active{% endif %}"
-                  id="owned" type="button" name="owned" value="{{ book["Owned"] }}">Owned</button>
-          <input type="hidden" id="owned_value" name="owned" value="{{ book["Owned"] }}">
+                  id="owned" type="button" name="owned" value="{{ book['Owned'] }}">Owned</button>
+          <input type="hidden" id="owned_value" name="owned" value="{{ book['Owned'] }}">
 
           <button onclick="changeTagValue('favorite');" class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}"
-                  id='favorite' type="button" name="favorite" value="{{ book["Favorite"] }}">Favorite</button>
-          <input type="hidden" id="favorite_value" name="favorite" value="{{ book["Favorite"] }}">
+                  id='favorite' type="button" name="favorite" value="{{ book['Favorite'] }}">Favorite</button>
+          <input type="hidden" id="favorite_value" name="favorite" value="{{ book['Favorite'] }}">
 
           <button onclick="changeTagValue('completed');" class="tag toggle {% if book['Completed']=='on' %}active{% endif %}"
-                  id='completed' type="button" name="completed" value="{{ book["Completed"] }}">Completed</button>
-          <input type="hidden" id="completed_value" name="completed" value="{{ book["Completed"] }}">
+                  id='completed' type="button" name="completed" value="{{ book['Completed'] }}">Completed</button>
+          <input type="hidden" id="completed_value" name="completed" value="{{ book['Completed'] }}">
 
           <button onclick="changeTagValue('currently_reading');" class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}"
-                  id='currently_reading' type="button" name="currently_reading" value="{{ book["Currently_Reading"] }}">Currently Reading</button>
-          <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book["Currently_Reading"] }}">
+                  id='currently_reading' type="button" name="currently_reading" value="{{ book['Currently_Reading'] }}">Currently Reading</button>
+          <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book['Currently_Reading'] }}">
 
           <br><br>
 
@@ -418,7 +459,7 @@
     function changeTagValue(tag_type){
       let tag_value = document.getElementById(tag_type).value;
 
-      if (tag_value == 'on'){
+      if (tag_value === 'on'){
         document.getElementById(tag_type).value = 'off'
         document.getElementById(tag_type + "_value").value = 'off';
       } else {
@@ -443,7 +484,7 @@
     }
 
     function decrementChapters(){
-      chaptersCompletedValue = document.getElementById('chapters-completed').innerText
+      let chaptersCompletedValue = document.getElementById('chapters-completed').innerText
 
       if (chaptersCompletedValue != 0){
         document.getElementById('chapters_completed_value').value--;
@@ -455,8 +496,8 @@
     }
 
     function incrementChapters(){
-      chaptersCompletedValue = document.getElementById('chapters-completed').innerText
-      chapterTotalValue = document.getElementById('chapter-total-value').innerText
+      let chaptersCompletedValue = document.getElementById('chapters-completed').innerText
+      let chapterTotalValue = document.getElementById('chapter-total-value').innerText
 
       if (chaptersCompletedValue < Number(chapterTotalValue)){
         document.getElementById('chapters_completed_value').value++;
@@ -479,26 +520,26 @@
     }
 
     function editNote(element){
-      noteID = element.value;
-      noteContent = document.getElementById(noteID).innerText;
-      noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'visible');
+      let noteID = element.value;
+      let noteContent = document.getElementById(noteID).innerText;
+      document.getElementById('note-edit-delete').style.setProperty('visibility', 'visible');
       document.getElementById('note_id').value = noteID;
       document.getElementById('note-edit-textarea').value = noteContent;
       document.getElementById('note-edit-textarea').innerText = noteContent;
     }
 
     function addNote(element){
-      noteDeleteBtn = document.getElementById('note-edit-delete').style.setProperty('visibility', 'hidden');
+      document.getElementById('note-edit-delete').style.setProperty('visibility', 'hidden');
       document.getElementById('note_id').value = '';
       document.getElementById('note-edit-textarea').value = '';
       document.getElementById('note-edit-textarea').textContent = '';
     }
 
     function saveGenres(){
-      genre_1_value = document.getElementById('genre1').value;
-      genre_2_value = document.getElementById('genre2').value;
-      genre_3_value = document.getElementById('genre3').value;
-      genre_4_value = document.getElementById('genre4').value;
+      let genre_1_value = document.getElementById('genre1').value;
+      let genre_2_value = document.getElementById('genre2').value;
+      let genre_3_value = document.getElementById('genre3').value;
+      let genre_4_value = document.getElementById('genre4').value;
 
       document.getElementById('genre_1').value = genre_1_value
       document.getElementById('genre_2').value = genre_2_value
@@ -508,18 +549,40 @@
 
     /* Toggle genre edit section visibility */
     function toggleGenreEdit() {
-      const section = document.getElementById("genre-edit");
-      let editBtn = document.getElementById('edit-genres-button')
+      const editSection = document.getElementById("genre-edit");
+      let editBtn = document.getElementById('edit-genres-button');
 
+      // Change the text to cancel text
       if(editBtn.textContent === 'Edit Genres'){
         editBtn.textContent = 'Cancel Edit';
       } else {
         editBtn.textContent = 'Edit Genres';
       }
 
-
-      section.classList.toggle("hidden");
+      document.getElementById('section-genres').classList.toggle('hidden');
+      document.getElementById('update-genre-button').classList.toggle('hidden');
+      document.getElementById('delete-genres-button').classList.toggle("hidden");
+      editSection.classList.toggle("hidden");
     }
+
+    // Delete Function for Genres
+    function toggleGenreDelete(){
+      const deleteSection = document.getElementById("delete-genre-div");
+      let deleteBtn = document.getElementById('delete-genres-button');
+
+      // Change the text to cancel text
+      if(deleteBtn.textContent === 'Delete Genres'){
+        deleteBtn.textContent = 'Cancel Delete';
+      } else {
+        deleteBtn.textContent = 'Delete Genres';
+      }
+
+      document.getElementById('section-genres').classList.toggle('hidden');
+      document.getElementById('delete-genre-button').classList.toggle('hidden');
+      document.getElementById('edit-genres-button').classList.toggle("hidden");
+      deleteSection.classList.toggle("hidden");
+    }
+
 
     /* Prevent selecting duplicate genres across dropdowns */
     const genreSelects = document.querySelectorAll('#genre-edit select');

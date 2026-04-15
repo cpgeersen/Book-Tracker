@@ -376,7 +376,7 @@ input[type="file"] {
 
 /* Genre option styling */
 .select-genre {
-    margin-top: 1rem;
+
     border: none;
     background-color: #6366f1;
     color: white;
@@ -386,6 +386,12 @@ input[type="file"] {
     font-size: 0.8rem;
     margin-right: 0.4rem;
     cursor: pointer;
+}
+
+#genre-buttons{
+    margin-top: 1rem;
+    gap: 0.8rem;
+    display: flex;
 }
 
 /* Adds hand pointer cursor to checkbox items */
