@@ -61,8 +61,8 @@ def update_book_chapters(isbn, chapters):
 def update_book_chapters_completed(isbn, chapters_completed):
     return update_read_chapters(isbn, chapters_completed)
 
-def update_book_tags(tag_id, owned, favorite, completed, currently_reading):
-    return update_tags(tag_id, owned, favorite, completed, currently_reading)
+def update_book_tags(tag_id, owned, favorite, completed, currently_reading, personal_or_academic):
+    return update_tags(tag_id, owned, favorite, completed, currently_reading, personal_or_academic)
 
 def update_book_cover_image(isbn, cover_image_path):
     return update_cover_image(isbn, cover_image_path)
