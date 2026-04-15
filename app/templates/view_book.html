@@ -21,7 +21,11 @@
 
     <!-- Navigation buttons -->
     <div class="nav-buttons">
-      <a href="/book/add-local">← Back</a>
+      {% if page_origin.get('page_origin') %}
+        <a href="/book/add-local">← Back</a>
+      {% else %}
+        <a href="/book/local-search">← Back</a>
+      {% endif %}
       <a href="/">🏠 Home</a>
     </div>
 
