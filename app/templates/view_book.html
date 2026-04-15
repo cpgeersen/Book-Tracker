@@ -143,7 +143,7 @@
           </div>
 
           <form id="chapters_completed" method="POST">
-            <input type="hidden" id="chapters_completed_value" name="chapters_completed" value="{{ book["Chapters_Completed"] }}">
+            <input type="hidden" id="chapters_completed_value" name="chapters_completed" value="{{ book['Chapters_Completed'] }}">
             <button type="submit" form="chapters_completed" name="chapters_completed" class="style-button transition_css">Save</button>
           </form>
         </div>
@@ -175,33 +175,29 @@
 
       <!-- Genres section -->
       <div class="section">
-
         <h3>Genres</h3>
+        <div id="section-genres">
 
-        <!-- Display current genres -->
-        <span class="genre-tag">{{ book["Genre_1"].title() }}</span>
+          <!-- Display current genres -->
+          <span class="genre-tag">{{ book["Genre_1"].title() }}</span>
 
-        {% if book["Genre_2"] %}
-          <span class="genre-tag">{{ book["Genre_2"].title() }}</span>
-        {% endif %}
+          {% if book["Genre_2"] %}
+            <span class="genre-tag">{{ book["Genre_2"].title() }}</span>
+          {% endif %}
 
-        {% if book["Genre_3"] %}
-          <span class="genre-tag">{{ book["Genre_3"].title() }}</span>
-        {% endif %}
+          {% if book["Genre_3"] %}
+            <span class="genre-tag">{{ book["Genre_3"].title() }}</span>
+          {% endif %}
 
-        {% if book["Genre_4"] %}
-          <span class="genre-tag">{{ book["Genre_4"].title() }}</span>
-        {% endif %}
-
-        <!-- Button to enable editing genres -->
-        <br><br>
-        <button id="edit-genres-button" onclick="toggleGenreEdit()" class="style-button transition_css">Edit Genres</button>
-        <button id="delete-genres-button" onclick="toggleGenreDelete()" class="style-button transition_css">Delete Genres</button>
+          {% if book["Genre_4"] %}
+            <span class="genre-tag">{{ book["Genre_4"].title() }}</span>
+          {% endif %}
+        </div>
 
         <!-- Genre Delete Section -->
         <div id="delete-genre-div" class="hidden">
           <form method="POST" id="delete-genre">
-            <br>
+            <label>Select:</label>
 
             {% if book['Genre_ID_2'] %}
               <button onclick="changeTagValue('delete-genre-2');" class="tag toggle"
@@ -229,10 +225,6 @@
               <input type="hidden" id="delete-genre-4_value" name="Genre_4" value="off">
               <input type="hidden" id="delete-genre-id-4_value" name="Genre_ID_4" value="{{ book.get('Genre_ID_4') }}">
             {% endif %}
-            <br>
-            <button value="yes" type="submit" form="delete-genre" name="delete-genre" class="style-button transition_css">
-              Confirm Delete
-            </button>
           </form>
         </div>
 
@@ -241,7 +233,6 @@
         <div id="genre-edit" class="hidden">
           <form method="POST" id="update-genre">
 
-            <br>
 
             <select id="genre1" class="select-genre">
               {% if book["Genre_1"] == 'fiction' %}
@@ -295,12 +286,21 @@
             <input type="hidden" id="genre_3" name="genre_3" value="">
             <input type="hidden" id="genre_4" name="genre_4" value="">
 
-            <br><br>
-
-            <!-- Save genres button -->
-            <button onclick="saveGenres()" type="submit" form="update-genre" name="update-genre" class="style-button transition_css">Save Genres</button>
           </form>
 
+        </div>
+
+        <div id="genre-buttons">
+          <!-- Update genres buttons -->
+          <button id="update-genre-button" onclick="saveGenres()" type="submit" form="update-genre" name="update-genre" class="style-button transition_css hidden">Save Genres</button>
+          <button id="edit-genres-button" onclick="toggleGenreEdit()" class="style-button transition_css">Edit Genres</button>
+
+          <!-- Delete genres buttons -->
+          <button id="delete-genre-button" value="yes" type="submit" form="delete-genre"
+                name="delete-genre" class="style-button transition_css hidden">
+            Confirm Delete
+          </button>
+          <button id="delete-genres-button" onclick="toggleGenreDelete()" class="style-button transition_css">Delete Genres</button>
         </div>
 
       </div>
@@ -550,50 +550,36 @@
     /* Toggle genre edit section visibility */
     function toggleGenreEdit() {
       const editSection = document.getElementById("genre-edit");
-      const deleteSection = document.getElementById("delete-genre-div");
-
-      // Buttons used to hide or show elements
-      let deleteBtn = document.getElementById('delete-genres-button');
       let editBtn = document.getElementById('edit-genres-button');
 
       // Change the text to cancel text
       if(editBtn.textContent === 'Edit Genres'){
         editBtn.textContent = 'Cancel Edit';
-
-        // Close delete genres form if open
-        if (!(deleteSection.classList.contains('hidden'))){
-          deleteSection.classList.add('hidden');
-          deleteBtn.textContent = 'Delete Genres';
-        }
       } else {
         editBtn.textContent = 'Edit Genres';
       }
 
+      document.getElementById('section-genres').classList.toggle('hidden');
+      document.getElementById('update-genre-button').classList.toggle('hidden');
+      document.getElementById('delete-genres-button').classList.toggle("hidden");
       editSection.classList.toggle("hidden");
     }
 
     // Delete Function for Genres
     function toggleGenreDelete(){
-      const editSection = document.getElementById("genre-edit");
       const deleteSection = document.getElementById("delete-genre-div");
-
-      // Buttons used to hide or show elements
       let deleteBtn = document.getElementById('delete-genres-button');
-      let editBtn = document.getElementById('edit-genres-button');
 
       // Change the text to cancel text
       if(deleteBtn.textContent === 'Delete Genres'){
         deleteBtn.textContent = 'Cancel Delete';
-
-        // Close edit genres form if open
-        if (!(editSection.classList.contains('hidden'))){
-          editSection.classList.add('hidden');
-          editBtn.textContent = 'Edit Genres';
-        }
       } else {
         deleteBtn.textContent = 'Delete Genres';
       }
 
+      document.getElementById('section-genres').classList.toggle('hidden');
+      document.getElementById('delete-genre-button').classList.toggle('hidden');
+      document.getElementById('edit-genres-button').classList.toggle("hidden");
       deleteSection.classList.toggle("hidden");
     }
 
