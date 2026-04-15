@@ -133,6 +133,7 @@
 
               <!-- Groups progress bar and percentage text overlay together -->
               <div class="progress-bar-container">
+                <!-- Odd behavior but ignore the warnings here, changing it make it not work -->
                 <progress id="book_progress" value={{ book['Chapters_Completed'] }} max={{ book["Chapters"] }}></progress>
                 <!-- Allows percentage to overlay progress bar. -->
                 <div class="progress-bar-text" id="progressText"></div>
