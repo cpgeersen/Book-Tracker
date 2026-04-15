@@ -36,13 +36,15 @@ def individual_book_route(main_app):
             # Create a dict with the isbn, makes it possible to reuse mediator functions
             isbn_dict = {"ISBN": isbn}
 
+            # When a book is locally created
+            # Used to maintain context for redirect
+            page = request.args.to_dict()
+
             # Get the result in JSON format
             book_result = json.loads(read(isbn_dict, 'book-isbn'))
-            print(book_result)
 
             # Get notes if they exist
             note_result = read(isbn_dict, 'note')
-            # print(note_result)
 
         # This error occurs when the ISBN does not exist in database
         except TypeError as error:
@@ -51,7 +53,7 @@ def individual_book_route(main_app):
         if request.method == 'GET':
             # Display the result
             return render_template('view_book.html', book=book_result, notes=note_result,
-                                   book_genres=BOOK_GENRES_SORTED), 200
+                                   book_genres=BOOK_GENRES_SORTED, page_origin=page), 200
 
         elif request.method == 'POST':
 
@@ -66,7 +68,7 @@ def individual_book_route(main_app):
                 book_result = json.loads(read(isbn_dict, 'book-isbn'))
 
                 return render_template('view_book_ol_update_modal.html', book=book_result, notes=note_result,
-                                       book_genres=BOOK_GENRES_SORTED, updated_records=response), 200
+                                       book_genres=BOOK_GENRES_SORTED, updated_records=response, page_origin=page), 200
 
             elif book_update.get('summary') is not None:
                 json_input = json.dumps({'ISBN': isbn, 'Summary': book_update['summary']})
@@ -154,7 +156,7 @@ def individual_book_route(main_app):
                     book_result = json.loads(read(isbn_dict, 'book-isbn'))
                     note_result = read(isbn_dict, 'note')
                     return render_template('view_book.html', book=book_result,
-                                           notes=note_result, book_genres=BOOK_GENRES_SORTED), 200
+                                           notes=note_result, book_genres=BOOK_GENRES_SORTED, page_origin=page), 200
 
                 if file and allowed_file(file.filename):
                     # Saves the file to the images folder
@@ -167,7 +169,7 @@ def individual_book_route(main_app):
             note_result = read(isbn_dict, 'note')
 
             return render_template('view_book.html', book=book_result, notes=note_result,
-                                   book_genres=BOOK_GENRES_SORTED), 200
+                                   book_genres=BOOK_GENRES_SORTED, page_origin=page), 200
 
         else:
             return render_template('view_book.html'), 200
