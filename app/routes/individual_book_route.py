@@ -84,7 +84,8 @@ def individual_book_route(main_app):
                                          'Owned': book_update['owned'],
                                          'Favorite': book_update['favorite'],
                                          'Completed': book_update['completed'],
-                                         'Currently_Reading': book_update['currently_reading']})
+                                         'Currently_Reading': book_update['currently_reading'],
+                                         'Personal_Or_Academic': book_update['personal_or_academic']})
                 response = update(json_input, 'tag')
 
             elif book_update.get('chapters_completed') is not None:

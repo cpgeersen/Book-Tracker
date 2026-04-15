@@ -40,7 +40,8 @@ def mediator_update(json_input, update_type):
             json_input_converted_tags = validate_tags(json_input)
             response = update_book_tags(json_input['Tag_ID'], json_input_converted_tags['Owned'],
                                         json_input_converted_tags['Favorite'], json_input_converted_tags['Completed'],
-                                        json_input_converted_tags['Currently_Reading'])
+                                        json_input_converted_tags['Currently_Reading'],
+                                        json_input_converted_tags['Personal_Or_Academic'])
             return response
 
         elif update_type == 'cover-image':
