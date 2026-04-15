@@ -1,6 +1,6 @@
 import json
 
-from app.services.Book.Book import delete_book_cover_image, delete_book, read_book_notes, delete_book_note
+from app.services.Book.Book import delete_book_cover_image, delete_book, read_book_notes, delete_book_note, delete_genre
 
 
 def mediator_delete(json_input, delete_type):
@@ -24,6 +24,29 @@ def mediator_delete(json_input, delete_type):
         json_input = json.loads(json_input)
         response = delete_book_cover_image(json_input['ISBN'], json_input['Cover_Image_Path'])
         return response
+
+    elif delete_type == 'genre':
+        print(json_input)
+        isbn = json_input['ISBN']
+
+        json_output = dict()
+
+        if json_input.get('Genre_2') == 'on':
+            response = delete_genre(isbn, json_input['Genre_ID_2'])
+            if response[1] == 200:
+                json_output.update({'Genre_2_Deleted': 'True'})
+
+        if json_input.get('Genre_3') == 'on':
+            response = delete_genre(isbn, json_input['Genre_ID_3'])
+            if response[1] == 200:
+                json_output.update({'Genre_3_Deleted': 'True'})
+
+        if json_input.get('Genre_4') == 'on':
+            response = delete_genre(isbn, json_input['Genre_ID_4'])
+            if response[1] == 200:
+                json_output.update({'Genre_4_Deleted': 'True'})
+
+        return json_output
 
     else:
         return 'Error: Not a valid call'

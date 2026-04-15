@@ -98,6 +98,10 @@ def individual_book_route(main_app):
                 json_input = json.dumps({'Note_ID': book_update['note_id']})
                 response = delete(json_input, 'note')
 
+            elif book_update.get('delete-genre') is not None:
+                book_update.update({'ISBN': isbn})
+                response = delete(book_update, 'genre')
+
             elif book_update.get('note-edit') is not None:
                 json_input = json.dumps({'ISBN': isbn, 'Note_Content': book_update['note-edit'],
                                          'Note_ID': book_update['note_id']})
