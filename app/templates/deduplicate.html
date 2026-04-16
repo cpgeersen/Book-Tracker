@@ -16,38 +16,48 @@
 
   <h1>Duplicate Books</h1>
 
-  {% for (title, first, last), book_list in grouped_books.items() %}
+  {% for book_list in book_result.values() %}
 
     <!-- Result block -->
     <div class="result-block">
 
       <!-- Title + Author -->
-      <h2>{{ title }}</h2>
-      <p>{{ first }} {{ last }}</p>
+      <h2>{{ book_list['Title'] }}</h2>
+      {% if book_list['Author_First_Name_2'] %}
+        <h3>First Author:</h3>
+        <p>{{ book_list.get('Author_First_Name_1') }} {{ book_list.get('Author_Last_Name_1') }}</p>
+        <h3>Second Author:</h3>
+        <p>{{ book_list.get('Author_First_Name_2') }} {{ book_list.get('Author_Last_Name_2') }}</p>
+      {% else %}
+        <h3>Author:</h3>
+        <p>{{ book_list.get('Author_First_Name_1') }} {{ book_list.get('Author_Last_Name_1') }}</p>
+      {% endif %}
 
       <!-- Cards -->
       <div class="book-group">
 
-        {% for book in book_list %}
+        {% for isbn in book_list['ISBNs'] %}
+
           <div class="book-card">
 
-            <p><strong>ISBN:</strong> {{ book['ISBN'] }}</p>
+            <p><strong>ISBN:</strong> {{ isbn }}</p>
 
             <!-- Actions -->
             <div class="card-actions">
 
-              <a href="/book/isbn/{{ book['ISBN'] }}" class="view-button">
+              <a href="/book/isbn/{{ isbn }}" class="view-button">
                 View →
               </a>
 
               <form method="POST">
-                <input type="hidden" name="delete_isbn" value="{{ book['ISBN'] }}">
+                <input type="hidden" name="delete_isbn" value="{{ isbn }}">
                 <button class="transition_css">Delete</button>
               </form>
 
             </div>
 
           </div>
+
         {% endfor %}
 
       </div>

@@ -6,6 +6,7 @@ from app.routes.individual_book_route import individual_book_route
 from app.routes.local_search_route import local_search_route
 from app.routes.openlibrary_search_route import openlibrary_search_route
 from app.services.OpenLibrary.openlibrary_search_cache import create_cache
+from app.services.deduplicate_books import de_duplicate_books, de_duplicate_books_refactor
 
 # Test Route Import
 from app.routes.test import test_bp
@@ -62,9 +63,11 @@ def create_routes(app):
         return 'WIP', 200
 
     # WIP
-    @app.route('/dashboard', methods=['GET'])
-    def dashboard_page():
-        return 'WIP', 200
+    @app.route('/book/deduplicate', methods=['POST', 'GET'])
+    def dedup_page():
+        response = de_duplicate_books_refactor()
+        #print(response)
+        return render_template('deduplicate.html', book_result=response), 200
 
 #------------------------------------------------------
 # Author: Christopher O'Brien
