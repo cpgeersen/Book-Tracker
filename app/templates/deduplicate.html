@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic page metadata -->
+    <meta charset="UTF-8">
+    <title>Duplicate Books</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='duplicate.css') }}"/>
+
+</head>
+
+<body>
+
+<main class="container">
+
+    <h1>Duplicate Books</h1>
+    <p>This page finds books that are the same, but added under different ISBN values.</p>
+    <p>This allows the user to see all duplicate books in the database that can be removed.</p>
+
+    {% for book_list in book_result.values() %}
+
+    <!-- Result block -->
+    <div class="result-block">
+
+        <!-- Title + Author -->
+        <h2>{{ book_list['Title'] }}</h2>
+        {% if book_list['Author_First_Name_2'] %}
+        <div class="author">
+            <h3>First Author:</h3>
+            <p>{{ book_list.get('Author_First_Name_1') }} {{ book_list.get('Author_Last_Name_1') }}</p>
+        </div>
+        <div class="author">
+            <h3>Second Author:</h3>
+            <p>{{ book_list.get('Author_First_Name_2') }} {{ book_list.get('Author_Last_Name_2') }}</p>
+        </div>
+        {% else %}
+        <div class="author">
+            <h3>Author:</h3>
+            <p>{{ book_list.get('Author_First_Name_1') }} {{ book_list.get('Author_Last_Name_1') }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Cards -->
+        <div class="book-group">
+
+            {% for isbn in book_list['ISBNs'] %}
+
+            <div class="book-card">
+
+                <p><strong>ISBN:</strong> {{ isbn }}</p>
+
+                <!-- Actions -->
+                <div class="card-actions">
+
+                    <a href="/book/isbn/{{ isbn }}" class="view-button transition_css">
+                        View →
+                    </a>
+
+                    <button command="show-modal" commandfor="delete-confirmation-modal_{{ isbn }}"
+                            class="delete-btn style-button transition_css">Delete
+                    </button>
+                    <dialog id="delete-confirmation-modal_{{ isbn }}">
+
+                        <p>Delete Book Record from Database</p>
+                        <p>WARNING: Deleting a book is irreversible.</p>
+                        <p>Do you still want to delete the book?</p>
+
+                        <div class="button-align">
+
+                            <form id="delete_{{ isbn }}" action="/book/deduplicate" method="POST">
+                                <input type="hidden" name="ISBN" value="{{ isbn }}">
+                                <button type="submit" form="delete_{{ isbn }}"
+                                        class="yes-btn transition_css modal-button button-group" name="delete">Yes
+                                </button>
+                            </form>
+                            <button class="no-btn modal-button button-group" commandfor="delete-confirmation-modal_{{ isbn }}"
+                                    command="close">No
+                            </button>
+                        </div>
+                    </dialog>
+
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+
+</main>
+
+</body>
+</html>

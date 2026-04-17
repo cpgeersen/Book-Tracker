@@ -1,43 +1,79 @@
-  /* Result block spacing */
-  .result-block {
-    margin-bottom: 40px;
-  }
+.container {
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+}
 
-  /* Book group layout */
-  .book-group {
+.container h2 {
+    background-color: #374151;
+    padding: 0.3rem;
+    border-radius: 6px;
+}
+
+.author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Result block spacing */
+.result-block {
+    margin-bottom: 40px;
+    background-color: #1f2933;
+    padding: 1rem;
+    border-radius: 6px;
+}
+
+/* Book group layout */
+.book-group {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
     margin-top: 10px;
-  }
+    justify-content: space-between;
+}
 
-  /* Individual book card */
-  .book-card {
+/* Individual book card */
+.book-card {
     background-color: #111827;
     padding: 15px;
     border-radius: 10px;
     min-width: 220px;
-  }
+}
 
-  /* Card actions */
-  .card-actions {
+.book-card p {
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+/* Card actions */
+.card-actions {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
-  }
+}
 
-  /* View button */
-  .view-button {
-    text-decoration: none;
-    color: #6366f1;
+/* View button */
+.view-button {
+    background-color: #6366f1;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.8rem;
     font-weight: bold;
-  }
+    height: fit-content;
+    padding: 0.4rem 0.8rem;
+    text-decoration: none;
+    width: fit-content;
+    cursor: pointer;
+}
 
-  .view-button:hover {
-    color: #4f46e5;
-  }
+.view-button:hover {
+    background-color: #4f46e5;
+}
 
-  .delete-btn {
+.delete-btn {
     background-color: #6366f1;
     padding: 0.4rem 0.8rem;
     border-radius: 6px;
@@ -51,4 +87,9 @@
 
 .delete-btn:hover {
     background-color: #4f46e5;
+}
+
+/* Transition formatting */
+.transition_css {
+    transition: background-color 0.2s ease-in-out;
 }
