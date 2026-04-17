@@ -131,7 +131,11 @@ def de_duplicate_books_refactor():
             for item in result:
                 author_id = item.get('Author_ID')
                 isbn = item.get('ISBN')
-                book_title = json.loads(read_book_table(isbn))['Title']
+                book_title = json.loads(read_book_table(isbn)).get('Title')
+
+                # This can occur when a previously deleted duplicate has Author records
+                if book_title is None:
+                    continue
 
                 # If the author_id not present in temp_dict, add it with book_title and isbn
                 if author_id not in temp_dict.keys():
