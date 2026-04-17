@@ -1,0 +1,197 @@
+.
+├── Analytic_FunctionRefactored.py
+├── DEPRECATE
+│   ├── CRUD-Create.py
+│   ├── CRUD-Note.py
+│   ├── CRUD-Tag.py
+│   ├── CRUD_Delete_Books.py
+│   ├── CRUD_Delete_Note.py
+│   ├── CRUD_Full_Read.py
+│   ├── CRUD_Image.py
+│   ├── CRUD_Read.py
+│   ├── CRUD_Update.py
+│   ├── Case_Same_Book_Diff_ISBN.py
+│   ├── Create-Full-Book-Record
+│   ├── Create_Complete_ISBN_Book.py
+│   ├── Finalize-Note-Backend.py
+│   ├── cache_search
+│   ├── cli_app
+│   │   ├── __init__.py
+│   │   ├── cli_app.py
+│   │   ├── cli_app_create_book.py
+│   │   ├── cli_app_delete_book.py
+│   │   ├── cli_app_read_book.py
+│   │   ├── cli_app_update_book.py
+│   │   ├── cli_create_db.py
+│   │   ├── read_records
+│   │   └── sample_book_entries.py
+│   ├── create_db.py
+│   ├── create_dbRefactored.py
+│   └── genre_inserts.sql
+├── README.md
+├── app
+│   ├── __init__.py
+│   ├── data
+│   │   ├── __init__.py
+│   │   └── user_settings.json
+│   ├── main.py
+│   ├── routes
+│   │   ├── __init__.py
+│   │   ├── add_local_book_route.py
+│   │   ├── individual_book_route.py
+│   │   ├── local_search_route.py
+│   │   ├── openlibrary_search_route.py
+│   │   └── test.py
+│   ├── services
+│   │   ├── Book
+│   │   ├── Case_Same_Book_Diff_ISBN.py
+│   │   ├── Mediator
+│   │   ├── OpenLibrary
+│   │   ├── __init__.py
+│   │   ├── create_db.py
+│   │   ├── filters
+│   │   ├── genres.py
+│   │   ├── mediator.py
+│   │   ├── mocking
+│   │   ├── openlibrary_data_resolution
+│   │   └── validate_json
+│   ├── static
+│   │   ├── add_book.css
+│   │   ├── base.css
+│   │   ├── dark.css
+│   │   ├── duplicate.css
+│   │   ├── error_page_formatting.css
+│   │   ├── homepage.css
+│   │   ├── images
+│   │   ├── light.css
+│   │   ├── modal_formatting.css
+│   │   ├── ol-search.css
+│   │   ├── search.css
+│   │   ├── user_profile.css
+│   │   └── view_book.css
+│   ├── templates
+│   │   ├── STUB4.txt
+│   │   ├── add_book.html
+│   │   ├── add_book_error_malformed.html
+│   │   ├── add_book_error_present.html
+│   │   ├── duplicate.html
+│   │   ├── homepage.html
+│   │   ├── openlibrary_search.html
+│   │   ├── openlibrary_search_modal_isbn.html
+│   │   ├── search.html
+│   │   ├── search_error_isbn.html
+│   │   ├── status_404.html
+│   │   ├── status_500.html
+│   │   ├── temp_merge.html
+│   │   ├── temp_new_search.html
+│   │   ├── user_Profile_Refactor.html
+│   │   ├── user_Settings_Refactored.html
+│   │   ├── view_book.html
+│   │   └── view_book_ol_update_modal.html
+│   └── test_route.py
+├── database_purge
+├── docs
+│   ├── Book-Tracker-Model-View-Presenter.drawio
+│   ├── Project Development Plan.md
+│   ├── git-workflow.md
+│   ├── how_to_run_project.md
+│   ├── project_decisions.md
+│   ├── pseudocode-for-tasks
+│   │   ├── sprint-2-week-1
+│   │   ├── sprint-2-week-2
+│   │   ├── sprint-3-week-1
+│   │   ├── sprint-3-week-2
+│   │   ├── sprint-4-week-1
+│   │   └── sprint-4-week-2
+│   ├── sprint-retrospectives
+│   │   ├── sprint-1-retrospective.md
+│   │   ├── sprint-2-retrospective.md
+│   │   ├── sprint-3-retrospective.md
+│   │   └── sprint-4-retrospective.md
+│   ├── sprint-reviews
+│   │   ├── sprint-#1-review.md
+│   │   ├── sprint-#2-review.md
+│   │   └── sprint-#3-review.md
+│   ├── status-updates
+│   │   ├── status-update-sprint-1-week-1.md
+│   │   ├── status-update-sprint-1-week-2.md
+│   │   ├── status-update-sprint-2-week-1.md
+│   │   ├── status-update-sprint-2-week-2.md
+│   │   ├── status-update-sprint-3-week-1.md
+│   │   ├── status-update-sprint-3-week-2.md
+│   │   ├── status-update-sprint-4-week-1.md
+│   │   ├── status-update-sprint-4-week-2.md
+│   │   └── status-update-sprint-5-week-1.md
+│   ├── task_backlog_view.md
+│   ├── tasks.md
+│   └── user_stories.md
+├── export_import
+├── images
+│   ├── OpenLibraryAPI_Search_Success.png
+│   ├── OpenLibraryAPI_URL_Success.png
+│   ├── S1_1.1._MOCKDB_TEST_RESULTS.png
+│   ├── S1_1.1._MOCKDB_TEST_RESULTS_TABLECREATED.png
+│   ├── individual_book_page_mockup.png
+│   ├── local_search_mockup_v2.png
+│   ├── mock-ups
+│   │   ├── 3.17_genre_mockup.png
+│   │   ├── 3.7.1_chapter_input.png
+│   │   └── 3.7.1_chapter_input_edit_total_chapters.png
+│   ├── openlibrary_search.png
+│   ├── s5-trello-board.png
+│   ├── sprint-retrospective-images
+│   │   ├── s1
+│   │   ├── s2
+│   │   ├── s3-trello-retrospective-board.png
+│   │   └── s4-trello-retrospective-board.png
+│   ├── sprint-review-images
+│   │   ├── s1
+│   │   ├── s2
+│   │   └── s3
+│   ├── sprint-status-update-images
+│   │   ├── s1
+│   │   ├── s2
+│   │   ├── s3
+│   │   ├── sprint_4_week_1_backlog.png
+│   │   ├── sprint_4_week_2_backlog.png
+│   │   └── sprint_5_week_1_backlog.png
+│   ├── trello-board-sprint-1-backlog-create-add_book_frontend.png
+│   ├── trello-board-sprint-1-backlog-create-database.png
+│   └── trello-board-sprint-1-backlog.png
+├── purge_cover
+├── requirements.txt
+├── reset_Button
+├── run.py
+├── submit_Button
+├── tests
+│   ├── __init__.py
+│   ├── conftest.py
+│   ├── readme.md
+│   ├── test_database
+│   │   ├── __init__.py
+│   │   ├── book_create
+│   │   ├── book_delete
+│   │   ├── book_predicate
+│   │   ├── book_read
+│   │   ├── book_update
+│   │   └── test_create_database.py
+│   ├── test_flask_environment
+│   │   ├── __init__.py
+│   │   ├── test_flask_create_app.py
+│   │   └── test_flask_create_route.py
+│   ├── test_mediator
+│   │   ├── test_create.py
+│   │   └── test_read.py
+│   ├── test_pytest_environment.py
+│   ├── test_routes
+│   │   └── test_main_routes
+│   └── test_validate_book_json
+│       ├── __init__.py
+│       ├── test_validate_book_from_local.py
+│       ├── test_validate_book_json_exceptions.py
+│       └── test_validate_book_tags.py
+├── tree.txt
+├── userSettingsF.py
+└── userSettingsRefactored.py
+
+54 directories, 141 files

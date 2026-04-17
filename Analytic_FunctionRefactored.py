@@ -2,20 +2,20 @@ import sqlite3
 import json
 import os
 
-#==========================================================
-# Original Author: Christopher O'Brien
-# Editors:
-#
-# [] Is this program code? Y/N?
-#
-#This file contains analytic functions calculated from the Database.
-# Target:
-# Reference:
-#==========================================================
+//==========================================================
+// Original Author: Christopher O'Brien
+// Editors:
+//
+// [] Is this program code? Y/N?
+//
+//This file contains analytic functions calculated from the Database.
+// Target:
+// Reference:
+//==========================================================
 
-#---------------------------------------------------------
-# Connect to the Database
-#---------------------------------------------------------
+//---------------------------------------------------------
+// Connect to the Database
+//---------------------------------------------------------
 DB_PATH = "bt.db"
 
 def _connect():
@@ -23,9 +23,9 @@ def _connect():
         conn.execute("PRAGMA foreign_keys = ON;")
         return conn
 
-#---------------------------------------------------------
-# 3.11.1 - FUNCTION: NUMBER OF BOOKS
-#---------------------------------------------------------
+//---------------------------------------------------------
+// 3.11.1 - FUNCTION: NUMBER OF BOOKS -> (no internal JAVA FUNCTIONS.)
+//---------------------------------------------------------
 def total_books(cursor):
     try:
         with _connect() as conn:
@@ -39,9 +39,9 @@ def total_books(cursor):
     except sqlite3.Error as e:
             print(f"Database connection error: {e}")
             return None
-#---------------------------------------------------------
-# 3.11.2 - FUNCTION: NUMBER OF OWNED BOOKS
-#---------------------------------------------------------
+//---------------------------------------------------------
+// 3.11.2 - FUNCTION: NUMBER OF OWNED BOOKS
+//---------------------------------------------------------
 def total_owned_books(cursor):
 
     try:
@@ -61,9 +61,9 @@ def total_owned_books(cursor):
                 print(f"Database connection error: {e}")
                 return None
 
-#---------------------------------------------------------
-# 3.11.3 - FUNCTION: Display Currently Reading
-#---------------------------------------------------------
+//---------------------------------------------------------
+// 3.11.3 - FUNCTION: Display Currently Reading
+//---------------------------------------------------------
 def total_current_books(cursor):
     try:
         with _connect() as conn:
@@ -81,9 +81,9 @@ def total_current_books(cursor):
         print(f"Database connection error: {e}")
         return None
 
-#---------------------------------------------------------
-# 3.11.4 - FUNCTION: Display Books Completed
-#---------------------------------------------------------
+//---------------------------------------------------------
+// 3.11.4 - FUNCTION: Display Books Completed
+//---------------------------------------------------------
 def total_completed_books(cursor):
     try:
         with _connect() as conn:
@@ -101,9 +101,9 @@ def total_completed_books(cursor):
             print(f"Database connection error: {e}")
             return None
 
-#---------------------------------------------------------
-# 3.11.5 - FUNCTION: Most Read Genres
-#---------------------------------------------------------
+//---------------------------------------------------------
+// 3.11.5 - FUNCTION: Most Read Genres
+//---------------------------------------------------------
 def most_read_genre(cursor):
     try:
         with _connect() as conn:
@@ -126,9 +126,9 @@ def most_read_genre(cursor):
         print(f"Database connection error: {e}")
         return None
 
-#---------------------------------------------------------
-# Alt - Route for Jinja Template Stats Experiment
-#---------------------------------------------------------
+//---------------------------------------------------------
+// Alt - Route for Jinja Template Stats Experiment
+//---------------------------------------------------------
 @app.route('/user_Profile_Refactor')
 def profile_page():
    total_books = total_books()
@@ -146,9 +146,9 @@ def profile_page():
    favorite_genre=favorite_genre
    )
    
-#---------------------------------------------------------
-# List of completed books
-#---------------------------------------------------------
+//---------------------------------------------------------
+// List of completed books
+//---------------------------------------------------------
 def show_completed():
     cursor.execute("""
         SELECT Books.Title AS title
@@ -167,9 +167,9 @@ def show_completed():
     html += "</ul>"
 
     return html
-#----------------------------------------------------------
-# This function html list for currently reading tagged books.
-#----------------------------------------------------------
+//----------------------------------------------------------
+// This function html list for currently reading tagged books.
+//----------------------------------------------------------
 def show_currently_reading():
     cursor.execute("""
         SELECT Books.Title AS title

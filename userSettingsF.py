@@ -40,7 +40,7 @@ class UserManager:
             "l_name": "",
             "username": "",
             "email": "",
-            "mission_statement": "",
+            "about_Me": "",
             "cur_reading": "",
             "fav_genres": "",
             "avg_chapter_speed": "",
@@ -86,7 +86,7 @@ class UserManager:
         cursor.execute("DELETE FROM Users")  # enforce single-user rule
         cursor.execute("""
             INSERT INTO Users (
-                user_id, f_name, l_name, username, email, mission_statement,
+                user_id, f_name, l_name, username, email, about_Me,
                 cur_reading, fav_genres, avg_chapter_speed, avg_page_speed, theme
             ) VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
@@ -94,7 +94,7 @@ class UserManager:
             user["l_name"],
             user["username"],
             user["email"],
-            user["mission_statement"],
+            user["about_Me"],
             user["cur_reading"],
             user["fav_genres"],
             user["avg_chapter_speed"],
@@ -119,7 +119,7 @@ class UserManager:
         cursor = conn.cursor()
 
         cursor.execute("""
-            SELECT f_name, l_name, username, email, mission_statement,
+            SELECT f_name, l_name, username, email, about_Me,
                    cur_reading, fav_genres, avg_chapter_speed,
                    avg_page_speed, theme
             FROM Users
@@ -137,7 +137,7 @@ class UserManager:
             "l_name": row[1],
             "username": row[2],
             "email": row[3],
-            "mission_statement": row[4],
+            "about_Me": row[4],
             "cur_reading": row[5],
             "fav_genres": row[6],
             "avg_chapter_speed": row[7],

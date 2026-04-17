@@ -13,19 +13,13 @@
 <!-- This is the beginning of the body !-->
 <body>
 
-<!-- MOD -->
-<div class="header-container">
-    <div class="right-text">
-            <h1>User Settings</h1>
-            <h1><a href="/workspaces/Book-Tracker/app/templates/homepage_v2.html">🏠 Home</a></h1>
+<main class="container">
+
+      <!-- Navigation link -->
+    <div class="nav-buttons">
+        <a href="/">🏠 Home</a>
     </div>
-    <img src="/workspaces/Book-Tracker/app/templates/BookTracker_Settings.png"
-                    alt="User Profile Picture"
-                    width="200"
-                    height="200"
-                    class="header-image">
-</div>
-<!-- MOD^ -->  
+  
 <!-- I think I may have named the route incorrectly here (example "/click_Button" may need path name.)-->
     <h1>User Settings</h1>
     <form id="User Settings">
@@ -43,7 +37,7 @@
             <legend>About_Me</legend>
             <div class="form-row">
                 <label for="abt_Me">About Me:</label>
-                <textarea id="abt_Me" name="abt_Me" placeholder="Write your mission statement here...">{{ mission_statement }}</textarea>
+                <textarea id="abt_Me" name="abt_Me" placeholder="Write your mission statement here...">{{ about_Me }}</textarea>
             </div>
         </fieldset>
         <!-- Switch -->
@@ -62,8 +56,8 @@
         <!-- This script dynamically switches the theme CSS file when the toggle switch is changed (JS)-->
         <input type="submit" value="Submit">
 
-        <button type="submit" formaction="/submit_Button" formmethod="post">
-            submit
+        <button type="submit" formaction="/reset_Button" formmethod="post">
+            Reset
         </button>
 
     </form>

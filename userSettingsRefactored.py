@@ -50,13 +50,13 @@ def user_profile_page():
     data = user_Setting_Storage(data)
 
     username = data["username"]
-    mission_statement = data["mission_statement"]
+    about_Me = data["about_Me"]
     theme = data["theme"]
 #this should render the Jinja
     return render_template(
         'user_Profile_Refactor.html',
         username=data["username"],
-        mission_statement=data["mission_statement"],
+        about_Me=data["about_Me"],
         theme=data["theme"]
     ) 
 
@@ -87,7 +87,7 @@ class UserManager:
 
         self.DEFAULT_USER_PROFILE = {
             "username": "",
-            "mission_statement": "",
+            "about_Me": "",
             "theme": ""
         }
     # ---------------------------------------------------------
