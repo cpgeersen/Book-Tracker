@@ -1,0 +1,19 @@
+# Navbar Help button
+<a href="{{ url_for('help_modal', page_name=help_page) }}">
+    <button type="button" class="nav-button">Help</button>
+</a>
+
+# Template
+{% extends parent_template %}
+
+{% block body %}
+<dialog open>
+    <h3>{{ Help }}</h3>
+
+    <p>Help content for this page will be added later.</p>
+
+    <form method="dialog">
+        <button class="modal-button" onclick="window.location.href='{{ return_url }}'; return false;">Close</button>
+    </form>
+</dialog>
+{% endblock %}
