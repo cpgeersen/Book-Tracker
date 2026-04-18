@@ -408,3 +408,9 @@ input[type="file"] {
 .cursor {
     cursor: pointer;
 }
+
+/* Styles genre option selection */
+option {
+background-color: #374151 ;
+    color: white ;
+}

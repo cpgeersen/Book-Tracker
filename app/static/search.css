@@ -254,9 +254,14 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:hover {
     outline: 2px solid #4f46e5;
-    
 }
 
 .cursor {
     cursor: pointer;
+}
+
+/* Styles genre option selection */
+option {
+background-color: #374151 ;
+    color: white ;
 }
