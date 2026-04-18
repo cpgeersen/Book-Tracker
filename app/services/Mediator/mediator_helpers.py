@@ -3,6 +3,8 @@ def is_none(value):
     match value:
         case None:
             return True
+        case 'null':
+            return True
         case 'None':
             return True
         case '':

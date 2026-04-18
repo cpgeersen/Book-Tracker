@@ -193,8 +193,8 @@ def create_book_record(json_input):
     # Book Info
     title = json_input['Title']
     summary = json_input.get('Summary', '')
-    chapters = json_input.get('Chapters', '')
-    chapters_completed = json_input.get('Chapters_Completed', '')
+    chapters = json_input.get('Chapters', 0)
+    chapters_completed = json_input.get('Chapters_Completed', 0)
 
     # Primary Author
     author_first_name_1 = json_input['Author_First_Name_1']
