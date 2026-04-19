@@ -1,5 +1,8 @@
 import json
 
+from app.services.Mediator.mediator_helpers import is_none
+
+
 def validate_isbn_search(json_input, isbn=None):
     json_output = {}
 
@@ -7,7 +10,13 @@ def validate_isbn_search(json_input, isbn=None):
         json_output['ISBN'] = isbn
     else:
         json_output['ISBN'] = json_input.get('ISBN')
-    json_output['Title'] = json_input.get('Title')
+
+    # This prevents an edge case were an invalid ISBN search would be added to the database
+    if is_none(json_input.get('Title')):
+        return {}
+    else:
+        json_output['Title'] = json_input.get('Title')
+
     json_output['Author_First_Name_1'] = str(json_input.get('Author_1')).split(' ')[0]
     json_output['Author_Last_Name_1'] = str(json_input.get('Author_1')).split(' ')[-1]
     json_output['Author_1_OLID'] = str(json_input.get('Author_1_OLID')).split('/')[-1]
@@ -18,7 +27,7 @@ def validate_isbn_search(json_input, isbn=None):
         json_output ['Author_2_OLID'] = str(json_input.get('Author_2_OLID')).split('/')[-1]
 
     json_output['Publisher_Name'] = json_input.get('Publisher')
-    json_output['Publisher_OLID'] = json_input.get('Publisher_OLID')
+    json_output['Publisher_OLID'] = json_input.get('Publisher_OLID', '')
 
     json_output['Publish_Year'] = str(json_input.get('Publish_Year'))
 
@@ -26,8 +35,13 @@ def validate_isbn_search(json_input, isbn=None):
     if ' ' in json_output.get('Publish_Year'):
         json_output['Publish_Year'] = str(json_input.get('Publish_Year')).split(' ')[-1]
 
-    json_output['Summary'] = json_input.get('Summary')
-    json_output['Cover_Image_URL'] = json_input.get('Cover_Image_URL')
+    if is_none(json_input.get('Summary')):
+        json_output['Summary'] = ''
+    else:
+        json_output['Summary'] = json_input.get('Summary')
+
+
+    json_output['Cover_Image_URL'] = json_input.get('Cover_Image_URL', '')
 
     return json_output
 

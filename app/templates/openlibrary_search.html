@@ -64,101 +64,104 @@
 
         <!-- Loop through OpenLibrary results -->
         {% for book, book_info in books.items() %}
+        {% if book_info.get('Title') %}
 
-        <div class="book-card">
+            <div class="book-card">
 
-            <!-- Cover image -->
-            <div class="book-cover">
+                <!-- Cover image -->
+                <div class="book-cover">
 
-                <!-- Pulls the cover image from the OpenLibrary -->
-                {% if book_info['Cover_Image_URL'] %}
+                    <!-- Pulls the cover image from the OpenLibrary -->
+                    {% if book_info['Cover_Image_URL'] %}
                     <img src="{{ book_info['Cover_Image_URL'] }}" alt="Cover">
-                {% else %}
-                No Cover
-                {% endif %}
+                    {% else %}
+                    No Cover
+                    {% endif %}
 
-            </div>
+                </div>
 
-            <!-- Book information -->
-            <div class="book-info">
+                <!-- Book information -->
+                <div class="book-info">
 
-                <h3>{{ book_info['Title'] }}</h3>
+                    <h3>{{ book_info['Title'] }}</h3>
 
-                <p>
-                    <strong>Author:</strong>
-                    {{ book_info['Author_First_Name_1'] }} {{ book_info['Author_Last_Name_1'] }}
-                </p>
-
-                {% if book_info['Author_First_Name_2'] %}
                     <p>
-                        <strong>Second Author:</strong>
-                        {{ book_info['Author_First_Name_2'] }} {{ book_info['Author_Last_Name_2'] }}
+                        <strong>Author:</strong>
+                        {{ book_info['Author_First_Name_1'] }} {{ book_info['Author_Last_Name_1'] }}
                     </p>
-                {% endif %}
 
-                <p>
-                    <strong>ISBN:</strong>
-                    {{ book_info['ISBN'] }}
-                </p>
+                    {% if book_info['Author_First_Name_2'] %}
+                        <p>
+                            <strong>Second Author:</strong>
+                            {{ book_info['Author_First_Name_2'] }} {{ book_info['Author_Last_Name_2'] }}
+                        </p>
+                    {% endif %}
 
-                <p>
-                    <strong>Publisher:</strong>
-                    {{ book_info['Publisher_Name'] }}
-                </p>
+                    <p>
+                        <strong>ISBN:</strong>
+                        {{ book_info['ISBN'] }}
+                    </p>
 
-                <p>
-                    <strong>Publish Year:</strong>
-                    {{ book_info['Publish_Year'] }}
-                </p>
+                    <p>
+                        <strong>Publisher:</strong>
+                        {{ book_info['Publisher_Name'] }}
+                    </p>
+
+                    <p>
+                        <strong>Publish Year:</strong>
+                        {{ book_info['Publish_Year'] }}
+                    </p>
+
+                </div>
+                <div class="book-add">
+                    <!-- Form used to create the new book record -->
+                    <!-- Uses hidden fields pulled from data provided by flask since it has been pulled already -->
+                    <form id="{{ book_info['ISBN'] }}" class="add-book-form" method="POST">
+
+                        <button form="{{ book_info['ISBN'] }}" class="add-book view-button transition_css"
+                                type="submit">Add Book</button>
+
+                        <input type="hidden" id="book-isbn" name="ISBN" value="{{ book_info['ISBN'] }}">
+                        <input type="hidden" id="book-title" name="Title" value="{{ book_info['Title'] }}">
+                        <input type="hidden" id="book-author_first_name_1" name="Author_First_Name_1" value="{{ book_info['Author_First_Name_1'] }}">
+                        <input type="hidden" id="book-author_last_name_1" name="Author_Last_Name_1" value="{{ book_info['Author_Last_Name_1'] }}">
+                        <input type="hidden" id="book-author_1_olid" name="Title" value="{{ book_info['Author_1_OLID'] }}">
+                        <input type="hidden" id="book-author_first_name_2" name="Author_First_Name_2" value="{{ book_info.get('Author_First_Name_2') }}">
+                        <input type="hidden" id="book-author_last_name_2" name="Author_Last_Name_2" value="{{ book_info.get('Author_Last_Name_2') }}">
+                        <input type="hidden" id="book-author_2_olid" name="Title" value="{{ book_info['Author_2_OLID'] }}">
+                        <input type="hidden" id="book-publisher-name" name="Publisher_Name" value="{{ book_info['Publisher_Name'] }}">
+                        <input type="hidden" id="book-publisher-olid" name="Publisher_OLID" value="{{ book_info.get('Publisher_OLID') }}">
+                        <input type="hidden" id="book-publish-year" name="Publish_Year" value="{{ book_info['Publish_Year'] }}">
+                        <input type="hidden" id="book-summary" name="Summary" value="{{ book_info.get('Summary') }}">
+                        <input type="hidden" id="book-cover-image" name="Cover_Image_URL" value="{{ book_info.get('Cover_Image_URL') }}">
+                    </form>
+
+                    <!-- Loading text to show user that book is being added -->
+                    <!-- This prevents user from clicking on the book link before it is ready -->
+                    <p id="book-load-{{ book_info['ISBN'] }}" class="hidden">Loading...</p>
+
+                    <!-- When the book has been newly created, determined in below JS fetch request script -->
+                    <a href="/book/isbn/{{ book_info['ISBN'] }}" id="book-view-{{ book_info['ISBN'] }}"
+                        class="view-button transition_css hidden">
+                        New Book Page →
+                    </a>
+
+                    <!-- When the book is in database already, determined in below JS fetch request script -->
+                    <a href="/book/isbn/{{ book_info['ISBN'] }}" id="book-in-database-{{ book_info['ISBN'] }}"
+                        class="view-button transition_css hidden">
+                        Book in Database →
+                    </a>
+                </div>
 
             </div>
-            <div class="book-add">
-                <!-- Form used to create the new book record -->
-                <!-- Uses hidden fields pulled from data provided by flask since it has been pulled already -->
-                <form id="{{ book_info['ISBN'] }}" class="add-book-form" method="POST">
-
-                    <button form="{{ book_info['ISBN'] }}" class="add-book view-button transition_css"
-                            type="submit">Add Book</button>
-
-                    <input type="hidden" id="book-isbn" name="ISBN" value="{{ book_info['ISBN'] }}">
-                    <input type="hidden" id="book-title" name="Title" value="{{ book_info['Title'] }}">
-                    <input type="hidden" id="book-author_first_name_1" name="Author_First_Name_1" value="{{ book_info['Author_First_Name_1'] }}">
-                    <input type="hidden" id="book-author_last_name_1" name="Author_Last_Name_1" value="{{ book_info['Author_Last_Name_1'] }}">
-                    <input type="hidden" id="book-author_1_olid" name="Title" value="{{ book_info['Author_1_OLID'] }}">
-                    <input type="hidden" id="book-author_first_name_2" name="Author_First_Name_2" value="{{ book_info.get('Author_First_Name_2') }}">
-                    <input type="hidden" id="book-author_last_name_2" name="Author_Last_Name_2" value="{{ book_info.get('Author_Last_Name_2') }}">
-                    <input type="hidden" id="book-author_2_olid" name="Title" value="{{ book_info['Author_2_OLID'] }}">
-                    <input type="hidden" id="book-publisher-name" name="Publisher_Name" value="{{ book_info['Publisher_Name'] }}">
-                    <input type="hidden" id="book-publisher-olid" name="Publisher_OLID" value="{{ book_info.get('Publisher_OLID') }}">
-                    <input type="hidden" id="book-publish-year" name="Publish_Year" value="{{ book_info['Publish_Year'] }}">
-                    <input type="hidden" id="book-summary" name="Summary" value="{{ book_info.get('Summary') }}">
-                    <input type="hidden" id="book-cover-image" name="Cover_Image_URL" value="{{ book_info.get('Cover_Image_URL') }}">
-                </form>
-
-                <!-- Loading text to show user that book is being added -->
-                <!-- This prevents user from clicking on the book link before it is ready -->
-                <p id="book-load-{{ book_info['ISBN'] }}" class="hidden">Loading...</p>
-
-                <!-- When the book has been newly created, determined in below JS fetch request script -->
-                <a href="/book/isbn/{{ book_info['ISBN'] }}" id="book-view-{{ book_info['ISBN'] }}"
-                   class="view-button transition_css hidden">
-                    New Book Page →
-                </a>
-
-                <!-- When the book is in database already, determined in below JS fetch request script -->
-                <a href="/book/isbn/{{ book_info['ISBN'] }}" id="book-in-database-{{ book_info['ISBN'] }}"
-                   class="view-button transition_css hidden">
-                    Book in Database →
-                </a>
-            </div>
-
-        </div>
-
+            {% else %}
+                <p class="no-results">No books found.</p>
+            {% endif %}
         {% endfor %}
 
         <!-- No results message -->
         {% elif request.args.get('search') %}
-        <p id="no-results">No books found.</p>
+        <p class="no-results">No books found.</p>
         {% endif %}
     </section>
 </main>
@@ -166,7 +169,7 @@
 <!-- Page-specific styling -->
 <style>
 
-    #no-results{
+    .no-results{
         margin-left: 0;
         margin-right: 0;
         text-align: center;
