@@ -44,8 +44,7 @@ def cache(search_query, search_results=None):
 
     if search_query in json_cache:
         return json_cache[search_query]
-    # Prevents an edge case where an empty response could be added to the cache
-    elif search_results is not None or len(json_cache[search_query]) != 0:
+    elif search_results is not None:
         json_cache[search_query] = search_results
         save_cache(json_cache)
         return json_cache[search_query]
