@@ -1,34 +1,18 @@
 import json
 
-from app.services.Book.Book import delete_book_cover_image, delete_book, read_book_notes, delete_book_note, \
-    delete_genre, read_book
+from app.services.Book.Book import delete_book_cover_image, delete_book, delete_book_note, delete_genre, read_book
 
 
 def mediator_delete(json_input, delete_type):
     if delete_type == 'book':
         json_input = json.loads(json_input)
+        print(json_input)
 
         isbn = json_input['ISBN']
 
-        # Delete the Book Cover
         delete_book_cover_image(isbn, json_input['Cover_Image_Path'])
 
-        # Delete BookAuthor Bridging Table Record
-
-        # Delete BookGenre Bridging Table Record(s)
-
-        # Delete Tag Book Record
-
-
-
-        # Delete the book record
         delete_book(isbn)
-
-        # Note! delete bridging table values too for Notes
-
-        note_ids = read_book_notes(json_input)
-        for value in note_ids.values():
-            response = delete_book_note(value)
 
         return json.dumps({'Success': 'Book Deleted'})
 
