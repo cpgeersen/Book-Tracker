@@ -17,11 +17,13 @@ def validate_isbn_search(json_input, isbn=None):
     else:
         json_output['Title'] = json_input.get('Title')
 
+    json_output['Author_Full_Name_1'] = json_input.get('Author_1')
     json_output['Author_First_Name_1'] = str(json_input.get('Author_1')).split(' ')[0]
     json_output['Author_Last_Name_1'] = str(json_input.get('Author_1')).split(' ')[-1]
     json_output['Author_1_OLID'] = str(json_input.get('Author_1_OLID')).split('/')[-1]
 
     if json_input.get('Author_2') is not None:
+        json_output['Author_Full_Name_2'] = json_input.get('Author_2')
         json_output['Author_First_Name_2'] = str(json_input.get('Author_2')).split(' ')[0]
         json_output['Author_Last_Name_2'] = str(json_input.get('Author_2')).split(' ')[-1]
         json_output ['Author_2_OLID'] = str(json_input.get('Author_2_OLID')).split('/')[-1]
