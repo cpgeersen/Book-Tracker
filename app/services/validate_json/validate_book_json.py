@@ -79,6 +79,7 @@ def validate_author(json_input):
 
     author_first_name_1 = json_input.get('Author_First_Name_1', '')
     author_last_name_1 = json_input.get('Author_Last_Name_1', '')
+    author_full_name_1 = json_input.get('Author_Full_Name_1', '')
 
     if (author_first_name_1 == '' or author_first_name_1 == 'None' or
         author_first_name_1 is None):
@@ -89,11 +90,13 @@ def validate_author(json_input):
 
     json_output.update({'Author_First_Name_1': author_first_name_1.strip()})
     json_output.update({'Author_Last_Name_1': author_last_name_1.strip()})
+    json_output.update({'Author_Full_Name_1': author_full_name_1.strip()})
 
 
 
     author_first_name_2 = json_input.get('Author_First_Name_2', '')
     author_last_name_2 = json_input.get('Author_Last_Name_2', '')
+    author_full_name_2 = json_input.get('Author_Full_Name_2', '')
 
     if (author_first_name_2 == '' or author_first_name_2 == 'None' or
         author_first_name_2 is None):
@@ -104,6 +107,7 @@ def validate_author(json_input):
 
     json_output.update({'Author_First_Name_2': author_first_name_2.strip()})
     json_output.update({'Author_Last_Name_2': author_last_name_2.strip()})
+    json_output.update({'Author_Full_Name_2': author_full_name_2.strip()})
 
     return json_output
 
