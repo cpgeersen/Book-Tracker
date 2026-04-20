@@ -7,9 +7,10 @@ from app.routes.add_local_book_route import add_local_book_route
 from app.routes.individual_book_route import individual_book_route
 from app.routes.local_search_route import local_search_route
 from app.routes.openlibrary_search_route import openlibrary_search_route
+from app.routes.settings_route import settings_route
 from app.services.Mediator.mediator_delete import mediator_delete
 from app.services.OpenLibrary.openlibrary_search_cache import create_cache
-from app.services.deduplicate_books import de_duplicate_books, de_duplicate_books_refactor
+from app.services.deduplicate_books import de_duplicate_books_refactor
 
 # Test Route Import
 from app.routes.test import test_bp
@@ -17,7 +18,7 @@ from app.routes.test import test_bp
 # Imports used for Mocking
 from app.services.mocking.create_example_records import create_sample_books
 from app.services.mocking.create_many_records import create_many_records
-
+from app.services.user_settings.user_settings import create_user_settings_json
 
 # Status Codes
 SUCCESS = 200
@@ -33,8 +34,12 @@ INTERNAL_SERVER_ERROR = 500
 # Create OpenLibrary Search Cache
 create_cache()
 
+# Create User Settings
+create_user_settings_json()
+
 # Main Route Creation for the App
 def create_routes(app):
+
 
     def _analytics_placeholder_data():
         return {
@@ -48,6 +53,8 @@ def create_routes(app):
             "completed_list_html": "",
         }
 
+
+
     # Register Blueprints Used for Testing
     app.register_blueprint(test_bp)
 
@@ -58,6 +65,7 @@ def create_routes(app):
     individual_book_route(app)
     local_search_route(app)
     openlibrary_search_route(app)
+    settings_route(app)
 
 
     @app.route('/', methods=['GET'])
@@ -68,16 +76,10 @@ def create_routes(app):
     def template_asset(filename):
         return send_from_directory(app.template_folder, filename)
 
-    @app.route('/search', methods=['GET'])
-    def search_page():
-        return render_template('search.html')
-
-    # WIP
-    @app.route('/settings', methods=['GET'])
-    def settings_page():
+    @app.route('/settings-temp', methods=['GET'])
+    def settings_page_temp():
         return render_template('settings.html'), 200
 
-    # WIP
     @app.route('/dashboard', methods=['GET'])
     def dashboard_page():
         return render_template("analytics.html", **_analytics_placeholder_data()), 200

@@ -11,6 +11,7 @@ from app.services.Mediator.mediator_helpers import is_book_info_none, is_author_
 from app.services.OpenLibrary.openlibrary import complete_book_from_isbn_ol
 from app.services.OpenLibrary.openlibrary_search_cache import cache
 from app.services.openlibrary_data_resolution.resolve_author import resolve_author_olid
+from app.services.user_settings.user_settings import update_user_settings
 from app.services.validate_json.validate_book_json import validate_tags
 from app.services.validate_json.validate_openlibrary_json import validate_isbn_search
 
@@ -210,7 +211,12 @@ def mediator_update(json_input, update_type):
 
             return updated_records
 
-            # Call author case and publisher case function here
+        elif update_type == 'user-settings':
+            json_input = json.loads(json_input)
+            user_name = str(json_input['Username']).strip()
+            theme = str(json_input['Theme'])
+
+            update_user_settings(user_name, theme)
 
     except TypeError:
         pass  # !!WIP TypeError!!

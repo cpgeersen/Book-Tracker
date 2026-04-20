@@ -7,6 +7,7 @@ from app.services.OpenLibrary.openlibrary import complete_book_from_isbn_ol, com
     complete_books_from_author_ol
 from app.services.OpenLibrary.openlibrary_search_cache import cache
 from app.services.filters.filter_search_results import filter_results, filter_results_isbn
+from app.services.user_settings.user_settings import load_user_settings
 from app.services.validate_json.validate_book_json import validate_book_for_frontend
 from app.services.validate_json.validate_openlibrary_json import validate_isbn_search, validate_search_for_cache
 
@@ -167,7 +168,9 @@ def mediator_read(json_input, read_type, filter_json):
 
             return cache_response
 
-
+        elif read_type == 'user-settings':
+            response = load_user_settings()
+            return response
 
 
         else:

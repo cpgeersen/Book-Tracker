@@ -1,6 +1,7 @@
 import json
 
 from app.services.Book.Book import delete_book_cover_image, delete_book, delete_book_note, delete_genre, read_book
+from app.services.user_settings.delete_database import reset_database, purge_cover_images
 
 
 def mediator_delete(json_input, delete_type):
@@ -57,6 +58,11 @@ def mediator_delete(json_input, delete_type):
         json_input.update({'Cover_Image_Path': json_input['Cover_Image']})
         print(json_input)
         return mediator_delete(json.dumps(json_input), 'book')
+
+    elif delete_type == 'delete-database':
+        return reset_database('RESET')
+    elif delete_type == 'all-cover-images':
+        return purge_cover_images()
 
     else:
         return 'Error: Not a valid call'

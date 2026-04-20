@@ -400,8 +400,7 @@
         <button command="show-modal" commandfor="delete-confirmation-modal" class="delete-btn style-button transition_css">Delete Book</button>
 
         <dialog id="delete-confirmation-modal">
-
-          <p>Delete Book Record from Database</p>
+          <h3>Delete Book Record from Database</h3>
           <p>WARNING: Deleting a book is irreversible.</p>
           <p>Do you still want to delete the book?</p>
 
@@ -416,16 +415,18 @@
 
           <button command="show-modal" commandfor="update-confirmation-modal" class="update-btn style-button transition_css">Update with OpenLibrary Data</button>
         <dialog id="update-confirmation-modal">
-
+          <h3>Update with OpenLibrary Data</h3>
           <p>Use data from the OpenLibrary API to update book record.</p>
           <p>WARNING: Updating is destructive, cannot be reverted, and can only be done once.</p>
           <p>Records Updated (unless otherwise specified by user):</p>
-          <ul>
-            <li>Cover Image</li>
-            <li>Summary</li>
-            <li>Publisher</li>
-            <li>Author Spelling</li>
-          </ul>
+            <div class="dialog-list">
+                <ul>
+                    <li>Cover Image</li>
+                    <li>Summary</li>
+                    <li>Publisher</li>
+                    <li>Author Spelling</li>
+                </ul>
+            </div>
           <p>Do you still want to update the book?</p>
 
           <div class="button-align2">

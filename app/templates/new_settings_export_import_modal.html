@@ -1,0 +1,16 @@
+<!-- Modal to tell user what was updated -->
+{% extends "new_settings.html" %}
+
+{% block body %}
+    <dialog open>
+        <h3>Export/Import Status</h3>
+            <p>{{ csv_status['Status'] }}</p>
+            <p>{{ csv_status['Message'] }}</p>
+            {% if csv_status['File_Path'] %}
+            <p>Backup Path: {{ csv_status['File_Path'] }}</p>
+            {% endif %}
+        <form method="dialog">
+            <button class="modal-button">Close</button>
+        </form>
+    </dialog>
+{% endblock %}

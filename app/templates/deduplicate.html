@@ -13,11 +13,19 @@
 <body>
 
 <main class="container">
+    <!-- Navigation links -->
+    <div class="nav-buttons">
+        <a href="/settings">← Back</a>
+        <a href="/">🏠 Home</a>
+    </div>
 
     <h1>Duplicate Books</h1>
     <p>This page finds books that are the same, but added under different ISBN values.</p>
     <p>This allows the user to see all duplicate books in the database that can be removed.</p>
 
+    {% if book_result['Error'] %}
+    <p class="no-results">No books found.</p>
+    {% else %}
     {% for book_list in book_result.values() %}
 
     <!-- Result block -->
@@ -25,19 +33,19 @@
 
         <!-- Title + Author -->
         <h2>{{ book_list['Title'] }}</h2>
-        {% if book_list['Author_First_Name_2'] %}
+        {% if book_list['Author_Full_Name_2'] %}
         <div class="author">
             <h3>First Author:</h3>
-            <p>{{ book_list.get('Author_First_Name_1') }} {{ book_list.get('Author_Last_Name_1') }}</p>
+            <p>{{ book_list['Author_Full_Name_1'] }}</p>
         </div>
         <div class="author">
             <h3>Second Author:</h3>
-            <p>{{ book_list.get('Author_First_Name_2') }} {{ book_list.get('Author_Last_Name_2') }}</p>
+            <p>{{ book_list['Author_Full_Name_2'] }}</p>
         </div>
         {% else %}
         <div class="author">
             <h3>Author:</h3>
-            <p>{{ book_list.get('Author_First_Name_1') }} {{ book_list.get('Author_Last_Name_1') }}</p>
+            <p>{{ book_list['Author_Full_Name_1'] }}</p>
         </div>
         {% endif %}
 
@@ -62,7 +70,7 @@
                     </button>
                     <dialog id="delete-confirmation-modal_{{ isbn }}">
 
-                        <p>Delete Book Record from Database</p>
+                        <h3>Delete Book Record from Database</h3>
                         <p>WARNING: Deleting a book is irreversible.</p>
                         <p>Do you still want to delete the book?</p>
 
@@ -92,7 +100,7 @@
     </div>
 
     {% endfor %}
-
+    {% endif %}
 
 </main>
 
