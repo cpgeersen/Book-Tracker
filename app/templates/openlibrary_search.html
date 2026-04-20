@@ -64,7 +64,7 @@
 
         <!-- Loop through OpenLibrary results -->
         {% for book, book_info in books.items() %}
-        {% if book_info.get('Title') %}
+        {% if book_info['Title'] %}
 
             <div class="book-card">
 
@@ -87,13 +87,13 @@
 
                     <p>
                         <strong>Author:</strong>
-                        {{ book_info['Author_First_Name_1'] }} {{ book_info['Author_Last_Name_1'] }}
+                        {{ book_info['Author_Full_Name_1'] }}
                     </p>
 
-                    {% if book_info['Author_First_Name_2'] %}
+                    {% if book_info['Author_Full_Name_2'] %}
                         <p>
                             <strong>Second Author:</strong>
-                            {{ book_info['Author_First_Name_2'] }} {{ book_info['Author_Last_Name_2'] }}
+                            {{ book_info['Author_Full_Name_2'] }}
                         </p>
                     {% endif %}
 
@@ -123,17 +123,19 @@
 
                         <input type="hidden" id="book-isbn" name="ISBN" value="{{ book_info['ISBN'] }}">
                         <input type="hidden" id="book-title" name="Title" value="{{ book_info['Title'] }}">
+                        <input type="hidden" id="book-author_full_name_1" name="Author_Full_Name_1" value="{{ book_info['Author_Full_Name_1'] }}">
                         <input type="hidden" id="book-author_first_name_1" name="Author_First_Name_1" value="{{ book_info['Author_First_Name_1'] }}">
                         <input type="hidden" id="book-author_last_name_1" name="Author_Last_Name_1" value="{{ book_info['Author_Last_Name_1'] }}">
                         <input type="hidden" id="book-author_1_olid" name="Title" value="{{ book_info['Author_1_OLID'] }}">
-                        <input type="hidden" id="book-author_first_name_2" name="Author_First_Name_2" value="{{ book_info.get('Author_First_Name_2') }}">
-                        <input type="hidden" id="book-author_last_name_2" name="Author_Last_Name_2" value="{{ book_info.get('Author_Last_Name_2') }}">
+                        <input type="hidden" id="book-author_full_name_2" name="Author_Full_Name_2" value="{{ book_info['Author_Full_Name_2'] }}">
+                        <input type="hidden" id="book-author_first_name_2" name="Author_First_Name_2" value="{{ book_info['Author_First_Name_2'] }}">
+                        <input type="hidden" id="book-author_last_name_2" name="Author_Last_Name_2" value="{{ book_info['Author_Last_Name_2'] }}">
                         <input type="hidden" id="book-author_2_olid" name="Title" value="{{ book_info['Author_2_OLID'] }}">
                         <input type="hidden" id="book-publisher-name" name="Publisher_Name" value="{{ book_info['Publisher_Name'] }}">
-                        <input type="hidden" id="book-publisher-olid" name="Publisher_OLID" value="{{ book_info.get('Publisher_OLID') }}">
+                        <input type="hidden" id="book-publisher-olid" name="Publisher_OLID" value="{{ book_info['Publisher_OLID'] }}">
                         <input type="hidden" id="book-publish-year" name="Publish_Year" value="{{ book_info['Publish_Year'] }}">
-                        <input type="hidden" id="book-summary" name="Summary" value="{{ book_info.get('Summary') }}">
-                        <input type="hidden" id="book-cover-image" name="Cover_Image_URL" value="{{ book_info.get('Cover_Image_URL') }}">
+                        <input type="hidden" id="book-summary" name="Summary" value="{{ book_info['Summary'] }}">
+                        <input type="hidden" id="book-cover-image" name="Cover_Image_URL" value="{{ book_info['Cover_Image_URL'] }}">
                     </form>
 
                     <!-- Loading text to show user that book is being added -->

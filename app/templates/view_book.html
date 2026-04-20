@@ -67,14 +67,14 @@
 
           <p>
             <strong>Author:</strong>
-            {{ book["Author_First_Name_1"] }} {{ book["Author_Last_Name_1"] }}
+            {{ book["Author_Full_Name_1"] }}
           </p>
 
           <!-- Optional second author -->
           {% if book["Author_First_Name_2"] %}
           <p>
             <strong>Second Author:</strong>
-            {{ book["Author_First_Name_2"] }} {{ book["Author_Last_Name_2"] }}
+            {{ book["Author_Full_Name_2"] }}
           </p>
           {% endif %}
 

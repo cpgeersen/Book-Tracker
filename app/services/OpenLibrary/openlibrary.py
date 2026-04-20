@@ -5,6 +5,8 @@ from app.services.OpenLibrary.openlibrary_api import search_books_by_isbn, get_w
 def complete_book_from_isbn_ol(isbn):
     ol_data = search_books_by_isbn(isbn)
 
+    print(ol_data)
+
     if "error" in ol_data:
         return {"error": "ISBN not present in OpenLibrary, please use another ISBN or search via Title"}
 
@@ -29,6 +31,8 @@ def complete_book_from_isbn_ol(isbn):
         if "key" in ol_data["works"][0]:
             work_key = ol_data["works"][0]["key"]
 
+    print(work_key)
+
     author_1 = None
     author_1_olid = None
     author_2 = None
@@ -42,7 +46,7 @@ def complete_book_from_isbn_ol(isbn):
 
         if isinstance(work_data, dict):
 
-            title = work_data.get("title")
+            title = ol_data.get("title")
 
             if "description" in work_data:
                 if isinstance(work_data["description"], dict):
@@ -65,7 +69,16 @@ def complete_book_from_isbn_ol(isbn):
                         author_1_olid = a1["author"]["key"]
                         a1_data = get_author_info_from_authorid(author_1_olid)
                         if isinstance(a1_data, dict):
-                            author_1 = a1_data.get("name")
+                            author_1 = a1_data.get("personal_name", "")
+
+                            if author_1 == '':
+                                author_1 = a1_data.get("name", "")
+
+                            if ',' in author_1:
+                                name_list = str(author_1).split(',')
+                                first_name = name_list[1].strip()
+                                last_name = name_list[0].strip()
+                                author_1 = first_name + ' ' + last_name
 
                 if len(authors) >= 2:
                     a2 = authors[1]
@@ -73,7 +86,16 @@ def complete_book_from_isbn_ol(isbn):
                         author_2_olid = a2["author"]["key"]
                         a2_data = get_author_info_from_authorid(author_2_olid)
                         if isinstance(a2_data, dict):
-                            author_2 = a2_data.get("name")
+                            author_2 = a2_data.get("personal_name", "")
+
+                            if author_2 == '':
+                                author_2 = a2_data.get("name", "")
+
+                            if ',' in str(author_2):
+                                name_list = str(author_2).split(',')
+                                first_name = name_list[1].strip()
+                                last_name = name_list[0].strip()
+                                author_2 = first_name + ' ' + last_name
 
     return {
         "Title": title,
@@ -178,7 +200,17 @@ def complete_books_from_title_ol(query, limit=5):
                             author_1_olid = a1["author"]["key"]
                             a1_data = get_author_info_from_authorid(author_1_olid)
                             if isinstance(a1_data, dict):
-                                author_1 = a1_data.get("name")
+                                author_1 = a1_data.get("personal_name", "")
+
+                                if author_1 == '':
+                                    author_1 = a1_data.get("name", "")
+
+                                if ',' in author_1:
+                                    name_list = str(author_1).split(',')
+                                    first_name = name_list[1].strip()
+                                    last_name = name_list[0].strip()
+                                    author_1 = first_name + ' ' + last_name
+
 
                     if len(authors) >= 2:
                         a2 = authors[1]
@@ -186,8 +218,18 @@ def complete_books_from_title_ol(query, limit=5):
                             author_2_olid = a2["author"]["key"]
                             a2_data = get_author_info_from_authorid(author_2_olid)
                             if isinstance(a2_data, dict):
-                                author_2 = a2_data.get("name")
+                                author_2 = a2_data.get("personal_name", "")
 
+                                if author_2 == '':
+                                    author_2 = a2_data.get("name", "")
+
+                                if ',' in str(author_2):
+                                    name_list = str(author_2).split(',')
+                                    first_name = name_list[1].strip()
+                                    last_name = name_list[0].strip()
+                                    author_2 = first_name + ' ' + last_name
+
+        print('here7')
         final_results[f"Book_Result_{index}"] = {
             "Title": title,
             "Publish_Year": publish_year,
@@ -294,7 +336,16 @@ def complete_books_from_author_ol(first_name, last_name, limit=5):
                             author_1_olid = a1["author"]["key"]
                             a1_data = get_author_info_from_authorid(author_1_olid)
                             if isinstance(a1_data, dict):
-                                author_1 = a1_data.get("name")
+                                author_1 = a1_data.get("personal_name", "")
+
+                                if author_1 == '':
+                                    author_1 = a1_data.get("name", "")
+
+                                if ',' in author_1:
+                                    name_list = str(author_1).split(',')
+                                    first_name = name_list[1].strip()
+                                    last_name = name_list[0].strip()
+                                    author_1 = first_name + ' ' + last_name
 
                     if len(authors) >= 2:
                         a2 = authors[1]
@@ -302,7 +353,16 @@ def complete_books_from_author_ol(first_name, last_name, limit=5):
                             author_2_olid = a2["author"]["key"]
                             a2_data = get_author_info_from_authorid(author_2_olid)
                             if isinstance(a2_data, dict):
-                                author_2 = a2_data.get("name")
+                                author_2 = a2_data.get("personal_name", "")
+
+                                if author_2 == '':
+                                    author_2 = a2_data.get("name", "")
+
+                                if ',' in str(author_2):
+                                    name_list = str(author_2).split(',')
+                                    first_name = name_list[1].strip()
+                                    last_name = name_list[0].strip()
+                                    author_2 = first_name + ' ' + last_name
 
         final_results[f"Book_Result_{index}"] = {
             "Title": title,

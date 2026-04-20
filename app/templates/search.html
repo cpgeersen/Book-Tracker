@@ -277,10 +277,10 @@
               <div class="book-info-wrapper">
                   <div class="book-info-author-and-publisher">
 
-                <p><strong>Author:</strong> {{ book_info['Author_First_Name_1'] }} {{ book_info['Author_Last_Name_1'] }}</p>
+                <p><strong>Author:</strong> {{ book_info['Author_Full_Name_1'] }}</p>
 
-                {% if book_info['Author_First_Name_2'] %}
-                <p><strong>2nd Author:</strong> {{ book_info['Author_First_Name_2'] }} {{ book_info['Author_Last_Name_2'] }}</p>
+                {% if book_info['Author_Full_Name_2'] %}
+                <p><strong>2nd Author:</strong> {{ book_info['Author_Full_Name_2'] }}</p>
                 {% endif %}
 
                 <p><strong>Publisher:</strong> {{ book_info['Publisher_Name'] }}</p>
