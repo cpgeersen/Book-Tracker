@@ -49,3 +49,9 @@ dialog > p {
     gap: 30px;
     justify-content: center;
 }
+
+.file{
+    margin-left: 2rem;
+    margin-right: auto;
+    width: fit-content;
+}

@@ -109,12 +109,15 @@
           <h3>Import Database</h3>
           <p><strong>THIS WILL OVERWRITE THE EXISTING DATABASE</strong></p>
           <p>WARNING: Importing a database is irreversible.</p>
+            <div  class="file">
+                <form id="csv-import" method="POST" enctype="multipart/form-data">
+                    <input class="file-button transition_css" name="CSV_Import" type="file">
+                </form>
+            </div>
+
           <div class="button-align">
-            <form id="csv-import" method="POST">
-              <input type="file">
-              <button class="yes-btn modal-button button-group" type="submit" form="csv-import" name="CSV-Upload">Submit</button>
-            </form>
-            <button class="no-btn modal-button button-group" commandfor="import-confirmation-modal" command="close">Cancel</button>
+              <button form="csv-import" class="yes-btn modal-button button-group" type="submit" name="CSV_Import">Submit</button>
+              <button class="no-btn modal-button button-group" commandfor="import-confirmation-modal" command="close">Cancel</button>
           </div>
         </dialog>
 
