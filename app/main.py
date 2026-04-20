@@ -7,13 +7,13 @@ from app.routes.add_local_book_route import add_local_book_route
 from app.routes.individual_book_route import individual_book_route
 from app.routes.local_search_route import local_search_route
 from app.routes.openlibrary_search_route import openlibrary_search_route
+from app.routes.settings_route import settings_route
 from app.services.Mediator.mediator_delete import mediator_delete
 from app.services.OpenLibrary.openlibrary_search_cache import create_cache
-from app.services.deduplicate_books import de_duplicate_books, de_duplicate_books_refactor
+from app.services.deduplicate_books import de_duplicate_books_refactor
 
 # Test Route Import
 from app.routes.test import test_bp
-from app.services.mediator import read, update
 
 # Imports used for Mocking
 from app.services.mocking.create_example_records import create_sample_books
@@ -50,6 +50,7 @@ def create_routes(app):
     individual_book_route(app)
     local_search_route(app)
     openlibrary_search_route(app)
+    settings_route(app)
 
 
     @app.route('/', methods=['GET'])
@@ -64,26 +65,6 @@ def create_routes(app):
     def search_page():
         return render_template('search.html')
 
-    # WIP
-    @app.route('/settings', methods=['GET', 'POST'])
-    def settings_page():
-        if request.method == 'GET':
-            response = read({}, 'user-settings')
-            return render_template('new_settings.html', user_settings=response), 200
-        else: # Implicit POST
-            user_action = dict(request.form)
-            print(user_action)
-
-            if user_action.get('Update') is not None:
-                response = update(json.dumps(user_action), 'user-settings')
-
-            if user_action.get('CSV') is not None:
-                pass
-
-            response = read({}, 'user-settings')
-            return render_template('new_settings.html', user_settings=response), 200
-
-    # WIP
     @app.route('/book/deduplicate', methods=['POST', 'GET'])
     def dedup_page():
         if request.method == 'GET':

@@ -10,6 +10,8 @@
 </head>
 
 <body>
+  {% block body %}
+  {% endblock %}
   <!-- Creates top section of page, divides into two sections for positioning. -->
   <div class="header">
     <section class="left_side">
@@ -19,12 +21,12 @@
     </section>
 
     <section class="right_side">
-      <h1>Settings</h1>
+      <h1>Settings/User Functions</h1>
 
     </section>
 
   </div>
-  <div id="settings">
+  <div class="user-section">
       <h3>Current Settings</h3>
       <p>Current Username:
       {% if user_settings['Username'] %}
@@ -36,28 +38,37 @@
           {{ user_settings['Theme'] }}
       {% endif %}
       </p>
-      <div id="settings-buttons">
-           <div>
-              <button command="show-modal" commandfor="update-settings-modal" class="style-button transition_css">Update User Settings</button>
-          </div>
-          <div>
-              <form id="csv">
-                  <input type="hidden" name="CVS" value="">
-                  <input type="file">
-                  <button class="style-button transition_css" type="submit" form="csv">Export Database (CSV)</button>
-              </form>
-
-          </div>
-          <div>
-              <button command="show-modal" commandfor="import-confirmation-modal" class="style-button transition_css">Import Database (CSV)</button>
-          </div>
-          <div>
-              <button command="show-modal" commandfor="delete-confirmation-modal" class="delete-btn style-button transition_css">Delete Entire Database</button>
-          </div>
+      <div>
+          <button command="show-modal" commandfor="update-settings-modal" class="style-button transition_css">Update User Settings</button>
       </div>
+  </div>
 
+  <div class="user-section">
+      <h3>User Functions</h3>
+      <p>There are two types of user functions, safe and dangerous.</p>
+      <p>Safe functions are reversible while Dangerous functions are irreversible.</p>
+      <div class="user-buttons">
+          <div id="safe-functions">
+              <h4>Safe Functions</h4>
+              <form class="hidden" id="form-safe" method="POST">
+                  <input type="hidden">
+              </form>
+              <div>
+                  <button form="form-safe" class="style-button transition_css" type="submit" name="Dedupe">Deduplicate Books</button>
+                  <button form="form-safe" class="style-button transition_css" type="submit" name="CSV_Export">Export Database (CSV)</button>
+              </div>
+          </div>
 
+          <div id="danger-functions">
+              <h4>Dangerous Functions</h4>
+              <div>
+                  <button command="show-modal" commandfor="import-confirmation-modal" class="style-button transition_css">Import Database (CSV)</button>
+                  <button command="show-modal" commandfor="delete-confirmation-modal" class="delete-btn style-button transition_css">Delete Entire Database</button>
+                  <button command="show-modal" commandfor="delete-cover-images-confirmation-modal" class="style-button transition_css">Mass Delete All Cover Images</button>
+              </div>
+          </div>
 
+      </div>
   </div>
 
 
@@ -70,8 +81,24 @@
 
           <div class="button-align">
 
-            <form id="delete" method="POST">
-              <button class="yes-btn modal-button button-group" type="submit" form="delete" name="delete" >Yes</button>
+            <form id="delete-database" method="POST">
+              <button class="yes-btn modal-button button-group" type="submit" form="delete-database" name="Delete_Database" >Yes</button>
+            </form>
+            <button class="no-btn modal-button button-group" commandfor="delete-confirmation-modal" command="close" >No</button>
+          </div>
+        </dialog>
+
+          <dialog id="delete-cover-images-confirmation-modal">
+
+          <h3>Mass Delete Cover Images</h3>
+          <p><strong>THIS WILL DELETE ALL COVER IMAGES</strong></p>
+          <p>WARNING: Deleting the all cover images is irreversible.</p>
+          <p>Do you still want to delete the all cover images?</p>
+
+          <div class="button-align">
+
+            <form id="delete-cover-images" method="POST">
+              <button class="yes-btn modal-button button-group" type="submit" form="delete-cover-images" name="Delete_Cover_Images" >Yes</button>
             </form>
             <button class="no-btn modal-button button-group" commandfor="delete-confirmation-modal" command="close" >No</button>
           </div>
@@ -82,14 +109,12 @@
           <h3>Import Database</h3>
           <p><strong>THIS WILL OVERWRITE THE EXISTING DATABASE</strong></p>
           <p>WARNING: Importing a database is irreversible.</p>
-          <p>Do you still want to import a database?</p>
-
           <div class="button-align">
-
-            <form id="import" method="POST">
-              <button class="yes-btn modal-button button-group" type="submit" form="import" name="import" >Yes</button>
+            <form id="csv-import" method="POST">
+              <input type="file">
+              <button class="yes-btn modal-button button-group" type="submit" form="csv-import" name="CSV-Upload">Submit</button>
             </form>
-            <button class="no-btn modal-button button-group" commandfor="import-confirmation-modal" command="close" >No</button>
+            <button class="no-btn modal-button button-group" commandfor="import-confirmation-modal" command="close">Cancel</button>
           </div>
         </dialog>
 

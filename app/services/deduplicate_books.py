@@ -170,13 +170,12 @@ def de_duplicate_books_refactor():
                         for isbn in isbn_list:
                             # Get information for given isbn
                             book_result = json.loads(read_full_book_record(isbn))
-                            author_first_name_1 = book_result['Author_First_Name_1']
-                            author_last_name_1 = book_result['Author_Last_Name_1']
-                            author_first_name_2 = book_result.get('Author_First_Name_2')
-                            author_last_name_2 = book_result.get('Author_Last_Name_2')
+                            author_full_name_1 = book_result['Author_Full_Name_1']
+                            author_full_name_2 = book_result.get('Author_Full_Name_2')
+
 
                             # Construct a new tuple entry to filter
-                            book_tuple = (isbn, book_title, author_first_name_1, author_last_name_1, author_first_name_2, author_last_name_2)
+                            book_tuple = (isbn, book_title, author_full_name_1, author_full_name_2)
 
                             # When a tuple combination is present, skip making a new entry
                             if book_tuple in tuple_list:
@@ -186,10 +185,8 @@ def de_duplicate_books_refactor():
 
                             # Create entry as a duplicate result
                             json_output[f'Duplicate_Book_Result_{dup_book_result_num}'] = {'Title': book_title}
-                            json_output[f'Duplicate_Book_Result_{dup_book_result_num}']['Author_First_Name_1'] = book_result['Author_First_Name_1']
-                            json_output[f'Duplicate_Book_Result_{dup_book_result_num}']['Author_Last_Name_1'] = book_result['Author_Last_Name_1']
-                            json_output[f'Duplicate_Book_Result_{dup_book_result_num}']['Author_First_Name_2'] = book_result.get('Author_First_Name_2')
-                            json_output[f'Duplicate_Book_Result_{dup_book_result_num}']['Author_Last_Name_2'] = book_result.get('Author_Last_Name_2')
+                            json_output[f'Duplicate_Book_Result_{dup_book_result_num}']['Author_Full_Name_1'] = author_full_name_1
+                            json_output[f'Duplicate_Book_Result_{dup_book_result_num}']['Author_Full_Name_2'] = author_full_name_2
                             json_output[f'Duplicate_Book_Result_{dup_book_result_num}']['ISBNs'] = isbn_list
 
                         dup_book_result_num += 1

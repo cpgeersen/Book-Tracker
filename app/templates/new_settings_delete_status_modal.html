@@ -1,0 +1,16 @@
+<!-- Modal to tell user what was updated -->
+{% extends "new_settings.html" %}
+
+{% block body %}
+    <dialog open>
+        <h3>Delete Status</h3>
+            <p>{{ delete_status['Status'] }}</p>
+            <p>{{ delete_status['Message'] }}</p>
+            {% if delete_status['Backup_Path'] %}
+            <p>Backup Path: {{ delete_status['Backup_Path'] }}</p>
+            {% endif %}
+        <form method="dialog">
+            <button class="modal-button">Close</button>
+        </form>
+    </dialog>
+{% endblock %}

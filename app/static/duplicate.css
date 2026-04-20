@@ -4,6 +4,7 @@
     width: fit-content;
     margin-right: auto;
     margin-left: auto;
+    margin-top: 2rem;
 }
 
 .container h2 {
@@ -92,4 +93,12 @@
 /* Transition formatting */
 .transition_css {
     transition: background-color 0.2s ease-in-out;
+}
+
+/* No results message */
+.no-results {
+    margin-top: 2rem;
+    text-align: center;
+    font-weight: 600;
+    color: #9fbaff;
 }
