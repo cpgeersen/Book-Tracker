@@ -104,19 +104,19 @@
 - [x] 4.4: Create database purge function. (US403)
 - [x] 4.11: Tag filter functionality
 - [x] 4.12: Genre filter functionality
-- [ ] 4.13: Implement proper back button functionality based on current route
+- [x] 4.13: Implement proper back button functionality based on current route
 - [x] 4.19: Cache OpenLibrary searches with JSON
 - [x] 4.22: Finalize OpenLibrary Functionality
 
 
 ### Theme: UI Tasks
-- [ ] 4.2: Create themes (US401)
+- [x] 4.2: Create themes (US401)
 - [ ] 4.5: Create the analytics frontend. (US507)
 - [ ] 4.6: Create the user settings frontend. (US508)
-- [ ] 4.8: Individual book page edits
-  - [ ] 4.8.1: Fix cover image sizing to be fixed
-  - [ ] 4.8.2: Fix spacing of page
-  - [ ] 4.8.3: Add styling to buttons that are missing styling
+- [x] 4.8: Individual book page edits
+  - [x] 4.8.1: Fix cover image sizing to be fixed
+  - [x] 4.8.2: Fix spacing of page
+  - [x] 4.8.3: Add styling to buttons that are missing styling
 - [x] 4.9: Add styling to individual book page pop-ups
   - [x] 4.9.1: Deletion Pop-up
   - [x] 4.9.2: Update OL Pop-up
@@ -128,44 +128,50 @@
 - [x] 4.18: Create error status code frontend pages
   - [x] 4.18.1: Status Code 500
   - [x] 4.18.2: Status Code 404
-- [ ] 4.20: Local Search Edits
-  - [ ] 4.20.1: Align filters with page title rather than nav bar
-  - [ ] 4.20.2: Make filters in search frontend collapsible
-  - [ ] 4.20.3: For book card results, move book page button link to right-middle
-  - [ ] 4.20.4: Add genres into book card
+- [x] 4.20: Local Search Edits
+  - [x] 4.20.1: Align filters with page title rather than nav bar
+  - [x] 4.20.2: Make filters in search frontend collapsible
+  - [x] 4.20.3: For book card results, move book page button link to right-middle
+  - [x] 4.20.4: Add genres into book card
 - [x] 4.21: Finalize OpenLibrary Search Frontend
 - [x] 4.23: Deduplicate Interface
 
 ## Sprint 5
 ### Theme: Business Logic Tasks
-- [ ] 4.5: Using existing database functionality, transition to using Flask's idiomatic way of using SQLite
-- [ ] 5.5: Real book sample data for mocking
-- [ ] 5.6: Purge function for cover images when database purged
+- [x] 5.5: Real book sample data for mocking
+- [x] 5.6: Purge function for cover images when database purged
 - [ ] 5.7: Reset user settings to defaults (default username and theme)
-- [ ] 5.9: Pagination
-- [ ] 5.14: Integrate OL backend with OL frontend
+- [x] 5.14: Integrate OL backend with OL frontend
+- [ ] 5.21: Account for names with Jr.
+- [x] 5.22: Make sure None is not entered as a summary
+- [ ] 5.24: Foreign Author support
+- [x] 5.25: Make sure genre_1 is fiction or nonfiction before frontend
+- [ ] 5.28: Refactor Analytics and user settings functions
 
 ### Theme: UI Tasks
-- [ ] 5.4: Better UI scaling for larger screen resolutions
-- [ ] 5.8: Style buttons that are missing styling
-- [ ] 5.11: Style select elements
-- [ ] 5.12: Chapters progress bar
-- [ ] 5.13: Limit Cover Image size
-- [ ] 5.15: Help modal
+- [x] 5.4: Better UI scaling for larger screen resolutions
+- [x] 5.8: Style buttons that are missing styling
+- [x] 5.11: Style select elements
+- [x] 5.12: Chapters progress bar
+- [x] 5.13: Limit Cover Image size
+- [x] 5.15: Help modal
 - [ ] 5.16: Delete cache frontend in settings
-
-
-### Theme: Float
-(Push any tasks here as needed)
+- [x] 5.18: Fix delay on some transitions
+- [x] 5.19: Make sure all elements like buttons have select cursors
+- [x] 5.20: Fix selection hover effect
+- [ ] 5.23: Limit note amount entered
+- [ ] 5.26: Make genres and tags side-by-side in frontend
+- [ ] 5.27: Make Total chapters and chapters read side-by-side in frontend
 
 ### Theme: QA/QC
-- [ ] 5.1: User can download 1.0 release and use application on supported hardware. (US601)
-- [ ] 5.2: Make sure implementation of API follows documentation. (US602)
-- [ ] 5.3: Make sure color and contrast ADA standards for the UI are followed. (US603)
-- [ ] 5.10: Try to break app, with reasonable user interactions
-- [ ] 5.12: Everyone start looking at code
-- [ ] 5.17: Usability testing
+- [x] 5.1: User can download 1.0 release and use application on supported hardware. (US601)
+- [x] 5.2: Make sure implementation of API follows documentation. (US602)
+- [x] 5.3: Make sure color and contrast ADA standards for the UI are followed. (US603)
+- [x] 5.10: Try to break app, with reasonable user interactions
+- [x] 5.17: Usability testing
+- [x] 5.29: Everyone review and understand the code
 
-
-
+## Future Improvements (Deferred Nice-to-Have Tasks)
+- 4.5: Using existing database functionality, transition to using Flask's idiomatic way of using SQLite
+- 5.9: Pagination
 

@@ -10,7 +10,29 @@ def validate_book_for_frontend(json_input):
     json_input['Favorite'] = 'on' if json_input['Favorite'] == 'yes' else 'off'
     json_input['Completed'] = 'on' if json_input['Completed'] == 'yes' else 'off'
     json_input['Currently_Reading'] = 'on' if json_input['Currently_Reading'] == 'yes' else 'off'
+
+    # Rare case that genre_1 is not fiction or nonfiction
+    # This is just a presentation issue since genre number is not tracked in database
+    genre_1 = json_input.get('Genre_1')
+    genre_2 = json_input.get('Genre_2')
+    genre_3 = json_input.get('Genre_2')
+    genre_4 = json_input.get('Genre_2')
+
+    genre_1_list = ['fiction', 'nonfiction']
+
+    if genre_1 not in genre_1_list:
+        if genre_2 in genre_1_list:
+            json_input['Genre_1'] = genre_2
+            json_input['Genre_2'] = genre_1
+        elif genre_3 in genre_1_list:
+            json_input['Genre_1'] = genre_3
+            json_input['Genre_3'] = genre_1
+        elif genre_4 in genre_1_list:
+            json_input['Genre_1'] = genre_4
+            json_input['Genre_4'] = genre_1
+
     return json.dumps(json_input)
+
 
 def validate_book_from_local(json_input):
     json_output = {}
@@ -57,6 +79,7 @@ def validate_author(json_input):
 
     author_first_name_1 = json_input.get('Author_First_Name_1', '')
     author_last_name_1 = json_input.get('Author_Last_Name_1', '')
+    author_full_name_1 = json_input.get('Author_Full_Name_1', '')
 
     if (author_first_name_1 == '' or author_first_name_1 == 'None' or
         author_first_name_1 is None):
@@ -67,11 +90,13 @@ def validate_author(json_input):
 
     json_output.update({'Author_First_Name_1': author_first_name_1.strip()})
     json_output.update({'Author_Last_Name_1': author_last_name_1.strip()})
+    json_output.update({'Author_Full_Name_1': author_full_name_1.strip()})
 
 
 
     author_first_name_2 = json_input.get('Author_First_Name_2', '')
     author_last_name_2 = json_input.get('Author_Last_Name_2', '')
+    author_full_name_2 = json_input.get('Author_Full_Name_2', '')
 
     if (author_first_name_2 == '' or author_first_name_2 == 'None' or
         author_first_name_2 is None):
@@ -82,6 +107,7 @@ def validate_author(json_input):
 
     json_output.update({'Author_First_Name_2': author_first_name_2.strip()})
     json_output.update({'Author_Last_Name_2': author_last_name_2.strip()})
+    json_output.update({'Author_Full_Name_2': author_full_name_2.strip()})
 
     return json_output
 

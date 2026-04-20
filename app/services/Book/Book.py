@@ -7,7 +7,7 @@ from app.services.Book.BookRead import (read_full_book_record, get_all_book_isbn
 from app.services.Book.BookUpdate import (update_summary, update_chapters, update_read_chapters,
                                           update_tags, update_cover_image, update_genre, update_publisher_id,
                                           update_publisher_year, update_book_title_record)
-from app.services.Book.BookDelete import delete_book_record, delete_book_author_table_record
+from app.services.Book.BookDelete import delete_book_record, delete_book_author_table_record, delete_book_genre
 from app.services.Book.BookNotes import create_note, read_note, update_note, delete_note, is_note_id_in_note_table
 from app.services.Book.BookPredicate import is_isbn_in_book_table, is_publisher_name_in_publisher_table
 
@@ -61,8 +61,8 @@ def update_book_chapters(isbn, chapters):
 def update_book_chapters_completed(isbn, chapters_completed):
     return update_read_chapters(isbn, chapters_completed)
 
-def update_book_tags(tag_id, owned, favorite, completed, currently_reading):
-    return update_tags(tag_id, owned, favorite, completed, currently_reading)
+def update_book_tags(tag_id, owned, favorite, completed, currently_reading, personal_or_academic):
+    return update_tags(tag_id, owned, favorite, completed, currently_reading, personal_or_academic)
 
 def update_book_cover_image(isbn, cover_image_path):
     return update_cover_image(isbn, cover_image_path)
@@ -90,6 +90,9 @@ def update_book_note(json_input):
 
 def delete_book_note(json_input):
     return delete_note(json_input)
+
+def delete_genre(isbn, genre_id):
+    return delete_book_genre(isbn, genre_id)
 
 def delete_book_cover_image(isbn, cover_image_path):
 

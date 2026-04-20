@@ -1,11 +1,15 @@
-from flask import render_template, send_from_directory
+import json
+
+from flask import render_template, send_from_directory, request
 
 # Route imports
 from app.routes.add_local_book_route import add_local_book_route
 from app.routes.individual_book_route import individual_book_route
 from app.routes.local_search_route import local_search_route
 from app.routes.openlibrary_search_route import openlibrary_search_route
+from app.services.Mediator.mediator_delete import mediator_delete
 from app.services.OpenLibrary.openlibrary_search_cache import create_cache
+from app.services.deduplicate_books import de_duplicate_books, de_duplicate_books_refactor
 
 # Test Route Import
 from app.routes.test import test_bp
@@ -77,6 +81,20 @@ def create_routes(app):
     @app.route('/dashboard', methods=['GET'])
     def dashboard_page():
         return render_template("analytics.html", **_analytics_placeholder_data()), 200
+    
+    @app.route('/book/deduplicate', methods=['POST', 'GET'])
+    def dedup_page():
+        if request.method == 'GET':
+            response = de_duplicate_books_refactor()
+            return render_template('deduplicate.html', book_result=response), 200
+        else: #Implicit POST for Deleting a Book
+            isbn = dict(request.form).get('ISBN')
+            print(isbn)
+            json_input = json.dumps({'ISBN': isbn})
+            mediator_delete(json_input, 'dedupe')
+
+            response = de_duplicate_books_refactor()
+            return render_template('deduplicate.html', book_result=response), 200
 
 #------------------------------------------------------
 # Author: Christopher O'Brien

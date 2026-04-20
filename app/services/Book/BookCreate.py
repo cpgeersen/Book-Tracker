@@ -71,7 +71,10 @@ def create_book_author_table_record(isbn, author_id):
         return True
 
 
-def create_author(author_first_name, author_last_name):
+def create_author(author_first_name, author_last_name, author_full_name):
+    if author_full_name == '':
+        author_full_name = author_first_name + ' ' + author_last_name
+
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
 
@@ -79,7 +82,7 @@ def create_author(author_first_name, author_last_name):
                                              Author_Full_Name, OpenLibrary_ID)
                         VALUES(NULL, ?, ?, ?, ?)
                     '''
-    cursor.execute(insert_author, (author_first_name, author_last_name, author_first_name + ' ' + author_last_name, 'OLID_TEMP'))
+    cursor.execute(insert_author, (author_first_name, author_last_name, author_full_name, 'OLID_TEMP'))
     conn.commit()
 
     query_author = ''' SELECT Author_ID FROM Authors WHERE
@@ -193,14 +196,16 @@ def create_book_record(json_input):
     # Book Info
     title = json_input['Title']
     summary = json_input.get('Summary', '')
-    chapters = json_input.get('Chapters', '')
-    chapters_completed = json_input.get('Chapters_Completed', '')
+    chapters = json_input.get('Chapters', 0)
+    chapters_completed = json_input.get('Chapters_Completed', 0)
 
     # Primary Author
+    author_full_name_1 = json_input.get('Author_Full_Name_1', '')
     author_first_name_1 = json_input['Author_First_Name_1']
     author_last_name_1 = json_input['Author_Last_Name_1']
 
     # Secondary Author
+    author_full_name_2 = json_input.get('Author_Full_Name_2', '')
     author_first_name_2 = json_input.get('Author_First_Name_2', '')
     author_last_name_2 = json_input.get('Author_Last_Name_2', '')
 
@@ -239,7 +244,7 @@ def create_book_record(json_input):
         create_book_author_table_record(isbn, author_id_1)
     else:
         # Otherwise we first create a new author_id
-        author_id_1 = create_author(author_first_name_1, author_last_name_1)
+        author_id_1 = create_author(author_first_name_1, author_last_name_1, author_full_name_1)
         create_book_author_table_record(isbn, author_id_1['Author_ID'])
 
 
@@ -251,7 +256,7 @@ def create_book_record(json_input):
             author_id_2 = author_2_response['Author_ID']
             create_book_author_table_record(isbn, author_id_2)
         else:
-            author_id_2 = create_author(author_first_name_2, author_last_name_2)
+            author_id_2 = create_author(author_first_name_2, author_last_name_2, author_full_name_2)
             create_book_author_table_record(isbn, author_id_2['Author_ID'])
 
     # Next we read or create publisher_id from publisher_name

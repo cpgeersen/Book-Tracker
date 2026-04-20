@@ -393,7 +393,7 @@ def read_author_name_by_isbn_full_record(isbn):
 
     # Query BookAuthor Table for ISBN provided. Joined with Author table to return AuthorID and author's first and last name.
     read_query = """
-           SELECT A.Author_ID, A.Author_First_Name, A.Author_Last_Name
+           SELECT A.Author_ID, A.Author_First_Name, A.Author_Last_Name, A.Author_Full_Name
            FROM Authors AS A
            JOIN BookAuthor AS B ON A.Author_ID = B.Author_ID
            WHERE B.ISBN = ?
@@ -414,6 +414,7 @@ def read_author_name_by_isbn_full_record(isbn):
             convert_to_dict[f"Author_ID_{index + 1}"] = tup[0]
             convert_to_dict[f"Author_First_Name_{index + 1}"] = tup[1]
             convert_to_dict[f"Author_Last_Name_{index + 1}"] = tup[2]
+            convert_to_dict[f"Author_Full_Name_{index + 1}"] = tup[3]
             count += 1
             if count > 2:
                 break
@@ -477,6 +478,7 @@ def read_full_book_record(isbn):
     author_names = read_author_name_by_isbn_full_record(isbn)
     # print(author_names)
     converted_auth_names = json.loads(author_names)
+    print(converted_auth_names)
 
     # Return Publisher name from an associated publisher ID in the Books record.
     if converted_books.get('Publisher_ID') is None:

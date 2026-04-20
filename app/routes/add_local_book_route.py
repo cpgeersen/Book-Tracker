@@ -38,7 +38,9 @@ def add_local_book_route(main_app):
 
                 # Book is created without errors
                 if book_response[1] == SUCCESS:
-                    return redirect(url_for('individual_book_page', isbn=book_result['ISBN']))
+                    # Used to maintain context of route in redirect
+                    page_origin = 'from_add_book'
+                    return redirect(url_for('individual_book_page', isbn=book_result['ISBN'],  page_origin=page_origin))
 
                 elif book_response[1] == FOUND:
                     return render_template('add_book_error_present.html'), FOUND

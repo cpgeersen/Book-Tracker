@@ -56,6 +56,7 @@ def resolve_author_olid(old_json_data, new_json_data, author_num):
     old_author_id_json = read_author_id_from_name(old_author_first_name, old_author_last_name)
 
     # Get new author information
+    new_author_full_name = new_json_data.get(f'Author_Full_Name_{author_num}')
     new_author_first_name = new_json_data.get(f'Author_First_Name_{author_num}')
     new_author_last_name = new_json_data.get(f'Author_Last_Name_{author_num}')
     new_author_id_json = read_author_id_from_name(new_author_first_name, new_author_last_name)
@@ -69,7 +70,7 @@ def resolve_author_olid(old_json_data, new_json_data, author_num):
         # When the author does not exist already, create the author records
         if old_author_id == '':
             # Create new author_id
-            author_id_json = create_author(new_author_first_name, new_author_last_name)
+            author_id_json = create_author(new_author_first_name, new_author_last_name, new_author_full_name)
 
             cursor, conn = connect_to_database()
 
@@ -123,7 +124,7 @@ def resolve_author_olid(old_json_data, new_json_data, author_num):
                                 OpenLibrary_ID = ?
                             WHERE Author_ID = ?
                         """
-        update_info = (new_author_first_name + ' ' + new_author_last_name, new_author_first_name,
+        update_info = (new_author_full_name, new_author_first_name,
                        new_author_last_name, author_olid, old_author_id,)
         cursor.execute(update_author, update_info)
         conn.commit()
