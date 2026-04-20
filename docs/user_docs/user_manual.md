@@ -14,31 +14,31 @@ Team Members: {Team Members}
 
  
 
-### Introduction
+### Introduction [Joseph]
 
 [Provide a brief introduction to the software, its purpose, and its intended audience.]
 
  
 
-### Getting Started
+### Getting Started [Nick/Collin]
 
 [Provide instructions on how to install or access the software. Include system requirements and any prerequisites.]
 
  
 
-### Features Overview
+### Features Overview [Mireliz]
 
 [Provide a high-level overview of the main features and functionalities of the software.]
 
  
 
-### Using [Software Name]
+### Using [Software Name] [Mireliz]
 
 [Feature 1]
 
 [Provide detailed instructions on how to use Feature 1. Include step-by-step guides, screenshots, and examples as needed.]
 
-[Feature 2]
+[Feature 2] 
 
 [Provide detailed instructions on how to use Feature 2. Include step-by-step guides, screenshots, and examples as needed.]
 
@@ -48,18 +48,18 @@ Team Members: {Team Members}
 
  
 
-### Troubleshooting
+### Troubleshooting [Chris]
 
 [Provide troubleshooting tips and solutions for common issues users may encounter while using the software.]
 
  
 
-### Frequently Asked Questions (FAQs)
+### Frequently Asked Questions (FAQs) [Everyone]
 
 [Provide answers to frequently asked questions about the software.]
 
  
 
-### Support and Contact Information
+### Support and Contact Information [Collin]
 
 [Provide contact information for support, including email addresses, phone numbers, and links to support resources.]
