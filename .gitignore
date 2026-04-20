@@ -36,3 +36,6 @@ venv.bak/
 # JSON
 ol_json_cache.json
 user_settings.json
+
+# CSV
+*.csv
