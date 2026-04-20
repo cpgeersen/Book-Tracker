@@ -83,11 +83,7 @@ def create_routes(app):
     @app.route('/dashboard', methods=['GET'])
     def dashboard_page():
         return render_template("analytics.html", **_analytics_placeholder_data()), 200
-
-    @app.route('/search', methods=['GET'])
-    def search_page():
-        return render_template('search.html')
-
+    
     @app.route('/book/deduplicate', methods=['POST', 'GET'])
     def dedup_page():
         if request.method == 'GET':
@@ -110,6 +106,8 @@ def create_routes(app):
 #------------------------------------------------------
     @app.route("/analytics")
     def analytics():
+        # Provide safe defaults so analytics page can render even when
+        # analytics data sources are not wired yet.
         data = _analytics_placeholder_data()
         return render_template("analytics.html", **data), 200
     #import Analytic_FunctionRefactored as AF

@@ -2,26 +2,22 @@
 <html lang="en">
 <!-- DISPLAY THE USER DATA !-->
 <head>
-    <title> User Profile </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='user_profile.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='dark.css' if theme_switch == '1' else 'light.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}"/>
-    <link id="themeStylesheet" rel="stylesheet" href="{{ url_for('static', filename='homepage.css') }}"/>
+    <title> User Profile Analytics </title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='user_profile.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='add_book.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dark.css' if theme_switch == '1' else 'light.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
+    <link id="themeStylesheet" rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homepage.css') }}"/>
 </head>
 
 <!-- ###THIS IS THE BEGINNING OF THE USER PROFILE STATISTICS SECTION### -->
 <body>
-  <div class="header-container">
-    <div class="right-text">
-            <h1>User Settings</h1>
-            <h1><a href="/workspaces/Book-Tracker/app/templates/homepage_v2.html">Homepage</a></h1>
+<main class="container">  
+    <!-- Navigation link -->
+    <div class="nav-buttons">
+        <a href="/">🏠 Home</a>
     </div>
-    <img src="{{ url_for('static', filename='images/BookTracker_Settings.png') }}" alt="User Profile Picture"
-                    alt="User Profile Picture"
-                    width="200"
-                    height="200"
-                    class="header-image">
-    </div>  
+
 
     <!-- BEGINNING OF USER STATISTICS SECTION -->
     <div class="user-statistics-container">
@@ -45,7 +41,8 @@
         </tr>
     </table>
 
-    <!-- Jinja Route #2 in userProfileRefactored.py -->
+<!-- 
+    Jinja Route #2 in userProfileRefactored.py
     <ul>
         <lable>Username</lable>
         <li>{{ username }}</li>
@@ -54,7 +51,7 @@
         <lable>View:</lable>
         <li>{{ theme }}</li>
     </ul>
-
+-->
     </div>
     <!-- END OF USER STATISTICS SECTION -->
 
@@ -66,9 +63,9 @@
     <div class="book-lists-container">
 
         <!-- I WANT THIS CONTAINER LIST TO BE ON THE LEFT-->
-        <div class="left">{{ show_currently_reading()|safe }}</div>
+        <div class="left">{{ currently_reading_list_html|safe }}</div>
         <!-- I WANT THIS CONTAINER LIST TO BE ON THE RIGHT-->
-        <div class="right">{{ show_completed()|safe }}</div>
+        <div class="right">{{ completed_list_html|safe }}</div>
         <!-- The safe label tells Jinja to render the HTML content as-is -->
 
     </div>
