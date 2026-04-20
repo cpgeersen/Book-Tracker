@@ -57,9 +57,6 @@
 
         </div>
 
-
-
-
         <!-- Book information display -->
         <div class="book-info">
 
@@ -84,15 +81,13 @@
 
           <!-- Summary display section -->
           <div id="summary-display">
-
+            <strong>Summary:</strong>
             {% if book["Summary"] %}
               <p class="summary-text">
-                <strong>Summary:</strong>
                 {{ book["Summary"] }}
               </p>
             {% else %}
               <p class="summary-text">
-                <strong>Summary:</strong>
                 No summary available.
               </p>
             {% endif %}
@@ -105,7 +100,7 @@
           <!-- Summary edit section -->
           <div id="summary-edit" class="hidden">
             <form method="POST">
-              <textarea id="summary-text" name="summary" rows="10" cols="40">{{ book["Summary"] }}</textarea >
+              <textarea id="summary-text" name="summary" rows="20" cols="85">{{ book["Summary"] }}</textarea >
 
               <br><br>
 
@@ -117,251 +112,257 @@
         </div>
       </div>
 
-      <!-- Chapter tracking section -->
-      <div class="section">
+     <!-- Chapter tracking section -->
+        <div class="section">
+            <div id="chapters-section">
+                <!-- Displays chapters read and total side-by-side -->
+                <div id="chapters-section-read">
+                    <h3 id="chapters-h3">Chapters</h3>
+                    <div class="chapters-row">
+                        <div>
+                            <strong>Chapters Read:</strong>
+                            <span id="chapters-completed">{{ book["Chapters_Completed"] }}</span>
+                        </div>
 
-        <h3>Chapters</h3>
+                        <div>
+                            <strong>Total Chapters:</strong>
+                            <span id="chapter-total-value">{{ book["Chapters"] }}</span>
+                        </div>
+                    </div>
 
-        <!-- Chapter progress display -->
-        <span>Chapters Read:</span>
-        <span id="chapters-completed">{{ book["Chapters_Completed"] }}</span>
-        <span> / </span>
-        <span id="chapter-total-value">{{ book["Chapters"] }}</span>
+                    <!-- Chapter increment / decrement buttons -->
+                    <div class="chapter-controls">
 
-        <!-- Chapter increment / decrement buttons -->
-        <div class="chapter-controls">
+                        <!-- Contains increment/decrement buttons with progress bar. -->
+                        <div class="progress-section">
+                            <button id="decrement-chapters" onclick="decrementChapters()"
+                                    class="small-button transition_css">-
+                            </button>
 
-          <!-- Contains increment/decrement buttons with progress bar. -->
-          <div class="progress-section">
-            <button id="decrement-chapters" onclick="decrementChapters()" class="small-button transition_css">-</button>
+                            <!-- Groups progress bar and percentage text overlay together -->
+                            <div class="progress-bar-container">
+                                <!-- Odd behavior but ignore the warnings here, changing it make it not work -->
+                                <progress id="book_progress" value={{ book[
+                                'Chapters_Completed'] }} max={{ book["Chapters"] }}></progress>
+                                <!-- Allows percentage to overlay progress bar. -->
+                                <div class="progress-bar-text" id="progressText"></div>
+                            </div>
 
-              <!-- Groups progress bar and percentage text overlay together -->
-              <div class="progress-bar-container">
-                <!-- Odd behavior but ignore the warnings here, changing it make it not work -->
-                <progress id="book_progress" value={{ book['Chapters_Completed'] }} max={{ book["Chapters"] }}></progress>
-                <!-- Allows percentage to overlay progress bar. -->
-                <div class="progress-bar-text" id="progressText"></div>
-              </div>
+                            <button id="increment-chapters" onclick="incrementChapters()"
+                                    class="small-button transition_css">+
+                            </button>
+                        </div>
 
-            <button id="increment-chapters" onclick="incrementChapters()" class="small-button transition_css">+</button>
-          </div>
+                        <form id="chapters_completed" method="POST">
+                            <input type="hidden" id="chapters_completed_value" name="chapters_completed"
+                                   value="{{ book['Chapters_Completed'] }}">
+                            <button type="submit" form="chapters_completed" name="chapters_completed"
+                                    class="style-button transition_css">Save
+                            </button>
+                        </form>
+                    </div>
+                </div>
 
-          <form id="chapters_completed" method="POST">
-            <input type="hidden" id="chapters_completed_value" name="chapters_completed" value="{{ book['Chapters_Completed'] }}">
-            <button type="submit" form="chapters_completed" name="chapters_completed" class="style-button transition_css">Save</button>
-          </form>
+                <br>
+
+                <!-- Chapter edit display -->
+                <div id="chapters-display">
+                    <label>Total Chapters:</label>
+                    <span>{{ book["Chapters"] }}</span>
+                    <button onclick="editChapters()" class="style-button transition_css">Edit</button>
+                </div>
+
+                <!-- Chapter edit input -->
+                <div id="chapters-edit" class="hidden">
+                    <form method="POST">
+                        <input type="number"
+                               id="chapters-input"
+                               name="chapters"
+                               min="0"
+                               value="{{ book['Chapters'] }}">
+
+                        <!-- Save chapters button -->
+                        <button onclick="saveChapters()" type="submit" class="style-button transition_css">Save</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
-        <br>
+       <!-- Wrapper to display Genres and Tags side-by-side -->
+      <div id="section-genres-tags">
+        <!-- Genres section -->
+        <div class="section">
+            <h3>Genres</h3>
+            <div id="section-genres">
 
-        <!-- Chapter edit display -->
-        <div id="chapters-display">
-          <label>Total Chapters:</label>
-          <span>{{ book["Chapters"] }}</span>
-          <button onclick="editChapters()" class="style-button transition_css">Edit</button>
-        </div>
+                <!-- Display current genres -->
+                <span class="genre-tag">{{ book["Genre_1"].title() }}</span>
 
-        <!-- Chapter edit input -->
-        <div id="chapters-edit" class="hidden">
-          <form method="POST">
-            <input type="number"
-                   id="chapters-input"
-                   name="chapters"
-                   min="0"
-                   value="{{ book['Chapters'] }}">
-
-            <!-- Save chapters button -->
-            <button onclick="saveChapters()" type="submit" class="style-button transition_css">Save</button>
-          </form>
-        </div>
-
-      </div>
-
-      <!-- Genres section -->
-      <div class="section">
-        <h3>Genres</h3>
-        <div id="section-genres">
-
-          <!-- Display current genres -->
-          <span class="genre-tag">{{ book["Genre_1"].title() }}</span>
-
-          {% if book["Genre_2"] %}
-            <span class="genre-tag">{{ book["Genre_2"].title() }}</span>
-          {% endif %}
-
-          {% if book["Genre_3"] %}
-            <span class="genre-tag">{{ book["Genre_3"].title() }}</span>
-          {% endif %}
-
-          {% if book["Genre_4"] %}
-            <span class="genre-tag">{{ book["Genre_4"].title() }}</span>
-          {% endif %}
-        </div>
-
-        <!-- Genre Delete Section -->
-        <div id="delete-genre-div" class="hidden">
-          <form method="POST" id="delete-genre">
-            <label>Select:</label>
-
-            {% if book['Genre_ID_2'] %}
-              <button onclick="changeTagValue('delete-genre-2');" class="tag toggle"
-                  id="delete-genre-2" type="button" name="delete-genre-2" value="{{ book.get('Genre_ID_2') }}">
-                  {{ book["Genre_2"].title() }}
-              </button>
-              <input type="hidden" id="delete-genre-2_value" name="Genre_2" value="off">
-              <input type="hidden" id="delete-genre-id-2_value" name="Genre_ID_2" value="{{ book.get('Genre_ID_2') }}">
+            {% if book["Genre_2"] %}
+                <span class="genre-tag">{{ book["Genre_2"].title() }}</span>
             {% endif %}
 
-            {% if book['Genre_ID_3'] %}
-              <button onclick="changeTagValue('delete-genre-3');" class="tag toggle"
-                  id="delete-genre-3" type="button" name="delete-genre-3" value="{{ book.get('Genre_ID_3') }}">
-                  {{ book["Genre_3"].title() }}
-              </button>
-              <input type="hidden" id="delete-genre-3_value" name="Genre_3" value="off">
-              <input type="hidden" id="delete-genre-id-3_value" name="Genre_ID_3" value="{{ book.get('Genre_ID_3') }}">
+            {% if book["Genre_3"] %}
+                <span class="genre-tag">{{ book["Genre_3"].title() }}</span>
             {% endif %}
 
-            {% if book['Genre_ID_4'] %}
-              <button onclick="changeTagValue('delete-genre-4');" class="tag toggle"
-                  id="delete-genre-4" type="button" name="delete-genre-4" value="{{ book.get('Genre_ID_4') }}">
-                  {{ book["Genre_4"].title() }}
-              </button>
-              <input type="hidden" id="delete-genre-4_value" name="Genre_4" value="off">
-              <input type="hidden" id="delete-genre-id-4_value" name="Genre_ID_4" value="{{ book.get('Genre_ID_4') }}">
+            {% if book["Genre_4"] %}
+                <span class="genre-tag">{{ book["Genre_4"].title() }}</span>
             {% endif %}
-          </form>
+            </div>
+
+            <!-- Genre Delete Section -->
+            <div id="delete-genre-div" class="hidden">
+                <form method="POST" id="delete-genre">
+                    <label>Select:</label>
+
+                    {% if book['Genre_ID_2'] %}
+                        <button onclick="changeTagValue('delete-genre-2');" class="tag toggle"
+                        id="delete-genre-2" type="button" name="delete-genre-2" value="{{ book.get('Genre_ID_2') }}">
+                        {{ book["Genre_2"].title() }}
+                        </button>
+                        <input type="hidden" id="delete-genre-2_value" name="Genre_2" value="off">
+                        <input type="hidden" id="delete-genre-id-2_value" name="Genre_ID_2" value="{{ book.get('Genre_ID_2') }}">
+                    {% endif %}
+
+                    {% if book['Genre_ID_3'] %}
+                        <button onclick="changeTagValue('delete-genre-3');" class="tag toggle"
+                        id="delete-genre-3" type="button" name="delete-genre-3" value="{{ book.get('Genre_ID_3') }}">
+                        {{ book["Genre_3"].title() }}
+                        </button>
+                        <input type="hidden" id="delete-genre-3_value" name="Genre_3" value="off">
+                        <input type="hidden" id="delete-genre-id-3_value" name="Genre_ID_3" value="{{ book.get('Genre_ID_3') }}">
+                    {% endif %}
+
+                    {% if book['Genre_ID_4'] %}
+                        <button onclick="changeTagValue('delete-genre-4');" class="tag toggle"
+                        id="delete-genre-4" type="button" name="delete-genre-4" value="{{ book.get('Genre_ID_4') }}">
+                        {{ book["Genre_4"].title() }}
+                        </button>
+                        <input type="hidden" id="delete-genre-4_value" name="Genre_4" value="off">
+                        <input type="hidden" id="delete-genre-id-4_value" name="Genre_ID_4" value="{{ book.get('Genre_ID_4') }}">
+                    {% endif %}
+                </form>
+            </div>
+
+
+            <!-- Genre edit section -->
+            <div id="genre-edit" class="hidden">
+                <form method="POST" id="update-genre">
+                    <select id="genre1" class="select-genre">
+                        {% if book["Genre_1"] == 'fiction' %}
+                            <option value="fiction, 1">Fiction</option>
+                            <option value="nonfiction, 2">Nonfiction</option>
+                        {% else %}
+                            <option value="nonfiction, 2">Nonfiction</option>
+                            <option value="fiction, 1">Fiction</option>
+                        {% endif %}
+                    </select>
+
+                    <select id="genre2" class="select-genre">
+                        {% if book["Genre_2"] %}
+                            <option value="{{ book['Genre_2'] }}, {{ book['Genre_ID_2'] }}">{{ book["Genre_2"].title() }}</option>
+                        {% else %}
+                            <option value="None">Select A Genre</option>
+                        {% endif %}
+                        {% for genre_id, genre in book_genres.items() %}
+                            <option name="genre_2" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <select id="genre3" class="select-genre">
+                        {% if book["Genre_3"] %}
+                            <option value="{{ book['Genre_3'] }}, {{ book['Genre_ID_3'] }}">{{ book["Genre_3"].title() }}</option>
+                        {% else %}
+                            <option value="None">Select A Genre</option>
+                        {% endif %}
+                        {% for genre_id, genre in book_genres.items() %}
+                            <option name="genre_3" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <select id="genre4" class="select-genre">
+                        {% if book["Genre_4"] %}
+                            <option value="{{ book['Genre_4'] }}, {{ book['Genre_ID_4'] }}">{{ book["Genre_4"].title() }}</option>
+                        {% else %}
+                            <option value="None">Select A Genre</option>
+                        {% endif %}
+                        {% for genre_id, genre in book_genres.items() %}
+                            <option name="genre_4" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <input type="hidden" id="genre_1" name="genre_1" value="">
+                    <input type="hidden" id="genre_2" name="genre_2" value="">
+                    <input type="hidden" id="genre_3" name="genre_3" value="">
+                    <input type="hidden" id="genre_4" name="genre_4" value="">
+                </form>
+            </div>
+
+            <div id="genre-buttons">
+                <!-- Update genres buttons -->
+                <button id="update-genre-button" onclick="saveGenres()" type="submit" form="update-genre" name="update-genre" class="style-button transition_css hidden">Save Genres</button>
+                <button id="edit-genres-button" onclick="toggleGenreEdit()" class="style-button transition_css">Edit Genres</button>
+
+                <!-- Delete genres buttons -->
+                <button id="delete-genre-button" value="yes" type="submit" form="delete-genre"
+                    name="delete-genre" class="style-button transition_css hidden">
+                    Confirm Delete
+                </button>
+                <button id="delete-genres-button" onclick="toggleGenreDelete()" class="style-button transition_css">Delete Genres</button>
+            </div>
         </div>
+        <!-- Toggleable reading tags section -->
+        <div class="section">
+            <form id="tag" method="POST">
 
+                <h3>Tags</h3>
 
-        <!-- Genre edit section -->
-        <div id="genre-edit" class="hidden">
-          <form method="POST" id="update-genre">
+                <button onclick="changeTagValue('owned');" class="tag toggle {% if book['Owned']=='on' %}active{% endif %}"
+                        id="owned" type="button" name="owned" value="{{ book['Owned'] }}">Owned</button>
+                <input type="hidden" id="owned_value" name="owned" value="{{ book['Owned'] }}">
 
+                <button onclick="changeTagValue('favorite');" class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}"
+                        id='favorite' type="button" name="favorite" value="{{ book['Favorite'] }}">Favorite</button>
+                <input type="hidden" id="favorite_value" name="favorite" value="{{ book['Favorite'] }}">
 
-            <select id="genre1" class="select-genre">
-              {% if book["Genre_1"] == 'fiction' %}
-                <option value="fiction, 1">Fiction</option>
-                <option value="nonfiction, 2">Nonfiction</option>
-              {% else %}
-                <option value="nonfiction, 2">Nonfiction</option>
-                <option value="fiction, 1">Fiction</option>
-              {% endif %}
-            </select>
+                <button onclick="changeTagValue('completed');" class="tag toggle {% if book['Completed']=='on' %}active{% endif %}"
+                        id='completed' type="button" name="completed" value="{{ book['Completed'] }}">Completed</button>
+                <input type="hidden" id="completed_value" name="completed" value="{{ book['Completed'] }}">
 
+                <button onclick="changeTagValue('currently_reading');" class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}"
+                        id='currently_reading' type="button" name="currently_reading" value="{{ book['Currently_Reading'] }}">Currently Reading</button>
+                <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book['Currently_Reading'] }}">
 
-              <select id="genre2" class="select-genre">
-                {% if book["Genre_2"] %}
-                  <option value="{{ book['Genre_2'] }}, {{ book['Genre_ID_2'] }}">{{ book["Genre_2"].title() }}</option>
-                {% else %}
-                  <option value="None">Select A Genre</option>
-                {% endif %}
-                {% for genre_id, genre in book_genres.items() %}
-                  <option name="genre_2" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
-                {% endfor %}
-              </select>
+                <br>
 
+                <!-- Toggles for Personal and Academic Tags -->
+                <div id="personal-or-academic">
+                    <button onclick="changePersonalTag()" class="tag {% if book['Personal_Or_Academic']=='personal' %}active{% endif %}"
+                            id='personal' type="button" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">Personal</button>
 
-              <select id="genre3" class="select-genre">
-                {% if book["Genre_3"] %}
-                  <option value="{{ book['Genre_3'] }}, {{ book['Genre_ID_3'] }}">{{ book["Genre_3"].title() }}</option>
-                {% else %}
-                  <option value="None">Select A Genre</option>
-                {% endif %}
-                {% for genre_id, genre in book_genres.items() %}
-                  <option name="genre_3" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
-                {% endfor %}
-              </select>
+                    <span>or</span>
 
+                    <button onclick="changeAcademicTag()" class="tag {% if book['Personal_Or_Academic']=='academic' %}active{% endif %}"
+                            id='academic' type="button" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">Academic</button>
 
-              <select id="genre4" class="select-genre">
-                {% if book["Genre_4"] %}
-                  <option value="{{ book['Genre_4'] }}, {{ book['Genre_ID_4'] }}">{{ book["Genre_4"].title() }}</option>
-                {% else %}
-                  <option value="None">Select A Genre</option>
-                {% endif %}
-                {% for genre_id, genre in book_genres.items() %}
-                  <option name="genre_4" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
-                {% endfor %}
-              </select>
+                    <input type="hidden" id="personal_or_academic_value" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">
+                </div>
 
-
-            <input type="hidden" id="genre_1" name="genre_1" value="">
-            <input type="hidden" id="genre_2" name="genre_2" value="">
-            <input type="hidden" id="genre_3" name="genre_3" value="">
-            <input type="hidden" id="genre_4" name="genre_4" value="">
-
-          </form>
-
+                <!-- Save tag changes button -->
+                <button onclick="saveTags()" type="submit" form="tag" name="tag" class="style-button transition_css">Save Tags</button>
+            </form>
         </div>
-
-        <div id="genre-buttons">
-          <!-- Update genres buttons -->
-          <button id="update-genre-button" onclick="saveGenres()" type="submit" form="update-genre" name="update-genre" class="style-button transition_css hidden">Save Genres</button>
-          <button id="edit-genres-button" onclick="toggleGenreEdit()" class="style-button transition_css">Edit Genres</button>
-
-          <!-- Delete genres buttons -->
-          <button id="delete-genre-button" value="yes" type="submit" form="delete-genre"
-                name="delete-genre" class="style-button transition_css hidden">
-            Confirm Delete
-          </button>
-          <button id="delete-genres-button" onclick="toggleGenreDelete()" class="style-button transition_css">Delete Genres</button>
-        </div>
-
-      </div>
-
-      <!-- Toggleable reading tags section -->
-      <div class="section">
-        <form id="tag" method="POST">
-
-          <h3>Tags</h3>
-
-          <button onclick="changeTagValue('owned');" class="tag toggle {% if book['Owned']=='on' %}active{% endif %}"
-                  id="owned" type="button" name="owned" value="{{ book['Owned'] }}">Owned</button>
-          <input type="hidden" id="owned_value" name="owned" value="{{ book['Owned'] }}">
-
-          <button onclick="changeTagValue('favorite');" class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}"
-                  id='favorite' type="button" name="favorite" value="{{ book['Favorite'] }}">Favorite</button>
-          <input type="hidden" id="favorite_value" name="favorite" value="{{ book['Favorite'] }}">
-
-          <button onclick="changeTagValue('completed');" class="tag toggle {% if book['Completed']=='on' %}active{% endif %}"
-                  id='completed' type="button" name="completed" value="{{ book['Completed'] }}">Completed</button>
-          <input type="hidden" id="completed_value" name="completed" value="{{ book['Completed'] }}">
-
-          <button onclick="changeTagValue('currently_reading');" class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}"
-                  id='currently_reading' type="button" name="currently_reading" value="{{ book['Currently_Reading'] }}">Currently Reading</button>
-          <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book['Currently_Reading'] }}">
-
-          <br>
-
-          <!-- Toggles for Personal and Academic Tags -->
-          <div id="personal-or-academic">
-            <button onclick="changePersonalTag()" class="tag {% if book['Personal_Or_Academic']=='personal' %}active{% endif %}"
-                  id='personal' type="button" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">Personal</button>
-
-            <span>or</span>
-
-            <button onclick="changeAcademicTag()" class="tag {% if book['Personal_Or_Academic']=='academic' %}active{% endif %}"
-                  id='academic' type="button" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">Academic</button>
-
-            <input type="hidden" id="personal_or_academic_value" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">
-
-          </div>
-
-
-
-
-          <!-- Save tag changes button -->
-          <button onclick="saveTags()" type="submit" form="tag" name="tag" class="style-button transition_css">Save Tags</button>
-        </form>
       </div>
 
       <!-- Notes section -->
       <div class="section">
-        <h3>Notes</h3>
+
 
         <div id="notes" class="collapsible">
 
           <div id="notes-left">
+              <h3>Notes</h3>
             <div id="note-select">
               {% if notes %}
                 {% for note_id, note_content in notes.items() %}
@@ -383,10 +384,9 @@
               <button class="note-edit-btn transition_css" id="note-edit-delete" type="submit" form="note-edit"
                       name="note-delete">Delete Note</button>
               <input type="hidden" id="note_id" name="note_id" value="">
-              <textarea required name="note-edit" id="note-edit-textarea" rows="22" cols="40"
+              <textarea required name="note-edit" id="note-edit-textarea" rows="22" cols="40" maxlength="1200"
                         placeholder="Write a note about this book..."></textarea>
             </form>
-
           </div>
         </div>
       </div>
@@ -444,11 +444,7 @@
           <button class="no-btn modal-button" commandfor="update-confirmation-modal" command="close" >No</button>
           </div>
         </dialog>
-
-
-
       </div>
-
     </div>
   </div>
 
