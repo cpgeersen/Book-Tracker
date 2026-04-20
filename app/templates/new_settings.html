@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BookTracker</title>
+    <!--For awareness: Logo images were created with the assistance of Copilot AI.  -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/settings.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
+</head>
+
+<body>
+  <!-- Creates top section of page, divides into two sections for positioning. -->
+  <div class="header">
+    <section class="left_side">
+        <div class="nav-buttons">
+      <a href="/">🏠 Home</a>
+    </div>
+    </section>
+
+    <section class="right_side">
+      <h1>Settings</h1>
+
+    </section>
+
+  </div>
+  <div id="settings">
+      <h3>Current Settings</h3>
+      <p>Current Username:
+      {% if user_settings['Username'] %}
+          {{ user_settings['Username'] }}
+      {% endif %}
+      </p>
+      <p>Current Theme:
+      {% if user_settings['Theme'] %}
+          {{ user_settings['Theme'] }}
+      {% endif %}
+      </p>
+      <div id="settings-buttons">
+           <div>
+              <button command="show-modal" commandfor="update-settings-modal" class="style-button transition_css">Update User Settings</button>
+          </div>
+          <div>
+              <form id="csv">
+                  <input type="hidden" name="CVS" value="">
+                  <input type="file">
+                  <button class="style-button transition_css" type="submit" form="csv">Export Database (CSV)</button>
+              </form>
+
+          </div>
+          <div>
+              <button command="show-modal" commandfor="import-confirmation-modal" class="style-button transition_css">Import Database (CSV)</button>
+          </div>
+          <div>
+              <button command="show-modal" commandfor="delete-confirmation-modal" class="delete-btn style-button transition_css">Delete Entire Database</button>
+          </div>
+      </div>
+
+
+
+  </div>
+
+
+        <dialog id="delete-confirmation-modal">
+
+          <h3>Delete Database</h3>
+          <p><strong>THIS WILL DELETE THE WHOLE DATABASE</strong></p>
+          <p>WARNING: Deleting the database is irreversible.</p>
+          <p>Do you still want to delete the database?</p>
+
+          <div class="button-align">
+
+            <form id="delete" method="POST">
+              <button class="yes-btn modal-button button-group" type="submit" form="delete" name="delete" >Yes</button>
+            </form>
+            <button class="no-btn modal-button button-group" commandfor="delete-confirmation-modal" command="close" >No</button>
+          </div>
+        </dialog>
+
+        <dialog id="import-confirmation-modal">
+
+          <h3>Import Database</h3>
+          <p><strong>THIS WILL OVERWRITE THE EXISTING DATABASE</strong></p>
+          <p>WARNING: Importing a database is irreversible.</p>
+          <p>Do you still want to import a database?</p>
+
+          <div class="button-align">
+
+            <form id="import" method="POST">
+              <button class="yes-btn modal-button button-group" type="submit" form="import" name="import" >Yes</button>
+            </form>
+            <button class="no-btn modal-button button-group" commandfor="import-confirmation-modal" command="close" >No</button>
+          </div>
+        </dialog>
+
+        <dialog id="update-settings-modal">
+
+          <h3>Change User Settings</h3>
+            <form id="update-user-settings" method="POST">
+                <div>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="Username" maxlength="30">
+                </div>
+                <div>
+                    <label for="theme">Theme:</label>
+                    <select id="theme" class="select-theme" name="Theme">
+                        <option value="">Select a Theme</option>
+                        <option value="dark">Dark Mode</option>
+                        <option value="light">Light Mode</option>
+                    </select>
+                </div>
+            </form>
+          <div class="button-align">
+            <button class="yes-btn modal-button button-group" type="submit" form="update-user-settings" name="Update">Confirm</button>
+            <button class="no-btn modal-button button-group" commandfor="update-settings-modal" command="close">Cancel</button>
+          </div>
+        </dialog>
+
+</body>
+</html>
+
+

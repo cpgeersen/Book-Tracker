@@ -1,0 +1,119 @@
+.delete-btn{
+    width: max-content;
+    height: max-content;
+}
+/* Main styling for large buttons */
+.style-button {
+    margin-top: 1rem;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: none;
+    background-color: #6366f1;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Hover styling for large buttons */
+.style-button:hover {
+    background-color: #4f46e5;
+}
+
+/* Adds smooth transition animation for hover styling */
+.transition_css {
+      transition: background-color 0.2s ease-in-out;
+}
+
+
+/* Resizes the Book Tracker Logo png */
+.Logo {
+    width: 300px;
+    height: auto;
+}
+
+/*Aligns the top portion of the webpage. */
+.header {
+    display: flex;
+    gap:10px;
+    margin-bottom: 3rem;
+    margin-top: 2rem;
+
+
+}
+
+/* Formats the logo's position. */
+.left_side {
+    margin-left: 7rem;
+    padding: 20px;
+
+}
+
+/*Formats the header and website description.*/
+.right_side {
+    margin-top: 1rem;
+    padding: 2rem;
+    background-color: #1f2933;
+    border-radius: 8px;
+    width: 20%;
+
+}
+
+#settings{
+    background-color: #111827;
+    border: solid;
+    border-radius: 8px;
+    border-color: #374151;
+    padding: 2rem;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+#settings-buttons{
+    display: flex;
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+#update-user-settings{
+    padding: 2rem;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+#update-user-settings > div{
+    gap: 20px;
+}
+
+/* Theme option styling */
+.select-theme{
+    border: none;
+    background-color: #374151;
+    color: white;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    margin-top: 0.4rem;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

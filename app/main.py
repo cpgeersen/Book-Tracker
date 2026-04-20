@@ -13,11 +13,12 @@ from app.services.deduplicate_books import de_duplicate_books, de_duplicate_book
 
 # Test Route Import
 from app.routes.test import test_bp
+from app.services.mediator import read, update
 
 # Imports used for Mocking
 from app.services.mocking.create_example_records import create_sample_books
 from app.services.mocking.create_many_records import create_many_records
-
+from app.services.user_settings.user_settings import create_user_settings_json
 
 # Status Codes
 SUCCESS = 200
@@ -32,6 +33,9 @@ INTERNAL_SERVER_ERROR = 500
 
 # Create OpenLibrary Search Cache
 create_cache()
+
+# Create User Settings
+create_user_settings_json()
 
 # Main Route Creation for the App
 def create_routes(app):
@@ -61,9 +65,23 @@ def create_routes(app):
         return render_template('search.html')
 
     # WIP
-    @app.route('/settings', methods=['GET'])
+    @app.route('/settings', methods=['GET', 'POST'])
     def settings_page():
-        return 'WIP', 200
+        if request.method == 'GET':
+            response = read({}, 'user-settings')
+            return render_template('new_settings.html', user_settings=response), 200
+        else: # Implicit POST
+            user_action = dict(request.form)
+            print(user_action)
+
+            if user_action.get('Update') is not None:
+                response = update(json.dumps(user_action), 'user-settings')
+
+            if user_action.get('CSV') is not None:
+                pass
+
+            response = read({}, 'user-settings')
+            return render_template('new_settings.html', user_settings=response), 200
 
     # WIP
     @app.route('/book/deduplicate', methods=['POST', 'GET'])
