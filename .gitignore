@@ -33,5 +33,6 @@ venv.bak/
 *.jpeg
 *.jpg
 
-# JSON Cache
+# JSON
 ol_json_cache.json
+user_settings.json
