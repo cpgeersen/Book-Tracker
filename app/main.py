@@ -40,6 +40,21 @@ create_user_settings_json()
 # Main Route Creation for the App
 def create_routes(app):
 
+
+    def _analytics_placeholder_data():
+        return {
+            "theme_switch": "0",
+            "total_books": 0,
+            "owned_books": 0,
+            "currently_reading": 0,
+            "completed": 0,
+            "favorite_genre": "N/A",
+            "currently_reading_list_html": "",
+            "completed_list_html": "",
+        }
+
+
+
     # Register Blueprints Used for Testing
     app.register_blueprint(test_bp)
 
@@ -60,6 +75,14 @@ def create_routes(app):
     @app.route('/template-assets/<path:filename>', methods=['GET'])
     def template_asset(filename):
         return send_from_directory(app.template_folder, filename)
+
+    @app.route('/settings-temp', methods=['GET'])
+    def settings_page():
+        return render_template('settings.html'), 200
+
+    @app.route('/dashboard', methods=['GET'])
+    def dashboard_page():
+        return render_template("analytics.html", **_analytics_placeholder_data()), 200
 
     @app.route('/search', methods=['GET'])
     def search_page():
@@ -87,7 +110,8 @@ def create_routes(app):
 #------------------------------------------------------
     @app.route("/analytics")
     def analytics():
-        return 'WIP', 200
+        data = _analytics_placeholder_data()
+        return render_template("analytics.html", **data), 200
     #import Analytic_FunctionRefactored as AF
 
     #@app.route("/analytics")
