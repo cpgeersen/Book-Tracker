@@ -122,18 +122,11 @@
 
         <h3>Chapters</h3>
 
-<!-- Displays chapters read and total side-by-side -->
-<div class="chapters-row" style="display: flex; gap: 40px;">
-  <div>
-    <strong>Chapters Read:</strong>
-    <span id="chapters-completed">{{ book["Chapters_Completed"] }}</span>
-  </div>
-
-  <div>
-    <strong>Total Chapters:</strong>
-    <span id="chapter-total-value">{{ book["Chapters"] }}</span>
-  </div>
-</div>
+        <!-- Chapter progress display -->
+        <span>Chapters Read:</span>
+        <span id="chapters-completed">{{ book["Chapters_Completed"] }}</span>
+        <span> / </span>
+        <span id="chapter-total-value">{{ book["Chapters"] }}</span>
 
         <!-- Chapter increment / decrement buttons -->
         <div class="chapter-controls">
@@ -184,11 +177,8 @@
 
       </div>
 
-      <!-- Wrapper to display Genres and Tags side-by-side -->
-      <div class="row section-row" style="display: flex; gap: 20px; align-items: flex-start;">
-      
       <!-- Genres section -->
-      <div class="section half" style="flex: 1;">
+      <div class="section">
         <h3>Genres</h3>
         <div id="section-genres">
 
@@ -242,9 +232,11 @@
           </form>
         </div>
 
+
         <!-- Genre edit section -->
         <div id="genre-edit" class="hidden">
           <form method="POST" id="update-genre">
+
 
             <select id="genre1" class="select-genre">
               {% if book["Genre_1"] == 'fiction' %}
@@ -256,38 +248,42 @@
               {% endif %}
             </select>
 
-            <select id="genre2" class="select-genre">
-              {% if book["Genre_2"] %}
-                <option value="{{ book['Genre_2'] }}, {{ book['Genre_ID_2'] }}">{{ book["Genre_2"].title() }}</option>
-              {% else %}
-                <option value="None">Select A Genre</option>
-              {% endif %}
-              {% for genre_id, genre in book_genres.items() %}
-                <option name="genre_2" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
-              {% endfor %}
-            </select>
 
-            <select id="genre3" class="select-genre">
-              {% if book["Genre_3"] %}
-                <option value="{{ book['Genre_3'] }}, {{ book['Genre_ID_3'] }}">{{ book["Genre_3"].title() }}</option>
-              {% else %}
-                <option value="None">Select A Genre</option>
-              {% endif %}
-              {% for genre_id, genre in book_genres.items() %}
-                <option name="genre_3" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
-              {% endfor %}
-            </select>
+              <select id="genre2" class="select-genre">
+                {% if book["Genre_2"] %}
+                  <option value="{{ book['Genre_2'] }}, {{ book['Genre_ID_2'] }}">{{ book["Genre_2"].title() }}</option>
+                {% else %}
+                  <option value="None">Select A Genre</option>
+                {% endif %}
+                {% for genre_id, genre in book_genres.items() %}
+                  <option name="genre_2" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                {% endfor %}
+              </select>
 
-            <select id="genre4" class="select-genre">
-              {% if book["Genre_4"] %}
-                <option value="{{ book['Genre_4'] }}, {{ book['Genre_ID_4'] }}">{{ book["Genre_4"].title() }}</option>
-              {% else %}
-                <option value="None">Select A Genre</option>
-              {% endif %}
-              {% for genre_id, genre in book_genres.items() %}
-                <option name="genre_4" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
-              {% endfor %}
-            </select>
+
+              <select id="genre3" class="select-genre">
+                {% if book["Genre_3"] %}
+                  <option value="{{ book['Genre_3'] }}, {{ book['Genre_ID_3'] }}">{{ book["Genre_3"].title() }}</option>
+                {% else %}
+                  <option value="None">Select A Genre</option>
+                {% endif %}
+                {% for genre_id, genre in book_genres.items() %}
+                  <option name="genre_3" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                {% endfor %}
+              </select>
+
+
+              <select id="genre4" class="select-genre">
+                {% if book["Genre_4"] %}
+                  <option value="{{ book['Genre_4'] }}, {{ book['Genre_ID_4'] }}">{{ book["Genre_4"].title() }}</option>
+                {% else %}
+                  <option value="None">Select A Genre</option>
+                {% endif %}
+                {% for genre_id, genre in book_genres.items() %}
+                  <option name="genre_4" value="{{ genre }}, {{ genre_id }}">{{ genre.title() }}</option>
+                {% endfor %}
+              </select>
+
 
             <input type="hidden" id="genre_1" name="genre_1" value="">
             <input type="hidden" id="genre_2" name="genre_2" value="">
@@ -295,12 +291,15 @@
             <input type="hidden" id="genre_4" name="genre_4" value="">
 
           </form>
+
         </div>
 
         <div id="genre-buttons">
+          <!-- Update genres buttons -->
           <button id="update-genre-button" onclick="saveGenres()" type="submit" form="update-genre" name="update-genre" class="style-button transition_css hidden">Save Genres</button>
           <button id="edit-genres-button" onclick="toggleGenreEdit()" class="style-button transition_css">Edit Genres</button>
 
+          <!-- Delete genres buttons -->
           <button id="delete-genre-button" value="yes" type="submit" form="delete-genre"
                 name="delete-genre" class="style-button transition_css hidden">
             Confirm Delete
@@ -310,8 +309,8 @@
 
       </div>
 
-      <!-- Tags section (now side-by-side) -->
-      <div class="section half" style="flex: 1;">
+      <!-- Toggleable reading tags section -->
+      <div class="section">
         <form id="tag" method="POST">
 
           <h3>Tags</h3>
@@ -334,6 +333,7 @@
 
           <br>
 
+          <!-- Toggles for Personal and Academic Tags -->
           <div id="personal-or-academic">
             <button onclick="changePersonalTag()" class="tag {% if book['Personal_Or_Academic']=='personal' %}active{% endif %}"
                   id='personal' type="button" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">Personal</button>
@@ -347,10 +347,6 @@
 
           </div>
 
-        </form>
-      </div>
-
-      </div>
 
 
 
@@ -388,8 +384,7 @@
                       name="note-delete">Delete Note</button>
               <input type="hidden" id="note_id" name="note_id" value="">
               <textarea required name="note-edit" id="note-edit-textarea" rows="22" cols="40"
-          maxlength="250"
-          placeholder="Write a note about this book..."></textarea>
+                        placeholder="Write a note about this book..."></textarea>
             </form>
 
           </div>
