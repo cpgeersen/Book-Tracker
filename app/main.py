@@ -1,4 +1,5 @@
 import json
+import os
 
 from flask import render_template, send_from_directory, request
 
@@ -36,6 +37,14 @@ create_cache()
 
 # Create User Settings
 create_user_settings_json()
+
+# Creates the Cover Image Path
+cover_image_path = os.path.join("app", "static", "images", "cover_images")
+try:
+    os.mkdir(cover_image_path)
+except FileExistsError:
+    pass
+
 
 # Main Route Creation for the App
 def create_routes(app):
@@ -75,10 +84,6 @@ def create_routes(app):
     @app.route('/template-assets/<path:filename>', methods=['GET'])
     def template_asset(filename):
         return send_from_directory(app.template_folder, filename)
-
-    @app.route('/settings-temp', methods=['GET'])
-    def settings_page_temp():
-        return render_template('settings.html'), 200
 
     @app.route('/dashboard', methods=['GET'])
     def dashboard_page():

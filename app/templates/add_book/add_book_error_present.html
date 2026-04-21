@@ -1,12 +1,12 @@
 <!-- Modal indicating Book Present for add_book.html -->
-{% extends "add_book.html" %}
+{% extends "add_book/add_book.html" %}
 
 {% block body %}
     <dialog open>
         <h3>Error</h3>
         <p>This book is already present.</p>
         <form method="dialog">
-            <button class="modal-button">Close</button>
+            <button class="modal-button button-align2 close-button">Close</button>
         </form>
      </dialog>
 {% endblock %}

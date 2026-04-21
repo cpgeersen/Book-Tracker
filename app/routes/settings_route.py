@@ -12,18 +12,20 @@ def settings_route(main_app):
     def settings_page():
         if request.method == 'GET':
             user_settings_values = read({}, 'user-settings')
-            return render_template('new_settings.html', user_settings=user_settings_values), 200
+            return render_template('settings/settings.html', user_settings=user_settings_values), 200
         else: # Implicit POST
             user_action = dict(request.form)
             user_settings_values = read({}, 'user-settings')
 
             if user_action.get('Update') is not None:
                 response = update(json.dumps(user_action), 'user-settings')
+                user_settings_values = read({}, 'user-settings')
+                return render_template('settings/settings.html', user_settings=user_settings_values), 200
 
             if user_action.get('CSV_Export') is not None:
                 response = export_database_to_csv()
 
-                return render_template('new_settings_export_import_modal.html',
+                return render_template('settings/settings_export_import_modal.html',
                                        user_settings=user_settings_values, csv_status=response), 200
 
             if user_action.get('CSV_Import') is not None:
@@ -32,7 +34,7 @@ def settings_route(main_app):
                 file_extension = file.content_type.split('/')[-1]
 
                 if file_extension != 'csv':
-                    return render_template('new_settings_export_import_modal.html',
+                    return render_template('settings/settings_export_import_modal.html',
                                            user_settings=user_settings_values,
                                            csv_status={'Status': 'Failure',
                                                        'Message': 'File not supported. Must be a CSV'}), 200
@@ -42,20 +44,20 @@ def settings_route(main_app):
                 file.save(file_path)
                 response = import_database_from_csv(file_path, 'RESET')
 
-                return render_template('new_settings_export_import_modal.html',
+                return render_template('settings/settings_export_import_modal.html',
                                        user_settings=user_settings_values, csv_status=response), 200
 
             if user_action.get('Delete_Database') is not None:
                 delete_status = delete({}, 'delete-database')
-                return render_template('new_settings_delete_status_modal.html',
+                return render_template('settings/settings_delete_status_modal.html',
                                        user_settings=user_settings_values, delete_status=delete_status), 200
 
             if user_action.get('Delete_Cover_Images') is not None:
                 delete_status = delete({}, 'all-cover-images')
-                return render_template('new_settings_delete_status_modal.html',
+                return render_template('settings/settings_delete_status_modal.html',
                                        user_settings=user_settings_values, delete_status=delete_status), 200
 
             if user_action.get('Dedupe') is not None:
                 return redirect(url_for('dedup_page'))
 
-            return render_template('new_settings.html', user_settings=user_settings_values), 200
+            return render_template('settings/settings.html', user_settings=user_settings_values), 200

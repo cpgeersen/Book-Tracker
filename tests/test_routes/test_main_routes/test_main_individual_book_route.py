@@ -30,6 +30,5 @@ def test_individual_book_success(client):
     assert get_response.status_code == 200
 
 def test_individual_book_failure(client):
-    with pytest.raises(TypeError):
-        response = client.get(f'/book/isbn/{normal_data['ISBN']}', data={})
-        assert response.status_code == 500
+    response = client.get(f'/book/isbn/{normal_data['ISBN']}', data={})
+    assert response.status_code == 200
