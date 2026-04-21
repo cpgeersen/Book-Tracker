@@ -79,7 +79,7 @@ def local_search_route(main_app):
                                        book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
 
         elif search_type == 'author':
-            author_name = request.args.get('search', 'author')
+            author_name = request.args.get('search', 'author').strip()
             author_name_list = author_name.split(' ')
 
             if len(author_name) == 0:
@@ -87,19 +87,19 @@ def local_search_route(main_app):
                 return render_template(search_page, books=book_result, search_type='author',
                                        book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
 
+            author_name_json = {}
+
             match len(author_name_list):
                 case 1:
                     author_name_json = {'Author_Last_Name': author_name_list[0].strip()}
-                case 2:
-                    author_name_json = {'Author_Last_Name': author_name_list[1].strip(),
-                                        'Author_First_Name': author_name_list[0].strip()}
                 case _:
-                    return 'Not valid'  # Add error pop up here
+                    author_name_json = {'Author_Last_Name': author_name_list[-1].strip(),
+                                        'Author_First_Name': author_name_list[0].strip()}
 
             book_result = json.loads(read(author_name_json, 'book-author', filter_json=filter_type))
 
             if dict(book_result).get('Error') == 'Author not found':
-                return render_template('search.html', books={}, search_type='author',
+                return render_template(search_page, books={}, search_type='author',
                                        book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
             else:
                 return render_template(search_page, books=book_result, search_type='author',
