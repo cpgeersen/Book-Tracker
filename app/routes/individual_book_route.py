@@ -29,6 +29,8 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+view_book_page = 'individual_book/view_book.html'
+view_book_page_update_modal = 'individual_book/view_book_ol_update_modal.html'
 search_page_modal = 'local_search/search_error_isbn.html'
 
 def individual_book_route(main_app):
@@ -55,13 +57,12 @@ def individual_book_route(main_app):
 
         if request.method == 'GET':
             # Display the result
-            return render_template('view_book.html', book=book_result, notes=note_result,
+            return render_template(view_book_page, book=book_result, notes=note_result,
                                    book_genres=BOOK_GENRES_SORTED, page_origin=page), 200
 
         elif request.method == 'POST':
 
             book_update = dict(request.form)
-            print(book_update)
 
             if book_update.get('update_with_ol') is not None:
                 json_input = json.dumps({'ISBN': isbn, 'Cover_Image_Update': book_update.get('update_cover'),
@@ -70,7 +71,7 @@ def individual_book_route(main_app):
 
                 book_result = json.loads(read(isbn_dict, 'book-isbn'))
 
-                return render_template('view_book_ol_update_modal.html', book=book_result, notes=note_result,
+                return render_template(view_book_page_update_modal, book=book_result, notes=note_result,
                                        book_genres=BOOK_GENRES_SORTED, updated_records=response, page_origin=page), 200
 
             elif book_update.get('summary') is not None:
@@ -159,7 +160,7 @@ def individual_book_route(main_app):
                 if file.filename == '':
                     book_result = json.loads(read(isbn_dict, 'book-isbn'))
                     note_result = read(isbn_dict, 'note')
-                    return render_template('view_book.html', book=book_result,
+                    return render_template(view_book_page, book=book_result,
                                            notes=note_result, book_genres=BOOK_GENRES_SORTED, page_origin=page), 200
 
                 if file and allowed_file(file.filename):
@@ -172,8 +173,8 @@ def individual_book_route(main_app):
             book_result = json.loads(read(isbn_dict, 'book-isbn'))
             note_result = read(isbn_dict, 'note')
 
-            return render_template('view_book.html', book=book_result, notes=note_result,
+            return render_template(view_book_page, book=book_result, notes=note_result,
                                    book_genres=BOOK_GENRES_SORTED, page_origin=page), 200
 
         else:
-            return render_template('view_book.html'), 200
+            return render_template(view_book_page), 200
