@@ -29,6 +29,8 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+search_page_modal = 'local_search/search_error_isbn.html'
+
 def individual_book_route(main_app):
     @main_app.route('/book/isbn/<isbn>', methods=['GET', 'POST'])
     def individual_book_page(isbn):
@@ -48,7 +50,7 @@ def individual_book_route(main_app):
 
         # This error occurs when the ISBN does not exist in database
         except TypeError as error:
-            return render_template('search_error_isbn.html', book_genres=BOOK_GENRES_SORTED,
+            return render_template(search_page_modal, book_genres=BOOK_GENRES_SORTED,
                                    filter_json={})
 
         if request.method == 'GET':
