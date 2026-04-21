@@ -19,6 +19,8 @@ def settings_route(main_app):
 
             if user_action.get('Update') is not None:
                 response = update(json.dumps(user_action), 'user-settings')
+                user_settings_values = read({}, 'user-settings')
+                return render_template('new_settings.html', user_settings=user_settings_values), 200
 
             if user_action.get('CSV_Export') is not None:
                 response = export_database_to_csv()

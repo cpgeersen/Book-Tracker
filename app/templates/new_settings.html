@@ -127,12 +127,12 @@
             <form id="update-user-settings" method="POST">
                 <div>
                     <label for="username">Username:</label>
-                    <input type="text" id="username" name="Username" maxlength="30">
+                    <input type="text" id="username" name="Username" maxlength="30" value="{{ user_settings['Username'] }}">
                 </div>
                 <div>
                     <label for="theme">Theme:</label>
                     <select id="theme" class="select-theme" name="Theme">
-                        <option value="">Select a Theme</option>
+                        <option value="{{ user_settings['Theme'] }}">Select a Theme</option>
                         <option value="dark">Dark Mode</option>
                         <option value="light">Light Mode</option>
                     </select>
