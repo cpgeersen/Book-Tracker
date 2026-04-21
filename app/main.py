@@ -85,10 +85,6 @@ def create_routes(app):
     def template_asset(filename):
         return send_from_directory(app.template_folder, filename)
 
-    @app.route('/settings-temp', methods=['GET'])
-    def settings_page_temp():
-        return render_template('settings.html'), 200
-
     @app.route('/dashboard', methods=['GET'])
     def dashboard_page():
         return render_template("analytics.html", **_analytics_placeholder_data()), 200
