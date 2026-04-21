@@ -43,13 +43,13 @@ def add_local_book_route(main_app):
                     return redirect(url_for('individual_book_page', isbn=book_result['ISBN'],  page_origin=page_origin))
 
                 elif book_response[1] == FOUND:
-                    return render_template('add_book_error_present.html'), FOUND
+                    return render_template('add_book/add_book_error_present.html'), FOUND
 
                 elif book_response[1] == BAD_REQUEST:
-                    return render_template('add_book_error_malformed.html'), BAD_REQUEST
+                    return render_template('add_book/add_book_error_malformed.html'), BAD_REQUEST
 
             except TypeError as error:
-                return render_template('add_book_error_malformed.html'), BAD_REQUEST
+                return render_template('add_book/add_book_error_malformed.html'), BAD_REQUEST
 
         # Implicit GET request
-        return render_template('add_book.html')
+        return render_template('add_book/add_book.html')

@@ -55,3 +55,9 @@ dialog > p {
     margin-right: auto;
     width: fit-content;
 }
+
+.close-button{
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+}
