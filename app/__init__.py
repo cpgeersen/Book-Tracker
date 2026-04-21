@@ -26,9 +26,6 @@ def create_app():
     # 500 Internal Server Error
     @app.errorhandler(500)
     def internal_server_error(error):
-        if request.path.startswith('/book/isbn/'):
-            return render_template('search_error_isbn.html'), 500
-        else:
-            return render_template('status_500.html'), 500
+        return render_template('status_500.html'), 500
 
     return app

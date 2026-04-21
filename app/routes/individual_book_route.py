@@ -48,7 +48,8 @@ def individual_book_route(main_app):
 
         # This error occurs when the ISBN does not exist in database
         except TypeError as error:
-            return INTERNAL_SERVER_ERROR  # !WIP! add full error page
+            return render_template('search_error_isbn.html', book_genres=BOOK_GENRES_SORTED,
+                                   filter_json={})
 
         if request.method == 'GET':
             # Display the result
