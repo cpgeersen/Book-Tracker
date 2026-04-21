@@ -1,0 +1,17 @@
+<!-- Modal to tell user what was updated -->
+{% extends "ol_search/openlibrary_search.html" %}
+
+{% block body %}
+    <dialog open>
+        <h3>Purge OpenLibrary Cache</h3>
+            <p>Success:</p>
+            <p>{{ purge_status['Message'] }}</p>
+
+        <form method="dialog">
+            <div class="close-button">
+                <button class="modal-button">Close</button>
+            </div>
+
+        </form>
+    </dialog>
+{% endblock %}

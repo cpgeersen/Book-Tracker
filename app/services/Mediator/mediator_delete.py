@@ -1,6 +1,7 @@
 import json
 
 from app.services.Book.Book import delete_book_cover_image, delete_book, delete_book_note, delete_genre, read_book
+from app.services.OpenLibrary.openlibrary_search_cache import purge_cache
 from app.services.user_settings.delete_database import reset_database, purge_cover_images
 
 
@@ -63,6 +64,8 @@ def mediator_delete(json_input, delete_type):
         return reset_database('RESET')
     elif delete_type == 'all-cover-images':
         return purge_cover_images()
+    elif delete_type == 'cache':
+        return purge_cache()
 
     else:
         return 'Error: Not a valid call'

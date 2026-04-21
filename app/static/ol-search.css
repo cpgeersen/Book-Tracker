@@ -1,3 +1,43 @@
 .book-info h3 {
     width: 490px;
 }
+
+#header{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    column-gap: 5rem;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#header > div{
+    align-content: center;
+    width: fit-content;
+}
+
+#header > h1{
+    width: max-content;
+}
+
+/* Main styling for large buttons */
+.style-button {
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: none;
+    background-color: #6366f1;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Hover styling for large buttons */
+.style-button:hover {
+    background-color: #4f46e5;
+}
+
+/* Adds smooth transition animation for hover styling */
+.transition_css {
+      transition: background-color 0.2s ease-in-out;
+}
+
