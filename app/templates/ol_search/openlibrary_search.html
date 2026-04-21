@@ -24,7 +24,19 @@
             <a href="/">🏠 Home</a>
         </div>
 
-        <h1 id="page-title">OpenLibrary Search</h1>
+
+        <div id="header">
+            <h1 id="page-title">OpenLibrary Search</h1>
+            <div>
+                <form id="purge-cache-form">
+                    <input type="hidden" name="Purge_Cache" value="True" formmethod="POST">
+                    <button class="transition_css style-button" type="submit" form="purge-cache-form">
+                        Purge OpenLibrary Cache
+                    </button>
+                </form>
+
+            </div>
+        </div>
 
         <!-- Search form -->
         <form method="GET" action="/add-openlibrary" class="search-form">

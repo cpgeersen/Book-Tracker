@@ -61,3 +61,6 @@ dialog > p {
     margin-right: auto;
     margin-left: auto;
 }
+.close-button > button{
+    margin-left: 0;
+}

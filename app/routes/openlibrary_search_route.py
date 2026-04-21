@@ -1,14 +1,16 @@
 from flask import request, render_template
 
-from app.services.mediator import read, create
+from app.services.mediator import read, create, delete
 
 ol_search_page = 'ol_search/openlibrary_search.html'
 ol_search_page_modal = 'ol_search/openlibrary_search_modal_isbn.html'
+ol_search_cache_modal = 'ol_search/openlibrary_search_cache_modal.html'
 
 
 def openlibrary_search_route(main_app):
     @main_app.route('/add-openlibrary', methods=['POST', 'GET'])
     def openlibrary_search():
+        print(request.method)
         if request.method == 'GET':
             search_type = request.args.get('search_type')
 
@@ -50,6 +52,11 @@ def openlibrary_search_route(main_app):
                 response = read(author_dict, 'ol-book-author')
 
                 return render_template(ol_search_page, books=response, search_type='author'), 200
+
+            # GET that calls the Purge Cache function
+            if request.args.get('Purge_Cache') is not None:
+                response = delete({}, 'cache')
+                return render_template(ol_search_cache_modal, purge_status=response), 200
 
             else:
                 return render_template(ol_search_page), 200
