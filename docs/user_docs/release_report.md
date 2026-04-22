@@ -24,8 +24,7 @@ Team Members: {Team Members}
 ### Development Highlights
 
 - Project Initiation [Holly]:
-
-    [Describe the start of the project, including kickoff meetings and initial planning.]
+The project’s official kickoff meeting took place on January 28, 2026.  During this meeting, the development team reviewed the software requirements  specification (SRS) documentation and determined the project’s scope and goals.  The team also reviewed the project timeline, which consisted of five two-week sprints dedicated to feature development and implementation. 
 
 - Requirements Gathering [Holly]:
 
