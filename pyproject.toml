@@ -5,9 +5,27 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "book-tracker"
 version = "0.1.0"
+dependencies = [
+	"Flask>=3.0.0",
+	"requests>=2.31.0",
+]
+
+[project.scripts]
+book-tracker = "run:main"
 
 [tool.setuptools]
 py-modules = ["run"]
+include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["app*"]
+
+[tool.setuptools.package-data]
+app = [
+	"templates/*.html",
+	"static/*.css",
+	"static/*.json",
+	"static/images/*",
+	"static/images/**/*",
+	"data/*.json",
+]
