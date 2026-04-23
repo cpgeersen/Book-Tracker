@@ -22,29 +22,33 @@
     <div class="user-stats">
         <div id="books-total">
             <h3>Books in Database:</h3>
-            <p>10</p>
+            <p>{{ stats['Total_Books'] }}</p>
         </div>
 
         <div id="books-owned">
             <h3>Books Owned:</h3>
-            <p>3</p>
+            <p>{{ stats['Total_Owned'] }}</p>
         </div>
 
         <div id="books-reading">
             <h3>Books Currently Reading:</h3>
-            <p>1</p>
+            <p>{{ stats['Total_Reading'] }}</p>
         </div>
 
         <div id="books-completed">
             <h3>Books Completed:</h3>
-            <p>2</p>
+            <p>{{ stats['Total_Completed'] }}</p>
         </div>
 
 
     </div>
     <div id="genres">
         <h3>Most Read Genres:</h3>
-        <p></p>
+        <div class="genres">
+            {% for genre in stats['Genres'] %}
+            <span>{{ genre[0].title() }} | {{ genre[1] }} Book(s)</span>
+            {% endfor %}
+        </div>
     </div>
 
 </main>
