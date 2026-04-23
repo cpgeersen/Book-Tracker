@@ -8,7 +8,6 @@ from app.services.user_settings.delete_database import reset_database, purge_cov
 def mediator_delete(json_input, delete_type):
     if delete_type == 'book':
         json_input = json.loads(json_input)
-        print(json_input)
 
         isbn = json_input['ISBN']
 
@@ -29,7 +28,6 @@ def mediator_delete(json_input, delete_type):
         return response
 
     elif delete_type == 'genre':
-        print(json_input)
         isbn = json_input['ISBN']
 
         json_output = dict()
@@ -57,7 +55,6 @@ def mediator_delete(json_input, delete_type):
 
         # Used to fix slight mismatch in delete and internal tracking of cover image
         json_input.update({'Cover_Image_Path': json_input['Cover_Image']})
-        print(json_input)
         return mediator_delete(json.dumps(json_input), 'book')
 
     elif delete_type == 'delete-database':

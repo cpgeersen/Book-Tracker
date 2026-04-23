@@ -55,15 +55,11 @@ def mediator_update(json_input, update_type):
 
             genre_number = 1
             while genre_number < 5:
-                print(type(json_input[f'Genre_{genre_number}_ID_Old']))
                 if json_input[f'Genre_{genre_number}_ID_Old'] is None:
-                    print('here')
                     if json_input[f'Genre_{genre_number}_ID_New'] == 'None':
-                        print('continue')
                         genre_number += 1
                         continue
                     else:
-                        print('create')
                         create_book_genre(json_input['ISBN'], json_input[f'Genre_{genre_number}_ID_New'])
 
                 if json_input[f'Genre_{genre_number}_ID_New'] != json_input[f'Genre_{genre_number}_ID_Old']:

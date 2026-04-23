@@ -32,7 +32,6 @@ book = {"ISBN": "0061091464",
 def test_read_book_table_success():
     create_book(book)
     response = json.loads(read_book_table(book['ISBN']))
-    print(response)
     assert response['ISBN'] == book['ISBN']
     assert response['Title'] == book['Title']
     assert response['Publish_Year'] == book['Publish_Year']

@@ -32,7 +32,6 @@ book = {"ISBN": "0061091464",
 def test_read_author_name_by_isbn_full_record_success():
     create_book(book)
     response = json.loads(read_author_name_by_isbn_full_record(book['ISBN']))
-    print(response)
     assert response['Author_ID_1'] == 1
     assert response['Author_First_Name_1'] == 'Clive'
     assert response['Author_Last_Name_1'] == 'Barker'
@@ -42,7 +41,6 @@ def test_read_author_name_by_isbn_full_record_success():
 
 def test_read_author_name_by_isbn_full_record_failure():
     response = json.loads(read_author_name_by_isbn_full_record(book['ISBN']))
-    print(response)
     assert response['Error'] == 'ISBN not found'
 
 

@@ -15,7 +15,6 @@ from app.services.validate_json.validate_openlibrary_json import validate_isbn_s
 def mediator_read(json_input, read_type, filter_json):
     try:
         if read_type == 'book-all':
-
             # Sort results ascending by title
             result = sort_results_by_title(read_all_books())
 

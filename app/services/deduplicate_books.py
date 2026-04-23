@@ -33,8 +33,6 @@ def de_duplicate_books():
         result = [dict(row) for row in cursor.fetchall()]
         conn.close()
 
-        print(result)
-
         if result:
             # Create dict to hold duplicates.
             de_duplicate_dict = {}

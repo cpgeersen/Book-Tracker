@@ -30,9 +30,7 @@ book = {"ISBN": "0061091464",
 def test_read_author_name_success():
     create_book(book)
     author_id = read_author_id(book['ISBN'])
-    print(author_id)
     response = json.loads(read_author_name(author_id))
-    print(response)
     assert response['1'] == ['Clive', 'Barker']
     assert response['2'] == ['John', 'Doe']
 

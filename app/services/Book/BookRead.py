@@ -47,7 +47,6 @@ def read_book_table(isbn):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        #return "ISBN not found" # Changed to json to make output consistent
         return json.dumps({"Error": "ISBN not found", "Status_Code": "404"})
 
 
@@ -81,7 +80,6 @@ def read_author_id(isbn):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        #return "ISBN not found" # Changed to json to make output consistent
         return json.dumps({"Error": "ISBN not found", "Status_Code": "404"})
 
 
@@ -143,7 +141,6 @@ def read_author_name(author_ids):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        #return "Author_ID not found" # Changed to json to make output consistent
         return json.dumps({"Error": "Author_ID not found", "Status_Code": "404"})
 
 
@@ -181,7 +178,6 @@ def read_author_name_by_isbn(isbn):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        #return "ISBN not found" # Changed to json to make output consistent
         return json.dumps({"Error": "ISBN not found", "Status_Code": "404"})
 
 
@@ -207,7 +203,6 @@ def read_publisher_name(publisher_id):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        #return "Publisher_ID not found" # Changed to json to make output consistent
         return json.dumps({"Error": "Publisher_ID not found", "Status_Code": "404"})
 
 
@@ -260,7 +255,6 @@ def read_tag_table(tag_id):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        #return "Tag_ID not found" # Changed to json to make output consistent
         return json.dumps({"Error": "Tag_ID not found", "Status_Code": "404"})
 
 
@@ -299,7 +293,6 @@ def read_genres_ids(isbn):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        #return "ISBN not found" # Changed to json to make output consistent
         return json.dumps({"Error": "ISBN not found", "Status_Code": "404"})
 
 
@@ -355,7 +348,6 @@ def read_genres(genre_ids):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        #return "Genre_ID not found" # Changed to json to make output consistent
         return json.dumps({"Error": "Genre_ID not found", "Status_Code": "404"})
 
 
@@ -382,7 +374,6 @@ def read_publisher_name_for_full_book_record(publisher_id):
         json_format = json.dumps(convert_to_dict)
         return json_format
     else:
-        #return "Publisher_ID not found" # Changed to json to make output consistent
         return json.dumps({"Error": "Publisher_ID not found", "Status_Code": "404"})
 
 
@@ -471,14 +462,11 @@ def read_genres_for_full_book_record(genre_ids):
 def read_full_book_record(isbn):
     # Return Book table records for ISBN.
     read_book_table_record = read_book_table(isbn)
-    # print(read_book_table_record)
     converted_books = json.loads(read_book_table_record)
 
     # Return Author Names associated with ISBN.
     author_names = read_author_name_by_isbn_full_record(isbn)
-    # print(author_names)
     converted_auth_names = json.loads(author_names)
-    print(converted_auth_names)
 
     # Return Publisher name from an associated publisher ID in the Books record.
     if converted_books.get('Publisher_ID') is None:
@@ -509,7 +497,6 @@ def read_full_book_record(isbn):
 
 
 # Additional Functions that will be used later from the frontend
-
 
 # Function needed for 2.11.1. Returns all ISBNs when searching by title. Return results in JSON formatting.
 def read_isbn_by_title(title):
@@ -545,7 +532,6 @@ def read_isbn_by_title(title):
         return json_format
 
     else:
-        #return "Title not found" # Changed to json to make output consistent
         return json.dumps({"Error": "Title not found", "Status_Code": "404"})
 
 
@@ -586,12 +572,6 @@ def read_isbn_by_author(author_last_name, author_first_name=None):
     # Get a cursor and connection to database
     cursor, conn = connect_to_database()
 
-    #read_query = "SELECT ISBN FROM Books WHERE Title LIKE ?"
-    #criteria = ('%'+title.strip()+'%',)
-    #cursor.execute(read_query, criteria)
-    #result = cursor.fetchall()
-    #conn.close()
-
     # Convert arguments into a list to determine search criteria.
     criteria = [value for value in (author_last_name, author_first_name) if value is not None]
 
@@ -629,7 +609,6 @@ def read_isbn_by_author(author_last_name, author_first_name=None):
         return json_format
 
     else:
-        #return "Author not found"
         return json.dumps({"Error": "Author not found", "Status_Code": "404"})
 
 
@@ -693,7 +672,6 @@ def read_isbn_by_genre_id(genre_id):
         return json_format
 
     else:
-        #return "Genre not found"
         return json.dumps({"Error": "No books with genre", "Status_Code": "404"})
 
 

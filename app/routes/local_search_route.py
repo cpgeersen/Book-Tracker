@@ -26,7 +26,6 @@ def local_search_route(main_app):
     def local_search_page():
         search_type = request.args.get('search_type')
         filter_type = dict(request.args)
-        print(filter_type)
 
         if search_type == 'isbn':
             isbn = request.args.get('search', 'isbn')
