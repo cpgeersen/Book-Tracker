@@ -1,3 +1,5 @@
+import os
+import shutil
 import random
 from app.services.Book.Book import create_book
 
@@ -105,13 +107,19 @@ def create_many_records(num_of_records):
                 genre_1 = random.choice(genre_1_list)
                 genres = random.sample(genre_list, k=3)
 
+                # Generate cover images
+                file_name = f'{isbn}_cover_image.jpg'
+                file_path = os.path.join('app', 'static', 'images', 'cover_images', file_name)
+                # Image Courtesy of: https://unsplash.com/photos/long-coated-black-and-white-dog-during-daytime-mx0DEnfYxic
+                shutil.copy(os.path.join('app', 'services', 'mocking', 'baptist.jpg'), file_path)
+
                 book = {"ISBN": f"{isbn}",
                         "Title": f"{title}",
                         "Publish_Year": f"{year}",
                         "Summary": "",
                         "Chapters": f"{chapters}",
                         "Chapters_Completed": f"{chapters_completed}",
-                        "Cover_Image": "",
+                        "Cover_Image": f'/static/images/cover_images/{file_name}',
                         "Author_First_Name_1": f"{author_first_name_1}",
                         "Author_Last_Name_1": f"{author_last_name_1}",
                         "Author_First_Name_2": f"{author_first_name_2}",
