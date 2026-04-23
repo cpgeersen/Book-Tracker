@@ -55,12 +55,20 @@
 /* Formats book info section */
 .book-info {
     flex: 1;
-    min-width: 300px;
+    min-width: 600px;
+    max-height: 620px;
     border: solid;
     border-radius: 8px;
     border-color: #374151;
     padding: 3rem;
     padding-top: 1rem;
+
+}
+
+.book-info > h2{
+    max-width: 450px;
+    overflow-x: hidden;
+    word-break: break-word;
 }
 
 .summary-text{
@@ -77,7 +85,7 @@
     min-width: 30rem;
     max-width: 40rem;
     max-height: 15rem;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-wrap: break-word;
     white-space: pre-line;
     white-space-collapse: preserve-breaks;
