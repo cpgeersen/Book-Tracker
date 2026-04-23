@@ -1,0 +1,82 @@
+/* Centered card container */
+.container {
+    max-width: 700px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: #111827;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+h1{
+    background-color: #374151;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+/* Tag badges */
+.genres {
+    justify-content: space-between;
+}
+
+.genres span {
+    background-color: #374151;
+    border-radius: 6px;
+    display: inline-block;
+    font-size: 0.75rem;
+    margin-right: 0.4rem;
+    margin-left: 0.4rem;
+    margin-top: 0.8rem;
+    padding: 0.3rem 0.6rem;
+}
+
+.user-stats{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.stat{
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.stat-number{
+    font-size: 18px;
+}
+
+.stat-block{
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+    border: solid;
+    border-radius: 8px;
+    border-color: #374151;
+    padding: 1rem;
+
+}
+
+.side-by-side{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1rem;
+    height: 400px;
+    margin-bottom: 4rem;
+}
+
+.book-list{
+    height: 315px;
+    width: 300px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    word-break: break-word;
+}
+
+.book-list > ul > li{
+    padding-bottom: 2rem;
+    padding-right: 1rem;
+}

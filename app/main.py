@@ -1,10 +1,11 @@
 import json
 import os
 
-from flask import render_template, send_from_directory, request
+from flask import render_template, request
 
 # Route imports
 from app.routes.add_local_book_route import add_local_book_route
+from app.routes.dashboard import dashboard_route
 from app.routes.individual_book_route import individual_book_route
 from app.routes.local_search_route import local_search_route
 from app.routes.openlibrary_search_route import openlibrary_search_route
@@ -43,26 +44,11 @@ cover_image_path = os.path.join("app", "static", "images", "cover_images")
 try:
     os.mkdir(cover_image_path)
 except FileExistsError:
-    pass
+    pass    # passively ignore if the directory exists
 
 
 # Main Route Creation for the App
 def create_routes(app):
-
-
-    def _analytics_placeholder_data():
-        return {
-            "theme_switch": "0",
-            "total_books": 0,
-            "owned_books": 0,
-            "currently_reading": 0,
-            "completed": 0,
-            "favorite_genre": "N/A",
-            "currently_reading_list_html": "",
-            "completed_list_html": "",
-        }
-
-
 
     # Register Blueprints Used for Testing
     app.register_blueprint(test_bp)
@@ -75,20 +61,13 @@ def create_routes(app):
     local_search_route(app)
     openlibrary_search_route(app)
     settings_route(app)
+    dashboard_route(app)
 
 
     @app.route('/', methods=['GET'])
     def homepage():
         return render_template('homepage.html')
 
-    @app.route('/template-assets/<path:filename>', methods=['GET'])
-    def template_asset(filename):
-        return send_from_directory(app.template_folder, filename)
-
-    @app.route('/dashboard', methods=['GET'])
-    def dashboard_page():
-        return render_template("analytics.html", **_analytics_placeholder_data()), 200
-    
     @app.route('/book/deduplicate', methods=['POST', 'GET'])
     def dedup_page():
         if request.method == 'GET':
@@ -103,33 +82,6 @@ def create_routes(app):
             response = de_duplicate_books_refactor()
             return render_template('deduplicate.html', book_result=response), 200
 
-#------------------------------------------------------
-# Author: Christopher O'Brien
-# 03.30.26
-# [Y/N] APPROVED (username)
-# Description: This function works to populate the Jinja User Profile template
-#------------------------------------------------------
-    @app.route("/analytics")
-    def analytics():
-        # Provide safe defaults so analytics page can render even when
-        # analytics data sources are not wired yet.
-        data = _analytics_placeholder_data()
-        return render_template("analytics.html", **data), 200
-    #import Analytic_FunctionRefactored as AF
-
-    #@app.route("/analytics")
-    #def analytics():
-    #    cursor = get_db_cursor()  # however you obtain it
-
-    #    data = {
-    #        "favorite_genre": AF.get_favorite_genre(cursor),
-    #        "total_books": AF.get_total_books(cursor),
-    #        "owned_books": AF.get_owned_books(cursor),
-    #        "currently_reading": AF.get_currently_reading(cursor),
-    #        "completed": AF.get_completed(cursor)
-    #    }
-
-    #return render_template("analytics.html", **data)
 
 if __name__ == '__main__':
     pass
