@@ -1,0 +1,39 @@
+/* Centered card container */
+.container {
+    max-width: 700px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: #111827;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+h1{
+    background-color: #374151;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.user-stats{
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1rem;
+}
+
+.user-stats > div{
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.user-stats > div > p{
+    font-size: 18px;
+}
+
+#genres{
+    margin-top: 5rem;
+    border: solid;
+    border-radius: 8px;
+    border-color: #374151;
+    padding: 1rem;
+}
