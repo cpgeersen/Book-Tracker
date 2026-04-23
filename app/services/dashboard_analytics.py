@@ -18,6 +18,8 @@ def analytics_for_dashboard():
     reading = currently_reading_books()
     completed = completed_books()
     genres = most_read_genres()
+    completed_books_list = list_of_completed_books()
+    currently_reading_books_list = list_of_current_books()
 
     if total is not None:
         json_output.update(total)
@@ -29,6 +31,10 @@ def analytics_for_dashboard():
         json_output.update(completed)
     if genres is not None:
         json_output.update(genres)
+    if completed_books_list is not None:
+        json_output.update(completed_books_list)
+    if currently_reading_books_list is not None:
+        json_output.update(currently_reading_books_list)
 
     return json_output
 
@@ -134,8 +140,41 @@ def most_read_genres():
         return None
 
 
+def list_of_completed_books():
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+    try:
+        query = ''' SELECT Books.Title AS title
+                    FROM Books
+                    RIGHT JOIN Tags ON Books.Tag_ID = Tags.Tag_ID
+                    WHERE Tags.Completed = 'yes'
+                '''
+        cursor.execute(query)
+        completed = [ {"Title": row[0]} for row in cursor.fetchall() ]
+        conn.close()
+        return {"Completed_Books": completed}
 
+    except sqlite3.Error as e:
+        print(f"Database connection error: {e}")
+        return None
 
+def list_of_current_books():
+    # Get a cursor and connection to database
+    cursor, conn = connect_to_database()
+    try:
+        query = ''' SELECT Books.Title AS title
+                    FROM Books
+                    RIGHT JOIN Tags ON Books.Tag_ID = Tags.Tag_ID
+                    WHERE Tags.Currently_Reading = 'yes'
+                '''
+        cursor.execute(query)
+        currently_reading = [ {"Title": row[0]} for row in cursor.fetchall() ]
+        conn.close()
+        return {"Currently_Reading": currently_reading}
+
+    except sqlite3.Error as e:
+        print(f"Database connection error: {e}")
+        return None
 
 
 

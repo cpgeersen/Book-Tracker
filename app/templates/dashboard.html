@@ -20,29 +20,49 @@
 
     <h1>User Analytics</h1>
     <div class="user-stats">
-        <div id="books-total">
+        <div id="books-total" class="stat">
             <h3>Books in Database:</h3>
-            <p>{{ stats['Total_Books'] }}</p>
+            <p class="stat-number">{{ stats['Total_Books'] }}</p>
         </div>
 
-        <div id="books-owned">
+        <div id="books-owned" class="stat">
             <h3>Books Owned:</h3>
-            <p>{{ stats['Total_Owned'] }}</p>
+            <p class="stat-number">{{ stats['Total_Owned'] }}</p>
         </div>
-
-        <div id="books-reading">
-            <h3>Books Currently Reading:</h3>
-            <p>{{ stats['Total_Reading'] }}</p>
-        </div>
-
-        <div id="books-completed">
-            <h3>Books Completed:</h3>
-            <p>{{ stats['Total_Completed'] }}</p>
-        </div>
-
-
     </div>
-    <div id="genres">
+
+    <div class="side-by-side">
+        <div class="stat-block">
+            <div id="books-reading" class="stat">
+                <h3>Books Currently Reading:</h3>
+                <p class="stat-number">{{ stats['Total_Reading'] }}</p>
+            </div>
+            <div class="book-list">
+                <ul>
+                    {% for book in stats['Currently_Reading'] %}
+                    <li>{{ book['Title'] }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="stat-block">
+            <div id="books-completed" class="stat">
+                <h3>Books Completed:</h3>
+                <p class="stat-number">{{ stats['Total_Completed'] }}</p>
+            </div>
+            <div class="book-list">
+                <ul>
+                    {% for book in stats['Completed_Books'] %}
+                    <li>{{ book['Title'] }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="stat-block">
         <h3>Most Read Genres:</h3>
         <div class="genres">
             {% for genre in stats['Genres'] %}
