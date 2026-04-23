@@ -58,7 +58,6 @@ def test_add_book_success(client):
 
 def test_add_book_bad_request(client):
     response = client.post('/book/add-local', data=normal_data)
-    print(response)
     assert response.status_code == FOUND
 
 # def test_a(client):

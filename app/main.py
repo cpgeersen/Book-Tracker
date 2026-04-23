@@ -75,7 +75,7 @@ def create_routes(app):
             return render_template('deduplicate.html', book_result=response), 200
         else: #Implicit POST for Deleting a Book
             isbn = dict(request.form).get('ISBN')
-            print(isbn)
+
             json_input = json.dumps({'ISBN': isbn})
             mediator_delete(json_input, 'dedupe')
 

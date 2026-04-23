@@ -5,8 +5,6 @@ from app.services.OpenLibrary.openlibrary_api import search_books_by_isbn, get_w
 def complete_book_from_isbn_ol(isbn):
     ol_data = search_books_by_isbn(isbn)
 
-    print(ol_data)
-
     if "error" in ol_data:
         return {"error": "ISBN not present in OpenLibrary, please use another ISBN or search via Title"}
 
@@ -31,7 +29,6 @@ def complete_book_from_isbn_ol(isbn):
         if "key" in ol_data["works"][0]:
             work_key = ol_data["works"][0]["key"]
 
-    print(work_key)
 
     author_1 = None
     author_1_olid = None
@@ -229,7 +226,6 @@ def complete_books_from_title_ol(query, limit=5):
                                     last_name = name_list[0].strip()
                                     author_2 = first_name + ' ' + last_name
 
-        print('here7')
         final_results[f"Book_Result_{index}"] = {
             "Title": title,
             "Publish_Year": publish_year,

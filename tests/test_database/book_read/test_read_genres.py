@@ -31,7 +31,6 @@ book = {"ISBN": "0061091464",
 def test_read_genres_success():
     create_book(book)
     genre_ids = read_genres_ids(book['ISBN'])
-    print(genre_ids)
     genres = json.loads(read_genres(genre_ids))
     assert genres == {'1': 'fiction', '111': 'fantasy', '113': 'horror', '191': 'children'}
 

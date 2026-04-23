@@ -10,7 +10,6 @@ ol_search_cache_modal = 'ol_search/openlibrary_search_cache_modal.html'
 def openlibrary_search_route(main_app):
     @main_app.route('/add-openlibrary', methods=['POST', 'GET'])
     def openlibrary_search():
-        print(request.method)
         if request.method == 'GET':
             search_type = request.args.get('search_type')
 
