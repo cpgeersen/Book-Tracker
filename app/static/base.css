@@ -10,6 +10,7 @@ body {
 /* Navigation links (Back + Home) */
 .nav-buttons {
     margin-bottom: 1rem;
+    display: flex;
 }
 
 .nav-buttons a {
@@ -21,6 +22,18 @@ body {
     transition-timing-function: ease-in-out;    
 }
 
+.nav-buttons > div {
+    padding: 0.5rem;
+    align-self: center;
+    margin-right: 0;
+    margin-left: auto;
+}
+
 .nav-buttons a:hover {
     color: #4f46e5;
+}
+
+/* Styling for help modals */
+.help > dialog{
+    width: 600px;
 }

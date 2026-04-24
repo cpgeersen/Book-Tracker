@@ -1,0 +1,75 @@
+<!-- Main modal that others extend from -->
+{% macro help_modal(title) %}
+<button command="show-modal" commandfor="help-modal" class="no-btn modal-button">Help</button>
+        <dialog id="help-modal">
+            <h3>{{ title }}</h3>
+            {{ caller() }}
+          <div class="button-align2 close-button">
+          <button class="no-btn modal-button" commandfor="help-modal" command="close" >Close</button>
+          </div>
+        </dialog>
+{% endmacro %}
+
+
+<!-- Local Search Help Modal -->
+{% macro help_modal_search(title) %}
+    {% call help_modal('Local Search Help')  %}
+        <p>Add help here.</p>
+    {% endcall %}
+{% endmacro %}
+
+
+<!-- Add Book Help Modal -->
+{% macro help_modal_add_book(title) %}
+    {% call help_modal('Add Book Help')  %}
+        <p>Add help here.</p>
+    {% endcall %}
+{% endmacro %}
+
+
+<!-- Individual Book Help Modal -->
+{% macro help_modal_individual_book(title) %}
+    {% call help_modal('Individual Book Help')  %}
+        <p>Add help here.</p>
+    {% endcall %}
+{% endmacro %}
+
+
+<!-- OpenLibrary Search Help Modal -->
+{% macro help_modal_openlibrary(title) %}
+    {% call help_modal('OpenLibrary Search Help')  %}
+        <p>Add help here.</p>
+    {% endcall %}
+{% endmacro %}
+
+
+<!-- Settings Help Modal -->
+{% macro help_modal_settings(title) %}
+    {% call help_modal('Settings Help')  %}
+        <p>Add help here.</p>
+    {% endcall %}
+{% endmacro %}
+
+
+<!-- Dashboard Help Modal -->
+{% macro help_modal_dashboard(title) %}
+    {% call help_modal('Dashboard Help')  %}
+        <p>Add help here.</p>
+    {% endcall %}
+{% endmacro %}
+
+
+<!-- Deduplicate Help Modal -->
+{% macro help_modal_deduplicate(title) %}
+    {% call help_modal('Deduplicate Help')  %}
+        <p>Add help here.</p>
+    {% endcall %}
+{% endmacro %}
+
+
+<!-- Deduplicate Help Modal -->
+{% macro help_modal_deduplicate(title) %}
+    {% call help_modal('Deduplicate Help')  %}
+        <p>Add help here.</p>
+    {% endcall %}
+{% endmacro %}

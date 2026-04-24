@@ -20,6 +20,10 @@
       <!-- Navigation link -->
     <div class="nav-buttons">
         <a href="/">🏠 Home</a>
+        <div class="help">
+            {% from 'help_modal_macros.html' import help_modal_add_book as help %}
+                {{ help() }}
+        </div>
     </div>
 
     <h1>Add Book</h1>

@@ -16,8 +16,12 @@
   <div class="header">
     <section class="left_side">
         <div class="nav-buttons">
-      <a href="/">🏠 Home</a>
-    </div>
+            <a href="/">🏠 Home</a>
+        </div>
+        <div class="help">
+              {% from 'help_modal_macros.html' import help_modal_settings as help %}
+                {{ help() }}
+        </div>
     </section>
 
     <section class="right_side">
