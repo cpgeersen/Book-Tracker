@@ -25,6 +25,7 @@
     background-color: #1f2933;
     padding: 1rem;
     border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 /* Book group layout */

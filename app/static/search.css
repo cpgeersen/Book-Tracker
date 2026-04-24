@@ -15,6 +15,7 @@
     padding: 1.5rem;
     border-radius: 12px;
     height: fit-content;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .filters h2 {
@@ -49,6 +50,9 @@
     background-color: #111827;
     padding: 2rem;
     border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    min-height: 95vh;
+    box-sizing: border-box;
 }
 
 /* Search form styling */
@@ -59,7 +63,7 @@
 }
 
 input[type="text"] {
-    width: 100%;
+    width: 80%;
     padding: 0.6rem;
     border-radius: 8px;
     border: none;
@@ -98,6 +102,7 @@ input[type="radio"] {
     gap: 1rem;
     align-items: flex-start;
     flex-wrap: wrap;
+
 }
 
 /* Placeholder cover block */
