@@ -26,6 +26,7 @@ def local_search_route(main_app):
     def local_search_page():
         search_type = request.args.get('search_type')
         filter_type = dict(request.args)
+        user_settings_values = read({}, 'user-settings')
 
         if search_type == 'isbn':
             isbn = request.args.get('search', 'isbn')
@@ -34,7 +35,8 @@ def local_search_route(main_app):
                 book_result = read(filter_json=filter_type)
 
                 return render_template(search_page, books=book_result, search_type='isbn',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                       user_settings=user_settings_values), 200
 
             # Create a dict with the isbn, makes it possible to reuse mediator functions
             isbn_dict = {"ISBN": isbn}
@@ -51,13 +53,16 @@ def local_search_route(main_app):
 
                 if book_result == '':
                     return render_template(search_page, books={}, search_type='isbn',
-                                           book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                           book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                           user_settings=user_settings_values), 200
 
                 return render_template(search_page, books=book_result, search_type='isbn',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                       user_settings=user_settings_values), 200
             except TypeError:  # When there is no book with ISBN match
                 return render_template(search_page, books={}, search_type='isbn',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                       user_settings=user_settings_values), 200
 
         elif search_type == 'title':
             title = request.args.get('search', 'title')
@@ -65,17 +70,20 @@ def local_search_route(main_app):
             if len(title) == 0:
                 book_result = read(filter_json=filter_type)
                 return render_template(search_page, books=book_result, search_type='title',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                       user_settings=user_settings_values), 200
 
             title_json = {'Title': title.strip()}
             book_result = json.loads(read(title_json, 'book-title', filter_json=filter_type))
 
             if dict(book_result).get('Error') == 'Title not found':
                 return render_template(search_page, books={}, search_type='title',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                       user_settings=user_settings_values), 200
             else:
                 return render_template(search_page, books=book_result, search_type='title',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                       user_settings=user_settings_values), 200
 
         elif search_type == 'author':
             author_name = request.args.get('search', 'author').strip()
@@ -84,7 +92,8 @@ def local_search_route(main_app):
             if len(author_name) == 0:
                 book_result = read(filter_json=filter_type)
                 return render_template(search_page, books=book_result, search_type='author',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                       user_settings=user_settings_values), 200
 
             author_name_json = {}
 
@@ -99,15 +108,19 @@ def local_search_route(main_app):
 
             if dict(book_result).get('Error') == 'Author not found':
                 return render_template(search_page, books={}, search_type='author',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                       user_settings=user_settings_values), 200
             else:
                 return render_template(search_page, books=book_result, search_type='author',
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                       user_settings=user_settings_values), 200
         else:
             try:
                 book_result = read(filter_json=filter_type)
                 return render_template(search_page, books=book_result,
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                       user_settings=user_settings_values), 200
             except TypeError:  # When there are no books
                 return render_template(search_page, books={},
-                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type), 200
+                                       book_genres=BOOK_GENRES_SORTED, filter_json=filter_type,
+                                       user_settings=user_settings_values), 200

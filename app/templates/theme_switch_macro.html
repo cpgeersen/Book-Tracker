@@ -4,10 +4,10 @@
             <input type="hidden" name="Username" value="{{ username }}">
         {% if current_theme == 'light' %}
             <input type="hidden" name="Theme" value="dark">
-            <button type="submit" form="theme-switch-form">Change to Dark Mode</button>
+            <button class="transition_css modal-button" type="submit" form="theme-switch-form">Change to Dark Mode</button>
         {% else %}
             <input type="hidden" name="Theme" value="light">
-            <button type="submit" form="theme-switch-form">Change to Light Mode</button>
+            <button class="transition_css modal-button" type="submit" form="theme-switch-form">Change to Light Mode</button>
         {% endif %}
     </form>
 

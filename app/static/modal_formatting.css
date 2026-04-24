@@ -16,6 +16,10 @@ dialog > h3{
     text-align: center;
 }
 
+dialog label{
+    font-weight: 600;
+}
+
 dialog > p {
     padding-right: 2rem;
     padding-left: 2rem;

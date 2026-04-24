@@ -7,6 +7,9 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/settings.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
+    {% if user_settings['Theme'] == 'light' %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/light.css') }}"/>
+    {% endif %}
 </head>
 
 <body>

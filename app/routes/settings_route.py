@@ -15,6 +15,7 @@ def settings_route(main_app):
             return render_template('settings/settings.html', user_settings=user_settings_values), 200
         else: # Implicit POST
             user_action = dict(request.form)
+            print(user_action)
             user_settings_values = read({}, 'user-settings')
 
             if user_action.get('Update') is not None:
@@ -59,5 +60,8 @@ def settings_route(main_app):
 
             if user_action.get('Dedupe') is not None:
                 return redirect(url_for('dedup_page'))
+
+            if user_action.get('Theme') is not None:
+                response = update(json.dumps(user_action), 'user-settings')
 
             return render_template('settings/settings.html', user_settings=user_settings_values), 200

@@ -28,8 +28,10 @@
       {% endif %}
       <a href="/">🏠 Home</a>
       <div class="help">
-        {% from 'help_modal_macros.html' import help_modal_individual_book as help %}
+          {% from 'help_modal_macros.html' import help_modal_openlibrary as help %}
             {{ help() }}
+          {% from 'theme_switch_macro.html' import theme_switch as switch %}
+            {{ switch( user_settings['Theme'], user_settings['Username']) }}
       </div>
     </div>
 
