@@ -10,6 +10,9 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='view_book.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
+  {% if user_settings['Theme'] == 'light' %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/light.css') }}"/>
+  {% endif %}
 </head>
 
 <body>
@@ -223,7 +226,7 @@
                     <label>Select:</label>
 
                     {% if book['Genre_ID_2'] %}
-                        <button onclick="changeTagValue('delete-genre-2');" class="tag toggle"
+                        <button onclick="changeTagValue('delete-genre-2');" class="transition_css tag toggle"
                         id="delete-genre-2" type="button" name="delete-genre-2" value="{{ book.get('Genre_ID_2') }}">
                         {{ book["Genre_2"].title() }}
                         </button>
@@ -232,7 +235,7 @@
                     {% endif %}
 
                     {% if book['Genre_ID_3'] %}
-                        <button onclick="changeTagValue('delete-genre-3');" class="tag toggle"
+                        <button onclick="changeTagValue('delete-genre-3');" class="transition_css tag toggle"
                         id="delete-genre-3" type="button" name="delete-genre-3" value="{{ book.get('Genre_ID_3') }}">
                         {{ book["Genre_3"].title() }}
                         </button>
@@ -241,7 +244,7 @@
                     {% endif %}
 
                     {% if book['Genre_ID_4'] %}
-                        <button onclick="changeTagValue('delete-genre-4');" class="tag toggle"
+                        <button onclick="changeTagValue('delete-genre-4');" class="transition_css tag toggle"
                         id="delete-genre-4" type="button" name="delete-genre-4" value="{{ book.get('Genre_ID_4') }}">
                         {{ book["Genre_4"].title() }}
                         </button>
@@ -324,19 +327,19 @@
 
                 <h3>Tags</h3>
 
-                <button onclick="changeTagValue('owned');" class="tag toggle {% if book['Owned']=='on' %}active{% endif %}"
+                <button onclick="changeTagValue('owned');" class="transition_css tag toggle {% if book['Owned']=='on' %}active{% endif %}"
                         id="owned" type="button" name="owned" value="{{ book['Owned'] }}">Owned</button>
                 <input type="hidden" id="owned_value" name="owned" value="{{ book['Owned'] }}">
 
-                <button onclick="changeTagValue('favorite');" class="tag toggle {% if book['Favorite']=='on' %}active{% endif %}"
+                <button onclick="changeTagValue('favorite');" class="transition_css tag toggle {% if book['Favorite']=='on' %}active{% endif %}"
                         id='favorite' type="button" name="favorite" value="{{ book['Favorite'] }}">Favorite</button>
                 <input type="hidden" id="favorite_value" name="favorite" value="{{ book['Favorite'] }}">
 
-                <button onclick="changeTagValue('completed');" class="tag toggle {% if book['Completed']=='on' %}active{% endif %}"
+                <button onclick="changeTagValue('completed');" class="transition_css tag toggle {% if book['Completed']=='on' %}active{% endif %}"
                         id='completed' type="button" name="completed" value="{{ book['Completed'] }}">Completed</button>
                 <input type="hidden" id="completed_value" name="completed" value="{{ book['Completed'] }}">
 
-                <button onclick="changeTagValue('currently_reading');" class="tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}"
+                <button onclick="changeTagValue('currently_reading');" class="transition_css tag toggle {% if book['Currently_Reading']=='on' %}active{% endif %}"
                         id='currently_reading' type="button" name="currently_reading" value="{{ book['Currently_Reading'] }}">Currently Reading</button>
                 <input type="hidden" id="currently_reading_value" name="currently_reading" value="{{ book['Currently_Reading'] }}">
 
@@ -344,12 +347,12 @@
 
                 <!-- Toggles for Personal and Academic Tags -->
                 <div id="personal-or-academic">
-                    <button onclick="changePersonalTag()" class="tag {% if book['Personal_Or_Academic']=='personal' %}active{% endif %}"
+                    <button onclick="changePersonalTag()" class="transition_css tag {% if book['Personal_Or_Academic']=='personal' %}active{% endif %}"
                             id='personal' type="button" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">Personal</button>
 
                     <span>or</span>
 
-                    <button onclick="changeAcademicTag()" class="tag {% if book['Personal_Or_Academic']=='academic' %}active{% endif %}"
+                    <button onclick="changeAcademicTag()" class="transition_css tag {% if book['Personal_Or_Academic']=='academic' %}active{% endif %}"
                             id='academic' type="button" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">Academic</button>
 
                     <input type="hidden" id="personal_or_academic_value" name="personal_or_academic" value="{{ book['Personal_Or_Academic'] }}">

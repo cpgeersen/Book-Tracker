@@ -5,7 +5,7 @@
     gap: 30px;
     padding: 20px;
     min-width: 1000px;
-
+    background-color: transparent !important;
 }
 
 .book-info h3 {
@@ -29,6 +29,7 @@
 #header-purge{
     align-content: center;
     width: fit-content;
+    padding-right: 10px;
 }
 
 /* Search form styling */
@@ -57,7 +58,7 @@
 
 /* Adds smooth transition animation for hover styling */
 .transition_css {
-      transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .book-card{
@@ -72,4 +73,10 @@
     min-height: 95vh;
     box-sizing: border-box;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.help > div{
+    width: fit-content;
+    margin-left: auto;
+    margin-right: 0;
 }

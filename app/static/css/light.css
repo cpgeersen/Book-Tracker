@@ -1,0 +1,367 @@
+/* Base Override */
+body {
+    background-color: #e0e0e0;
+    color: #333;
+    font-weight: 600 !important;
+}
+
+button{
+    background: #3498db !important;
+    color: white;
+}
+button:hover {
+    background-color: #21618c !important;
+}
+
+h1 {
+    color: #333;
+}
+
+a{
+    color: #21618c !important;
+    transition-property: color;
+    transition-duration: 300ms;
+
+    transition-delay: 0ms;
+}
+a:hover {
+    color: #3498db !important;
+    transition-property: color;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0ms;
+}
+
+dialog{
+    background-color: #4d5c6b;
+    color: white;
+
+}
+dialog > h3{
+    background-color: #333;
+}
+
+
+/* Homepage */
+.right_side, .user-section{
+    background-color: #f8f9fa;
+}
+
+th{
+    background-color: #21618c;
+}
+
+td{
+    font-weight: 600 !important;
+}
+
+/* Adds hover effect for table header cells. */
+th:hover {
+    background-color: #3498db;
+}
+
+/* Add Book */
+.container{
+    background-color: #f8f9fa;
+}
+
+input,
+select {
+    background-color: #e0e0e0;
+    color: #333;
+    font-weight: 600;
+}
+
+input:not([type="radio"]):not([type="checkbox"]):focus,
+select:focus {
+    outline: 2px solid #3498db;
+}
+
+fieldset {
+    border: 1px solid #333;
+}
+
+legend {
+    color: #333;
+}
+
+.toggle-btn {
+    color: white;
+    background-color: #3498db !important;
+}
+
+/* Radio button styling */
+input[type="radio"] {
+    accent-color: #3498db;
+}
+
+/* Hover styling for checkbox area */
+input[type="checkbox"] {
+    accent-color: #3498db !important;
+}
+
+input[type="checkbox"]:hover {
+    outline: 2px solid #21618c;
+}
+
+
+/* Local Search */
+.filters {
+    background-color: #f8f9fa;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.filters button {
+    background-color: #3498db !important;
+    color: white;
+}
+
+.filters button:hover {
+    background-color: #21618c !important;
+}
+
+.results-area {
+    background-color: #f8f9fa;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+input[type="text"] {
+    background-color: #e0e0e0;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Input field styling */
+    input[type="number"] {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.search-form button {
+    background-color: #3498db;
+    color: white;
+}
+
+.search-form button:hover {
+    background-color: #21618c;
+}
+
+/* Book result card layout */
+.book-card {
+    background-color: #e0e0e0;
+
+}
+
+/* Placeholder cover block */
+.book-cover {
+    background-color: #21618c;
+    color: white;
+}
+
+.book-info h3 {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Tag badges */
+.tags span {
+    background-color: #f8f9fa;
+}
+
+.genres span {
+    background-color: #f8f9fa;
+}
+
+/* Button inside card */
+.view-button {
+    background-color: #3498db;
+    color: white !important;
+}
+
+.view-button:hover {
+    background-color: #21618c;
+    color: white !important;
+}
+
+/* No results message */
+.no-results {
+    color: #333;
+}
+
+/* Styling for Return to Top button */
+#returnToTop {
+    background-color: #3498db;
+    color: white;
+}
+
+#returnToTop:hover {
+    background-color: #21618c;
+}
+
+/* Genre option styling */
+.select-genre {
+    background-color: #3498db;
+    color: white;
+}
+
+/* Styles genre option selection */
+option {
+background-color: #374151;
+    color: white ;
+}
+
+
+/* Individual Book */
+/* Book container card */
+.book-container {
+    background-color: #f8f9fa;
+}
+
+/* Genre and tag styling */
+.tag {
+    background-color: #e0e0e0 !important;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Active tag state */
+.tag.active {
+    background-color: #3498db !important;
+    color: white;
+}
+
+/* Hover styling for tag selection */
+.tag:hover {
+    background-color: #21618c !important;
+    color: white;
+}
+
+/* Styles genres */
+.genre-tag {
+    background-color: #e0e0e0;
+    color: #333;
+    font-weight: 700 !important;
+}
+
+/* Notes textarea styling */
+textarea {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+/* Individual note card styling */
+.note-card {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+/* Styles the Notes section */
+#note-select{
+    border-color: #333;
+}
+
+/* Main styling for large buttons */
+.style-button {
+    background-color: #3498db !important;
+    color: white;
+}
+
+/* Hover styling for large buttons */
+.style-button:hover {
+    background-color: #21618c !important;
+}
+
+/* Main styling for smaller buttons */
+.small-button {
+    background-color: #3498db !important;
+    color: white;
+}
+
+/* Hover styling for smaller buttons */
+.small-button:hover {
+    background-color: #21618c !important;
+}
+
+/* Styling for file button */
+.file-button {
+    background-color: #3498db !important;
+    color: white;
+}
+
+/* Hover styling for file button */
+.file-button:hover {
+    background-color: #21618c !important;
+}
+
+/* Genre option styling */
+.select-genre {
+    background-color: #3498db !important;
+    color: white;
+}
+
+/* Styles genre option selection */
+option {
+    background-color: #4d5c6b;
+    color: white ;
+}
+
+/* Side-by-Side Styling */
+
+#chapters-section{
+    border-color: #333;
+}
+
+
+/* OpenLibrary Search */
+/* Main styling for large buttons */
+.style-button {
+    background-color: #3498db !important;
+    color: white;
+}
+
+/* Hover styling for large buttons */
+.style-button:hover {
+    background-color: #21618c !important;
+}
+
+.results {
+    background-color: #f8f9fa;
+}
+.book-card{
+    background-color: #e0e0e0 !important;
+}
+.book-cover{
+    background-color: #21618c !important;
+    color: white;
+}
+
+
+/* Analytics Dashboard */
+.analytics-genres{
+    background-color: #e0e0e0 !important;
+}
+.stat-block{
+    border-color: #333;
+}
+.analytics-title{
+    background-color: #e0e0e0;
+}
+
+
+/* Deduplication */
+.dedupe-title {
+    background-color: #f8f9fa !important;
+    color: #333;
+}
+.result-block {
+    background-color: #e0e0e0 !important;
+}
+.dedupe-book-card {
+    background-color: #f8f9fa !important;
+}
+
+
+/* Transition formatting */
+.transition_css {
+    transition: background-color 0.2s ease-in-out !important;
+}

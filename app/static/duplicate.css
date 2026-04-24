@@ -5,9 +5,12 @@
     margin-right: auto;
     margin-left: auto;
     margin-top: 2rem;
+    padding: 2rem 6rem 4rem;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-.container h2 {
+.dedupe-title {
     background-color: #374151;
     padding: 0.3rem;
     border-radius: 6px;
@@ -38,14 +41,14 @@
 }
 
 /* Individual book card */
-.book-card {
+.dedupe-book-card {
     background-color: #111827;
     padding: 15px;
     border-radius: 10px;
     min-width: 220px;
 }
 
-.book-card p {
+.dedupe-book-card p {
     margin-top: 0;
     margin-bottom: 30px;
 }

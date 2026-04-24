@@ -6,6 +6,9 @@
     <!--For awareness: Logo images were created with the assistance of Copilot AI.  -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='homepage.css') }}"/>
+    {% if user_settings['Theme'] == 'light' %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/light.css') }}"/>
+    {% endif %}
 </head>
 
 <body>
@@ -15,7 +18,7 @@
     <img src="../static/images/BookTracker_Logo.png" alt="BookTracker Logo" class="Logo">
     </section>
 
-    <section class="right_side">
+    <section class="right_side welcome-message">
       <H1> Welcome to Book Tracker</H1>
       <p>
         Create your own personal database using Book Tracker, making it easy to have a complete inventory of books available at your fingertips.<br><br> 
