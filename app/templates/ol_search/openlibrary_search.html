@@ -8,6 +8,9 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='search.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='ol-search.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
+    {% if user_settings['Theme'] == 'light' %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/light.css') }}"/>
+    {% endif %}
 </head>
 
 <body>
@@ -17,21 +20,29 @@
     {% endblock %}
 
 <main class="container page-wrapper">
-    <section class="results-area">
+    <section class="results">
 
         <!-- Navigation links -->
         <div class="nav-buttons">
             <a href="/">🏠 Home</a>
             <div class="help">
               {% from 'help_modal_macros.html' import help_modal_openlibrary as help %}
-                {{ help() }}
+                <div>
+                    {{ help() }}
+                </div>
+
+              {% from 'theme_switch_macro.html' import theme_switch as switch %}
+                {{ switch( user_settings['Theme'], user_settings['Username']) }}
           </div>
         </div>
 
 
         <div id="header">
-            <h1 id="page-title">OpenLibrary Search</h1>
-            <div>
+            <div id="header-title">
+                <h1 id="page-title">OpenLibrary Search</h1>
+            </div>
+
+            <div id="header-purge">
                 <form id="purge-cache-form">
                     <input type="hidden" name="Purge_Cache" value="True" formmethod="POST">
                     <button class="transition_css style-button" type="submit" form="purge-cache-form">
@@ -88,9 +99,9 @@
 
                     <!-- Pulls the cover image from the OpenLibrary -->
                     {% if book_info['Cover_Image_URL'] %}
-                    <img src="{{ book_info['Cover_Image_URL'] }}" alt="Cover">
+                    <img class="book-cover" src="{{ book_info['Cover_Image_URL'] }}" alt="No Cover">
                     {% else %}
-                    No Cover
+                    <div class="book-cover">No Cover<div>
                     {% endif %}
 
                 </div>

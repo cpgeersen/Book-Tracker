@@ -25,6 +25,8 @@ INTERNAL_SERVER_ERROR = 500
 def add_local_book_route(main_app):
     @main_app.route('/book/add-local', methods=['POST', 'GET'])
     def add_book_page():
+        user_settings_values = read({}, 'user-settings')
+
         if request.method == 'POST':
             try:
                 # First get the form information
@@ -40,16 +42,20 @@ def add_local_book_route(main_app):
                 if book_response[1] == SUCCESS:
                     # Used to maintain context of route in redirect
                     page_origin = 'from_add_book'
-                    return redirect(url_for('individual_book_page', isbn=book_result['ISBN'],  page_origin=page_origin))
+                    return redirect(url_for('individual_book_page', isbn=book_result['ISBN'],  page_origin=page_origin,
+                               user_settings=user_settings_values))
 
                 elif book_response[1] == FOUND:
-                    return render_template('add_book/add_book_error_present.html'), FOUND
+                    return render_template('add_book/add_book_error_present.html',
+                               user_settings=user_settings_values)
 
                 elif book_response[1] == BAD_REQUEST:
-                    return render_template('add_book/add_book_error_malformed.html'), BAD_REQUEST
+                    return render_template('add_book/add_book_error_malformed.html',
+                               user_settings=user_settings_values), BAD_REQUEST
 
             except TypeError as error:
-                return render_template('add_book/add_book_error_malformed.html'), BAD_REQUEST
+                return render_template('add_book/add_book_error_malformed.html',
+                               user_settings=user_settings_values), BAD_REQUEST
 
         # Implicit GET request
-        return render_template('add_book/add_book.html')
+        return render_template('add_book/add_book.html', user_settings=user_settings_values), SUCCESS

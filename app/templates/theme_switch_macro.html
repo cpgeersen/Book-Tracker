@@ -1,0 +1,31 @@
+<!-- Main modal that others extend from -->
+{% macro theme_switch(current_theme, username) %}
+    <form id="theme-switch-form" method="POST">
+            <input type="hidden" name="Username" value="{{ username }}">
+        {% if current_theme == 'light' %}
+            <input type="hidden" name="Theme" value="dark">
+            <button class="transition_css modal-button" type="submit" form="theme-switch-form">Change to Dark Mode</button>
+        {% else %}
+            <input type="hidden" name="Theme" value="light">
+            <button class="transition_css modal-button" type="submit" form="theme-switch-form">Change to Light Mode</button>
+        {% endif %}
+    </form>
+
+    <script>
+        let form = document.getElementById("theme-switch-form")
+        form.addEventListener('submit', function(event) {
+
+            // This prevents the page from auto-reloading on submission
+            // This makes sure it goes through
+            event.preventDefault();
+
+            // Send the change of theme to the settings route
+            const form_data = new FormData(form);
+            console.log(form_data)
+            fetch('/settings', {
+                method: 'POST',
+                body: form_data,
+            }).then(() => {location.reload();})
+        });
+    </script>
+{% endmacro %}
