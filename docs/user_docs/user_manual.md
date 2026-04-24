@@ -58,6 +58,10 @@ Team Members: {Team Members}
 
 [Provide answers to frequently asked questions about the software.]
 
+**Q**: How can I change a book's cover image manually? 
+
+**A**: Navigate to the book's page.  Click the **Edit Cover Image** button. Select **Choose File**.  Choose desired image from the file picker window that appears and click Open.  The file picker window disappears.  Select **Upload** to finish updating cover image.
+
  
 
 ### Support and Contact Information [Collin]
