@@ -38,14 +38,12 @@
     margin-bottom: 3rem;
     margin-top: 2rem;
 
-
 }
 
 /* Formats the logo's position. */
 .left_side {
     margin-left: 7rem;
     padding: 20px;
-
 }
 
 /*Formats the header and website description.*/
@@ -55,7 +53,12 @@
     background-color: #1f2933;
     border-radius: 8px;
     width: 20%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
 
+.user-greeting{
+    align-self: center;
+    margin-left: 2rem;
 }
 
 .user-section{
@@ -68,6 +71,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .user-buttons{

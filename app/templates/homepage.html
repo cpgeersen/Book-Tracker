@@ -20,7 +20,13 @@
       <p>
         Create your own personal database using Book Tracker, making it easy to have a complete inventory of books available at your fingertips.<br><br> 
         Book Tracker gives you the option to add a book manually or through Open Library's online database.<br><br>  
-        Use tags to mark books as read, owned, favorited, and more!</p>
+        Use tags to mark books as read, owned, favorited, and more!
+      </p>
+      <div class="{% if user_settings['Username'] == 'Default_User' %} hidden {% endif %}">
+        <br>
+        <p>Hello {{ user_settings['Username'] }}! Happy Reading!</p>
+      </div>
+      
     </section>
   </div>
   <br>
