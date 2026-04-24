@@ -3,7 +3,9 @@
 <!-- DISPLAY THE USER DATA !-->
 <head>
     <title> User Profile Analytics </title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/analytics.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dark.css' if theme_switch == '1' else 'light.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
 
@@ -15,6 +17,10 @@
     <!-- Navigation link -->
     <div class="nav-buttons">
         <a href="/">🏠 Home</a>
+        <div class="help">
+            {% from 'help_modal_macros.html' import help_modal_dashboard as help %}
+                {{ help() }}
+        </div>
     </div>
 
 

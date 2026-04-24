@@ -17,6 +17,10 @@
     <div class="nav-buttons">
         <a href="/settings">← Back</a>
         <a href="/">🏠 Home</a>
+        <div class="help">
+            {% from 'help_modal_macros.html' import help_modal_deduplicate as help %}
+                {{ help() }}
+        </div>
     </div>
 
     <h1>Duplicate Books</h1>

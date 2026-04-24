@@ -27,6 +27,10 @@
         <a href="/book/local-search">← Back</a>
       {% endif %}
       <a href="/">🏠 Home</a>
+      <div class="help">
+        {% from 'help_modal_macros.html' import help_modal_individual_book as help %}
+            {{ help() }}
+      </div>
     </div>
 
     <!-- Main book container -->
