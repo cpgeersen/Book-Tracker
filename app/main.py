@@ -16,6 +16,7 @@ from app.services.deduplicate_books import de_duplicate_books_refactor
 
 # Test Route Import
 from app.routes.test import test_bp
+from app.services.mediator import read
 
 # Imports used for Mocking
 from app.services.mocking.create_example_records import create_sample_books
@@ -66,7 +67,8 @@ def create_routes(app):
 
     @app.route('/', methods=['GET'])
     def homepage():
-        return render_template('homepage.html')
+        user_settings_values = read({}, 'user-settings')
+        return render_template('homepage.html', user_settings=user_settings_values)
 
     @app.route('/book/deduplicate', methods=['POST', 'GET'])
     def dedup_page():

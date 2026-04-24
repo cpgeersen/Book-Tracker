@@ -25,11 +25,18 @@
     </section>
 
     <section class="right_side">
-      <h1>Settings/User Functions</h1>
-
+        <h1>Settings/User Functions</h1>
     </section>
 
+      <div class="user-greeting">
+          {% if user_settings['Username'] == 'Default_User' %}
+            <h2>You can change your username below.</h2>
+          {% else %}
+            <h2>Hello {{ user_settings['Username'] }}!</h2>
+          {% endif %}
+      </div>
   </div>
+
   <div class="user-section">
       <h3>Current Settings</h3>
       <p>Current Username:
@@ -39,7 +46,7 @@
       </p>
       <p>Current Theme:
       {% if user_settings['Theme'] %}
-          {{ user_settings['Theme'] }}
+          {{ user_settings['Theme'].title() }}
       {% endif %}
       </p>
       <div>
