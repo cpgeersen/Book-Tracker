@@ -43,11 +43,11 @@ def add_local_book_route(main_app):
                     # Used to maintain context of route in redirect
                     page_origin = 'from_add_book'
                     return redirect(url_for('individual_book_page', isbn=book_result['ISBN'],  page_origin=page_origin,
-                               user_settings=user_settings_values)), SUCCESS
+                               user_settings=user_settings_values))
 
                 elif book_response[1] == FOUND:
                     return render_template('add_book/add_book_error_present.html',
-                               user_settings=user_settings_values), FOUND
+                               user_settings=user_settings_values)
 
                 elif book_response[1] == BAD_REQUEST:
                     return render_template('add_book/add_book_error_malformed.html',
