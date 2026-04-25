@@ -21,8 +21,23 @@ Team Members: {Team Members}
  
 
 ### Getting Started [Nick/Collin]
+##Install The Application
+Users can download the latest version of the Book Tracker app from the official GitHub release page:
 
-[Provide instructions on how to install or access the software. Include system requirements and any prerequisites.]
+GitHub Release:  
+https://github.com/cpgeersen/Book-Tracker/releases/tag/1.0.0
+Download the ZIP and extract them to the location of your choice. 
+
+##System Requirements
+Operating System: Windows, macOS, or Linux
+
+Python Version: Python 3.
+
+Disk Space: 200 MB
+
+Internet Connection: Required for some features.
+
+Pip : Installed
 
  
 
