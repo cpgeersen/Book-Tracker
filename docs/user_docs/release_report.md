@@ -60,7 +60,15 @@ Team Members: {Team Members}
 
 ### Deployment [Nick/Collin]
 
-[Explain the deployment process, including any downtime or issues encountered.]
+For deployment, I packaged my Book Tracker app into a Python wheel (.whl). This allowed me to distribute the application as a built package instead of sending the raw source code.
+
+I generated the wheel using my project’s setup configuration, then transferred the .whl file to the deployment environment. Once it was uploaded, I installed it using pip install <filename>.whl, which placed all the modules and dependencies into the environment.
+
+After installation, I configured the runtime environment and started the application. The deployment itself was quick because the wheel contained everything needed to run the app.
+
+During deployment, I encountered a few issues. One problem was missing dependencies that weren’t included in the wheel at first, which caused the app to fail on startup. I rebuilt the wheel with the correct dependencies and redeployed. There was brief downtime while I fixed this, but once the updated wheel was installed, the app ran without further issues.
+
+Using a wheel file made the deployment process clean and repeatable, and after resolving the initial dependency issues, the app deployed successfully
 
 
 
