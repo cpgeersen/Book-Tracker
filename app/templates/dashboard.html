@@ -3,9 +3,9 @@
 <!-- DISPLAY THE USER DATA !-->
 <head>
     <title> User Profile Analytics </title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/analytics.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modal_formatting.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modal_formatting.css') }}"/>
     {% if user_settings['Theme'] == 'light' %}
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/light.css') }}"/>
     {% endif %}
