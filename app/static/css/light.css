@@ -35,6 +35,7 @@ a:hover {
 dialog{
     background-color: #4d5c6b;
     color: white;
+    font-weight: 500;
 
 }
 dialog > h3{

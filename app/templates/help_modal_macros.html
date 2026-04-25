@@ -11,18 +11,62 @@
 {% endmacro %}
 
 
-<!-- Local Search Help Modal -->
-{% macro help_modal_search(title) %}
-    {% call help_modal('Local Search Help')  %}
-        <p>Add help here.</p>
+<!-- Add Book Help Modal -->
+{% macro help_modal_add_book(title) %}
+    {% call help_modal('Add Book Help')  %}
+        <p>Here you can add books to your database using your own data.</p>
+        <p>
+            The only data that must be correct is ISBN. All other data can either be
+            edited by the user or updated via OpenLibrary's data.
+        </p>
+        <p>To create a book, it must have:</p>
+        <ul>
+            <li>
+                Title
+            </li>
+            <li>
+                Primary Author
+            </li>
+            <li>
+                ISBN
+            </li>
+            <li>
+                Year Published
+            </li>
+            <li>
+                Publisher
+            </li>
+            <li>
+                Whether the book is fiction or nonfiction.
+            </li>
+            <li>
+                Whether the book is personal or academic.
+            </li>
+        </ul>
+        <br>
+        <p><strong>Tip:</strong> If an author uses letters in their name like J.R.R Tolkien, make J.R.R their first name.</p>
+        <br>
+        <p><strong>Tip:</strong> If an author uses a middle name, include it in the firstname or drop it (this will be fixed if updated via OpenLibrary data).</p>
     {% endcall %}
 {% endmacro %}
 
 
-<!-- Add Book Help Modal -->
-{% macro help_modal_add_book(title) %}
-    {% call help_modal('Add Book Help')  %}
-        <p>Add help here.</p>
+<!-- Local Search Help Modal -->
+{% macro help_modal_search(title) %}
+    {% call help_modal('Local Search Help')  %}
+        <p>Here you can search for all of your books in the database.</p>
+        <p>On the left is the filters that you can use to narrow down your searches.</p>
+        <br>
+        <p><strong>Tip:</strong> When searching ISBN, search the whole number not part of it.</p>
+        <p>
+            For example, lets say we have a book with an ISBN of 1234567890. Searching 1234 will not return a result,
+            while 1234567890 will.
+        </p>
+        <br>
+        <p><strong>Tip:</strong> When searching titles, be less generic for the best results.</p>
+        <p>Single word searches that are not allowed (for being too generic) are: 'the', 'a', 'and', 'be', 'that', 'of', 'this', and 'by'.</p>
+        <br>
+        <p><strong>Tip:</strong> When searching for authors, try to search by full name (though single last names are supported).</p>
     {% endcall %}
 {% endmacro %}
 
@@ -30,7 +74,35 @@
 <!-- Individual Book Help Modal -->
 {% macro help_modal_individual_book(title) %}
     {% call help_modal('Individual Book Help')  %}
-        <p>Add help here.</p>
+        <p>Here you can add to your book entries by adding a cover image, a summary, genres, and notes.</p>
+        <p>Additionally, you can edit chapter progress and user tags.</p>
+        <br>
+        <p><strong>Notice:</strong> You can add as many notes as you wish, though each note has a max length of 1200 characters.</p>
+        <br>
+        <p><strong>Tip:</strong> Use the first line of the note to act as a title.</p>
+        <br>
+        <p><strong>Tip:</strong> When you create a note you will notice a Note ID, this can help with tracking notes.</p>
+        <br>
+        <p>
+            <strong>Notice:</strong> Deleting a book is irreversible and will delete all information about the
+            book.
+        </p>
+        <br>
+        <p>
+            <strong>Notice:</strong> Updating the book with OpenLibrary data is advised, but be aware that it will
+            overwrite author, publisher, and year to be correct for the ISBN.
+        </p>
+        <br>
+        <p>
+            <strong>Tip:</strong> Be aware that updating via the OpenLibrary will sometimes not work. This could
+            be due to it being down, or that the book with that specific ISBN is missing information on OpenLibrary.
+            If this occurs you can:
+        </p>
+        <ul>
+            <li>Try again later</li>
+            <li>Look for the same book with a different ISBN</li>
+            <li>Or just use your own data</li>
+        </ul>
     {% endcall %}
 {% endmacro %}
 
@@ -38,7 +110,41 @@
 <!-- OpenLibrary Search Help Modal -->
 {% macro help_modal_openlibrary(title) %}
     {% call help_modal('OpenLibrary Search Help')  %}
-        <p>Add help here.</p>
+        <p>Here you can search the OpenLibrary for specific books based on ISBN, title, or author.</p>
+        <br>
+        <p>
+            <strong>Tip:</strong> Be advised that searching by ISBN is the preferred method.
+            Books can have a lot of overlap with titles and author names.
+        </p>
+        <br>
+        <p>
+            <strong>Notice:</strong> All searches have a maximum of five results to prevent overloading
+            the OpenLibrary API. Additionally, you will notice that sometimes searches for title and author
+            will return less than five. This can occur when valid results returned by the API are not valid
+            for the database.
+        </p>
+        <br>
+        <p>
+            <strong>Tip:</strong> Sometimes results for title and author searches do not
+            return what would be expected. This comes from the fact that information is limited to the first
+            five results being pulled to prevent spamming the API. In these cases use an ISBN.
+        </p>
+        <br>
+        <p>
+            <strong>Tip:</strong> If an ISBN does not return a result, this means that the OpenLibrary is missing
+            that specific ISBN or that the information pulled is incomplete and cannot be used for the database. If
+            this happens try finding a different ISBN and using that number.
+        </p>
+        <br>
+        <p>
+            <strong>Tip:</strong> Searches can take sometime (especially none ISBN searches), give it a second to
+            find the information via the API. Though re-searching will be faster since there is a cache.
+        </p>
+        <br>
+        <p>
+            <strong>Tip:</strong> If there are search issues, it can be beneficial to try again later or
+            delete the cache since OpenLibrary could have updated information since the last time searched.
+        </p>
     {% endcall %}
 {% endmacro %}
 
@@ -46,7 +152,43 @@
 <!-- Settings Help Modal -->
 {% macro help_modal_settings(title) %}
     {% call help_modal('Settings Help')  %}
-        <p>Add help here.</p>
+        <p>
+            Here you can change settings and use the user functions. Be aware that the functions in the
+            red box are unsafe. This means they are destructive. Failing to back up your database before
+            using them can result in you losing all of your books and information on the books.
+        </p>
+        <br>
+        <p>
+            The settings you can change here are username and theme. While the theme can be changed on most
+            pages, this is the canonical way of changing it. Additionally, the username is only for
+            addressing the user.
+        </p>
+        <br>
+        <p>
+            The deduplicate function takes you to a page that will help you remove any duplicate books
+            (books that are the same, but different ISBN).
+        </p>
+        <br>
+        <p>
+            The export CSV function allows one to back up their database.
+        </p>
+        <p><strong>Notice:</strong> The export function does not back up cover images for books.</p>
+        <br>
+        <p>
+            The import CSV function allows one to import a database and overwrite the existing one. This
+            removes the current database with the one from the CSV. As a precaution this function copies
+            the database before completing the overwrite. Do not rely on this functionality since there is no
+            in-app function to use this copy.
+        </p>
+        <p>
+            <strong>Tip:</strong> If you do need to use this emergency back-up, you will have to
+            use your file explorer. First rename the back-up to 'bt.db' and copy-paste the back-up to the folder
+            where 'bt.db' resides and overwrite with the back-up.
+        </p>
+        <br>
+        <p>
+            <strong>Notice:</strong> The two delete functions do what they say, they delete. So be careful. &#128579;
+        </p>
     {% endcall %}
 {% endmacro %}
 
@@ -54,7 +196,11 @@
 <!-- Dashboard Help Modal -->
 {% macro help_modal_dashboard(title) %}
     {% call help_modal('Dashboard Help')  %}
-        <p>Add help here.</p>
+        <p>Here are some analytics for your database.</p>
+        <br>
+        <p>
+            <strong>Tip:</strong> Deleted books are not tracked in these stats.
+        </p>
     {% endcall %}
 {% endmacro %}
 
@@ -62,14 +208,15 @@
 <!-- Deduplicate Help Modal -->
 {% macro help_modal_deduplicate(title) %}
     {% call help_modal('Deduplicate Help')  %}
-        <p>Add help here.</p>
+        <p>
+            Here shows any duplicate books in the database. Duplicates are defined as books with the same
+            author and title pairs under different ISBNs.
+        </p>
+        <br>
+        <p>
+            Any deleting is up to the user. There may be no books in the results below. This means
+            there are no duplicates in the database.
+        </p>
     {% endcall %}
 {% endmacro %}
 
-
-<!-- Deduplicate Help Modal -->
-{% macro help_modal_deduplicate(title) %}
-    {% call help_modal('Deduplicate Help')  %}
-        <p>Add help here.</p>
-    {% endcall %}
-{% endmacro %}

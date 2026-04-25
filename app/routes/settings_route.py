@@ -15,7 +15,6 @@ def settings_route(main_app):
             return render_template('settings/settings.html', user_settings=user_settings_values), 200
         else: # Implicit POST
             user_action = dict(request.form)
-            print(user_action)
             user_settings_values = read({}, 'user-settings')
 
             if user_action.get('Update') is not None:
