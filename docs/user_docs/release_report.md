@@ -39,7 +39,9 @@ Docker image.
 
 - Requirements Gathering [Holly]:
 
-    The development team held sessions with identified stakeholders, customers, and end-users to gather project requirements. Feedback from these meetings determined in-scope software features and functionalities to focus build. The following user stories were identified and prioritized for project development:
+    The development team held sessions with identified stakeholders, customers, and end-users to gather 
+    project requirements. Feedback from these meetings determined in-scope software features and functionalities to 
+    focus build. The following user stories were identified and prioritized for project development:
 
         - As a user, I want to add a book to the database so that I can maintain a backlog of books.
         - As a user, I want to mark off the completion of chapters in a book so that I can track my progress for a given book.
@@ -56,11 +58,18 @@ Docker image.
 
 - Testing and Quality Assurance [Holly]:
 
-    Comprehensive automated unit and integration testing was developed and performed using pytest capabilities to ensure software features functioned as expected, both separately and in tandem.  This included testing for the Open Library API integration to ensure desired information was pulled and formatted correctly to meet project needs.  
+    Comprehensive automated unit and integration testing was developed and performed using pytest capabilities to 
+    ensure software features functioned as expected, both separately and in tandem.  This included testing for the 
+    OpenLibrary API integration to ensure desired information was pulled and formatted correctly to meet project needs.  
 
-    Acceptance testing was performed by the development team and end-users to ensure software functioned as expected and met usability standards.  Reported issues, such as slow transition styling for submission buttons, were corrected to improve the user’s experience.  
+    Acceptance testing was performed by the development team and end-users to ensure software functioned as expected 
+    and met usability standards.  Reported issues, such as slow transition styling for submission buttons, were 
+    corrected to improve the user’s experience.  
 
-    To further improve end-user experience, background, button, and text color themes utilized for page styling underwent contrast testing for ADA accessibility.  The team determined theme colors passed at least one or both WCAG AA and WCAG AAA standards for normal and large text.  Button styling met WCAG AA standards for graphical objects and interface components. 
+    To further improve end-user experience, background, button, and text color themes utilized for page styling 
+    underwent contrast testing for ADA accessibility.  The team determined theme colors passed at least one or 
+    both WCAG AA and WCAG AAA standards for normal and large text.  Button styling met WCAG AA standards for 
+    graphical objects and interface components. 
 
 - Bug Fixes and Enhancements [Collin]:
 
@@ -86,7 +95,8 @@ Using a wheel file made the deployment process clean and repeatable, and after r
 
 - New Features [Holly]:
 
-    Book Tracker software release version 1.0.0 includes features that allow avid book readers to create their own personal database to track book inventory and completion progress.  These features include:
+    Book Tracker software release version 1.0.0 includes features that allow avid book readers to create their own 
+    personal database to track book inventory and completion progress.  These features include:
 
         - Manually add a book to user's database.
         - Add book to user's database by searching and selecting from Open Library's online database.
@@ -108,7 +118,10 @@ Using a wheel file made the deployment process clean and repeatable, and after r
 
     [List any known issues or limitations in the release, along with plans for addressing them.]
 
-    Book Tracker version release 1.0.0 is limited to English language users.  Translation to other languages, such as Spanish, may be explored in future releases. 
+    Book Tracker version release 1.0.0 is limited to English language users.
+    Translation to other languages, such as Spanish, may be explored in future releases.
+
+    
 
 
 
