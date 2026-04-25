@@ -80,3 +80,7 @@
     margin-left: auto;
     margin-right: 0;
 }
+
+#help-modal{
+    max-width: 800px;
+}
