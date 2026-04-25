@@ -19,8 +19,8 @@ from app.routes.test import test_bp
 from app.services.mediator import read
 
 # Imports used for Mocking
-from app.services.mocking.create_example_records import create_sample_books
-from app.services.mocking.create_many_records import create_many_records
+from mocking.create_example_records import create_sample_books
+from mocking.create_many_records import create_many_records
 
 # Functions for mocking
 #create_sample_books()
