@@ -22,7 +22,11 @@ Team Members: {Team Members}
 
 ### Getting Started [Nick/Collin]
 ##Install The Application
+Users can download the latest version of the Book Tracker app from the official GitHub release page:
 
+GitHub Release:  
+https://github.com/cpgeersen/Book-Tracker/releases/tag/1.0.0
+Download the ZIP and extract them to the location of your choice. 
 
 ##System Requirements
 Operating System: Windows, macOS, or Linux
