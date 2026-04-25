@@ -1,17 +1,17 @@
 # CSC289 Programming Capstone Project
 
 
-Project Name: {Project Name}
+Project Name: BookTracker
 
-Team Number: {Team Number}
+Team Number: 2
 
-Team Project Manager: {Team Lead Name}
+Team Project Manager: Collin Geersen
 
-Team Members: {Team Members}
+Team Members: Joseph Candleana, Collin Geersen, Mireliz Gimenez, Holly Green, Nicholas Grudier, Christopher O'Brien
 
  
 
-## Release Report [Software Name] - Version [Version Number]
+## Release Report BookTracker - Version 1.0
 
  
 
@@ -19,13 +19,23 @@ Team Members: {Team Members}
 
 [Provide a brief overview of the purpose of the software and the significance of this release.]
 
- 
+This software enables a user to maintain a local database to track books with a graphical user interface. 
+The book information tracked can be as basic as ISBNs and titles to book genres and user defined notes. 
+In conjunction with allowing a user to add books with their own information, it can pull data from an API to 
+create or update books. With rich searching features and user tags, a user can organize their book backlog.
+
+This release marks the first usable version with all the user functionality included. Additionally, it 
+is the first version that is to be released for public use. A user has a choice of a Python wheel or 
+Docker image. 
 
 ### Development Highlights
 
 - Project Initiation [Holly]:
 
-    The project’s official kickoff meeting took place on January 28, 2026.  During this meeting, the development team reviewed the software requirements  specification (SRS) documentation and determined the project’s scope and goals.  The team also reviewed the project timeline, which consisted of five two-week sprints dedicated to feature development and implementation. 
+    The project’s official kickoff meeting took place on January 28, 2026.  During this meeting, the development team 
+    reviewed the software requirements specification (SRS) documentation and determined the project’s scope and goals.  
+    The team also reviewed the project timeline, which consisted of five two-week sprints dedicated to feature development 
+    and implementation. 
 
 - Requirements Gathering [Holly]:
 
