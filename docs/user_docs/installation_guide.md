@@ -1,13 +1,13 @@
 # CSC289 Programming Capstone Project
 
 
-Project Name: {Project Name}
+Project Name: {Book Tracker}
 
-Team Number: {Team Number}
+Team Number: {2}
 
-Team Project Manager: {Team Lead Name}
+Team Project Manager: {Collin Geerson}
 
-Team Members: {Team Members}
+Team Members: {Nicholas Grudier, Collin Gerrson, Christopher, Holly, Mireliz, Johnathon.}
 
  
 
@@ -17,46 +17,88 @@ Team Members: {Team Members}
 
 ### Introduction
 
-[Provide a brief introduction to the software and the purpose of the installation guide.]
+This guide provides the necessary steps to install and access the Book Tracker application from its official GitHub release. It outlines system requirements, prerequisites, and clear instructions to help users set up the software quickly and smoothly.
 
  
 
 ### System Requirements
 
-[List the system requirements needed to install and run the software, including supported operating systems, hardware specifications, and any additional software dependencies.]
+Operating System: Windows, macOS, or Linux
+
+Python Version: Python 3.9
+
+Disk Space: 200 MB
+
+Internet Connection: Required for some features
 
  
 
 ### Downloading the Installer
 
-[Provide instructions on where and how to download the software installer. Include any download links or URLs.]
+The Book Tracker application is distributed as a wheel file, which contains the packaged version of the software ready for installation. Users can download the installer directly from the official GitHub release page:
+
+GitHub Release (Version 1.0.0):  
+https://github.com/cpgeersen/Book-Tracker/releases/tag/1.0.0
+
+On the release page, scroll to the Assets section and download the file labeled: **Book-Tracker-1.0.0.whl**
+
+This wheel contains the full application package. 
 
  
 
 ### Installing the Software
 
-[Provide step-by-step instructions on how to install the software. Include screenshots and detailed explanations of each installation step.]
+## 1. Locate the Downloaded Wheel File
+After downloading, navigate to the folder where the file was saved.
+The file: book_tracker-1.0.0-py3-none-any.whl
 
- 
+## 2. Open a Terminal or Command Prompt
+
+Windows: Press Win + R, type cmd, and press Enter
+
+macOS: Open Terminal from Applications → Utilities
+
+Linux: Open your preferred terminal application
+
+## 3. Navigate to the Folder Containing the Wheel File
+Use the cd command to move into the directory where the wheel file is located. For example:
+**cd Downloads**
+
+## 4. Install the Application Using pip
+Run the following command:
+**pip install book_tracker-1.0.0-py3-none-any.whl**
+
+## 5. Install requirements
+Run the following command:
+**pip install -r requirements.txt**
+
+
 
 ### Launching the Software
 
-[Provide instructions on how to launch the software after installation. Include any shortcuts or commands that may be used.]
+## Navigate to the Project Directory
+Open a terminal or command prompt and move into the folder where your application files are located. For example:
 
- 
+**cd path/to/book-tracker**
+
+## Run Flask
+**python -m flask run**
+
+## Access the Application
+Open a web browser and go to:
+**http://localhost:5000**
+
+Your Book Tracker app will now be running and accessible.
 
 ### Uninstalling the Software
+If you no longer need the Book Tracker application, you can remove it easily using pip. Uninstalling the software will remove the installed package and its associated files from your Python environment.
 
-[Provide instructions on how to uninstall the software from the system. Include step-by-step guidance on removing all software components.]
+1. Open a Terminal or Command Prompt:
 
- 
+Windows: Press Win + R, type cmd, and press Enter
 
-### Troubleshooting
+macOS/Linux: Open Terminal
 
-[Provide troubleshooting tips and solutions for common installation issues that users may encounter.]
-
- 
-
-### Support and Contact Information
-
-[Provide contact information for technical support, including email addresses, phone numbers, and links to support resources.]
+2. Uninstall the Book Tracker Package:
+Run the following command:
+**pip uninstall book_tracker-0.1.0-py3-none-any.whl**

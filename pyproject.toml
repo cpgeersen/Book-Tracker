@@ -23,7 +23,7 @@ include = ["app*"]
 [tool.setuptools.package-data]
 app = [
 	"templates/*.html",
-	"static/*.css",
+	"static/css/*.css",
 	"static/*.json",
 	"static/images/*",
 	"static/images/**/*",
