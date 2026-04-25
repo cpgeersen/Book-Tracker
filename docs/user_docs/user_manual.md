@@ -21,8 +21,19 @@ Team Members: {Team Members}
  
 
 ### Getting Started [Nick/Collin]
+##Install The Application
 
-[Provide instructions on how to install or access the software. Include system requirements and any prerequisites.]
+
+##System Requirements
+Operating System: Windows, macOS, or Linux
+
+Python Version: Python 3.
+
+Disk Space: 200 MB
+
+Internet Connection: Required for some features.
+
+Pip : Installed
 
  
 
