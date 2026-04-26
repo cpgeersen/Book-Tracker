@@ -26,7 +26,7 @@ The primary goals of the software are to develop an application that allows a us
   
 #### (II) Categorize By:
 1. Author
-2. Genre
+2. Genre (Over 70)
 3. Publish Date
 4. Publisher
 5. Premade Labels
@@ -37,6 +37,7 @@ The primary goals of the software are to develop an application that allows a us
     - Currently Reading
     - Read
     - Favorite
+    - Personal or Academic
 2. Mark off each chapter of a book to track per book progress.
     
 #### (IV) Analytics:
@@ -45,10 +46,13 @@ The primary goals of the software are to develop an application that allows a us
     - Number of completed books.
     - Most read genre
     - Currently reading books.
-    - Number of books completed over a period of time (by month over a year). 
 
 #### (V) Customization:
-1. Theme options
+1. Theme options (Light and Dark Mode)
 2. Username (only for when referring to the user)
+
+## For Users:
+Refer to the release page and user documentation on how to install and use the application.
+There are currently two main ways to install this application.
 
 
