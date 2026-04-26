@@ -173,7 +173,7 @@ which can be frustrating to some users that want to use file explorer in the app
   - Fixed regression in local author name search failing to search with middle names
 
 
-- **Known Issues** [Everyone]: [List any known issues or limitations in the release, along with plans for addressing them.]
+- **Known Issues**:
   - Book Tracker version release 1.0.0 is limited to English language users. 
   Translation to other languages, such as Spanish, may be explored in future releases.
   - Database backups do not back up cover images
@@ -182,6 +182,28 @@ which can be frustrating to some users that want to use file explorer in the app
   - Use the OpenLibrary rapidly can time the user out. This is to prevent overloading the API.
 
 
-### **Conclusion**: (Chris)
+### **Conclusion**:
 
-[Summarize the key outcomes of this release and discuss any future plans or considerations.]
+The main outcome for this release it version 1.0 of the BookTracker application. This marks the milestone of a 
+fully functional application that allows a user to maintain a local book database that has API abilities for
+pulling book information from the internet. All functionality decided on has been implemented.
+Future bugs and feedback provided by user will be addressed in future releases. 
+
+The functionality includes:
+- All CRUD functionality for the database
+- Addable tags and genres
+- Cover images
+- OpenLibrary API book data
+- user settings (username and themes)
+- Import/export of database via CSV
+- Local search functionality
+- In application help
+
+Future releases could include:
+- Proper cover image back-ups
+- Docker Volume support
+- Additional themes
+- Additional uses for username
+
+Continuation of this project should refactor how routes are treat to better separate UI routes and data flow routes.
+Additionally, SQLite interaction should be refactored to reflect flask's idiomatic way of using a global cursor.
