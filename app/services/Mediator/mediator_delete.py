@@ -60,7 +60,7 @@ def mediator_delete(json_input, delete_type):
     elif delete_type == 'delete-database':
         return reset_database('RESET')
     elif delete_type == 'all-cover-images':
-        return purge_cover_images()
+        return purge_cover_images(json_input)
     elif delete_type == 'cache':
         return purge_cache()
 

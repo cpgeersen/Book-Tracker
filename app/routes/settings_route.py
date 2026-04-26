@@ -53,7 +53,7 @@ def settings_route(main_app):
                                        user_settings=user_settings_values, delete_status=delete_status), 200
 
             if user_action.get('Delete_Cover_Images') is not None:
-                delete_status = delete({}, 'all-cover-images')
+                delete_status = delete(main_app, 'all-cover-images')
                 return render_template('settings/settings_delete_status_modal.html',
                                        user_settings=user_settings_values, delete_status=delete_status), 200
 
