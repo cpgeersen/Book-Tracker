@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 
 import requests
 
@@ -16,7 +17,7 @@ from app.services.validate_json.validate_book_json import validate_tags
 from app.services.validate_json.validate_openlibrary_json import validate_isbn_search
 
 
-def mediator_update(json_input, update_type):
+def mediator_update(json_input, update_type, main_app=None):
     try:
         if update_type == 'summary':
             json_input = json.loads(json_input)
@@ -100,7 +101,7 @@ def mediator_update(json_input, update_type):
 
                 # Use cover image naming, uses jpg since OL stores cover images this way
                 file_name = isbn + '_' + 'cover_image.jpg'
-                file_path = os.path.join('app', 'static', 'images', 'cover_images', file_name)
+                file_path = os.path.join(Path(main_app.static_folder) / "images" / "cover_images", file_name)
 
                 # Write the images to the correct path
                 with open(file_path, 'wb') as image:
@@ -139,6 +140,7 @@ def mediator_update(json_input, update_type):
             is_author_2_updated = False
 
             if not is_author_info_none(cache_author_2_olid):
+                print('here')
                 is_author_2_updated = resolve_author_olid(old_json_data, cache_response, author_num='2')
 
             # There is a second author, but there should not be one

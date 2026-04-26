@@ -5,9 +5,9 @@ from app.services.Mediator.mediator_delete import mediator_delete
 
 
 # POST - Takes JSON as input
-def create(json_input, create_type):
+def create(json_input, create_type, main_app=None):
     # OpenLibrary Functions Called In Inner Function
-    return mediator_create(json_input, create_type)
+    return mediator_create(json_input, create_type, main_app)
 
 # GET - Takes JSON as input
 def read(json_input=None, read_type='book-all', filter_json=None):
@@ -16,9 +16,9 @@ def read(json_input=None, read_type='book-all', filter_json=None):
 
 
 # PATCH - Takes JSON as input
-def update(json_input, update_type):
+def update(json_input, update_type, main_app=None):
     # OpenLibrary Functions Called In Inner Function
-    return mediator_update(json_input, update_type)
+    return mediator_update(json_input, update_type, main_app)
 
 
 # DELETE - Takes JSON as input

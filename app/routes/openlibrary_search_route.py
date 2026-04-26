@@ -74,7 +74,7 @@ def openlibrary_search_route(main_app):
             add_book = dict(request.form)
 
             # Try and make a book here
-            response = create(add_book, 'book-ol')
+            response = create(add_book, 'book-ol', main_app)
 
             # If the book is already present, send to the fetch request
             if response[1] == 302:

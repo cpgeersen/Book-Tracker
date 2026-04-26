@@ -43,8 +43,6 @@ app/services/user_settings/export_import.py
 app/services/user_settings/user_settings.py
 app/services/validate_json/validate_book_json.py
 app/services/validate_json/validate_openlibrary_json.py
-app/static/ol_json_cache.json
-app/static/user_settings.json
 app/static/css/add_book.css
 app/static/css/analytics.css
 app/static/css/base.css

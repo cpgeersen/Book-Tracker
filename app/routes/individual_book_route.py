@@ -70,7 +70,7 @@ def individual_book_route(main_app):
             if book_update.get('update_with_ol') is not None:
                 json_input = json.dumps({'ISBN': isbn, 'Cover_Image_Update': book_update.get('update_cover'),
                                          'Summary_Update': book_update.get('update_summary')})
-                response = update(json_input, 'openlibrary')
+                response = update(json_input, 'openlibrary', main_app)
 
                 book_result = json.loads(read(isbn_dict, 'book-isbn'))
 

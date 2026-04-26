@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 
 import requests
 
@@ -13,7 +14,7 @@ BAD_REQUEST = 400
 INTERNAL_SERVER_ERROR = 500
 
 
-def mediator_create(json_input, create_type):
+def mediator_create(json_input, create_type, main_app=None):
     try:
         if create_type == 'book-local':
             isbn = json_input['ISBN']
@@ -50,7 +51,7 @@ def mediator_create(json_input, create_type):
 
             # Use cover image naming, uses jpg since OL stores cover images this way
             file_name = isbn + '_' + 'cover_image.jpg'
-            file_path = os.path.join('app', 'static', 'images', 'cover_images', file_name)
+            file_path = os.path.join(Path(main_app.static_folder) / "images" / "cover_images", file_name)
 
             # Write the images to the correct path
             with open(file_path, 'wb') as image:
