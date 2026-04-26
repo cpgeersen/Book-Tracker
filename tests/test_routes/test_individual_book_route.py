@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 normal_data = {"ISBN": "0061091464",
@@ -20,15 +22,73 @@ normal_data = {"ISBN": "0061091464",
                "Completed": "yes",
                "Currently_Reading": "no",
                "Personal_Or_Academic": "personal",
-               "Genre_1": "fiction",
-               "Genre_2": "horror",
-               "Genre_3": "fantasy"}
+               "Genre_1": "fiction"}
 
 def test_individual_book_success(client):
     client.post('/book/add-local', data=normal_data)
     get_response = client.get(f'/book/isbn/{normal_data['ISBN']}', data=normal_data)
     assert get_response.status_code == 200
 
+
 def test_individual_book_failure(client):
     response = client.get(f'/book/isbn/{normal_data['ISBN']}', data={})
     assert response.status_code == 200
+
+
+def test_individual_book_update_summary(client):
+    client.post('/book/add-local', data=normal_data)
+    response = client.post(f'/book/isbn/{normal_data['ISBN']}', data={
+        "summary": "cool"
+    })
+    assert response.status_code == 200
+
+
+def test_individual_book_update_chapters(client):
+    client.post('/book/add-local', data=normal_data)
+    response = client.post(f'/book/isbn/{normal_data['ISBN']}', data={
+        "chapters": "10"
+    })
+    assert response.status_code == 200
+
+
+def test_individual_book_update_tags(client):
+    client.post('/book/add-local', data=normal_data)
+    response = client.post(f'/book/isbn/{normal_data['ISBN']}', data={
+        "tag": "",
+        "Tag_ID": "1",
+        "owned": "on",
+        "favorite": "on",
+        "completed": "on",
+        "currently_reading": "on",
+        "personal_or_academic": "personal"
+    })
+    assert response.status_code == 200
+
+
+def test_individual_book_update_chapters_completed(client):
+    client.post('/book/add-local', data=normal_data)
+    response = client.post(f'/book/isbn/{normal_data['ISBN']}', data={
+        "chapters_completed": "0"
+    })
+    assert response.status_code == 200
+
+
+def test_individual_book_delete(client):
+    client.post('/book/add-local', data=normal_data)
+    response = client.post(f'/book/isbn/{normal_data['ISBN']}', data={
+        "delete": "0",
+        "ISBN": "0061091464",
+        "Cover_Image": ""
+    })
+    assert response.status_code == 302
+
+
+def test_individual_book_genre_delete(client):
+    client.post('/book/add-local', data=normal_data)
+    response = client.post(f'/book/isbn/{normal_data['ISBN']}', data={
+        "delete-genre": ""
+    })
+    assert response.status_code == 200
+
+
+
