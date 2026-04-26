@@ -14,11 +14,17 @@ Team Members: Joseph Candleana, Collin Geersen, Mireliz Gimenez, Holly Green, Ni
 
  
 
-### Introduction [Joseph]
+### Introduction:
 
-[Provide a brief introduction to the software, its purpose, and its intended audience.]
+The BookTracker application is a Python based local database app that is built in the flask framework. The user can
+pick between two main ways to install the application. Each have their own requirements and trade-offs. More 
+specific information can be found in the installation guide.
 
- 
+The purpose of this application is to provide a feature rich database software that allows a user to maintain
+a backlog of books using tagging and genre capabilities through a graphical user interface. With any avid reader, 
+trying to properly track what books you own or what book to read, can be a problem. This application helps to solve this issue. 
+While there are other online websites that have the same features, this is fully controlled by the user. 
+All data is theirs.
 
 ### Getting Started:
 
@@ -95,17 +101,31 @@ https://hub.docker.com/r/cpgeersen/booktracker
 
 - The information found in the help modals found under: app/templates/help_modals_macros.html should help
 you get started
+
+
+- **Issue**: OpenLibrary does not have a book being sought.
+  - **Solution**: First, try a specific ISBN search. If that does not yield the book wanted, try other ISBNs for
+  different editions of the same book. If this still does not work, try again later after clearing the
+  OpenLibrary cache. If finally this also does not work, use your own local data for a book.
+
+
  
 
-### Frequently Asked Questions (FAQs) [Everyone]
+### Frequently Asked Questions (FAQs)
 
-[Provide answers to frequently asked questions about the software.]
+---
+
+**Q**: How can I install the application? 
+
+**A**: Refer to the Installation Guide.
 
 ---
 
 **Q**: How can I change a book's cover image manually? 
 
-**A**: Navigate to the book's page.  Click the **Edit Cover Image** button. Select **Choose File**.  Choose desired image from the file picker window that appears and click Open.  The file picker window disappears.  Select **Upload** to finish updating cover image.
+**A**: Navigate to the book's page. Click the **Edit Cover Image** button.
+Select **Choose File**. Choose desired image from the file picker window that appears and click Open.
+The file picker window disappears.Select **Upload** to finish updating cover image.
 
 ---
 
@@ -113,6 +133,18 @@ you get started
 
 **A**: You can export/import your database as a CSV by using the functions found in the user settings page.
 Note: Currently cover images are not backed up.
+
+---
+
+**Q**: Can I use the OpenLibrary API too much, i.e. get banned?
+
+**A**: No, there are protections against this to prevent spamming the API.
+
+---
+
+**Q**: What if I find a bug or think if a new feature?
+
+**A**: Reach through the GitHub repo or email Collin Geersen at cpgeersen@my.waketech.edu
 
 ---
 
