@@ -2,3 +2,23 @@
 
 exclude_lines =
     if __name__ == .__main__.:
+    elif create_type == 'book-ol':
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    except sqlite3.Error as error:
+    elif update_type == 'cover-image':
+    elif update_type == 'genres':
+    elif update_type == 'openlibrary':
+    elif update_type == 'user-settings':
+    elif read_type == 'ol-book-isbn':
+    elif read_type == 'ol-book-title':
+    elif read_type == 'ol-book-author':
+    if cache_response is None:
+
+
+omit = ./app/services/OpenLibrary/*
+       */openlibrary_data_resolution/*
+       ./app/services/user_settings/export_import.py
+       ./app/routes/settings_route.py
+       ./app/routes/openlibrary_search_route.py
+

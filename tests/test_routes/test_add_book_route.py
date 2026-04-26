@@ -60,10 +60,10 @@ def test_add_book_bad_request(client):
     response = client.post('/book/add-local', data=normal_data)
     assert response.status_code == FOUND
 
-# def test_a(client):
-#     #with pytest.raises(TypeError):
-#     response = client.post('/book/add-local', data={})
-#     assert response.status_code == BAD_REQUEST
+def test_add_book_bad_data_request(client):
+    response = client.post('/book/add-local', data=bad_data)
+    assert response.status_code == BAD_REQUEST
+
 
 
 

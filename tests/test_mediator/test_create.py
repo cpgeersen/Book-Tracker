@@ -1,3 +1,5 @@
+import json
+
 from app.services.mediator import create
 
 book = {"ISBN": "0061091464",
@@ -33,16 +35,35 @@ def test_create_book_success():
     response = create(book, create_type='book-local')
     assert response[1] == 200
 
-# def test_create_failure_key_error():
-#     response = create({}, create_type='book-local')
-#     assert response[1] == 400
+
+def test_create_note_success():
+    create(book, create_type='book-local')
+    json_input = json.dumps({'ISBN': book['ISBN'], 'Note_Content': 'note',
+                             'Note_ID': ''})
+    response = create(json_input, create_type='note')
+
+    assert response == {'Note_ID': '1', 'Note_Content': 'note'}
+
+def test_create_note_update():
+    create(book, create_type='book-local')
+    json_input = json.dumps({'ISBN': book['ISBN'], 'Note_Content': 'note',
+                             'Note_ID': ''})
+    create(json_input, create_type='note')
+
+    json_input = json.dumps({'ISBN': book['ISBN'], 'Note_Content': 'new content',
+                             'Note_ID': '1'})
+    response = create(json_input, create_type='note')
+
+    assert response == {'status': 'success'}
 
 
+def test_create_note_empty():
+    create(book, create_type='book-local')
+    json_input = json.dumps({'ISBN': book['ISBN'], 'Note_Content': '',
+                             'Note_ID': ''})
+    response = json.loads(create(json_input, create_type='note'))
 
-
-
-
-
+    assert response == {'Error': 'Empty Note'}
 
 
 
