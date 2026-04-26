@@ -21,7 +21,7 @@ This release marks the first usable version with all the user functionality incl
 is the first version that is to be released for public use. A user has a choice of a Python wheel or 
 Docker image. 
 
-### Development Highlights
+### Development Highlights:
 
 - **Project Initiation**:
 
@@ -115,7 +115,7 @@ Docker image.
   includes all user functionality with the database, OpenLibrary API interaction, user profile, searching, analytics, and
   themes.
 
-### **Deployment** [Nick/Collin]
+### **Deployment**:
 
 For deployment, we packaged the BookTracker app into a Python wheel (.whl) and a Docker Image. This allowed us to 
 distribute the application as a built package instead of sending the raw source code (which is still an option for a user).
@@ -136,10 +136,24 @@ Using a wheel file made the deployment process clean and repeatable, and after r
 the app deployed successfully.
 
 
-For the Docker Image...
+For the Docker Image, it was generated using the Docker CLI tool and pushed to Docker Hub. This Docker Image allows
+a user to install the app inside an isolated environment that is repeatable and available to all platforms that has
+a Docker Desktop or CLI release.
+
+A user can either create their own Docker Image with the Dockerfile found in the source code or use the premade
+image from Docker Hub. After having the image created or pull, all the user needs to do is run from Docker Desktop or
+the CLI.
+
+When creating the Dockerfile there were some issues. First, there were some issues with incorrect pointing to the flask 
+environment. Second, there were issues with mapping exposed ports to the host computer. These issues were resolved
+with troubleshooting and looking over the Docker documentation.
+
+The Docker Image offers a platform-agnostic way for a user to install the application. Though there are some drawbacks.
+If a user is not familiar with Docker, it can be daunting. The application files are separated more from the host computer,
+which can be frustrating to some users that want to use file explorer in the application folder like a typical app.
 
 
-### Release Notes
+### Release Notes:
 
 - **New Features**:
 
@@ -178,6 +192,6 @@ For the Docker Image...
   - Use the OpenLibrary rapidly can time the user out. This is to prevent overloading the API.
 
 
-### **Conclusion** (Chris)
+### **Conclusion**: (Chris)
 
 [Summarize the key outcomes of this release and discuss any future plans or considerations.]
