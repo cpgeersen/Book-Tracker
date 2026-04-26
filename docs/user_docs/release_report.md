@@ -47,14 +47,10 @@ Docker image.
   Given the team's main skill sets, we decided on programming the project in Python. This gave us the needed flexibility
   for our diverse team. Since Python was decided, we opted to use flask as the framework to create the app. This decision
   came from the simplicity and power that fit our projects needs. Something like Django would have been unnecessary.
-  
-  <br>
 
   It was also decided as a team that we would use SQLite for the in-app database. This differs from the SRS where Oracle was
   picked. Upon consideration, it was determined that Oracle would add unnecessary project complexity. Also, given that the
   project is using flask, Python's native support for SQLite made more sense.
-
-  <br>
 
   For maximum agility and separation of the front and back ends, we used the Model-View-Presenter architectural model.
   This application design decouples the front and back end, allowing for both ends to be created in parallel.
@@ -86,20 +82,14 @@ Docker image.
     This included testing for the OpenLibrary API integration to ensure desired information was pulled 
     and formatted correctly to meet project needs.
     
-    <br>
-    
     Acceptance testing was performed by the development team and end-users to ensure software functioned as expected 
     and met usability standards.  Reported issues, such as slow transition styling for submission buttons, were 
     corrected to improve the user’s experience.  
-    
-    <br>
 
     To further improve end-user experience, background, button, and text color themes utilized for page styling 
     underwent contrast testing for ADA accessibility.  The team determined theme colors passed at least one or 
     both WCAG AA and WCAG AAA standards for normal and large text.  Button styling met WCAG AA standards for 
     graphical objects and interface components. 
-
-    <br>
 
     Thinking ahead for future releases, we did performance testing for a large amount of books. If a user has a database
     with over a thousand books, it still runs well.
