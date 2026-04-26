@@ -1,15 +1,18 @@
-from app.test_route import create_test_flask_route
-from app.main import create_routes
+from pathlib import Path
 
 from flask import Flask, render_template, request
 
+from app.main import create_routes
+from app.test_route import create_test_flask_route
 
-UPLOAD_FOLDER = './app/static/images/cover_images'
 
 def create_app():
     app = Flask(__name__)
 
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    upload_folder = Path(app.static_folder) / "images" / "cover_images"
+    upload_folder.mkdir(parents=True, exist_ok=True)
+
+    app.config["UPLOAD_FOLDER"] = str(upload_folder)
 
     create_routes(app)
 

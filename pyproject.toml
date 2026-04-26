@@ -10,11 +10,8 @@ dependencies = [
 	"requests>=2.31.0",
 ]
 
-[project.scripts]
-book-tracker = "run:main"
 
 [tool.setuptools]
-py-modules = ["run"]
 include-package-data = true
 
 [tool.setuptools.packages.find]
@@ -23,6 +20,7 @@ include = ["app*"]
 [tool.setuptools.package-data]
 app = [
 	"templates/*.html",
+	"templates/**/*.html",
 	"static/css/*.css",
 	"static/*.json",
 	"static/images/*",
