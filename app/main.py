@@ -32,15 +32,6 @@ create_cache()
 # Create User Settings
 create_user_settings_json()
 
-# Creates the Cover Image Path
-cover_image_path = os.path.join("app", "static", "images", "cover_images")
-rel_cover_image_path = os.path.relpath(cover_image_path, start=os.curdir)
-try:
-    os.mkdir(rel_cover_image_path)
-except FileExistsError:
-    pass    # passively ignore if the directory exists
-
-
 # Main Route Creation for the App
 def create_routes(app):
 
