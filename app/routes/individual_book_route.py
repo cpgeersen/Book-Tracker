@@ -21,19 +21,19 @@ del BOOK_GENRES[2]
 BOOK_GENRES_SORTED = dict(sorted(BOOK_GENRES.items(), key=lambda kv: kv[1]))
 
 
-# Small helper function for what files are allowed for cover images
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-UPLOAD_FOLDER = './app/static/images/cover_images'
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
 view_book_page = 'individual_book/view_book.html'
 view_book_page_update_modal = 'individual_book/view_book_ol_update_modal.html'
 search_page_modal = 'local_search/search_error_isbn.html'
 
 def individual_book_route(main_app):
+    # Small helper function for what files are allowed for cover images
+    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+    UPLOAD_FOLDER = Path(main_app.static_folder) / "images" / "cover_images"
+
+    def allowed_file(filename):
+        return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
     @main_app.route('/book/isbn/<isbn>', methods=['GET', 'POST'])
     def individual_book_page(isbn):
         user_settings_values = read({}, 'user-settings')

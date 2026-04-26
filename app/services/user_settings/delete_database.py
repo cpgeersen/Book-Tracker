@@ -2,6 +2,7 @@ import sqlite3
 import os
 import shutil
 from datetime import datetime
+from pathlib import Path
 
 from app.services.genres import genres_for_table
 
@@ -157,9 +158,9 @@ def reset_database(confirm_reset):
         }
 
 # Deletes Cover Images when that database is deleted
-def purge_cover_images():
+def purge_cover_images(main_app):
     try:
-        cover_image_folder = os.path.join("app", "static", "images", "cover_images")
+        cover_image_folder = Path(main_app.static_folder) / "images" / "cover_images"
 
         # If folder does not exist, nothing to delete
         if not os.path.exists(cover_image_folder):
