@@ -1,16 +1,16 @@
 # CSC289 Programming Capstone Project
 
 
-Project Name: {Project Name}
+Project Name: BookTracker
 
-Team Number: {Team Number}
+Team Number: 2
 
-Team Project Manager: {Team Lead Name}
+Team Project Manager: Collin Geersen
 
-Team Members: {Team Members}
+Team Members: Joseph Candleana, Collin Geersen, Mireliz Gimenez, Holly Green, Nicholas Grudier, Christopher O'Brien
 
 
-## [Software Name] User Manual
+## BookTracker User Manual
 
  
 
@@ -20,26 +20,52 @@ Team Members: {Team Members}
 
  
 
-### Getting Started [Nick/Collin]
-##Install The Application
-Users can download the latest version of the Book Tracker app from the official GitHub release page:
+### Getting Started:
 
-GitHub Release:  
+#### Install The Application
+
+Users can download the latest version of the BookTracker app from the official GitHub release page or use the
+Docker Image found on Docker Hub:
+
+GitHub Release (Python Wheel):  
 https://github.com/cpgeersen/Book-Tracker/releases/tag/1.0.0
-Download the ZIP and extract them to the location of your choice. 
+Download the ZIP and extract them to the location of your choice.
 
-##System Requirements
-Operating System: Windows, macOS, or Linux
+Docker Hub Image:
+https://hub.docker.com/r/cpgeersen/booktracker
 
-Python Version: Python 3.
+---
 
-Disk Space: 200 MB
+#### Python Wheel System Requirements
 
-Internet Connection: Required for some features.
+**Operating System**: Windows 10+, macOS, or Linux
 
-Pip : Installed
+**Python Version**: Python 3.9
 
- 
+**CPU**: Any modern CPU
+
+**RAM**: 4 GB
+
+**Disk Space**: 200 MB
+
+**Internet Connection**: Required for some features
+
+---
+
+#### Docker Image System Requirements
+
+**Docker**: Must be able to install docker Link: https://www.docker.com/get-started/
+
+**CPU**: Any modern CPU
+
+**RAM**: 4 GB
+
+**Disk Space**: 300 MB
+
+**Internet Connection**: Required for some features 
+
+---
+
 
 ### Features Overview [Mireliz]
 
@@ -67,18 +93,30 @@ Pip : Installed
 
 [Provide troubleshooting tips and solutions for common issues users may encounter while using the software.]
 
+- The information found in the help modals found under: app/templates/help_modals_macros.html should help
+you get started
  
 
 ### Frequently Asked Questions (FAQs) [Everyone]
 
 [Provide answers to frequently asked questions about the software.]
 
+---
+
 **Q**: How can I change a book's cover image manually? 
 
 **A**: Navigate to the book's page.  Click the **Edit Cover Image** button. Select **Choose File**.  Choose desired image from the file picker window that appears and click Open.  The file picker window disappears.  Select **Upload** to finish updating cover image.
 
- 
+---
 
-### Support and Contact Information [Collin]
+**Q**: How can I back up my database?
 
-[Provide contact information for support, including email addresses, phone numbers, and links to support resources.]
+**A**: You can export/import your database as a CSV by using the functions found in the user settings page.
+Note: Currently cover images are not backed up.
+
+---
+
+### Support and Contact Information:
+
+If you are having any issues reach out through the GitHub repo or by emailing Collin Geersen
+at cpgeersen@my.waketech.edu
