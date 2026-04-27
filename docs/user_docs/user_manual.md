@@ -71,28 +71,198 @@ https://hub.docker.com/r/cpgeersen/booktracker
 
 ---
 
+### Features Overview:
 
-### Features Overview [Mireliz]
+Main Features:
+- Add a book with local data
+- Add a book with OpenLibrary data (search off of ISBN, title, and author)
+- Can update an existing locally created book with OpenLibrary data
+- Search for a book (ISBN, title, author) with rich filtering
+- A separate book page for every entry
+- Can add/delete cover images
+- Can add/delete a summary
+- Can edit and track user completed chapters
+- Can add and delete genres for a book
+- Can toggle tags for: owned, favorite, currently reading, complete, and personal or academic
+- Can add/edit/delete user notes
+- Can delete a book
+- Dashboard that shows: number of owned books, number of books in database, list of completed or currently reading,
+and the five most common genres in the database.
+- A user setting for username and themes
+- A way to export/import the database into CSV
+- A UI to detect duplicate books (same book different ISBN)
+- Mass delete of database and cover images
+- In-app help on every page
 
-[Provide a high-level overview of the main features and functionalities of the software.]
+### Using BookTracker:
 
+---
+
+#### Adding a Book
+
+1. Click on the highlighted `Manually Add Book` element
+
+![homepage_add_book.png](images/features/homepage_add_book.png)
+
+2. Fill out the form for a new book
+
+![add_book_feature.png](images/features/add_book_feature.png)
+
+3. This will bring you to the book page for the newly added book
+
+---
+
+#### Searching a Book
+
+1. Click on the highlighted `Search Your Database` element
+
+![homepage_search_book.png](images/features/homepage_search_book.png)
+
+2. Using the search box input the desired ISBN, title, or author
+
+![local_search_feature.png](images/features/local_search_feature.png)
+
+3. Additionally, use the filters on the side to further narrow down your search
+
+---
+
+#### Viewing a Book
+To view a book use the local search feature discussed prior and click on the
+view book button for the respective book
+
+![individual_book_page_feature.png](images/features/individual_book_page_feature.png)
+
+---
+
+#### Edit/Delete Cover Image
+Given you are on the respective book page, you can add or delete a book cover by clicking on the edit button.
+
+![add_book_cover_image_feature.png](images/features/add_book_cover_image_feature.png)
+
+---
+
+#### Edit/Delete Book Summary
+Given you are on the respective book page, you can add or delete a book summary by clicking the edit button.
+
+![edit_book_summary_feature.png](images/features/edit_book_summary_feature.png)
+
+---
+
+#### Edit Book Chapters
+Given you are on the respective book page, you can edit the number of chapters and chapters completed by clicking
+on the edit button.
+
+![chapter_progress_feature.png](images/features/chapter_progress_feature.png)
+
+---
+
+#### Edit/Delete Book Genres
+Given you are on the respective book page, you can add or delete genres by clicking on the edit button.
+
+![edit_book_genres_feature.png](images/features/edit_book_genres_feature.png)
+
+---
+
+#### Edit Book Tags
+Given you are on the respective book page, you can toggle the tags by clicking on them.
+
+![book_tag_feature.png](images/features/book_tag_feature.png)
+
+---
+
+#### Edit/Delete Notes
+You can add, edit and delete a books notes. This is found for the respective book page.
+
+![book_note_feature.png](images/features/book_note_feature.png)
+
+---
+
+#### Deleting a Book
+At the bottom of a given individual book page, click the delete button to delete.
+
+![delete_book_feature.png](images/features/delete_book_feature.png)
+
+---
+
+#### Updating a Book with OpenLibrary Data
+At the bottom of a given individual book page, click the Update with OpenLibrary Data button.
+
+Confirm whether or not you also want to update the cover image and summary.
+
+![ol_update_book_feature.png](images/features/ol_update_book_feature.png)
+
+---
+
+#### Adding a Book with OpenLibrary Data
+1. Click on the highlighted `Add from Open Library (Preferred) ` element
+
+![homepage_add_book_ol.png](images/features/homepage_add_book_ol.png)
+
+2. In the search box, search either by ISBN, title, or author
+
+![ol_isbn_search_feature.png](images/features/ol_isbn_search_feature.png)
+
+![ol_title_search_feature.png](images/features/ol_title_search_feature.png)
+
+![ol_author_search_feature.png](images/features/ol_author_search_feature.png)
+
+3. Click on the Add Book button to add the book to the user Database
+
+---
+
+#### Analytics Dashboard
+1. Click on the highlighted `Personalized Dashboard` element
+
+![homepage_dashboard.png](images/features/homepage_dashboard.png)
+
+2. View your stats
+
+![analytics_dashboard_feature.png](images/features/analytics_dashboard_feature.png)
+
+---
+
+#### User Settings
+1. Click on the highlighted `Adjust User Settings and Functions` element
+
+![homepage_user_settings.png](images/features/homepage_user_settings.png)
+
+2. With this page you edit your settings
+
+![user_setting_feature.png](images/features/user_setting_feature.png)
+
+3. You can also export and import your database
+
+![export_database_feature.png](images/features/export_database_feature.png)
+
+![import_database_function.png](images/features/import_database_function.png)
+
+4. You can also delete your entire database
+
+![delete_database_function.png](images/features/delete_database_function.png)
+
+5. You can also delete all cover images
+
+![delete_cover_image_feature.png](images/features/delete_cover_image_feature.png)
+
+6. You can also deduplicate books that are listed under different ISBNs
+
+![deduplicate_book_feature.png](images/features/deduplicate_book_feature.png)
+
+---   
+
+#### In-App Help
+Pages have an in-app help feature, just click on the button on the top of pages.
+
+![in_app_help_feature.png](images/features/in_app_help_feature.png)
  
+---
 
-### Using [Software Name] [Mireliz]
+#### Changing Theme
+You can also change the UI theme on most pages by clicking the change theme button on the
+top of the page.
 
-[Feature 1]
+![user_theme_feature.png](images/features/user_theme_feature.png)
 
-[Provide detailed instructions on how to use Feature 1. Include step-by-step guides, screenshots, and examples as needed.]
-
-[Feature 2] 
-
-[Provide detailed instructions on how to use Feature 2. Include step-by-step guides, screenshots, and examples as needed.]
-
-...
-
-[Continue providing instructions for each feature included in the software.]
-
- 
 
 ### Troubleshooting:
 
@@ -152,8 +322,7 @@ and overwrite with the back-up.
 - **Issue**: User adds two different versions of the same book (different ISBN)
   - **Solution**: Use the provided deduplication function found in the user settings page.
 
-
-
+  
 ### Frequently Asked Questions (FAQs)
 
 ---
