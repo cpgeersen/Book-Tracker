@@ -30,3 +30,10 @@ For day-to-day usage, a user only needs to run `.venv\Scripts\activate` before c
 in the command line.
 
 Note: If requirements.txt changes `py -m pip install -r requirements.txt` needs to rerun the virtual environment.
+
+### Step 5: Run the Application
+1. Make sure the virtual environment is active (see Step 4)
+2. From the project root folder, run `python run.py`
+3. Open a browser and navigate to `http://127.0.0.1:5000`
+
+Outcome: The Book Tracker web application is now running locally.
